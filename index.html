@@ -238,7 +238,8 @@
       const year = yearFilter.value;
 
       cards.forEach(card => {
-        const matchesSearch = card.querySelector('h3').textContent.toLowerCase().includes(search);
+        const text = card.textContent.toLowerCase();
+        const matchesSearch = text.includes(search);
         const matchesCountry = !country || card.dataset.country === country;
         const matchesState = !state || card.dataset.state === state;
         const matchesYear = !year || card.dataset.year === year;
