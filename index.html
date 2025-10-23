@@ -9,6 +9,7 @@
   <meta property="og:description" content="Track every Bitcoin conference, get discount alerts, and plan your Proof of Conference journey." />
   <meta property="og:image" content="og-image.png" />
   <meta property="og:type" content="website" />
+
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -17,22 +18,27 @@
       margin: 0;
       padding: 0;
     }
+
     header, footer {
       text-align: center;
       padding: 30px 20px;
       background-color: #111;
     }
+
     h1 {
       font-size: 2.5rem;
       margin-bottom: 10px;
     }
+
     .subheadline {
       font-size: 1.2rem;
       color: #fff;
     }
+
     .cta-buttons {
       margin-top: 20px;
     }
+
     .cta-buttons a {
       background-color: #f7931a;
       color: #000;
@@ -43,6 +49,7 @@
       border-radius: 5px;
       display: inline-block;
     }
+
     .filter-bar {
       display: flex;
       flex-wrap: wrap;
@@ -51,12 +58,15 @@
       background-color: #111;
       padding: 20px;
     }
-    .filter-bar input, .filter-bar select {
+
+    .filter-bar input,
+    .filter-bar select {
       padding: 10px;
       border-radius: 5px;
       border: none;
       width: 200px;
     }
+
     .calendar-grid {
       display: flex;
       flex-wrap: wrap;
@@ -64,6 +74,7 @@
       padding: 40px 20px;
       background-color: #111;
     }
+
     .event-card {
       background-color: #1a1a1a;
       border: 1px solid #333;
@@ -72,25 +83,37 @@
       margin: 15px;
       width: 280px;
       box-sizing: border-box;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
+
+    .event-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 4px 15px rgba(247, 147, 26, 0.2);
+    }
+
     .event-card h3 {
       margin-top: 0;
       color: #f7931a;
     }
+
     .event-image {
       width: 100%;
-      height: 160px;
+      height: 180px;
       object-fit: cover;
       border-radius: 6px;
-      margin-bottom: 10px;
-      border: 3px solid #f7931a;
-      background: none;
+      border: 2px solid #f7931a;
       display: block;
-    }
-    .event-card a img {
+      margin-bottom: 10px;
       background: none;
     }
+
     .event-card a {
+      background: none;
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .event-card a.button {
       display: inline-block;
       margin-top: 10px;
       background: #f7931a;
@@ -100,11 +123,13 @@
       border-radius: 4px;
       font-weight: bold;
     }
+
     .subscribe-section {
       text-align: center;
       padding: 50px 20px;
       background-color: #000;
     }
+
     .subscribe-section input {
       padding: 10px;
       width: 250px;
@@ -112,6 +137,7 @@
       border-radius: 4px;
       margin-right: 10px;
     }
+
     .subscribe-section button {
       padding: 10px 20px;
       background-color: #f7931a;
@@ -120,12 +146,14 @@
       border-radius: 4px;
       font-weight: bold;
     }
+
     .why-section {
       padding: 50px 20px;
       background-color: #111;
       color: #fff;
       text-align: center;
     }
+
     .footer-note {
       font-size: 0.9rem;
       color: #aaa;
@@ -133,6 +161,7 @@
     }
   </style>
 </head>
+
 <body>
   <header>
     <h1>Proof of Conference</h1>
@@ -144,7 +173,7 @@
   </header>
 
   <div class="filter-bar">
-    <input type="text" id="searchInput" placeholder="Search conferences...">
+    <input type="text" id="searchInput" placeholder="Search conferences..." />
     <select id="countryFilter">
       <option value="">All Countries</option>
       <option value="El Salvador">El Salvador</option>
@@ -169,7 +198,7 @@
   <section id="subscribe" class="subscribe-section">
     <h2>Be First in Line for Bitcoin Discounts</h2>
     <p>We’ll email you when new events drop and promo codes go live.</p>
-    <input type="email" placeholder="Your email address">
+    <input type="email" placeholder="Your email address" />
     <button>Subscribe</button>
   </section>
 
@@ -202,9 +231,13 @@
       grid.innerHTML = "";
       events.forEach(event => {
         if (event["Not Active"] && event["Not Active"].toLowerCase() === "x") return;
-        const image = event["Image"] || "placeholder.jpg";
-        const discount = event["Discount Code"];
+
+        let image = (event["Image"] || "").trim().replace(/(^"|"$)/g, "");
+        if (!image) image = "placeholder.jpg";
+
+        const discount = (event["Discount Code"] || "").trim();
         const discountLine = discount ? `<p>🎟️ Use Code: <strong>${discount}</strong></p>` : "";
+
         const card = document.createElement("div");
         card.classList.add("event-card");
         card.innerHTML = `
@@ -216,8 +249,8 @@
           🏛️ ${event["Venue"] || ""}<br>
           📅 ${event["Dates"] || ""}</p>
           ${discountLine}
-          <a href="${event["Ticket Link"] || "#"}" target="_blank">Get Tickets</a>
-          <a href="${event["Website"] || "#"}" target="_blank">More Info</a>
+          <a href="${event["Ticket Link"] || "#"}" target="_blank" class="button">Get Tickets</a>
+          <a href="${event["Website"] || "#"}" target="_blank" class="button">More Info</a>
         `;
         grid.appendChild(card);
       });
