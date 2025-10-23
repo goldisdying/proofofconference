@@ -1,242 +1,270 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Proof of Conference</title>
+  <meta name="description" content="Track every Bitcoin conference worldwide. View dates, venues, and countries — all in one place." />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="favicon.png" />
+
+  <!-- Open Graph / Social Preview -->
+  <meta property="og:title" content="Proof of Conference" />
+  <meta property="og:description" content="Track every Bitcoin conference worldwide." />
+  <meta property="og:image" content="https://proofofconference.com/og-image.png" />
+  <meta property="og:url" content="https://proofofconference.com" />
+  <meta property="og:type" content="website" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Proof of Conference" />
+  <meta name="twitter:description" content="Track every Bitcoin conference worldwide." />
+  <meta name="twitter:image" content="https://proofofconference.com/og-image.png" />
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
   <style>
     body {
-      font-family: Arial, sans-serif;
+      font-family: 'Inter', sans-serif;
       background-color: #000;
-      color: #f7931a;
+      color: #fff;
       margin: 0;
       padding: 0;
     }
-    header, footer {
+
+    header {
       text-align: center;
-      padding: 30px 20px;
-      background-color: #111;
+      padding: 40px 20px 20px;
     }
-    h1 {
-      font-size: 2.5rem;
-      margin-bottom: 10px;
+
+    header h1 {
+      font-size: 2.4rem;
+      color: #f7931a;
+      margin-bottom: 5px;
     }
-    .subheadline {
-      font-size: 1.2rem;
-      color: #fff;
+
+    header p {
+      color: #ccc;
+      font-size: 1rem;
     }
-    .cta-buttons {
-      margin-top: 20px;
-    }
-    .cta-buttons a {
-      background-color: #f7931a;
-      color: #000;
-      padding: 12px 20px;
-      margin: 5px;
-      text-decoration: none;
-      font-weight: bold;
-      border-radius: 5px;
-      display: inline-block;
-    }
-    .filter-bar {
+
+    .search-filter {
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
       gap: 10px;
-      background-color: #111;
-      padding: 20px;
+      margin: 20px auto;
+      max-width: 900px;
     }
-    .filter-bar input, .filter-bar select {
+
+    .search-filter input,
+    .search-filter select {
       padding: 10px;
       border-radius: 5px;
-      border: none;
-      width: 200px;
-    }
-    .calendar-grid {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      padding: 40px 20px;
-      background-color: #111;
-    }
-    .event-card {
-      background-color: #1a1a1a;
-      border: 1px solid #333;
-      border-radius: 8px;
-      padding: 20px;
-      margin: 15px;
-      width: 280px;
-    }
-    .event-card h3 {
-      margin-top: 0;
-      color: #f7931a;
-    }
-    .event-card a {
-      display: inline-block;
-      margin-top: 10px;
-      background: #f7931a;
-      color: #000;
-      padding: 8px 12px;
-      text-decoration: none;
-      border-radius: 4px;
-    }
-    .subscribe-section {
-      text-align: center;
-      padding: 50px 20px;
-      background-color: #000;
-    }
-    .subscribe-section input {
-      padding: 10px;
-      width: 250px;
-      border: none;
-      border-radius: 4px;
-      margin-right: 10px;
-    }
-    .subscribe-section button {
-      padding: 10px 20px;
-      background-color: #f7931a;
-      color: #000;
-      border: none;
-      border-radius: 4px;
-      font-weight: bold;
-    }
-    .why-section {
-      padding: 50px 20px;
+      border: 1px solid #444;
       background-color: #111;
       color: #fff;
-      text-align: center;
+      width: 200px;
     }
-    .footer-note {
-      font-size: 0.9rem;
-      color: #aaa;
+
+    .conference-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+      padding: 40px;
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    .conference-card {
+      background-color: #111;
+      border: 1px solid #222;
+      border-radius: 12px;
+      padding: 20px;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .conference-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 4px 15px rgba(247, 147, 26, 0.3);
+    }
+
+    .conference-title {
+      color: #f7931a;
+      font-weight: 700;
+      font-size: 1.2rem;
+    }
+
+    .conference-details {
       margin-top: 10px;
+      color: #ccc;
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+
+    footer {
+      text-align: center;
+      color: #888;
+      font-size: 0.9rem;
+      padding: 30px 0 50px;
+    }
+
+    @media (max-width: 600px) {
+      header h1 {
+        font-size: 1.8rem;
+      }
+      .conference-container {
+        padding: 20px;
+      }
     }
   </style>
 </head>
+
 <body>
   <header>
+    <img src="favicon.png" alt="Bitcoin ticket icon" width="64" height="64" />
     <h1>Proof of Conference</h1>
-    <div class="subheadline">Track Every Bitcoin Conference</div>
-    <div class="cta-buttons">
-      <a href="#calendar">View All Upcoming Conferences</a>
-      <a href="#subscribe">Subscribe for Discount Alerts</a>
-    </div>
+    <p>Track Every Bitcoin Conference</p>
   </header>
 
-  <div class="filter-bar">
-    <input type="text" id="searchInput" placeholder="Search conferences...">
-    <select id="countryFilter">
-      <option value="">All Countries</option>
-      <option value="El Salvador">El Salvador</option>
-      <option value="UAE">UAE</option>
-      <option value="United States">United States</option>
-      <option value="Czech Republic">Czech Republic</option>
+  <section class="search-filter">
+    <input type="text" id="search" placeholder="Search by name..." />
+    <select id="filter-date">
+      <option value="">Filter by Date</option>
     </select>
-    <select id="stateFilter">
-      <option value="">All States</option>
-      <option value="Nevada">Nevada</option>
-      <option value="Texas">Texas</option>
+    <select id="filter-state">
+      <option value="">Filter by State</option>
     </select>
-    <select id="yearFilter">
-      <option value="">All Years</option>
-      <option value="2025">2025</option>
-      <option value="2026">2026</option>
+    <select id="filter-country">
+      <option value="">Filter by Country</option>
     </select>
-  </div>
-
-  <section id="calendar" class="calendar-grid">
-    <div class="event-card" data-country="El Salvador" data-state="" data-year="2025">
-      <h3>Bitcoin Histórico</h3>
-      <p>📍 San Salvador, El Salvador<br>🏛️ Centro Histórico, San Salvador<br>📅 November 12–13, 2025</p>
-      <p>🎟️ Use Code: <strong>FOMO</strong> for 10% OFF</p>
-      <a href="https://bitcoinhistorico.com/" target="_blank">Get Tickets</a>
-      <a href="https://bitcoinhistorico.com/" target="_blank">More Info</a>
-    </div>
-    <div class="event-card" data-country="UAE" data-state="" data-year="2025">
-      <h3>Bitcoin MENA</h3>
-      <p>📍 Abu Dhabi, UAE<br>🏛️ ADNEC Center Abu Dhabi<br>📅 December 8–9, 2025</p>
-      <p>🎟️ Use Code: <strong>FOMO</strong> for 10% OFF</p>
-      <a href="https://tickets.b.tc/affiliate/fomo/event/bitcoin-mena-2025" target="_blank">Get Tickets</a>
-      <a href="https://mena.b.tc/" target="_blank">More Info</a>
-    </div>
-    <div class="event-card" data-country="United States" data-state="Nevada" data-year="2026">
-      <h3>Strategy World 2026</h3>
-      <p>📍 Las Vegas, Nevada<br>🏛️ Wynn Las Vegas<br>📅 February 23–26, 2026</p>
-      <p>🎟️ Use Code: <strong>FOMO</strong> for 10% OFF</p>
-      <a href="https://www.strategysoftware.com/world26/register" target="_blank">Get Tickets</a>
-      <a href="https://www.strategysoftware.com/world26" target="_blank">More Info</a>
-    </div>
-    <div class="event-card" data-country="United States" data-state="Texas" data-year="2026">
-      <h3>BitBlockBoom</h3>
-      <p>📍 Ft. Worth, Texas<br>🏛️ Hyatt Place Fort Worth Historic Stockyards<br>📅 April 9–12, 2026</p>
-      <p>🎟️ Use Code: <strong>FOMO</strong> for 10% OFF</p>
-      <a href="https://bitblockboom.com/?coupon=fomo" target="_blank">Get Tickets</a>
-      <a href="https://bitblockboom.com/?coupon=fomo" target="_blank">More Info</a>
-    </div>
-    <div class="event-card" data-country="United States" data-state="Nevada" data-year="2026">
-      <h3>Bitcoin 2026</h3>
-      <p>📍 Las Vegas, Nevada<br>🏛️ The Venetian<br>📅 April 27–29, 2026</p>
-      <p>🎟️ Use Code: <strong>FOMO</strong> for 10% OFF</p>
-      <a href="https://tickets.b.tc/affiliate/fomo/event/bitcoin-2026" target="_blank">Get Tickets</a>
-      <a href="https://b.tc/conference/2026" target="_blank">More Info</a>
-    </div>
-    <div class="event-card" data-country="Czech Republic" data-state="" data-year="2026">
-      <h3>BTC Prague</h3>
-      <p>📍 Prague, Czech Republic<br>🏛️ PVA Expo Praha<br>📅 June 11–13, 2026</p>
-      <p>🎟️ Use Code: <strong>FOMO</strong> for 10% OFF</p>
-      <a href="https://btcprague.com/?promo_id=35835&promo_key=fomo" target="_blank">Get Tickets</a>
-      <a href="https://btcprague.com/?promo_id=35835&promo_key=fomo" target="_blank">More Info</a>
-    </div>
   </section>
 
-  <section id="subscribe" class="subscribe-section">
-    <h2>Be First in Line for Bitcoin Discounts</h2>
-    <p>We’ll email you when new events drop and promo codes go live.</p>
-    <input type="email" placeholder="Your email address">
-    <button>Subscribe</button>
-  </section>
-
-  <section class="why-section">
-    <h2>Why Bitcoiners Show Up</h2>
-    <p>Bitcoin is more than code — it’s community. These events are where signal spreads, alliances form, and the future is built. Don't miss your proof of conference.</p>
-  </section>
+  <main class="conference-container" id="conferenceContainer">
+    <!-- Conference cards will be dynamically inserted here -->
+  </main>
 
   <footer>
-    <p>© 2025 ProofOfConference.com</p>
-    <p class="footer-note">Affiliate links may support this site. Thanks for using promo code <strong>FOMO</strong> 🧡</p>
+    © <span id="year"></span> ProofOfConference.com — Built for Bitcoiners ⚡
   </footer>
 
   <script>
-    const searchInput = document.getElementById('searchInput');
-    const countryFilter = document.getElementById('countryFilter');
-    const stateFilter = document.getElementById('stateFilter');
-    const yearFilter = document.getElementById('yearFilter');
-    const cards = document.querySelectorAll('.event-card');
+    document.getElementById("year").textContent = new Date().getFullYear();
 
-    function filterCards() {
-      const search = searchInput.value.toLowerCase();
-      const country = countryFilter.value;
-      const state = stateFilter.value;
-      const year = yearFilter.value;
+    const conferences = [
+      {
+        name: "Bitcoin Atlantis",
+        date: "March 7–9, 2025",
+        venue: "Pavilhão do Conhecimento",
+        state: "",
+        country: "Portugal",
+        link: "https://bitcoinatlantis.com"
+      },
+      {
+        name: "Bitcoin Nashville",
+        date: "May 8–10, 2025",
+        venue: "Music City Center",
+        state: "Tennessee",
+        country: "USA",
+        link: "https://b.tc/conference"
+      },
+      {
+        name: "BTC Prague",
+        date: "June 19–21, 2025",
+        venue: "PVA Expo Praha",
+        state: "",
+        country: "Czech Republic",
+        link: "https://www.btcprague.com"
+      },
+      {
+        name: "Bitcoin Amsterdam",
+        date: "October 9–10, 2025",
+        venue: "Westergas",
+        state: "",
+        country: "Netherlands",
+        link: "https://b.tc/conference/amsterdam"
+      }
+    ];
 
-      cards.forEach(card => {
-        const matchesSearch = card.querySelector('h3').textContent.toLowerCase().includes(search);
-        const matchesCountry = !country || card.dataset.country === country;
-        const matchesState = !state || card.dataset.state === state;
-        const matchesYear = !year || card.dataset.year === year;
+    const container = document.getElementById("conferenceContainer");
 
-        if (matchesSearch && matchesCountry && matchesState && matchesYear) {
-          card.style.display = 'block';
-        } else {
-          card.style.display = 'none';
-        }
+    function renderConferences(list) {
+      container.innerHTML = "";
+      list.forEach(conf => {
+        const card = document.createElement("div");
+        card.className = "conference-card";
+        card.innerHTML = `
+          <div class="conference-title">${conf.name}</div>
+          <div class="conference-details">
+            <div><strong>Date:</strong> ${conf.date}</div>
+            <div><strong>Venue:</strong> ${conf.venue}</div>
+            <div><strong>Country:</strong> ${conf.country}</div>
+            ${conf.state ? `<div><strong>State:</strong> ${conf.state}</div>` : ""}
+            <div style="margin-top:10px;">
+              <a href="${conf.link}" target="_blank" style="color:#f7931a;text-decoration:none;font-weight:600;">View Details →</a>
+            </div>
+          </div>
+        `;
+        container.appendChild(card);
       });
     }
 
-    searchInput.addEventListener('input', filterCards);
-    countryFilter.addEventListener('change', filterCards);
-    stateFilter.addEventListener('change', filterCards);
-    yearFilter.addEventListener('change', filterCards);
+    renderConferences(conferences);
+
+    // Filters
+    const searchInput = document.getElementById("search");
+    const dateFilter = document.getElementById("filter-date");
+    const stateFilter = document.getElementById("filter-state");
+    const countryFilter = document.getElementById("filter-country");
+
+    // Populate filters
+    const dates = [...new Set(conferences.map(c => c.date))];
+    const states = [...new Set(conferences.map(c => c.state).filter(Boolean))];
+    const countries = [...new Set(conferences.map(c => c.country))];
+
+    dates.forEach(d => {
+      const opt = document.createElement("option");
+      opt.value = d;
+      opt.textContent = d;
+      dateFilter.appendChild(opt);
+    });
+
+    states.forEach(s => {
+      const opt = document.createElement("option");
+      opt.value = s;
+      opt.textContent = s;
+      stateFilter.appendChild(opt);
+    });
+
+    countries.forEach(c => {
+      const opt = document.createElement("option");
+      opt.value = c;
+      opt.textContent = c;
+      countryFilter.appendChild(opt);
+    });
+
+    function applyFilters() {
+      const query = searchInput.value.toLowerCase();
+      const date = dateFilter.value;
+      const state = stateFilter.value;
+      const country = countryFilter.value;
+
+      const filtered = conferences.filter(conf =>
+        (conf.name.toLowerCase().includes(query)) &&
+        (!date || conf.date === date) &&
+        (!state || conf.state === state) &&
+        (!country || conf.country === country)
+      );
+
+      renderConferences(filtered);
+    }
+
+    searchInput.addEventListener("input", applyFilters);
+    dateFilter.addEventListener("change", applyFilters);
+    stateFilter.addEventListener("change", applyFilters);
+    countryFilter.addEventListener("change", applyFilters);
   </script>
 </body>
 </html>
