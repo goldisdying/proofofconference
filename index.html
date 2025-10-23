@@ -240,22 +240,28 @@
     const cards = document.querySelectorAll('.event-card');
 
     function filterCards() {
-      const search = searchInput.value.toLowerCase();
+      const search = searchInput.value.toLowerCase().trim();
       const country = countryFilter.value;
       const state = stateFilter.value;
       const year = yearFilter.value;
 
       cards.forEach(card => {
-        const matchesSearch = card.querySelector('h3').textContent.toLowerCase().includes(search);
+        const combinedText = [
+          card.querySelector('h3')?.textContent,
+          card.querySelector('p')?.textContent,
+          card.dataset.country,
+          card.dataset.state,
+          card.dataset.year
+        ].join(' ').toLowerCase();
+
+        const matchesSearch = !search || combinedText.includes(search);
         const matchesCountry = !country || card.dataset.country === country;
         const matchesState = !state || card.dataset.state === state;
         const matchesYear = !year || card.dataset.year === year;
 
-        if (matchesSearch && matchesCountry && matchesState && matchesYear) {
-          card.style.display = 'block';
-        } else {
-          card.style.display = 'none';
-        }
+        card.style.display = (matchesSearch && matchesCountry && matchesState && matchesYear)
+          ? 'block'
+          : 'none';
       });
     }
 
