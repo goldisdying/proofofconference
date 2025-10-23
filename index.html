@@ -9,7 +9,7 @@
   <!-- Favicon -->
   <link rel="icon" type="image/x-icon" href="favicon.ico">
 
-  <!-- Open Graph / Social Preview -->
+  <!-- Open Graph -->
   <meta property="og:title" content="Proof of Conference">
   <meta property="og:description" content="Track every Bitcoin conference worldwide.">
   <meta property="og:image" content="https://proofofconference.com/og-image.png">
@@ -104,6 +104,10 @@
       object-fit: cover;
       border-radius: 6px;
       margin-bottom: 10px;
+      transition: transform 0.2s ease;
+    }
+    .event-image:hover {
+      transform: scale(1.03);
     }
     .subscribe-section {
       text-align: center;
@@ -150,80 +154,9 @@
 
   <div class="filter-bar">
     <input type="text" id="searchInput" placeholder="Search conferences...">
-    <select id="countryFilter">
-      <option value="">All Countries</option>
-      <option value="El Salvador">El Salvador</option>
-      <option value="UAE">UAE</option>
-      <option value="United States">United States</option>
-      <option value="Czech Republic">Czech Republic</option>
-    </select>
-    <select id="stateFilter">
-      <option value="">All States</option>
-      <option value="Nevada">Nevada</option>
-      <option value="Texas">Texas</option>
-    </select>
-    <select id="yearFilter">
-      <option value="">All Years</option>
-      <option value="2025">2025</option>
-      <option value="2026">2026</option>
-    </select>
   </div>
 
-  <section id="calendar" class="calendar-grid">
-    <div class="event-card" data-country="El Salvador" data-state="" data-year="2025">
-      <img src="bitcoin-historico-2025-card.jpg" alt="Bitcoin Histórico" class="event-image">
-      <h3>Bitcoin Histórico</h3>
-      <p>📍 San Salvador, El Salvador<br>🏛️ Centro Histórico, San Salvador<br>📅 November 12–13, 2025</p>
-      <p>🎟️ Use Code: <strong>FOMO</strong> for 10% OFF</p>
-      <a href="https://bitcoinhistorico.com/" target="_blank">Get Tickets</a>
-      <a href="https://bitcoinhistorico.com/" target="_blank">More Info</a>
-    </div>
-
-    <div class="event-card" data-country="UAE" data-state="" data-year="2025">
-      <img src="bitcoin-mena-2025-card.jpg" alt="Bitcoin MENA" class="event-image">
-      <h3>Bitcoin MENA</h3>
-      <p>📍 Abu Dhabi, UAE<br>🏛️ ADNEC Center Abu Dhabi<br>📅 December 8–9, 2025</p>
-      <p>🎟️ Use Code: <strong>FOMO</strong> for 10% OFF</p>
-      <a href="https://tickets.b.tc/affiliate/fomo/event/bitcoin-mena-2025" target="_blank">Get Tickets</a>
-      <a href="https://mena.b.tc/" target="_blank">More Info</a>
-    </div>
-
-    <div class="event-card" data-country="United States" data-state="Nevada" data-year="2026">
-      <img src="strategy-world-2026-card.jpg" alt="Strategy World 2026" class="event-image">
-      <h3>Strategy World 2026</h3>
-      <p>📍 Las Vegas, Nevada<br>🏛️ Wynn Las Vegas<br>📅 February 23–26, 2026</p>
-      <p>🎟️ Use Code: <strong>FOMO</strong> for 10% OFF</p>
-      <a href="https://www.strategysoftware.com/world26/register" target="_blank">Get Tickets</a>
-      <a href="https://www.strategysoftware.com/world26" target="_blank">More Info</a>
-    </div>
-
-    <div class="event-card" data-country="United States" data-state="Texas" data-year="2026">
-      <img src="bitblockboom-2026-card.jpg" alt="BitBlockBoom" class="event-image">
-      <h3>BitBlockBoom</h3>
-      <p>📍 Ft. Worth, Texas<br>🏛️ Hyatt Place Fort Worth Historic Stockyards<br>📅 April 9–12, 2026</p>
-      <p>🎟️ Use Code: <strong>FOMO</strong> for 10% OFF</p>
-      <a href="https://bitblockboom.com/?coupon=fomo" target="_blank">Get Tickets</a>
-      <a href="https://bitblockboom.com/?coupon=fomo" target="_blank">More Info</a>
-    </div>
-
-    <div class="event-card" data-country="United States" data-state="Nevada" data-year="2026">
-      <img src="bitcoin-2026-card.jpg" alt="Bitcoin 2026" class="event-image">
-      <h3>Bitcoin 2026</h3>
-      <p>📍 Las Vegas, Nevada<br>🏛️ The Venetian<br>📅 April 27–29, 2026</p>
-      <p>🎟️ Use Code: <strong>FOMO</strong> for 10% OFF</p>
-      <a href="https://tickets.b.tc/affiliate/fomo/event/bitcoin-2026" target="_blank">Get Tickets</a>
-      <a href="https://b.tc/conference/2026" target="_blank">More Info</a>
-    </div>
-
-    <div class="event-card" data-country="Czech Republic" data-state="" data-year="2026">
-      <img src="btc-prague-2026-card.jpg" alt="BTC Prague" class="event-image">
-      <h3>BTC Prague</h3>
-      <p>📍 Prague, Czech Republic<br>🏛️ PVA Expo Praha<br>📅 June 11–13, 2026</p>
-      <p>🎟️ Use Code: <strong>FOMO</strong> for 10% OFF</p>
-      <a href="https://btcprague.com/?promo_id=35835&promo_key=fomo" target="_blank">Get Tickets</a>
-      <a href="https://btcprague.com/?promo_id=35835&promo_key=fomo" target="_blank">More Info</a>
-    </div>
-  </section>
+  <section id="calendar" class="calendar-grid"></section>
 
   <section id="subscribe" class="subscribe-section">
     <h2>Be First in Line for Bitcoin Discounts</h2>
@@ -242,38 +175,59 @@
     <p class="footer-note">Affiliate links may support this site. Thanks for using promo code <strong>FOMO</strong> 🧡</p>
   </footer>
 
+  <!-- PapaParse -->
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
   <script>
+    const calendar = document.getElementById('calendar');
     const searchInput = document.getElementById('searchInput');
-    const countryFilter = document.getElementById('countryFilter');
-    const stateFilter = document.getElementById('stateFilter');
-    const yearFilter = document.getElementById('yearFilter');
-    const cards = document.querySelectorAll('.event-card');
 
-    function filterCards() {
-      const search = searchInput.value.toLowerCase();
-      const country = countryFilter.value;
-      const state = stateFilter.value;
-      const year = yearFilter.value;
+    function createCard(event) {
+      const imageFile = event.Image ? event.Image.trim() : 'placeholder.jpg';
+      const card = document.createElement('div');
+      card.classList.add('event-card');
+      card.innerHTML = `
+        <a href="${event['Ticket Link']}" target="_blank">
+          <img src="${imageFile}" alt="${event.Conference}" class="event-image">
+        </a>
+        <h3>${event.Conference}</h3>
+        <p>📍 ${event.Location}<br>🏛️ ${event.Venue}<br>📅 ${event['Date Range']}</p>
+        <p>🎟️ Use Code: <strong>${event.Discount || 'FOMO'}</strong></p>
+        <a href="${event['Ticket Link']}" target="_blank">Get Tickets</a>
+        <a href="${event['Main Conference Link']}" target="_blank">More Info</a>
+      `;
+      return card;
+    }
 
-      cards.forEach(card => {
-        const text = card.textContent.toLowerCase();
-        const matchesSearch = text.includes(search);
-        const matchesCountry = !country || card.dataset.country === country;
-        const matchesState = !state || card.dataset.state === state;
-        const matchesYear = !year || card.dataset.year === year;
-
-        if (matchesSearch && matchesCountry && matchesState && matchesYear) {
-          card.style.display = 'block';
-        } else {
-          card.style.display = 'none';
+    function renderEvents(data) {
+      calendar.innerHTML = '';
+      data.forEach(event => {
+        if (event.Conference && (!event['Not Active'] || event['Not Active'].toLowerCase() !== 'x')) {
+          calendar.appendChild(createCard(event));
         }
       });
     }
 
-    searchInput.addEventListener('input', filterCards);
-    countryFilter.addEventListener('change', filterCards);
-    stateFilter.addEventListener('change', filterCards);
-    yearFilter.addEventListener('change', filterCards);
+    fetch("Bitcoin Conference List - Sheet1.csv")
+      .then(response => response.text())
+      .then(csvText => {
+        Papa.parse(csvText, {
+          header: true,
+          complete: function(results) {
+            const events = results.data.filter(e => e.Conference);
+            renderEvents(events);
+
+            // Search functionality
+            searchInput.addEventListener('input', () => {
+              const term = searchInput.value.toLowerCase();
+              const filtered = events.filter(event => 
+                (!event['Not Active'] || event['Not Active'].toLowerCase() !== 'x') &&
+                Object.values(event).some(val => val && val.toLowerCase().includes(term))
+              );
+              renderEvents(filtered);
+            });
+          }
+        });
+      });
   </script>
 </body>
 </html>
