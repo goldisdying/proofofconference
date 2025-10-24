@@ -1,11 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Proof of Conference</title>
-  <meta name="description" content="Track every Bitcoin conference worldwide. View dates, venues, and promo codes all in one place.">
-
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -91,13 +89,14 @@
     }
     .event-image {
       width: 100%;
-      height: 180px;
-      object-fit: cover;
+      height: auto;
+      object-fit: contain;
       border-radius: 6px;
       border: 3px solid #f7931a;
       display: block;
       margin-bottom: 10px;
       background: #000;
+      max-width: 100%;
     }
     .subscribe-section {
       text-align: center;
@@ -130,6 +129,28 @@
       color: #aaa;
       margin-top: 10px;
     }
+
+    /* Mobile Optimizations */
+    @media (max-width: 600px) {
+      .event-card {
+        width: 90%;
+        margin: 10px auto;
+        padding: 15px;
+      }
+      .event-image {
+        border-width: 2px;
+      }
+      .cta-buttons a {
+        padding: 10px 16px;
+        font-size: 0.95rem;
+      }
+      header h1 {
+        font-size: 1.8rem;
+      }
+      .subheadline {
+        font-size: 1rem;
+      }
+    }
   </style>
 </head>
 <body>
@@ -146,16 +167,9 @@
     <input type="text" id="searchInput" placeholder="Search conferences...">
     <select id="countryFilter">
       <option value="">All Countries</option>
-      <option value="El Salvador">El Salvador</option>
-      <option value="UAE">UAE</option>
-      <option value="United States">United States</option>
-      <option value="Czech Republic">Czech Republic</option>
-      <option value="Netherlands">Netherlands</option>
     </select>
     <select id="stateFilter">
       <option value="">All States</option>
-      <option value="Nevada">Nevada</option>
-      <option value="Texas">Texas</option>
     </select>
     <select id="yearFilter">
       <option value="">All Years</option>
@@ -184,36 +198,17 @@
   </footer>
 
   <script>
-    const csvUrl = "https://raw.githubusercontent.com/goldisdying/proofofconference/main/Bitcoin%20Conference%20List%20-%20Sheet1.csv";
-    const imageBase = "https://raw.githubusercontent.com/goldisdying/proofofconference/main/";
-
     async function loadCSV() {
-      const response = await fetch(csvUrl);
+      const response = await fetch("https://raw.githubusercontent.com/goldisdying/proofofconference/main/Bitcoin%20Conference%20List%20-%20Sheet1.csv");
       const text = await response.text();
-      const rows = parseCSV(text);
-      const headers = rows[0];
+      const rows = text.split("\n").map(r => r.split(","));
+      const headers = rows[0].map(h => h.trim());
       const data = rows.slice(1).map(r => {
         const obj = {};
-        headers.forEach((h, i) => obj[h.trim()] = (r[i] || "").replace(/^"|"$/g, "").trim());
+        headers.forEach((h, i) => (obj[h] = (r[i] || "").trim()));
         return obj;
       });
       renderCards(data);
-    }
-
-    function parseCSV(str) {
-      const rows = [];
-      let inQuotes = false, value = "", row = [];
-      for (let char of str) {
-        if (char === '"' && !inQuotes) inQuotes = true;
-        else if (char === '"' && inQuotes) inQuotes = false;
-        else if (char === ',' && !inQuotes) { row.push(value); value = ""; }
-        else if ((char === '\n' || char === '\r') && !inQuotes) {
-          if (value || row.length) { row.push(value); rows.push(row); row = []; value = ""; }
-        } else value += char;
-      }
-      if (value || row.length) row.push(value);
-      if (row.length) rows.push(row);
-      return rows.filter(r => r.length > 1);
     }
 
     function renderCards(data) {
@@ -221,46 +216,32 @@
       container.innerHTML = "";
 
       data.forEach(event => {
-        if (event["Not Active"]?.toUpperCase() === "X") return;
+        if (event["Not Active"]?.toLowerCase() === "x") return;
 
-        const image = event["Image"] ? `${imageBase}${event["Image"]}` : "";
-        const discount = event["Discount"];
-        const year = (event["Date Range"].match(/20\d{2}/) || [""])[0];
+        const imageFile = event["Image"]?.trim();
+        const imgTag = imageFile
+          ? `<a href="${event["Ticket Link"]}" target="_blank"><img src="https://raw.githubusercontent.com/goldisdying/proofofconference/main/${imageFile}" class="event-image" alt="${event["Conference"]}"></a>`
+          : "";
+
+        const discountLine = event["Discount"]
+          ? `<p>🎟️ ${event["Discount"]}</p>`
+          : "";
+
+        const year = event["Date Range"]?.match(/20\d{2}/)?.[0] || "";
+
         const card = document.createElement("div");
-        card.className = "event-card";
-        card.dataset.year = year;
-
+        card.classList.add("event-card");
+        card.setAttribute("data-year", year);
         card.innerHTML = `
-          ${image ? `<img src="${image}" alt="${event["Conference"]}" class="event-image">` : ""}
+          ${imgTag}
           <h3>${event["Conference"]}</h3>
           <p>📍 ${event["Location"]}<br>🏛️ ${event["Venue"]}<br>📅 ${event["Date Range"]}</p>
-          ${discount ? `<p>🎟️ ${discount}</p>` : ""}
+          ${discountLine}
           <a href="${event["Ticket Link"]}" target="_blank">Get Tickets</a>
           <a href="${event["Main Conference Link"]}" target="_blank">More Info</a>
         `;
         container.appendChild(card);
       });
-      attachFilters();
-    }
-
-    function attachFilters() {
-      const searchInput = document.getElementById("searchInput");
-      const yearFilter = document.getElementById("yearFilter");
-      const cards = document.querySelectorAll(".event-card");
-
-      function filterCards() {
-        const search = searchInput.value.toLowerCase();
-        const year = yearFilter.value;
-        cards.forEach(card => {
-          const text = card.textContent.toLowerCase();
-          const matchSearch = text.includes(search);
-          const matchYear = !year || card.dataset.year === year;
-          card.style.display = matchSearch && matchYear ? "block" : "none";
-        });
-      }
-
-      searchInput.addEventListener("input", filterCards);
-      yearFilter.addEventListener("change", filterCards);
     }
 
     loadCSV();
