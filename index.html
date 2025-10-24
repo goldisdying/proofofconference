@@ -4,6 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Proof of Conference</title>
+  <meta name="description" content="Track every Bitcoin conference worldwide. View dates, venues, and promo codes all in one place.">
+
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -12,27 +14,22 @@
       margin: 0;
       padding: 0;
     }
-
     header, footer {
       text-align: center;
       padding: 30px 20px;
       background-color: #111;
     }
-
     h1 {
       font-size: 2.5rem;
       margin-bottom: 10px;
     }
-
     .subheadline {
       font-size: 1.2rem;
       color: #fff;
     }
-
     .cta-buttons {
       margin-top: 20px;
     }
-
     .cta-buttons a {
       background-color: #f7931a;
       color: #000;
@@ -43,7 +40,6 @@
       border-radius: 5px;
       display: inline-block;
     }
-
     .filter-bar {
       display: flex;
       flex-wrap: wrap;
@@ -52,14 +48,12 @@
       background-color: #111;
       padding: 20px;
     }
-
     .filter-bar input, .filter-bar select {
       padding: 10px;
       border-radius: 5px;
       border: none;
       width: 200px;
     }
-
     .calendar-grid {
       display: flex;
       flex-wrap: wrap;
@@ -67,7 +61,6 @@
       padding: 40px 20px;
       background-color: #111;
     }
-
     .event-card {
       background-color: #1a1a1a;
       border: 1px solid #333;
@@ -77,18 +70,15 @@
       width: 320px;
       color: #f7931a;
     }
-
     .event-card h3 {
       margin-top: 10px;
       color: #f7931a;
     }
-
     .event-card p {
       color: #fff;
       line-height: 1.5;
       font-size: 0.95rem;
     }
-
     .event-card a {
       display: inline-block;
       margin-top: 10px;
@@ -99,25 +89,21 @@
       border-radius: 4px;
       font-weight: bold;
     }
-
     .event-image {
       width: 100%;
-      height: auto;
-      object-fit: contain;
+      height: 180px;
+      object-fit: cover;
       border-radius: 6px;
       border: 3px solid #f7931a;
       display: block;
       margin-bottom: 10px;
       background: #000;
-      max-width: 100%;
     }
-
     .subscribe-section {
       text-align: center;
       padding: 50px 20px;
       background-color: #000;
     }
-
     .subscribe-section input {
       padding: 10px;
       width: 250px;
@@ -125,7 +111,6 @@
       border-radius: 4px;
       margin-right: 10px;
     }
-
     .subscribe-section button {
       padding: 10px 20px;
       background-color: #f7931a;
@@ -134,35 +119,16 @@
       border-radius: 4px;
       font-weight: bold;
     }
-
-    footer p {
-      margin: 8px 0;
+    .why-section {
+      padding: 50px 20px;
+      background-color: #111;
+      color: #fff;
+      text-align: center;
     }
-
-    /* Mobile Optimizations */
-    @media (max-width: 600px) {
-      .event-card {
-        width: 90%;
-        margin: 10px auto;
-        padding: 15px;
-      }
-
-      .event-image {
-        border-width: 2px;
-      }
-
-      .cta-buttons a {
-        padding: 10px 16px;
-        font-size: 0.95rem;
-      }
-
-      header h1 {
-        font-size: 1.8rem;
-      }
-
-      .subheadline {
-        font-size: 1rem;
-      }
+    .footer-note {
+      font-size: 0.9rem;
+      color: #aaa;
+      margin-top: 10px;
     }
   </style>
 </head>
@@ -177,12 +143,19 @@
   </header>
 
   <div class="filter-bar">
-    <input type="text" id="searchInput" placeholder="Search conferences..." />
+    <input type="text" id="searchInput" placeholder="Search conferences...">
     <select id="countryFilter">
       <option value="">All Countries</option>
+      <option value="El Salvador">El Salvador</option>
+      <option value="UAE">UAE</option>
+      <option value="United States">United States</option>
+      <option value="Czech Republic">Czech Republic</option>
+      <option value="Netherlands">Netherlands</option>
     </select>
     <select id="stateFilter">
       <option value="">All States</option>
+      <option value="Nevada">Nevada</option>
+      <option value="Texas">Texas</option>
     </select>
     <select id="yearFilter">
       <option value="">All Years</option>
@@ -196,27 +169,51 @@
   <section id="subscribe" class="subscribe-section">
     <h2>Be First in Line for Bitcoin Discounts</h2>
     <p>We’ll email you when new events drop and promo codes go live.</p>
-    <input type="email" placeholder="Your email address" />
+    <input type="email" placeholder="Your email address">
     <button>Subscribe</button>
+  </section>
+
+  <section class="why-section">
+    <h2>Why Bitcoiners Show Up</h2>
+    <p>Bitcoin is more than code — it’s community. These events are where signal spreads, alliances form, and the future is built. Don't miss your proof of conference.</p>
   </section>
 
   <footer>
     <p>© 2025 ProofOfConference.com</p>
-    <p style="color:#aaa;font-size:0.9rem;">Affiliate links may support this site. Thanks for using promo code <strong>FOMO</strong> 🧡</p>
+    <p class="footer-note">Affiliate links may support this site. Thanks for using promo code <strong>FOMO</strong> 🧡</p>
   </footer>
 
   <script>
+    const csvUrl = "https://raw.githubusercontent.com/goldisdying/proofofconference/main/Bitcoin%20Conference%20List%20-%20Sheet1.csv";
+    const imageBase = "https://raw.githubusercontent.com/goldisdying/proofofconference/main/";
+
     async function loadCSV() {
-      const response = await fetch("https://raw.githubusercontent.com/goldisdying/proofofconference/main/Bitcoin%20Conference%20List%20-%20Sheet1.csv");
+      const response = await fetch(csvUrl);
       const text = await response.text();
-      const rows = text.split("\n").map(r => r.split(","));
-      const headers = rows[0].map(h => h.trim());
+      const rows = parseCSV(text);
+      const headers = rows[0];
       const data = rows.slice(1).map(r => {
         const obj = {};
-        headers.forEach((h, i) => (obj[h] = (r[i] || "").trim()));
+        headers.forEach((h, i) => obj[h.trim()] = (r[i] || "").replace(/^"|"$/g, "").trim());
         return obj;
       });
       renderCards(data);
+    }
+
+    function parseCSV(str) {
+      const rows = [];
+      let inQuotes = false, value = "", row = [];
+      for (let char of str) {
+        if (char === '"' && !inQuotes) inQuotes = true;
+        else if (char === '"' && inQuotes) inQuotes = false;
+        else if (char === ',' && !inQuotes) { row.push(value); value = ""; }
+        else if ((char === '\n' || char === '\r') && !inQuotes) {
+          if (value || row.length) { row.push(value); rows.push(row); row = []; value = ""; }
+        } else value += char;
+      }
+      if (value || row.length) row.push(value);
+      if (row.length) rows.push(row);
+      return rows.filter(r => r.length > 1);
     }
 
     function renderCards(data) {
@@ -224,30 +221,46 @@
       container.innerHTML = "";
 
       data.forEach(event => {
-        if (event["Not Active"]?.toLowerCase() === "x") return;
+        if (event["Not Active"]?.toUpperCase() === "X") return;
 
-        const imageFile = event["Image"]?.trim();
-        const imageURL = `https://raw.githubusercontent.com/goldisdying/proofofconference/main/${encodeURIComponent(imageFile)}`;
-        const imgTag = imageFile ? 
-          `<a href="${event["Ticket Link"]}" target="_blank">
-            <img src="${imageURL}" class="event-image" alt="${event["Conference"]}">
-          </a>` : "";
-
-        const discountLine = event["Discount"]
-          ? `<p>🎟️ ${event["Discount"]}</p>` : "";
-
+        const image = event["Image"] ? `${imageBase}${event["Image"]}` : "";
+        const discount = event["Discount"];
+        const year = (event["Date Range"].match(/20\d{2}/) || [""])[0];
         const card = document.createElement("div");
-        card.classList.add("event-card");
+        card.className = "event-card";
+        card.dataset.year = year;
+
         card.innerHTML = `
-          ${imgTag}
+          ${image ? `<img src="${image}" alt="${event["Conference"]}" class="event-image">` : ""}
           <h3>${event["Conference"]}</h3>
           <p>📍 ${event["Location"]}<br>🏛️ ${event["Venue"]}<br>📅 ${event["Date Range"]}</p>
-          ${discountLine}
+          ${discount ? `<p>🎟️ ${discount}</p>` : ""}
           <a href="${event["Ticket Link"]}" target="_blank">Get Tickets</a>
           <a href="${event["Main Conference Link"]}" target="_blank">More Info</a>
         `;
         container.appendChild(card);
       });
+      attachFilters();
+    }
+
+    function attachFilters() {
+      const searchInput = document.getElementById("searchInput");
+      const yearFilter = document.getElementById("yearFilter");
+      const cards = document.querySelectorAll(".event-card");
+
+      function filterCards() {
+        const search = searchInput.value.toLowerCase();
+        const year = yearFilter.value;
+        cards.forEach(card => {
+          const text = card.textContent.toLowerCase();
+          const matchSearch = text.includes(search);
+          const matchYear = !year || card.dataset.year === year;
+          card.style.display = matchSearch && matchYear ? "block" : "none";
+        });
+      }
+
+      searchInput.addEventListener("input", filterCards);
+      yearFilter.addEventListener("change", filterCards);
     }
 
     loadCSV();
