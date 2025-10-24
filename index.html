@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Proof of Conference</title>
   <meta name="description" content="Track every Bitcoin conference worldwide. View dates, venues, and promo codes all in one place.">
 
@@ -144,6 +144,19 @@
 
   <div class="filter-bar">
     <input type="text" id="searchInput" placeholder="Search conferences...">
+    <select id="countryFilter">
+      <option value="">All Countries</option>
+      <option value="El Salvador">El Salvador</option>
+      <option value="UAE">UAE</option>
+      <option value="United States">United States</option>
+      <option value="Czech Republic">Czech Republic</option>
+      <option value="Netherlands">Netherlands</option>
+    </select>
+    <select id="stateFilter">
+      <option value="">All States</option>
+      <option value="Nevada">Nevada</option>
+      <option value="Texas">Texas</option>
+    </select>
     <select id="yearFilter">
       <option value="">All Years</option>
       <option value="2025">2025</option>
@@ -175,22 +188,32 @@
     const imageBase = "https://raw.githubusercontent.com/goldisdying/proofofconference/main/";
 
     async function loadCSV() {
-      try {
-        const response = await fetch(csvUrl);
-        const text = await response.text();
+      const response = await fetch(csvUrl);
+      const text = await response.text();
+      const rows = parseCSV(text);
+      const headers = rows[0];
+      const data = rows.slice(1).map(r => {
+        const obj = {};
+        headers.forEach((h, i) => obj[h.trim()] = (r[i] || "").replace(/^"|"$/g, "").trim());
+        return obj;
+      });
+      renderCards(data);
+    }
 
-        const rows = text.split(/\r?\n/).map(r => r.split(","));
-        const headers = rows[0].map(h => h.trim());
-        const data = rows.slice(1).map(r => {
-          const obj = {};
-          headers.forEach((h, i) => (obj[h] = (r[i] || "").trim()));
-          return obj;
-        });
-
-        renderCards(data);
-      } catch (err) {
-        console.error("Failed to load CSV:", err);
+    function parseCSV(str) {
+      const rows = [];
+      let inQuotes = false, value = "", row = [];
+      for (let char of str) {
+        if (char === '"' && !inQuotes) inQuotes = true;
+        else if (char === '"' && inQuotes) inQuotes = false;
+        else if (char === ',' && !inQuotes) { row.push(value); value = ""; }
+        else if ((char === '\n' || char === '\r') && !inQuotes) {
+          if (value || row.length) { row.push(value); rows.push(row); row = []; value = ""; }
+        } else value += char;
       }
+      if (value || row.length) row.push(value);
+      if (row.length) rows.push(row);
+      return rows.filter(r => r.length > 1);
     }
 
     function renderCards(data) {
@@ -202,12 +225,10 @@
 
         const image = event["Image"] ? `${imageBase}${event["Image"]}` : "";
         const discount = event["Discount"];
-        const yearMatch = event["Date Range"]?.match(/20\d{2}/);
-        const year = yearMatch ? yearMatch[0] : "";
-
+        const year = (event["Date Range"].match(/20\d{2}/) || [""])[0];
         const card = document.createElement("div");
         card.className = "event-card";
-        card.setAttribute("data-year", year);
+        card.dataset.year = year;
 
         card.innerHTML = `
           ${image ? `<img src="${image}" alt="${event["Conference"]}" class="event-image">` : ""}
@@ -217,10 +238,8 @@
           <a href="${event["Ticket Link"]}" target="_blank">Get Tickets</a>
           <a href="${event["Main Conference Link"]}" target="_blank">More Info</a>
         `;
-
         container.appendChild(card);
       });
-
       attachFilters();
     }
 
@@ -234,9 +253,9 @@
         const year = yearFilter.value;
         cards.forEach(card => {
           const text = card.textContent.toLowerCase();
-          const matchesSearch = text.includes(search);
-          const matchesYear = !year || card.dataset.year === year;
-          card.style.display = matchesSearch && matchesYear ? "block" : "none";
+          const matchSearch = text.includes(search);
+          const matchYear = !year || card.dataset.year === year;
+          card.style.display = matchSearch && matchYear ? "block" : "none";
         });
       }
 
