@@ -4,204 +4,266 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Proof of Conference</title>
-  <link rel="icon" href="favicon.ico" />
+  <meta name="description" content="Track every Bitcoin conference worldwide. View dates, venues, and promo codes all in one place.">
+
   <style>
     body {
-      background-color: #111;
-      color: #fff;
       font-family: Arial, sans-serif;
+      background-color: #000;
+      color: #f7931a;
       margin: 0;
+      padding: 0;
+    }
+    header, footer {
       text-align: center;
+      padding: 30px 20px;
+      background-color: #111;
     }
     h1 {
-      color: #ff9900;
       font-size: 2.5rem;
-      margin-top: 40px;
+      margin-bottom: 10px;
     }
-    h2 {
+    .subheadline {
       font-size: 1.2rem;
-      color: #ccc;
+      color: #fff;
     }
-    .button-container {
-      margin: 20px;
+    .cta-buttons {
+      margin-top: 20px;
     }
-    button {
-      background-color: #ff9900;
+    .cta-buttons a {
+      background-color: #f7931a;
       color: #000;
-      border: none;
-      padding: 10px 20px;
+      padding: 12px 20px;
       margin: 5px;
-      font-size: 1rem;
-      cursor: pointer;
-      border-radius: 5px;
+      text-decoration: none;
       font-weight: bold;
+      border-radius: 5px;
+      display: inline-block;
     }
-    button:hover {
-      background-color: #e68a00;
-    }
-    .search-container {
-      margin: 20px auto;
+    .filter-bar {
       display: flex;
+      flex-wrap: wrap;
       justify-content: center;
       gap: 10px;
+      background-color: #111;
+      padding: 20px;
     }
-    .search-container input, .search-container select {
+    .filter-bar input, .filter-bar select {
       padding: 10px;
       border-radius: 5px;
       border: none;
-      font-size: 1rem;
+      width: 200px;
     }
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-      gap: 20px;
-      padding: 20px;
-      max-width: 1200px;
-      margin: 0 auto;
+    .calendar-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      padding: 40px 20px;
+      background-color: #111;
     }
-    .card {
+    .event-card {
       background-color: #1a1a1a;
-      border-radius: 10px;
-      overflow: hidden;
-      box-shadow: 0 0 10px #000;
-      transition: transform 0.2s;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
+      border: 1px solid #333;
+      border-radius: 8px;
+      padding: 20px;
+      margin: 15px;
+      width: 320px;
+      color: #f7931a;
     }
-    .card:hover {
-      transform: scale(1.02);
+    .event-card h3 {
+      margin-top: 10px;
+      color: #f7931a;
     }
-    .card img {
-      width: 100%;
-      height: 200px;
-      object-fit: cover;
-      display: block;
+    .event-card p {
+      color: #fff;
+      line-height: 1.5;
+      font-size: 0.95rem;
     }
-    .card-content {
-      padding: 15px;
-      text-align: left;
-    }
-    .card h3 {
-      color: #ff9900;
-      margin-bottom: 10px;
-      font-size: 1.2rem;
-    }
-    .card p {
-      margin: 5px 0;
-      line-height: 1.4;
-    }
-    .btn-row {
-      display: flex;
-      gap: 10px;
-      padding: 15px;
-    }
-    .btn-row a {
-      flex: 1;
-      text-align: center;
-      background-color: #ff9900;
+    .event-card a {
+      display: inline-block;
+      margin-top: 10px;
+      background: #f7931a;
       color: #000;
+      padding: 8px 12px;
       text-decoration: none;
-      padding: 10px 0;
-      border-radius: 5px;
+      border-radius: 4px;
       font-weight: bold;
     }
-    .btn-row a:hover {
-      background-color: #e68a00;
+    .event-image {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      border-radius: 6px;
+      border: 3px solid #f7931a;
+      display: block;
+      margin-bottom: 10px;
+      background: #000;
     }
     .subscribe-section {
+      text-align: center;
+      padding: 50px 20px;
       background-color: #000;
-      padding: 30px 20px;
-      margin-top: 30px;
-    }
-    .subscribe-section h3 {
-      color: #ff9900;
-      margin-bottom: 10px;
     }
     .subscribe-section input {
       padding: 10px;
       width: 250px;
-      border-radius: 5px;
       border: none;
+      border-radius: 4px;
       margin-right: 10px;
+    }
+    .subscribe-section button {
+      padding: 10px 20px;
+      background-color: #f7931a;
+      color: #000;
+      border: none;
+      border-radius: 4px;
+      font-weight: bold;
+    }
+    .why-section {
+      padding: 50px 20px;
+      background-color: #111;
+      color: #fff;
+      text-align: center;
+    }
+    .footer-note {
+      font-size: 0.9rem;
+      color: #aaa;
+      margin-top: 10px;
     }
   </style>
 </head>
 <body>
-  <h1>Proof of Conference</h1>
-  <h2>Track Every Bitcoin Conference</h2>
+  <header>
+    <h1>Proof of Conference</h1>
+    <div class="subheadline">Track Every Bitcoin Conference</div>
+    <div class="cta-buttons">
+      <a href="#calendar">View All Upcoming Conferences</a>
+      <a href="#subscribe">Subscribe for Discount Alerts</a>
+    </div>
+  </header>
 
-  <div class="button-container">
-    <button>View All Upcoming Conferences</button>
-    <button>Subscribe for Discount Alerts</button>
-  </div>
-
-  <div class="search-container">
-    <input type="text" id="search" placeholder="Search conferences..." />
+  <div class="filter-bar">
+    <input type="text" id="searchInput" placeholder="Search conferences...">
+    <select id="countryFilter">
+      <option value="">All Countries</option>
+      <option value="El Salvador">El Salvador</option>
+      <option value="UAE">UAE</option>
+      <option value="United States">United States</option>
+      <option value="Czech Republic">Czech Republic</option>
+      <option value="Netherlands">Netherlands</option>
+    </select>
+    <select id="stateFilter">
+      <option value="">All States</option>
+      <option value="Nevada">Nevada</option>
+      <option value="Texas">Texas</option>
+    </select>
     <select id="yearFilter">
       <option value="">All Years</option>
+      <option value="2025">2025</option>
+      <option value="2026">2026</option>
     </select>
   </div>
 
-  <div id="conferenceGrid" class="grid"></div>
+  <section id="calendar" class="calendar-grid"></section>
 
-  <div class="subscribe-section">
-    <h3>Be First in Line for Bitcoin Discounts</h3>
+  <section id="subscribe" class="subscribe-section">
+    <h2>Be First in Line for Bitcoin Discounts</h2>
     <p>We’ll email you when new events drop and promo codes go live.</p>
-    <input type="email" placeholder="Your email address" />
+    <input type="email" placeholder="Your email address">
     <button>Subscribe</button>
-  </div>
+  </section>
+
+  <section class="why-section">
+    <h2>Why Bitcoiners Show Up</h2>
+    <p>Bitcoin is more than code — it’s community. These events are where signal spreads, alliances form, and the future is built. Don't miss your proof of conference.</p>
+  </section>
+
+  <footer>
+    <p>© 2025 ProofOfConference.com</p>
+    <p class="footer-note">Affiliate links may support this site. Thanks for using promo code <strong>FOMO</strong> 🧡</p>
+  </footer>
 
   <script>
     const csvUrl = "https://raw.githubusercontent.com/goldisdying/proofofconference/main/Bitcoin%20Conference%20List%20-%20Sheet1.csv";
+    const imageBase = "https://raw.githubusercontent.com/goldisdying/proofofconference/main/";
 
-    async function loadConferences() {
+    async function loadCSV() {
       const response = await fetch(csvUrl);
-      if (!response.ok) {
-        console.error("Failed to load CSV file.");
-        return;
-      }
-      const csvText = await response.text();
-      const rows = csvText.trim().split(/\r?\n/).map(r => r.split(","));
-      const headers = rows[0].map(h => h.trim());
-      const data = rows.slice(1).map(row => {
+      const text = await response.text();
+      const rows = parseCSV(text);
+      const headers = rows[0];
+      const data = rows.slice(1).map(r => {
         const obj = {};
-        headers.forEach((h, i) => (obj[h] = row[i] ? row[i].trim() : ""));
+        headers.forEach((h, i) => obj[h.trim()] = (r[i] || "").replace(/^"|"$/g, "").trim());
         return obj;
       });
-
-      const grid = document.getElementById("conferenceGrid");
-      grid.innerHTML = "";
-
-      data.forEach(conf => {
-        if (conf["Not Active"] && conf["Not Active"].toUpperCase() === "X") return;
-
-        const card = document.createElement("div");
-        card.className = "card";
-
-        const imgUrl = conf["Image"]
-          ? `https://raw.githubusercontent.com/goldisdying/proofofconference/main/${conf["Image"]}`
-          : "preview-card.jpg";
-
-        card.innerHTML = `
-          <img src="${imgUrl}" alt="${conf["Conference"]}" />
-          <div class="card-content">
-            <h3>${conf["Conference"]}</h3>
-            <p>📍 ${conf["Location"]}</p>
-            <p>🏛️ ${conf["Venue"]}</p>
-            <p>📅 ${conf["Date Range"]}</p>
-            ${conf["Discount"] ? `<p>💳 ${conf["Discount"]}</p>` : ""}
-          </div>
-          <div class="btn-row">
-            <a href="${conf["Ticket Link"]}" target="_blank">Get Tickets</a>
-            <a href="${conf["Main Conference Link"]}" target="_blank">More Info</a>
-          </div>
-        `;
-        grid.appendChild(card);
-      });
+      renderCards(data);
     }
 
-    loadConferences();
+    function parseCSV(str) {
+      const rows = [];
+      let inQuotes = false, value = "", row = [];
+      for (let char of str) {
+        if (char === '"' && !inQuotes) inQuotes = true;
+        else if (char === '"' && inQuotes) inQuotes = false;
+        else if (char === ',' && !inQuotes) { row.push(value); value = ""; }
+        else if ((char === '\n' || char === '\r') && !inQuotes) {
+          if (value || row.length) { row.push(value); rows.push(row); row = []; value = ""; }
+        } else value += char;
+      }
+      if (value || row.length) row.push(value);
+      if (row.length) rows.push(row);
+      return rows.filter(r => r.length > 1);
+    }
+
+    function renderCards(data) {
+      const container = document.getElementById("calendar");
+      container.innerHTML = "";
+
+      data.forEach(event => {
+        if (event["Not Active"]?.toUpperCase() === "X") return;
+
+        const image = event["Image"] ? `${imageBase}${event["Image"]}` : "";
+        const discount = event["Discount"];
+        const year = (event["Date Range"].match(/20\d{2}/) || [""])[0];
+        const card = document.createElement("div");
+        card.className = "event-card";
+        card.dataset.year = year;
+
+        card.innerHTML = `
+          ${image ? `<img src="${image}" alt="${event["Conference"]}" class="event-image">` : ""}
+          <h3>${event["Conference"]}</h3>
+          <p>📍 ${event["Location"]}<br>🏛️ ${event["Venue"]}<br>📅 ${event["Date Range"]}</p>
+          ${discount ? `<p>🎟️ ${discount}</p>` : ""}
+          <a href="${event["Ticket Link"]}" target="_blank">Get Tickets</a>
+          <a href="${event["Main Conference Link"]}" target="_blank">More Info</a>
+        `;
+        container.appendChild(card);
+      });
+      attachFilters();
+    }
+
+    function attachFilters() {
+      const searchInput = document.getElementById("searchInput");
+      const yearFilter = document.getElementById("yearFilter");
+      const cards = document.querySelectorAll(".event-card");
+
+      function filterCards() {
+        const search = searchInput.value.toLowerCase();
+        const year = yearFilter.value;
+        cards.forEach(card => {
+          const text = card.textContent.toLowerCase();
+          const matchSearch = text.includes(search);
+          const matchYear = !year || card.dataset.year === year;
+          card.style.display = matchSearch && matchYear ? "block" : "none";
+        });
+      }
+
+      searchInput.addEventListener("input", filterCards);
+      yearFilter.addEventListener("change", filterCards);
+    }
+
+    loadCSV();
   </script>
 </body>
 </html>
