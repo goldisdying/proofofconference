@@ -5,67 +5,56 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Proof of Conference</title>
   <meta name="description" content="Track every Bitcoin conference worldwide. View dates, venues, and promo codes all in one place.">
-  <link rel="icon" href="favicon.ico">
+  <link rel="icon" type="image/png" href="favicon.png">
 
   <style>
     body {
       font-family: Arial, sans-serif;
       background-color: #000;
-      color: #fff;
+      color: #f7931a;
       margin: 0;
       padding: 0;
     }
-
-    header {
+    header, footer {
       text-align: center;
-      padding: 40px 20px 10px;
-      background-color: #000;
+      padding: 30px 20px;
+      background-color: #111;
     }
-
     h1 {
-      color: #f7931a;
       font-size: 2.5rem;
-      margin: 0;
+      margin-bottom: 10px;
     }
-
     .subheadline {
-      color: #fff;
       font-size: 1.2rem;
-      margin-top: 8px;
+      color: #fff;
     }
-
     .cta-buttons {
-      margin: 20px 0;
+      margin-top: 20px;
     }
-
-    .cta-buttons button {
+    .cta-buttons a {
       background-color: #f7931a;
       color: #000;
-      border: none;
-      padding: 12px 25px;
-      font-size: 1rem;
-      font-weight: bold;
-      border-radius: 6px;
+      padding: 12px 20px;
       margin: 5px;
-      cursor: pointer;
+      text-decoration: none;
+      font-weight: bold;
+      border-radius: 5px;
+      display: inline-block;
     }
-
     .filter-bar {
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
       gap: 10px;
-      padding: 20px;
       background-color: #111;
+      padding: 20px;
     }
-
     .filter-bar input, .filter-bar select {
       padding: 10px;
       border-radius: 5px;
       border: none;
-      width: 200px;
+      width: 180px;
     }
-
     .calendar-grid {
       display: flex;
       flex-wrap: wrap;
@@ -73,110 +62,96 @@
       padding: 40px 20px;
       background-color: #111;
     }
-
     .event-card {
       background-color: #1a1a1a;
-      border-radius: 12px;
-      border: 2px solid #333;
-      margin: 15px;
-      padding: 20px;
-      width: 320px;
-      text-align: left;
-      color: #fff;
-      box-shadow: 0 0 10px rgba(0,0,0,0.6);
-    }
-
-    .event-card img {
-      width: 100%;
-      height: auto;
-      object-fit: contain;
-      border: 3px solid #f7931a;
+      border: 1px solid #333;
       border-radius: 8px;
-      margin-bottom: 15px;
-      background-color: #000;
-    }
-
-    .event-card h3 {
+      padding: 20px;
+      margin: 15px;
+      width: 320px;
       color: #f7931a;
-      margin-bottom: 10px;
     }
-
+    .event-card h3 {
+      margin-top: 10px;
+      color: #f7931a;
+    }
     .event-card p {
-      margin: 4px 0;
-      font-size: 0.95rem;
       color: #fff;
+      line-height: 1.5;
+      font-size: 0.95rem;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
-
     .event-card a {
-      background-color: #f7931a;
-      color: #000;
-      font-weight: bold;
-      text-decoration: none;
-      padding: 8px 12px;
-      border-radius: 6px;
-      margin: 8px 8px 0 0;
       display: inline-block;
+      margin-top: 10px;
+      background: #f7931a;
+      color: #000;
+      padding: 8px 12px;
+      text-decoration: none;
+      border-radius: 4px;
+      font-weight: bold;
     }
-
+    .event-image {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      border-radius: 6px;
+      border: 3px solid #f7931a;
+      display: block;
+      margin-bottom: 10px;
+      background: #000;
+    }
     .subscribe-section {
       text-align: center;
       padding: 50px 20px;
       background-color: #000;
     }
-
-    .subscribe-section h2 {
-      color: #f7931a;
-    }
-
     .subscribe-section input {
       padding: 10px;
-      border-radius: 4px;
-      border: none;
       width: 250px;
+      border: none;
+      border-radius: 4px;
       margin-right: 10px;
     }
-
     .subscribe-section button {
       padding: 10px 20px;
       background-color: #f7931a;
+      color: #000;
       border: none;
       border-radius: 4px;
-      color: #000;
       font-weight: bold;
-      cursor: pointer;
     }
-
-    footer {
-      text-align: center;
-      color: #aaa;
+    .why-section {
+      padding: 50px 20px;
       background-color: #111;
-      padding: 20px;
+      color: #fff;
+      text-align: center;
+    }
+    .footer-note {
       font-size: 0.9rem;
+      color: #aaa;
+      margin-top: 10px;
     }
   </style>
 </head>
-
 <body>
   <header>
     <h1>Proof of Conference</h1>
     <div class="subheadline">Track Every Bitcoin Conference</div>
     <div class="cta-buttons">
-      <button onclick="window.scrollTo({ top: document.getElementById('calendar').offsetTop, behavior: 'smooth' })">View All Upcoming Conferences</button>
-      <button onclick="document.getElementById('subscribe').scrollIntoView({behavior: 'smooth'})">Subscribe for Discount Alerts</button>
+      <a href="#calendar">View All Upcoming Conferences</a>
+      <a href="#subscribe">Subscribe for Discount Alerts</a>
     </div>
   </header>
 
   <div class="filter-bar">
     <input type="text" id="searchInput" placeholder="Search conferences...">
-    <select id="countryFilter">
-      <option value="">All Countries</option>
-    </select>
-    <select id="stateFilter">
-      <option value="">All States</option>
-    </select>
-    <select id="yearFilter">
-      <option value="">All Years</option>
-    </select>
+    <select id="cityFilter"><option value="">All Cities</option></select>
+    <select id="stateFilter"><option value="">All States</option></select>
+    <select id="countryFilter"><option value="">All Countries</option></select>
+    <select id="yearFilter"><option value="">All Years</option></select>
   </div>
 
   <section id="calendar" class="calendar-grid"></section>
@@ -188,109 +163,113 @@
     <button>Subscribe</button>
   </section>
 
+  <section class="why-section">
+    <h2>Why Bitcoiners Show Up</h2>
+    <p>Bitcoin is more than code — it’s community. These events are where signal spreads, alliances form, and the future is built. Don't miss your proof of conference.</p>
+  </section>
+
   <footer>
-    © 2026 ProofOfConference.com | Affiliate links may support this site. Thanks for using code <strong>FOMO</strong> 🧡
+    <p>© 2025 ProofOfConference.com</p>
+    <p class="footer-note">Affiliate links may support this site. Thanks for using promo code <strong>FOMO</strong> 🧡</p>
   </footer>
 
   <script>
-    const CSV_URL = "https://raw.githubusercontent.com/goldisdying/proofofconference/main/Bitcoin%20Conference%20List%20-%20Sheet1.csv";
+    async function loadCSV() {
+      const response = await fetch("https://raw.githubusercontent.com/YOUR_GITHUB_USERNAME/proofofconference/main/Bitcoin%20Conference%20List%20-%20Sheet1%20(1).csv");
+      const text = await response.text();
+      const rows = text.trim().split("\n").map(r => r.split(","));
+      const headers = rows[0].map(h => h.trim());
+      const data = rows.slice(1).map(r => {
+        const obj = {};
+        headers.forEach((h, i) => obj[h] = (r[i] || "").trim());
+        return obj;
+      });
+      renderCards(data);
+      populateFilters(data);
+    }
 
-    async function loadConferences() {
-      const response = await fetch(CSV_URL);
-      const data = await response.text();
-
-      const rows = data.trim().split("\n").slice(1);
+    function renderCards(data) {
       const container = document.getElementById("calendar");
       container.innerHTML = "";
 
-      const countries = new Set();
-      const states = new Set();
-      const years = new Set();
+      data.forEach(event => {
+        if (event["Not Active"]?.toUpperCase() === "X") return;
 
-      rows.forEach(row => {
-        const cols = row.split(",").map(c => c.trim().replace(/^"|"$/g, ""));
-        const [conference, location, venue, dateRange, discount, ticketLink, mainLink, image, notActive] = cols;
-
-        if (notActive.toLowerCase() === "x") return;
-
-        const yearMatch = dateRange.match(/\b(20\d{2})\b/);
-        const year = yearMatch ? yearMatch[1] : "";
-
-        const [city = "", country = ""] = location.split(",").map(x => x.trim());
-
-        if (country) countries.add(country);
-        if (city) states.add(city);
-        if (year) years.add(year);
-
-        const discountHTML = discount ? `<p>🎟️ Use Code: <strong>${discount}</strong></p>` : "";
+        const year = event["Date Range"].match(/20\d{2}/)?.[0] || "";
+        const discountLine = event["Discount"] ? `<p>🎟️ ${event["Discount"]}</p>` : "";
+        const img = event["Image"] ? `<a href="${event["Ticket Link"]}" target="_blank"><img src="${event["Image"]}" alt="${event["Conference"]}" class="event-image"></a>` : "";
 
         const card = document.createElement("div");
         card.classList.add("event-card");
-        card.setAttribute("data-country", country);
-        card.setAttribute("data-state", city);
-        card.setAttribute("data-year", year);
+        card.dataset.city = event["City"] || "";
+        card.dataset.state = event["State"] || "";
+        card.dataset.country = event["Country"] || "";
+        card.dataset.year = year;
 
         card.innerHTML = `
-          <img src="https://raw.githubusercontent.com/goldisdying/proofofconference/main/${image}" alt="${conference}">
-          <h3>${conference}</h3>
-          <p>📍 ${location}</p>
-          <p>🏛️ ${venue}</p>
-          <p>📅 ${dateRange}</p>
-          ${discountHTML}
-          <a href="${ticketLink}" target="_blank">Get Tickets</a>
-          <a href="${mainLink}" target="_blank">More Info</a>
+          ${img}
+          <h3>${event["Conference"]}</h3>
+          <p>📍 ${event["City"]}, ${event["State"]}, ${event["Country"]}<br>🏛️ ${event["Venue"]}<br>📅 ${event["Date Range"]}</p>
+          ${discountLine}
+          <a href="${event["Ticket Link"]}" target="_blank">Get Tickets</a>
+          <a href="${event["Main Conference Link"]}" target="_blank">More Info</a>
         `;
-
         container.appendChild(card);
       });
-
-      populateFilters(countries, states, years);
-      attachFilterLogic();
     }
 
-    function populateFilters(countries, states, years) {
-      const addOptions = (select, items) => {
-        items = [...items].sort();
-        items.forEach(i => {
-          const opt = document.createElement("option");
-          opt.value = i;
-          opt.textContent = i;
-          select.appendChild(opt);
-        });
-      };
-      addOptions(document.getElementById("countryFilter"), countries);
-      addOptions(document.getElementById("stateFilter"), states);
-      addOptions(document.getElementById("yearFilter"), years);
+    function populateFilters(data) {
+      const cities = [...new Set(data.map(e => e["City"]).filter(Boolean))].sort();
+      const states = [...new Set(data.map(e => e["State"]).filter(Boolean))].sort();
+      const countries = [...new Set(data.map(e => e["Country"]).filter(Boolean))].sort();
+      const years = [...new Set(data.map(e => e["Date Range"].match(/20\d{2}/)?.[0]).filter(Boolean))].sort();
+
+      populateSelect("cityFilter", cities);
+      populateSelect("stateFilter", states);
+      populateSelect("countryFilter", countries);
+      populateSelect("yearFilter", years);
     }
 
-    function attachFilterLogic() {
-      const searchInput = document.getElementById("searchInput");
-      const countryFilter = document.getElementById("countryFilter");
-      const stateFilter = document.getElementById("stateFilter");
-      const yearFilter = document.getElementById("yearFilter");
-
-      function filterCards() {
-        const search = searchInput.value.toLowerCase();
-        const country = countryFilter.value;
-        const state = stateFilter.value;
-        const year = yearFilter.value;
-
-        document.querySelectorAll(".event-card").forEach(card => {
-          const matchesSearch = card.querySelector("h3").textContent.toLowerCase().includes(search);
-          const matchesCountry = !country || card.dataset.country === country;
-          const matchesState = !state || card.dataset.state === state;
-          const matchesYear = !year || card.dataset.year === year;
-          card.style.display = (matchesSearch && matchesCountry && matchesState && matchesYear) ? "block" : "none";
-        });
-      }
-
-      searchInput.addEventListener("input", filterCards);
-      countryFilter.addEventListener("change", filterCards);
-      stateFilter.addEventListener("change", filterCards);
-      yearFilter.addEventListener("change", filterCards);
+    function populateSelect(id, values) {
+      const select = document.getElementById(id);
+      values.forEach(v => {
+        const opt = document.createElement("option");
+        opt.value = v;
+        opt.textContent = v;
+        select.appendChild(opt);
+      });
     }
 
-    loadConferences();
+    function attachFilters() {
+      const search = document.getElementById("searchInput");
+      const city = document.getElementById("cityFilter");
+      const state = document.getElementById("stateFilter");
+      const country = document.getElementById("countryFilter");
+      const year = document.getElementById("yearFilter");
+
+      [search, city, state, country, year].forEach(el => el.addEventListener("input", filterCards));
+    }
+
+    function filterCards() {
+      const search = document.getElementById("searchInput").value.toLowerCase();
+      const city = document.getElementById("cityFilter").value;
+      const state = document.getElementById("stateFilter").value;
+      const country = document.getElementById("countryFilter").value;
+      const year = document.getElementById("yearFilter").value;
+      const cards = document.querySelectorAll(".event-card");
+
+      cards.forEach(card => {
+        const text = card.textContent.toLowerCase();
+        const matchesSearch = text.includes(search);
+        const matchesCity = !city || card.dataset.city === city;
+        const matchesState = !state || card.dataset.state === state;
+        const matchesCountry = !country || card.dataset.country === country;
+        const matchesYear = !year || card.dataset.year === year;
+        card.style.display = matchesSearch && matchesCity && matchesState && matchesCountry && matchesYear ? "block" : "none";
+      });
+    }
+
+    loadCSV().then(attachFilters);
   </script>
 </body>
 </html>
