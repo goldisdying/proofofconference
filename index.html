@@ -6,8 +6,7 @@
 
   <title>Proof of Conference</title>
   <meta name="description" content="Track every Bitcoin conference worldwide." />
-
-  <link rel="icon" href="/favicon.ico">
+  <link rel="icon" href="/favicon.ico" />
 
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 
@@ -28,18 +27,20 @@
     h1 {
       color: #f7931a;
       font-size: 36px;
-      margin-bottom: 8px;
+      text-align: center;
+      margin-bottom: 6px;
     }
 
     .subtitle {
       text-align: center;
-      margin-bottom: 20px;
       font-size: 18px;
+      margin-bottom: 20px;
     }
 
-    input, select {
+    input,
+    select {
       width: 100%;
-      padding: 12px 14px;
+      padding: 12px 16px;
       margin-bottom: 10px;
       border-radius: 24px;
       border: none;
@@ -48,42 +49,43 @@
 
     .card {
       background: #121212;
-      border-radius: 16px;
+      border-radius: 18px;
       padding: 16px;
-      margin-bottom: 20px;
+      margin-bottom: 22px;
       box-shadow: 0 0 0 1px #1f1f1f;
     }
 
     .card img {
       width: 100%;
-      border-radius: 12px;
+      border-radius: 14px;
       margin-bottom: 12px;
     }
 
     .card h2 {
       color: #f7931a;
       font-size: 22px;
-      margin: 0 0 8px;
+      margin: 0 0 10px;
     }
 
     .card p {
-      margin: 4px 0;
+      margin: 6px 0;
       font-size: 15px;
+      line-height: 1.4;
     }
 
     .discount {
-      color: #f7931a;
       margin-top: 10px;
+      color: #f7931a;
       font-weight: 600;
     }
 
     .cta {
       display: inline-block;
-      margin-top: 12px;
+      margin-top: 14px;
       background: #f7931a;
       color: #000;
-      padding: 10px 16px;
-      border-radius: 8px;
+      padding: 12px 18px;
+      border-radius: 10px;
       font-weight: 700;
       text-decoration: none;
     }
@@ -96,46 +98,97 @@
     <div class="subtitle">Track Every Bitcoin Conference</div>
 
     <input id="search" placeholder="Search conferences..." />
-    <select id="country"><option value="">All Countries</option></select>
-    <select id="state"><option value="">All States</option></select>
-    <select id="city"><option value="">All Cities</option></select>
-    <select id="year"><option value="">All Years</option></select>
+
+    <select id="country">
+      <option value="">All Countries</option>
+    </select>
+
+    <select id="state">
+      <option value="">All States</option>
+    </select>
+
+    <select id="city">
+      <option value="">All Cities</option>
+    </select>
 
     <div id="cards"></div>
   </div>
 
 <script>
-const CSV_URL = "https://raw.githubusercontent.com/goldisdying/proofofconference/main/Bitcoin%20Conference%20List%20-%20Sheet1.csv";
+const CSV_URL =
+  "https://raw.githubusercontent.com/goldisdying/proofofconference/main/Bitcoin%20Conference%20List%20-%20Sheet1.csv";
 
 let conferences = [];
+
+/* Proper CSV parser that handles commas + quotes */
+function parseCSV(text) {
+  const rows = [];
+  let current = [];
+  let value = "";
+  let inQuotes = false;
+
+  for (let i = 0; i < text.length; i++) {
+    const char = text[i];
+    const next = text[i + 1];
+
+    if (char === '"' && inQuotes && next === '"') {
+      value += '"';
+      i++;
+    } else if (char === '"') {
+      inQuotes = !inQuotes;
+    } else if (char === "," && !inQuotes) {
+      current.push(value.trim());
+      value = "";
+    } else if ((char === "\n" || char === "\r") && !inQuotes) {
+      if (value || current.length) {
+        current.push(value.trim());
+        rows.push(current);
+        current = [];
+        value = "";
+      }
+    } else {
+      value += char;
+    }
+  }
+
+  if (value || current.length) {
+    current.push(value.trim());
+    rows.push(current);
+  }
+
+  return rows;
+}
 
 fetch(CSV_URL)
   .then(res => res.text())
   .then(text => {
-    const rows = text.split("\n").map(r => r.split(","));
+    const rows = parseCSV(text);
     const headers = rows.shift();
 
     conferences = rows
-      .map(row => Object.fromEntries(headers.map((h,i) => [h.trim(), (row[i] || "").trim()])))
-      .filter(c => c["Not Active"].toLowerCase() !== "x");
+      .map(row =>
+        Object.fromEntries(headers.map((h, i) => [h, row[i] || ""]))
+      )
+      .filter(c => c["Not Active"].trim().toLowerCase() !== "x");
 
     populateFilters();
     render();
   });
 
 function populateFilters() {
-  ["Country","State","City"].forEach(field => {
+  ["Country", "State", "City"].forEach(field => {
     const select = document.getElementById(field.toLowerCase());
-    [...new Set(conferences.map(c => c[field]).filter(Boolean))]
-      .sort()
-      .forEach(v => select.innerHTML += `<option>${v}</option>`);
+    const values = [...new Set(conferences.map(c => c[field]).filter(Boolean))];
+    values.sort().forEach(v => {
+      const opt = document.createElement("option");
+      opt.value = v;
+      opt.textContent = v;
+      select.appendChild(opt);
+    });
   });
-
-  const years = [...new Set(conferences.map(c => c["Date Range"].match(/\d{4}/)?.[0]).filter(Boolean))];
-  years.sort().forEach(y => year.innerHTML += `<option>${y}</option>`);
 }
 
-["search","country","state","city","year"].forEach(id =>
+["search", "country", "state", "city"].forEach(id =>
   document.getElementById(id).addEventListener("input", render)
 );
 
@@ -143,14 +196,12 @@ function render() {
   const q = search.value.toLowerCase();
   cards.innerHTML = "";
 
-  conferences.filter(c => {
-    if (q && !Object.values(c).join(" ").toLowerCase().includes(q)) return false;
-    if (country.value && c.Country !== country.value) return false;
-    if (state.value && c.State !== state.value) return false;
-    if (city.value && c.City !== city.value) return false;
-    if (year.value && !c["Date Range"].includes(year.value)) return false;
-    return true;
-  }).forEach(c => {
+  conferences.forEach(c => {
+    if (q && !Object.values(c).join(" ").toLowerCase().includes(q)) return;
+    if (country.value && c.Country !== country.value) return;
+    if (state.value && c.State !== state.value) return;
+    if (city.value && c.City !== city.value) return;
+
     cards.innerHTML += `
       <div class="card">
         ${c.Image ? `<img src="${c.Image}" alt="${c.Conference}">` : ""}
