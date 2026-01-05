@@ -89,6 +89,16 @@
       font-weight: 700;
       text-decoration: none;
     }
+
+    footer {
+      margin-top: 40px;
+      padding-top: 20px;
+      border-top: 1px solid #1f1f1f;
+      font-size: 13px;
+      color: #9ca3af;
+      line-height: 1.5;
+      text-align: center;
+    }
   </style>
 </head>
 
@@ -112,6 +122,11 @@
     </select>
 
     <div id="cards"></div>
+
+    <footer>
+      <strong>Disclaimer:</strong>
+      Proof of Conference is an independent, informational directory and is not necessarily affiliated with, endorsed by, or officially connected to any conference or organization listed. Please visit each conference’s official website for the most accurate and up-to-date details.
+    </footer>
   </div>
 
 <script>
@@ -120,7 +135,6 @@ const CSV_URL =
 
 let conferences = [];
 
-/* Robust CSV parser */
 function parseCSV(text) {
   const rows = [];
   let row = [];
@@ -159,7 +173,6 @@ function parseCSV(text) {
   return rows;
 }
 
-/* Clean CSV cell text */
 function clean(text) {
   return (text || "")
     .replace(/[\r\n]+/g, " ")
