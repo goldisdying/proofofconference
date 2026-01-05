@@ -120,10 +120,10 @@ const CSV_URL =
 
 let conferences = [];
 
-/* Proper CSV parser that handles commas + quotes */
+/* Robust CSV parser */
 function parseCSV(text) {
   const rows = [];
-  let current = [];
+  let row = [];
   let value = "";
   let inQuotes = false;
 
@@ -137,13 +137,13 @@ function parseCSV(text) {
     } else if (char === '"') {
       inQuotes = !inQuotes;
     } else if (char === "," && !inQuotes) {
-      current.push(value.trim());
+      row.push(value);
       value = "";
     } else if ((char === "\n" || char === "\r") && !inQuotes) {
-      if (value || current.length) {
-        current.push(value.trim());
-        rows.push(current);
-        current = [];
+      if (value || row.length) {
+        row.push(value);
+        rows.push(row);
+        row = [];
         value = "";
       }
     } else {
@@ -151,12 +151,20 @@ function parseCSV(text) {
     }
   }
 
-  if (value || current.length) {
-    current.push(value.trim());
-    rows.push(current);
+  if (value || row.length) {
+    row.push(value);
+    rows.push(row);
   }
 
   return rows;
+}
+
+/* Clean CSV cell text */
+function clean(text) {
+  return (text || "")
+    .replace(/[\r\n]+/g, " ")
+    .replace(/^"+|"+$/g, "")
+    .trim();
 }
 
 fetch(CSV_URL)
@@ -167,9 +175,11 @@ fetch(CSV_URL)
 
     conferences = rows
       .map(row =>
-        Object.fromEntries(headers.map((h, i) => [h, row[i] || ""]))
+        Object.fromEntries(
+          headers.map((h, i) => [h, clean(row[i])])
+        )
       )
-      .filter(c => c["Not Active"].trim().toLowerCase() !== "x");
+      .filter(c => c["Not Active"].toLowerCase() !== "x");
 
     populateFilters();
     render();
@@ -178,13 +188,14 @@ fetch(CSV_URL)
 function populateFilters() {
   ["Country", "State", "City"].forEach(field => {
     const select = document.getElementById(field.toLowerCase());
-    const values = [...new Set(conferences.map(c => c[field]).filter(Boolean))];
-    values.sort().forEach(v => {
-      const opt = document.createElement("option");
-      opt.value = v;
-      opt.textContent = v;
-      select.appendChild(opt);
-    });
+    [...new Set(conferences.map(c => c[field]).filter(Boolean))]
+      .sort()
+      .forEach(v => {
+        const opt = document.createElement("option");
+        opt.value = v;
+        opt.textContent = v;
+        select.appendChild(opt);
+      });
   });
 }
 
@@ -202,12 +213,14 @@ function render() {
     if (state.value && c.State !== state.value) return;
     if (city.value && c.City !== city.value) return;
 
+    const location = [c.City, c.State, c.Country].filter(Boolean).join(", ");
+
     cards.innerHTML += `
       <div class="card">
         ${c.Image ? `<img src="${c.Image}" alt="${c.Conference}">` : ""}
         <h2>${c.Conference}</h2>
-        <p>📍 ${c.City}${c.State ? ", " + c.State : ""}, ${c.Country}</p>
-        <p>🏛️ ${c.Venue}</p>
+        <p>📍 ${location}</p>
+        ${c.Venue ? `<p>🏛️ ${c.Venue}</p>` : ""}
         <p>📅 ${c["Date Range"]}</p>
         ${c.Discount ? `<div class="discount">🎟️ ${c.Discount}</div>` : ""}
         <a class="cta" href="${c["Main Conference Link"]}" target="_blank">Get Tickets</a>
