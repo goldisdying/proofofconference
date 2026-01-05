@@ -14,11 +14,11 @@
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://proofofconference.com/" />
   <meta property="og:site_name" content="Proof of Conference" />
-  <meta property="og:image" content="https://proofofconference.com/og-proof-of-conference.jpg?v=1" />
+  <meta property="og:image" content="https://proofofconference.com/og-proof-of-conference.jpg" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
 
-  <!-- Twitter / X -->
+  <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Proof of Conference" />
   <meta name="twitter:description" content="An independent directory of Bitcoin conferences and events worldwide." />
@@ -124,17 +124,16 @@
 
     <input id="search" placeholder="Search conferences..." />
 
-    <select id="country">
-      <option value="">All Countries</option>
+    <select id="sort">
+      <option value="featured">Featured</option>
+      <option value="upcoming">Upcoming</option>
+      <option value="past">Past</option>
+      <option value="az">A to Z</option>
     </select>
 
-    <select id="state">
-      <option value="">All States</option>
-    </select>
-
-    <select id="city">
-      <option value="">All Cities</option>
-    </select>
+    <select id="country"><option value="">All Countries</option></select>
+    <select id="state"><option value="">All States</option></select>
+    <select id="city"><option value="">All Cities</option></select>
 
     <div id="cards"></div>
 
@@ -149,6 +148,7 @@ const CSV_URL =
   "https://raw.githubusercontent.com/goldisdying/proofofconference/main/Bitcoin%20Conference%20List%20-%20Sheet1.csv";
 
 let conferences = [];
+let featuredOrder = [];
 
 function parseCSV(text) {
   const rows = [];
@@ -195,6 +195,11 @@ function clean(text) {
     .trim();
 }
 
+function extractDate(text) {
+  const match = text.match(/(January|February|March|April|May|June|July|August|September|October|November|December)\s+\d{1,2}|\d{4}/);
+  return match ? new Date(match[0]) : null;
+}
+
 fetch(CSV_URL)
   .then(res => res.text())
   .then(text => {
@@ -203,11 +208,11 @@ fetch(CSV_URL)
 
     conferences = rows
       .map(row =>
-        Object.fromEntries(
-          headers.map((h, i) => [h, clean(row[i])])
-        )
+        Object.fromEntries(headers.map((h, i) => [h, clean(row[i])]))
       )
       .filter(c => c["Not Active"].toLowerCase() !== "x");
+
+    featuredOrder = [...conferences];
 
     populateFilters();
     render();
@@ -227,15 +232,34 @@ function populateFilters() {
   });
 }
 
-["search", "country", "state", "city"].forEach(id =>
+["search", "country", "state", "city", "sort"].forEach(id =>
   document.getElementById(id).addEventListener("input", render)
 );
 
 function render() {
   const q = search.value.toLowerCase();
+  const now = new Date();
+  let list = [...featuredOrder];
+
+  if (sort.value === "upcoming") {
+    list = list
+      .filter(c => extractDate(c["Date Range"]) >= now)
+      .sort((a, b) => extractDate(a["Date Range"]) - extractDate(b["Date Range"]));
+  }
+
+  if (sort.value === "past") {
+    list = list
+      .filter(c => extractDate(c["Date Range"]) < now)
+      .sort((a, b) => extractDate(b["Date Range"]) - extractDate(a["Date Range"]));
+  }
+
+  if (sort.value === "az") {
+    list = [...list].sort((a, b) => a.Conference.localeCompare(b.Conference));
+  }
+
   cards.innerHTML = "";
 
-  conferences.forEach(c => {
+  list.forEach(c => {
     if (q && !Object.values(c).join(" ").toLowerCase().includes(q)) return;
     if (country.value && c.Country !== country.value) return;
     if (state.value && c.State !== state.value) return;
