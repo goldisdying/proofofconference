@@ -20,8 +20,6 @@
 
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Proof of Conference" />
-  <meta name="twitter:description" content="An independent directory of Bitcoin conferences and events worldwide." />
 
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 
@@ -195,9 +193,9 @@ function clean(text) {
     .trim();
 }
 
-function extractDate(text) {
-  const match = text.match(/(January|February|March|April|May|June|July|August|September|October|November|December)\s+\d{1,2}|\d{4}/);
-  return match ? new Date(match[0]) : null;
+function extractYear(dateRange) {
+  const match = dateRange.match(/\b(20\d{2})\b/);
+  return match ? parseInt(match[1], 10) : null;
 }
 
 fetch(CSV_URL)
@@ -238,23 +236,19 @@ function populateFilters() {
 
 function render() {
   const q = search.value.toLowerCase();
-  const now = new Date();
+  const currentYear = new Date().getFullYear();
   let list = [...featuredOrder];
 
   if (sort.value === "upcoming") {
-    list = list
-      .filter(c => extractDate(c["Date Range"]) >= now)
-      .sort((a, b) => extractDate(a["Date Range"]) - extractDate(b["Date Range"]));
+    list = list.filter(c => extractYear(c["Date Range"]) >= currentYear);
   }
 
   if (sort.value === "past") {
-    list = list
-      .filter(c => extractDate(c["Date Range"]) < now)
-      .sort((a, b) => extractDate(b["Date Range"]) - extractDate(a["Date Range"]));
+    list = list.filter(c => extractYear(c["Date Range"]) < currentYear);
   }
 
   if (sort.value === "az") {
-    list = [...list].sort((a, b) => a.Conference.localeCompare(b.Conference));
+    list.sort((a, b) => a.Conference.localeCompare(b.Conference));
   }
 
   cards.innerHTML = "";
