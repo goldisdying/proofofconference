@@ -154,8 +154,9 @@
 </div>
 
 <script>
+/* 🔥 CACHE-BUSTED CSV URL (THIS IS THE FIX) */
 const CSV_URL =
-  "https://raw.githubusercontent.com/goldisdying/proofofconference/main/Bitcoin%20Conference%20List%20-%20Sheet1.csv";
+  "https://raw.githubusercontent.com/goldisdying/proofofconference/main/Bitcoin%20Conference%20List%20-%20Sheet1.csv?v=2026-01-05-1";
 
 const MONTHS = [
   "january","february","march","april","may","june",
@@ -186,17 +187,13 @@ function clean(t) {
   return (t || "").replace(/[\r\n]+/g, " ").replace(/^"+|"+$/g, "").trim();
 }
 
-/* 🔑 MONTH-BASED DATE KEY (THE FIX) */
 function getMonthKey(range) {
   if (!range) return null;
-
   const yearMatch = range.match(/\b(20\d{2})\b/);
   if (!yearMatch) return null;
   const year = parseInt(yearMatch[1], 10);
-
   const lower = range.toLowerCase();
   const monthIndex = MONTHS.findIndex(m => lower.includes(m));
-
   return year * 12 + (monthIndex >= 0 ? monthIndex : 0);
 }
 
