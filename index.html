@@ -50,7 +50,6 @@
       margin-bottom: 24px;
     }
 
-    /* 🔧 UNIFIED SEARCH + DROPDOWN STYLING */
     input,
     select {
       width: 100%;
@@ -65,7 +64,6 @@
       background-color: #fff;
     }
 
-    /* Custom dropdown arrow */
     select {
       background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'%3E%3Cpath fill='black' d='M5 7l5 5 5-5z'/%3E%3C/svg%3E");
       background-repeat: no-repeat;
@@ -156,7 +154,128 @@
 </div>
 
 <script>
-/* JS unchanged – your current working logic stays exactly the same */
+const CSV_URL =
+  "https://raw.githubusercontent.com/goldisdying/proofofconference/main/Bitcoin%20Conference%20List%20-%20Sheet1.csv";
+
+const MONTHS = {
+  january: 0, february: 1, march: 2, april: 3, may: 4, june: 5,
+  july: 6, august: 7, september: 8, october: 9, november: 10, december: 11
+};
+
+let conferences = [];
+let featuredOrder = [];
+
+function parseCSV(text) {
+  const rows = [];
+  let row = [], value = "", inQuotes = false;
+
+  for (let i = 0; i < text.length; i++) {
+    const c = text[i], n = text[i + 1];
+    if (c === '"' && inQuotes && n === '"') { value += '"'; i++; }
+    else if (c === '"') inQuotes = !inQuotes;
+    else if (c === "," && !inQuotes) { row.push(value); value = ""; }
+    else if ((c === "\n" || c === "\r") && !inQuotes) {
+      if (value || row.length) { row.push(value); rows.push(row); row = []; value = ""; }
+    } else value += c;
+  }
+  if (value || row.length) { row.push(value); rows.push(row); }
+  return rows;
+}
+
+function clean(t) {
+  return (t || "").replace(/[\r\n]+/g, " ").replace(/^"+|"+$/g, "").trim();
+}
+
+function getSortDate(range) {
+  const yearMatch = range.match(/\b(20\d{2})\b/);
+  if (!yearMatch) return null;
+  const year = parseInt(yearMatch[1], 10);
+
+  const monthMatch = range.toLowerCase().match(
+    /(january|february|march|april|may|june|july|august|september|october|november|december)/
+  );
+  const month = monthMatch ? MONTHS[monthMatch[1]] : 0;
+
+  return new Date(year, month, 1).getTime();
+}
+
+fetch(CSV_URL)
+  .then(r => r.text())
+  .then(text => {
+    const rows = parseCSV(text);
+    const headers = rows.shift();
+
+    conferences = rows
+      .map(r => Object.fromEntries(headers.map((h,i)=>[h, clean(r[i])])))
+      .filter(c => c["Not Active"].toLowerCase() !== "x");
+
+    featuredOrder = [...conferences];
+    populateFilters();
+    render();
+  });
+
+function populateFilters() {
+  ["Country","State","City"].forEach(f=>{
+    const s=document.getElementById(f.toLowerCase());
+    [...new Set(conferences.map(c=>c[f]).filter(Boolean))].sort().forEach(v=>{
+      const o=document.createElement("option");
+      o.value=v; o.textContent=v; s.appendChild(o);
+    });
+  });
+}
+
+["search","country","state","city","sort"].forEach(id =>
+  document.getElementById(id).addEventListener("input", render)
+);
+
+function render() {
+  const q = search.value.toLowerCase();
+  const now = Date.now();
+  let list = [...featuredOrder];
+
+  if (sort.value === "featured") {
+    list = list.filter(c => getSortDate(c["Date Range"]) >= now);
+  }
+
+  if (sort.value === "upcoming") {
+    list = list
+      .filter(c => getSortDate(c["Date Range"]) >= now)
+      .sort((a,b)=>getSortDate(a["Date Range"]) - getSortDate(b["Date Range"]));
+  }
+
+  if (sort.value === "az") {
+    list = list
+      .filter(c => getSortDate(c["Date Range"]) >= now)
+      .sort((a,b)=>a.Conference.localeCompare(b.Conference));
+  }
+
+  if (sort.value === "past") {
+    list = list
+      .filter(c => getSortDate(c["Date Range"]) < now)
+      .sort((a,b)=>getSortDate(b["Date Range"]) - getSortDate(a["Date Range"]));
+  }
+
+  cards.innerHTML = "";
+  list.forEach(c=>{
+    if (q && !Object.values(c).join(" ").toLowerCase().includes(q)) return;
+    if (country.value && c.Country!==country.value) return;
+    if (state.value && c.State!==state.value) return;
+    if (city.value && c.City!==city.value) return;
+
+    const location=[c.City,c.State,c.Country].filter(Boolean).join(", ");
+
+    cards.innerHTML+=`
+      <div class="card">
+        ${c.Image?`<img src="${c.Image}" alt="${c.Conference}">`:""}
+        <h2>${c.Conference}</h2>
+        <p>📍 ${location}</p>
+        ${c.Venue?`<p>🏛️ ${c.Venue}</p>`:""}
+        <p>📅 ${c["Date Range"]}</p>
+        ${c.Discount?`<div class="discount">🎟️ ${c.Discount}</div>`:""}
+        <a class="cta" href="${c["Main Conference Link"]}" target="_blank">Get Tickets</a>
+      </div>`;
+  });
+}
 </script>
 </body>
 </html>
