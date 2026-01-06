@@ -2,18 +2,14 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-
   <title>Proof of Conference</title>
-  <meta name="description" content="Track every Bitcoin conference worldwide." />
-  <link rel="icon" href="/favicon.ico" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <!-- Open Graph -->
   <meta property="og:title" content="Proof of Conference" />
-  <meta property="og:description" content="An independent directory of Bitcoin conferences and events worldwide." />
+  <meta property="og:description" content="An independent directory of verified Bitcoin events worldwide." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://proofofconference.com/" />
-  <meta property="og:site_name" content="Proof of Conference" />
   <meta property="og:image" content="https://proofofconference.com/og-proof-of-conference.jpg" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
@@ -21,266 +17,205 @@
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image" />
 
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-
   <style>
     body {
       margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
       background: #000;
       color: #fff;
-      font-family: Inter, system-ui, sans-serif;
     }
 
     .container {
-      max-width: 480px;
+      max-width: 720px;
       margin: 0 auto;
-      padding: 20px;
+      padding: 24px 16px 80px;
     }
 
     h1 {
-      color: #f7931a;
-      font-size: 36px;
+      color: #f4a340;
       text-align: center;
-      margin-bottom: 6px;
+      font-size: 36px;
+      margin-bottom: 8px;
     }
 
-    .subtitle {
+    h2 {
       text-align: center;
-      font-size: 18px;
+      font-weight: 400;
+      opacity: 0.9;
       margin-bottom: 24px;
     }
 
-    input,
-    select {
+    .control {
       width: 100%;
-      box-sizing: border-box;
-      padding: 14px 18px;
-      margin-bottom: 12px;
+      padding: 14px 16px;
       border-radius: 999px;
       border: none;
       font-size: 16px;
-      appearance: none;
-      -webkit-appearance: none;
-      background-color: #fff;
-    }
-
-    select {
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'%3E%3Cpath fill='black' d='M5 7l5 5 5-5z'/%3E%3C/svg%3E");
-      background-repeat: no-repeat;
-      background-position: right 16px center;
-      background-size: 16px;
-      padding-right: 44px;
-    }
-
-    .card {
-      background: #121212;
-      border-radius: 18px;
-      padding: 16px;
-      margin-bottom: 22px;
-      box-shadow: 0 0 0 1px #1f1f1f;
-    }
-
-    .card img {
-      width: 100%;
-      border-radius: 14px;
       margin-bottom: 12px;
     }
 
-    .card h2 {
-      color: #f7931a;
+    .card {
+      background: #0d0d0d;
+      border-radius: 24px;
+      padding: 20px;
+      margin-bottom: 16px;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.06);
+    }
+
+    .card h3 {
+      color: #f4a340;
+      margin: 0 0 8px;
       font-size: 22px;
-      margin: 0 0 10px;
     }
 
-    .card p {
-      margin: 6px 0;
+    .meta {
+      opacity: 0.9;
+      margin-bottom: 6px;
       font-size: 15px;
-      line-height: 1.4;
     }
 
-    .discount {
-      margin-top: 10px;
-      color: #f7931a;
+    .button {
+      display: inline-block;
+      margin-top: 12px;
+      padding: 12px 18px;
+      background: #f4a340;
+      color: #000;
+      text-decoration: none;
+      border-radius: 999px;
       font-weight: 600;
     }
 
-    .cta {
-      display: inline-block;
-      margin-top: 14px;
-      background: #f7931a;
-      color: #000;
-      padding: 12px 18px;
-      border-radius: 10px;
-      font-weight: 700;
-      text-decoration: none;
-    }
-
-    footer {
-      margin-top: 40px;
-      padding-top: 20px;
-      border-top: 1px solid #1f1f1f;
+    .disclaimer {
+      margin-top: 48px;
       font-size: 13px;
-      color: #9ca3af;
-      line-height: 1.5;
+      opacity: 0.6;
       text-align: center;
+      line-height: 1.5;
     }
   </style>
 </head>
 
 <body>
-<div class="container">
-  <h1>Proof of Conference</h1>
-  <div class="subtitle">Track Every Bitcoin Conference</div>
+  <div class="container">
+    <h1>Proof of Conference</h1>
+    <h2>Track Every Bitcoin Conference</h2>
 
-  <input id="search" placeholder="Search conferences..." />
+    <input id="search" class="control" placeholder="Search conferences…" />
 
-  <select id="sort">
-    <option value="featured">Featured</option>
-    <option value="upcoming">Upcoming</option>
-    <option value="az">A to Z</option>
-    <option value="past">Past</option>
-  </select>
+    <select id="sort" class="control">
+      <option value="featured">Featured</option>
+      <option value="upcoming">Upcoming</option>
+      <option value="az">A to Z</option>
+      <option value="past">Past</option>
+    </select>
 
-  <select id="country"><option value="">All Countries</option></select>
-  <select id="state"><option value="">All States</option></select>
-  <select id="city"><option value="">All Cities</option></select>
+    <div id="cards"></div>
 
-  <div id="cards"></div>
-
-  <footer>
-    <strong>Disclaimer:</strong>
-    Proof of Conference is an independent, informational directory and is not necessarily affiliated with, endorsed by, or officially connected to any conference or organization listed. Please visit each conference’s official website for the most accurate and up-to-date details.
-  </footer>
-</div>
+    <div class="disclaimer">
+      Proof of Conference is an independent, informational directory and is not necessarily affiliated with any listed events.
+      Please visit the official conference websites for accurate and up-to-date details.
+    </div>
+  </div>
 
 <script>
-/* 🔥 CACHE-BUSTED CSV URL (THIS IS THE FIX) */
-const CSV_URL =
-  "https://raw.githubusercontent.com/goldisdying/proofofconference/main/Bitcoin%20Conference%20List%20-%20Sheet1.csv?v=2026-01-05-1";
+/* ================================
+   CONFIG
+================================ */
+const CSV_URL = "Bitcoin Conference List - Sheet1.csv?v=" + Date.now();
 
-const MONTHS = [
-  "january","february","march","april","may","june",
-  "july","august","september","october","november","december"
-];
-
-let conferences = [];
-let featuredOrder = [];
-
-function parseCSV(text) {
-  const rows = [];
-  let row = [], value = "", inQuotes = false;
-
-  for (let i = 0; i < text.length; i++) {
-    const c = text[i], n = text[i + 1];
-    if (c === '"' && inQuotes && n === '"') { value += '"'; i++; }
-    else if (c === '"') inQuotes = !inQuotes;
-    else if (c === "," && !inQuotes) { row.push(value); value = ""; }
-    else if ((c === "\n" || c === "\r") && !inQuotes) {
-      if (value || row.length) { row.push(value); rows.push(row); row = []; value = ""; }
-    } else value += c;
-  }
-  if (value || row.length) { row.push(value); rows.push(row); }
-  return rows;
-}
-
-function clean(t) {
-  return (t || "").replace(/[\r\n]+/g, " ").replace(/^"+|"+$/g, "").trim();
-}
-
-function getMonthKey(range) {
-  if (!range) return null;
-  const yearMatch = range.match(/\b(20\d{2})\b/);
+/* ================================
+   HELPERS
+================================ */
+function parseDateRange(text) {
+  if (!text) return null;
+  const yearMatch = text.match(/\b(20\d{2})\b/);
   if (!yearMatch) return null;
-  const year = parseInt(yearMatch[1], 10);
-  const lower = range.toLowerCase();
-  const monthIndex = MONTHS.findIndex(m => lower.includes(m));
-  return year * 12 + (monthIndex >= 0 ? monthIndex : 0);
+  const year = yearMatch[1];
+  const cleaned = text.replace(year, "").replace(/,/g, "").trim();
+  const parts = cleaned.split("–");
+  const start = new Date(`${parts[0]} ${year}`);
+  return isNaN(start) ? null : start;
 }
 
+function formatLocation(city, state, country) {
+  return [city, state, country].filter(Boolean).join(", ");
+}
+
+/* ================================
+   LOAD CSV (CACHE BUSTED)
+================================ */
 fetch(CSV_URL)
   .then(r => r.text())
   .then(text => {
-    const rows = parseCSV(text);
-    const headers = rows.shift();
+    const rows = text.trim().split("\n").slice(1);
+    const events = rows.map(r => {
+      const cols = r.split(",");
+      return {
+        name: cols[0]?.trim(),
+        city: cols[1]?.trim(),
+        state: cols[2]?.trim(),
+        country: cols[3]?.trim(),
+        dateText: cols[4]?.trim(),
+        url: cols[5]?.trim(),
+        featuredOrder: cols[6]?.trim(),
+        active: cols[7]?.trim()
+      };
+    }).filter(e => e.active !== "x");
 
-    conferences = rows
-      .map(r => Object.fromEntries(headers.map((h,i)=>[h, clean(r[i])])))
-      .filter(c => c["Not Active"].toLowerCase() !== "x");
-
-    featuredOrder = [...conferences];
-    populateFilters();
-    render();
+    init(events);
   });
 
-function populateFilters() {
-  ["Country","State","City"].forEach(f => {
-    const s = document.getElementById(f.toLowerCase());
-    [...new Set(conferences.map(c => c[f]).filter(Boolean))]
-      .sort()
-      .forEach(v => {
-        const o = document.createElement("option");
-        o.value = v;
-        o.textContent = v;
-        s.appendChild(o);
-      });
-  });
-}
+/* ================================
+   RENDER LOGIC
+================================ */
+function init(events) {
+  const search = document.getElementById("search");
+  const sort = document.getElementById("sort");
+  const cards = document.getElementById("cards");
 
-["search","country","state","city","sort"].forEach(id =>
-  document.getElementById(id).addEventListener("input", render)
-);
+  function render() {
+    const q = search.value.toLowerCase();
+    const now = new Date();
 
-function render() {
-  const q = search.value.toLowerCase();
-  const now = new Date();
-  const currentMonthKey = now.getFullYear() * 12 + now.getMonth();
+    let list = events.filter(e =>
+      e.name.toLowerCase().includes(q)
+    );
 
-  let list = [...featuredOrder];
+    if (sort.value === "featured") {
+      list = list.filter(e => parseDateRange(e.dateText) >= now);
+    }
 
-  if (sort.value === "featured") {
-    list = list.filter(c => getMonthKey(c["Date Range"]) >= currentMonthKey);
-  }
+    if (sort.value === "upcoming") {
+      list = list
+        .filter(e => parseDateRange(e.dateText) >= now)
+        .sort((a,b) => parseDateRange(a.dateText) - parseDateRange(b.dateText));
+    }
 
-  if (sort.value === "upcoming") {
-    list = list
-      .filter(c => getMonthKey(c["Date Range"]) >= currentMonthKey)
-      .sort((a,b)=>getMonthKey(a["Date Range"]) - getMonthKey(b["Date Range"]));
-  }
+    if (sort.value === "az") {
+      list = list
+        .filter(e => parseDateRange(e.dateText) >= now)
+        .sort((a,b) => a.name.localeCompare(b.name));
+    }
 
-  if (sort.value === "az") {
-    list = list
-      .filter(c => getMonthKey(c["Date Range"]) >= currentMonthKey)
-      .sort((a,b)=>a.Conference.localeCompare(b.Conference));
-  }
+    if (sort.value === "past") {
+      list = list
+        .filter(e => parseDateRange(e.dateText) < now)
+        .sort((a,b) => parseDateRange(b.dateText) - parseDateRange(a.dateText));
+    }
 
-  if (sort.value === "past") {
-    list = list
-      .filter(c => getMonthKey(c["Date Range"]) < currentMonthKey)
-      .sort((a,b)=>getMonthKey(b["Date Range"]) - getMonthKey(a["Date Range"]));
-  }
-
-  cards.innerHTML = "";
-
-  list.forEach(c => {
-    if (q && !Object.values(c).join(" ").toLowerCase().includes(q)) return;
-    if (country.value && c.Country !== country.value) return;
-    if (state.value && c.State !== state.value) return;
-    if (city.value && c.City !== city.value) return;
-
-    const location = [c.City, c.State, c.Country].filter(Boolean).join(", ");
-
-    cards.innerHTML += `
+    cards.innerHTML = list.map(e => `
       <div class="card">
-        ${c.Image ? `<img src="${c.Image}" alt="${c.Conference}">` : ""}
-        <h2>${c.Conference}</h2>
-        <p>📍 ${location}</p>
-        ${c.Venue ? `<p>🏛️ ${c.Venue}</p>` : ""}
-        <p>📅 ${c["Date Range"]}</p>
-        ${c.Discount ? `<div class="discount">🎟️ ${c.Discount}</div>` : ""}
-        <a class="cta" href="${c["Main Conference Link"]}" target="_blank">Get Tickets</a>
+        <h3>${e.name}</h3>
+        <div class="meta">📍 ${formatLocation(e.city, e.state, e.country)}</div>
+        <div class="meta">📅 ${e.dateText}</div>
+        <a class="button" href="${e.url}" target="_blank">Get Tickets</a>
       </div>
-    `;
-  });
+    `).join("");
+  }
+
+  search.addEventListener("input", render);
+  sort.addEventListener("change", render);
+  render();
 }
 </script>
 </body>
