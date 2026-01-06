@@ -125,8 +125,8 @@
     <select id="sort">
       <option value="featured">Featured</option>
       <option value="upcoming">Upcoming</option>
-      <option value="past">Past</option>
       <option value="az">A to Z</option>
+      <option value="past">Past</option>
     </select>
 
     <select id="country"><option value="">All Countries</option></select>
@@ -211,7 +211,6 @@ fetch(CSV_URL)
       .filter(c => c["Not Active"].toLowerCase() !== "x");
 
     featuredOrder = [...conferences];
-
     populateFilters();
     render();
   });
@@ -239,11 +238,7 @@ function render() {
   const currentYear = new Date().getFullYear();
   let list = [...featuredOrder];
 
-  if (sort.value === "featured") {
-    list = list.filter(c => extractYear(c["Date Range"]) >= currentYear);
-  }
-
-  if (sort.value === "upcoming") {
+  if (sort.value === "featured" || sort.value === "upcoming" || sort.value === "az") {
     list = list.filter(c => extractYear(c["Date Range"]) >= currentYear);
   }
 
