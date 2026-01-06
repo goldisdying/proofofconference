@@ -18,6 +18,7 @@
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
 
+  <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image" />
 
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
@@ -27,7 +28,7 @@
       margin: 0;
       background: #000;
       color: #fff;
-      font-family: Inter, sans-serif;
+      font-family: Inter, system-ui, sans-serif;
     }
 
     .container {
@@ -46,31 +47,29 @@
     .subtitle {
       text-align: center;
       font-size: 18px;
-      margin-bottom: 20px;
+      margin-bottom: 24px;
     }
 
-    /* 🔧 NORMALIZED INPUT + SELECT SIZING */
     input,
     select {
       width: 100%;
       box-sizing: border-box;
       padding: 14px 18px;
-      margin-bottom: 10px;
+      margin-bottom: 12px;
       border-radius: 999px;
       border: none;
       font-size: 16px;
       appearance: none;
       -webkit-appearance: none;
-      background: #fff;
+      background-color: #fff;
     }
 
-    /* Custom dropdown arrow so select still looks right */
     select {
       background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'%3E%3Cpath fill='black' d='M5 7l5 5 5-5z'/%3E%3C/svg%3E");
       background-repeat: no-repeat;
-      background-position: right 18px center;
+      background-position: right 16px center;
       background-size: 16px;
-      padding-right: 46px;
+      padding-right: 44px;
     }
 
     .card {
@@ -122,6 +121,7 @@
       border-top: 1px solid #1f1f1f;
       font-size: 13px;
       color: #9ca3af;
+      line-height: 1.5;
       text-align: center;
     }
   </style>
@@ -149,14 +149,142 @@
 
   <footer>
     <strong>Disclaimer:</strong>
-    Proof of Conference is an independent, informational directory and is not necessarily affiliated with, endorsed by, or officially connected to any conference or organization listed. Please visit each conference’s official website for official details.
+    Proof of Conference is an independent, informational directory and is not necessarily affiliated with, endorsed by, or officially connected to any conference or organization listed. Please visit each conference’s official website for the most accurate and up-to-date details.
   </footer>
 </div>
 
-<!-- 🔒 YOUR JS IS UNCHANGED BELOW -->
 <script>
-/* YOUR EXISTING SCRIPT — UNMODIFIED */
-</script>
+const CSV_URL =
+  "https://raw.githubusercontent.com/goldisdying/proofofconference/main/Bitcoin%20Conference%20List%20-%20Sheet1.csv";
 
+const MONTHS = [
+  "january","february","march","april","may","june",
+  "july","august","september","october","november","december"
+];
+
+let conferences = [];
+let featuredOrder = [];
+
+function parseCSV(text) {
+  const rows = [];
+  let row = [], value = "", inQuotes = false;
+
+  for (let i = 0; i < text.length; i++) {
+    const c = text[i], n = text[i + 1];
+    if (c === '"' && inQuotes && n === '"') { value += '"'; i++; }
+    else if (c === '"') inQuotes = !inQuotes;
+    else if (c === "," && !inQuotes) { row.push(value); value = ""; }
+    else if ((c === "\n" || c === "\r") && !inQuotes) {
+      if (value || row.length) { row.push(value); rows.push(row); row = []; value = ""; }
+    } else value += c;
+  }
+  if (value || row.length) { row.push(value); rows.push(row); }
+  return rows;
+}
+
+function clean(t) {
+  return (t || "").replace(/[\r\n]+/g, " ").replace(/^"+|"+$/g, "").trim();
+}
+
+/* 🔑 MONTH-BASED DATE KEY (THE FIX) */
+function getMonthKey(range) {
+  if (!range) return null;
+
+  const yearMatch = range.match(/\b(20\d{2})\b/);
+  if (!yearMatch) return null;
+  const year = parseInt(yearMatch[1], 10);
+
+  const lower = range.toLowerCase();
+  const monthIndex = MONTHS.findIndex(m => lower.includes(m));
+
+  return year * 12 + (monthIndex >= 0 ? monthIndex : 0);
+}
+
+fetch(CSV_URL)
+  .then(r => r.text())
+  .then(text => {
+    const rows = parseCSV(text);
+    const headers = rows.shift();
+
+    conferences = rows
+      .map(r => Object.fromEntries(headers.map((h,i)=>[h, clean(r[i])])))
+      .filter(c => c["Not Active"].toLowerCase() !== "x");
+
+    featuredOrder = [...conferences];
+    populateFilters();
+    render();
+  });
+
+function populateFilters() {
+  ["Country","State","City"].forEach(f => {
+    const s = document.getElementById(f.toLowerCase());
+    [...new Set(conferences.map(c => c[f]).filter(Boolean))]
+      .sort()
+      .forEach(v => {
+        const o = document.createElement("option");
+        o.value = v;
+        o.textContent = v;
+        s.appendChild(o);
+      });
+  });
+}
+
+["search","country","state","city","sort"].forEach(id =>
+  document.getElementById(id).addEventListener("input", render)
+);
+
+function render() {
+  const q = search.value.toLowerCase();
+  const now = new Date();
+  const currentMonthKey = now.getFullYear() * 12 + now.getMonth();
+
+  let list = [...featuredOrder];
+
+  if (sort.value === "featured") {
+    list = list.filter(c => getMonthKey(c["Date Range"]) >= currentMonthKey);
+  }
+
+  if (sort.value === "upcoming") {
+    list = list
+      .filter(c => getMonthKey(c["Date Range"]) >= currentMonthKey)
+      .sort((a,b)=>getMonthKey(a["Date Range"]) - getMonthKey(b["Date Range"]));
+  }
+
+  if (sort.value === "az") {
+    list = list
+      .filter(c => getMonthKey(c["Date Range"]) >= currentMonthKey)
+      .sort((a,b)=>a.Conference.localeCompare(b.Conference));
+  }
+
+  if (sort.value === "past") {
+    list = list
+      .filter(c => getMonthKey(c["Date Range"]) < currentMonthKey)
+      .sort((a,b)=>getMonthKey(b["Date Range"]) - getMonthKey(a["Date Range"]));
+  }
+
+  cards.innerHTML = "";
+
+  list.forEach(c => {
+    if (q && !Object.values(c).join(" ").toLowerCase().includes(q)) return;
+    if (country.value && c.Country !== country.value) return;
+    if (state.value && c.State !== state.value) return;
+    if (city.value && c.City !== city.value) return;
+
+    const location = [c.City, c.State, c.Country].filter(Boolean).join(", ");
+
+    cards.innerHTML += `
+      <div class="card">
+        ${c.Image ? `<img src="${c.Image}" alt="${c.Conference}">` : ""}
+        <h2>${c.Conference}</h2>
+        <p>📍 ${location}</p>
+        ${c.Venue ? `<p>🏛️ ${c.Venue}</p>` : ""}
+        <p>📅 ${c["Date Range"]}</p>
+        ${c.Discount ? `<div class="discount">🎟️ ${c.Discount}</div>` : ""}
+        <a class="cta" href="${c["Main Conference Link"]}" target="_blank">Get Tickets</a>
+      </div>
+    `;
+  });
+}
+</script>
 </body>
 </html>
