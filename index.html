@@ -23,82 +23,18 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 
   <style>
-    body {
-      margin: 0;
-      background: #000;
-      color: #fff;
-      font-family: Inter, system-ui, sans-serif;
-    }
-    .container {
-      max-width: 480px;
-      margin: 0 auto;
-      padding: 20px;
-    }
-    h1 {
-      color: #f7931a;
-      font-size: 36px;
-      text-align: center;
-      margin-bottom: 6px;
-    }
-    .subtitle {
-      text-align: center;
-      font-size: 18px;
-      margin-bottom: 20px;
-    }
-    input, select {
-      width: 100%;
-      padding: 12px 16px;
-      margin-bottom: 10px;
-      border-radius: 24px;
-      border: none;
-      font-size: 16px;
-    }
-    .card {
-      background: #121212;
-      border-radius: 18px;
-      padding: 16px;
-      margin-bottom: 22px;
-      box-shadow: 0 0 0 1px #1f1f1f;
-    }
-    .card img {
-      width: 100%;
-      border-radius: 14px;
-      margin-bottom: 12px;
-    }
-    .card h2 {
-      color: #f7931a;
-      font-size: 22px;
-      margin: 0 0 10px;
-    }
-    .card p {
-      margin: 6px 0;
-      font-size: 15px;
-      line-height: 1.4;
-    }
-    .discount {
-      margin-top: 10px;
-      color: #f7931a;
-      font-weight: 600;
-    }
-    .cta {
-      display: inline-block;
-      margin-top: 14px;
-      background: #f7931a;
-      color: #000;
-      padding: 12px 18px;
-      border-radius: 10px;
-      font-weight: 700;
-      text-decoration: none;
-    }
-    footer {
-      margin-top: 40px;
-      padding-top: 20px;
-      border-top: 1px solid #1f1f1f;
-      font-size: 13px;
-      color: #9ca3af;
-      line-height: 1.5;
-      text-align: center;
-    }
+    body { margin:0; background:#000; color:#fff; font-family:Inter,sans-serif; }
+    .container { max-width:480px; margin:0 auto; padding:20px; }
+    h1 { color:#f7931a; font-size:36px; text-align:center; margin-bottom:6px; }
+    .subtitle { text-align:center; font-size:18px; margin-bottom:20px; }
+    input, select { width:100%; padding:12px 16px; margin-bottom:10px; border-radius:24px; border:none; font-size:16px; }
+    .card { background:#121212; border-radius:18px; padding:16px; margin-bottom:22px; box-shadow:0 0 0 1px #1f1f1f; }
+    .card img { width:100%; border-radius:14px; margin-bottom:12px; }
+    .card h2 { color:#f7931a; font-size:22px; margin:0 0 10px; }
+    .card p { margin:6px 0; font-size:15px; line-height:1.4; }
+    .discount { margin-top:10px; color:#f7931a; font-weight:600; }
+    .cta { display:inline-block; margin-top:14px; background:#f7931a; color:#000; padding:12px 18px; border-radius:10px; font-weight:700; text-decoration:none; }
+    footer { margin-top:40px; padding-top:20px; border-top:1px solid #1f1f1f; font-size:13px; color:#9ca3af; text-align:center; }
   </style>
 </head>
 
@@ -124,17 +60,16 @@
 
   <footer>
     <strong>Disclaimer:</strong>
-    Proof of Conference is an independent, informational directory and is not necessarily affiliated with, endorsed by, or officially connected to any conference or organization listed. Please visit each conference’s official website for the most accurate and up-to-date details.
+    Proof of Conference is an independent, informational directory and is not necessarily affiliated with, endorsed by, or officially connected to any conference or organization listed. Please visit each conference’s official website for official details.
   </footer>
 </div>
 
 <script>
-const CSV_URL =
-  "https://raw.githubusercontent.com/goldisdying/proofofconference/main/Bitcoin%20Conference%20List%20-%20Sheet1.csv";
+const CSV_URL = "https://raw.githubusercontent.com/goldisdying/proofofconference/main/Bitcoin%20Conference%20List%20-%20Sheet1.csv";
 
 const MONTHS = {
-  january: 0, february: 1, march: 2, april: 3, may: 4, june: 5,
-  july: 6, august: 7, september: 8, october: 9, november: 10, december: 11
+  january:0,february:1,march:2,april:3,may:4,june:5,
+  july:6,august:7,september:8,october:9,november:10,december:11
 };
 
 let conferences = [];
@@ -142,74 +77,103 @@ let featuredOrder = [];
 
 function parseCSV(text) {
   const rows = [];
-  let row = [], value = "", inQuotes = false;
-
-  for (let i = 0; i < text.length; i++) {
-    const c = text[i], n = text[i + 1];
-    if (c === '"' && inQuotes && n === '"') { value += '"'; i++; }
-    else if (c === '"') inQuotes = !inQuotes;
-    else if (c === "," && !inQuotes) { row.push(value); value = ""; }
-    else if ((c === "\n" || c === "\r") && !inQuotes) {
-      if (value || row.length) { row.push(value); rows.push(row); row = []; value = ""; }
-    } else value += c;
+  let row=[], value="", inQuotes=false;
+  for (let i=0;i<text.length;i++){
+    const c=text[i], n=text[i+1];
+    if(c=='"'&&inQuotes&&n=='"'){value+='"';i++;}
+    else if(c=='"'){inQuotes=!inQuotes;}
+    else if(c==","&&!inQuotes){row.push(value);value="";}
+    else if((c=="\n"||c=="\r")&&!inQuotes){
+      if(value||row.length){row.push(value);rows.push(row);row=[];value="";}
+    } else value+=c;
   }
-  if (value || row.length) { row.push(value); rows.push(row); }
+  if(value||row.length){row.push(value);rows.push(row);}
   return rows;
 }
 
-function clean(t) {
-  return (t || "").replace(/[\r\n]+/g, " ").replace(/^"+|"+$/g, "").trim();
+function clean(t){return (t||"").replace(/[\r\n]+/g," ").replace(/^"+|"+$/g,"").trim();}
+
+function getYearMonth(range){
+  const y=range.match(/\b(20\d{2})\b/);
+  const m=range.toLowerCase().match(/(january|february|march|april|may|june|july|august|september|october|november|december)/);
+  if(!y) return null;
+  return { year:parseInt(y[1],10), month:m?MONTHS[m[1]]:0 };
 }
 
-function getSortDate(range) {
-  const yearMatch = range.match(/\b(20\d{2})\b/);
-  if (!yearMatch) return null;
-  const year = parseInt(yearMatch[1], 10);
-
-  const monthMatch = range.toLowerCase().match(
-    /(january|february|march|april|may|june|july|august|september|october|november|december)/
-  );
-  const month = monthMatch ? MONTHS[monthMatch[1]] : 0;
-
-  return new Date(year, month, 1).getTime();
+function isUpcoming(range){
+  const d=getYearMonth(range);
+  if(!d) return false;
+  const now=new Date();
+  return d.year>now.getFullYear() || (d.year===now.getFullYear() && d.month>=now.getMonth());
 }
 
 fetch(CSV_URL)
-  .then(r => r.text())
-  .then(text => {
-    const rows = parseCSV(text);
-    const headers = rows.shift();
-
-    conferences = rows
-      .map(r => Object.fromEntries(headers.map((h,i)=>[h, clean(r[i])])))
-      .filter(c => c["Not Active"].toLowerCase() !== "x");
-
-    featuredOrder = [...conferences];
+  .then(r=>r.text())
+  .then(text=>{
+    const rows=parseCSV(text);
+    const headers=rows.shift();
+    conferences=rows.map(r=>Object.fromEntries(headers.map((h,i)=>[h,clean(r[i])])))
+      .filter(c=>c["Not Active"].toLowerCase()!=="x");
+    featuredOrder=[...conferences];
     populateFilters();
     render();
   });
 
-function populateFilters() {
+function populateFilters(){
   ["Country","State","City"].forEach(f=>{
     const s=document.getElementById(f.toLowerCase());
     [...new Set(conferences.map(c=>c[f]).filter(Boolean))].sort().forEach(v=>{
-      const o=document.createElement("option"); o.value=v; o.textContent=v; s.appendChild(o);
+      const o=document.createElement("option");o.value=v;o.textContent=v;s.appendChild(o);
     });
   });
 }
 
-["search","country","state","city","sort"].forEach(id =>
-  document.getElementById(id).addEventListener("input", render)
-);
+["search","country","state","city","sort"].forEach(id=>document.getElementById(id).addEventListener("input",render));
 
-function render() {
-  const q = search.value.toLowerCase();
-  const now = new Date().getTime();
-  let list = [...featuredOrder];
+function render(){
+  const q=search.value.toLowerCase();
+  let list=[...featuredOrder];
 
-  if (sort.value === "featured") {
-    list = list.filter(c => getSortDate(c["Date Range"]) >= now);
+  if(sort.value==="featured"||sort.value==="upcoming"||sort.value==="az"){
+    list=list.filter(c=>isUpcoming(c["Date Range"]));
   }
 
-  if (sort.value === "upcoming") {
-    list = list
+  if(sort.value==="upcoming"){
+    list.sort((a,b)=>{
+      const A=getYearMonth(a["Date Range"]),B=getYearMonth(b["Date Range"]);
+      return A.year!==B.year?A.year-B.year:A.month-B.month;
+    });
+  }
+
+  if(sort.value==="past"){
+    list=featuredOrder.filter(c=>!isUpcoming(c["Date Range"]));
+  }
+
+  if(sort.value==="az"){
+    list.sort((a,b)=>a.Conference.localeCompare(b.Conference));
+  }
+
+  cards.innerHTML="";
+  list.forEach(c=>{
+    if(q&&!Object.values(c).join(" ").toLowerCase().includes(q))return;
+    if(country.value&&c.Country!==country.value)return;
+    if(state.value&&c.State!==state.value)return;
+    if(city.value&&c.City!==city.value)return;
+
+    const location=[c.City,c.State,c.Country].filter(Boolean).join(", ");
+
+    cards.innerHTML+=`
+      <div class="card">
+        ${c.Image?`<img src="${c.Image}" alt="${c.Conference}">`:""}
+        <h2>${c.Conference}</h2>
+        <p>📍 ${location}</p>
+        ${c.Venue?`<p>🏛️ ${c.Venue}</p>`:""}
+        <p>📅 ${c["Date Range"]}</p>
+        ${c.Discount?`<div class="discount">🎟️ ${c.Discount}</div>`:""}
+        <a class="cta" href="${c["Main Conference Link"]}" target="_blank">Get Tickets</a>
+      </div>`;
+  });
+}
+</script>
+</body>
+</html>
