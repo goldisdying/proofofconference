@@ -18,6 +18,7 @@
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
 
+  <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image" />
 
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
@@ -29,23 +30,28 @@
       color: #fff;
       font-family: Inter, system-ui, sans-serif;
     }
+
     .container {
       max-width: 480px;
       margin: 0 auto;
       padding: 20px;
     }
+
     h1 {
       color: #f7931a;
       font-size: 36px;
       text-align: center;
       margin-bottom: 6px;
     }
+
     .subtitle {
       text-align: center;
       font-size: 18px;
       margin-bottom: 20px;
     }
-    input, select {
+
+    input,
+    select {
       width: 100%;
       padding: 12px 16px;
       margin-bottom: 10px;
@@ -53,6 +59,7 @@
       border: none;
       font-size: 16px;
     }
+
     .card {
       background: #121212;
       border-radius: 18px;
@@ -60,26 +67,31 @@
       margin-bottom: 22px;
       box-shadow: 0 0 0 1px #1f1f1f;
     }
+
     .card img {
       width: 100%;
       border-radius: 14px;
       margin-bottom: 12px;
     }
+
     .card h2 {
       color: #f7931a;
       font-size: 22px;
       margin: 0 0 10px;
     }
+
     .card p {
       margin: 6px 0;
       font-size: 15px;
       line-height: 1.4;
     }
+
     .discount {
       margin-top: 10px;
       color: #f7931a;
       font-weight: 600;
     }
+
     .cta {
       display: inline-block;
       margin-top: 14px;
@@ -90,6 +102,7 @@
       font-weight: 700;
       text-decoration: none;
     }
+
     footer {
       margin-top: 40px;
       padding-top: 20px;
@@ -134,12 +147,6 @@ const CSV_URL =
 
 let conferences = [];
 let featuredOrder = [];
-
-const monthMap = {
-  january: 1, february: 2, march: 3, april: 4,
-  may: 5, june: 6, july: 7, august: 8,
-  september: 9, october: 10, november: 11, december: 12
-};
 
 function parseCSV(text) {
   const rows = [];
@@ -186,19 +193,9 @@ function clean(text) {
     .trim();
 }
 
-function getSortValue(dateRange) {
-  const yearMatch = dateRange.match(/\b(20\d{2})\b/);
-  const year = yearMatch ? parseInt(yearMatch[1], 10) : 0;
-
-  let month = 12;
-  for (const m in monthMap) {
-    if (dateRange.toLowerCase().includes(m)) {
-      month = monthMap[m];
-      break;
-    }
-  }
-
-  return year * 100 + month;
+function extractYear(dateRange) {
+  const match = dateRange.match(/\b(20\d{2})\b/);
+  return match ? parseInt(match[1], 10) : null;
 }
 
 fetch(CSV_URL)
@@ -242,16 +239,16 @@ function render() {
   const currentYear = new Date().getFullYear();
   let list = [...featuredOrder];
 
+  if (sort.value === "featured") {
+    list = list.filter(c => extractYear(c["Date Range"]) >= currentYear);
+  }
+
   if (sort.value === "upcoming") {
-    list = list
-      .filter(c => getSortValue(c["Date Range"]) >= currentYear * 100)
-      .sort((a, b) => getSortValue(a["Date Range"]) - getSortValue(b["Date Range"]));
+    list = list.filter(c => extractYear(c["Date Range"]) >= currentYear);
   }
 
   if (sort.value === "past") {
-    list = list
-      .filter(c => getSortValue(c["Date Range"]) < currentYear * 100)
-      .sort((a, b) => getSortValue(b["Date Range"]) - getSortValue(a["Date Range"]));
+    list = list.filter(c => extractYear(c["Date Range"]) < currentYear);
   }
 
   if (sort.value === "az") {
