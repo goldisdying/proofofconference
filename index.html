@@ -4,244 +4,214 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <title>Proof of Conference</title>
-  <meta name="description" content="Track every Bitcoin conference worldwide." />
+  <title>Submit Event | Proof of Conference</title>
+  <meta name="description" content="Submit a Bitcoin conference or event to Proof of Conference." />
   <link rel="icon" href="/favicon.ico" />
-
-  <!-- Open Graph -->
-  <meta property="og:title" content="Proof of Conference" />
-  <meta property="og:description" content="An independent directory of Bitcoin conferences and events worldwide." />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://proofofconference.com/" />
-  <meta property="og:site_name" content="Proof of Conference" />
-  <meta property="og:image" content="https://proofofconference.com/og-proof-of-conference.jpg" />
-  <meta property="og:image:width" content="1200" />
-  <meta property="og:image:height" content="630" />
-
-  <meta name="twitter:card" content="summary_large_image" />
 
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 
   <style>
-    body { margin:0; background:#000; color:#fff; font-family:Inter,sans-serif; }
-    .container { max-width:480px; margin:0 auto; padding:20px; }
-    h1 { color:#f7931a; font-size:36px; text-align:center; margin-bottom:6px; }
-    .subtitle { text-align:center; font-size:18px; margin-bottom:20px; }
+    body {
+      margin: 0;
+      background: #000;
+      color: #fff;
+      font-family: Inter, sans-serif;
+    }
+
+    .container {
+      max-width: 520px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+
+    h1 {
+      color: #f7931a;
+      text-align: center;
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #9ca3af;
+      margin-bottom: 28px;
+    }
+
+    label {
+      display: block;
+      margin-top: 18px;
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
 
     input, select {
-      width:100%;
-      box-sizing:border-box;
-      padding:14px 18px;
-      margin-bottom:12px;
-      border-radius:999px;
-      border:none;
-      font-size:16px;
+      width: 100%;
+      padding: 12px 14px;
+      border-radius: 10px;
+      border: none;
+      font-size: 16px;
     }
 
-    .card {
-      background:#121212;
-      border-radius:18px;
-      padding:16px;
-      margin-bottom:22px;
-      box-shadow:0 0 0 1px #1f1f1f;
+    .row {
+      display: flex;
+      gap: 12px;
     }
 
-    .card img {
-      width:100%;
-      border-radius:14px;
-      margin-bottom:12px;
+    .row > div {
+      flex: 1;
     }
 
-    .card h2 {
-      color:#f7931a;
-      font-size:22px;
-      margin:0 0 10px;
+    .hint {
+      font-size: 13px;
+      color: #9ca3af;
+      margin-top: 4px;
     }
 
-    .card p {
-      margin:6px 0;
-      font-size:15px;
-      line-height:1.4;
+    .radio-group {
+      display: flex;
+      gap: 20px;
+      margin-top: 8px;
     }
 
-    .discount {
-      margin-top:10px;
-      color:#f7931a;
-      font-weight:600;
+    .radio-group label {
+      font-weight: 400;
     }
 
-    .cta {
-      display:inline-block;
-      margin-top:14px;
-      background:#f7931a;
-      color:#000;
-      padding:12px 18px;
-      border-radius:10px;
-      font-weight:700;
-      text-decoration:none;
+    button {
+      margin-top: 32px;
+      width: 100%;
+      background: #f7931a;
+      color: #000;
+      padding: 14px;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 16px;
+      border: none;
+      cursor: pointer;
     }
 
     footer {
-      margin-top:40px;
-      padding-top:20px;
-      border-top:1px solid #1f1f1f;
-      font-size:13px;
-      color:#9ca3af;
-      text-align:center;
+      margin-top: 40px;
+      font-size: 13px;
+      color: #9ca3af;
+      text-align: center;
     }
   </style>
 </head>
 
 <body>
 <div class="container">
-  <h1>Proof of Conference</h1>
-  <div class="subtitle">Track Every Bitcoin Conference</div>
 
-  <input id="search" placeholder="Search conferences..." />
+  <h1>Submit an Event</h1>
+  <div class="subtitle">Help us keep the Bitcoin conference list accurate.</div>
 
-  <select id="sort">
-    <option value="featured">Featured</option>
-    <option value="upcoming">Upcoming</option>
-    <option value="az">A to Z</option>
-    <option value="past">Past</option>
-  </select>
+  <form action="https://formspree.io/f/xpqwvrzk" method="POST">
 
-  <select id="country"><option value="">All Countries</option></select>
-  <select id="state"><option value="">All States</option></select>
-  <select id="city"><option value="">All Cities</option></select>
+    <label>Event Name *</label>
+    <input type="text" name="event_name" required />
 
-  <div id="cards"></div>
+    <div class="row">
+      <div>
+        <label>Start Date *</label>
+        <input type="date" name="start_date" id="startDate" required />
+      </div>
+      <div>
+        <label>End Date *</label>
+        <input type="date" name="end_date" id="endDate" required />
+        <div class="hint">Can be the same as the start date.</div>
+      </div>
+    </div>
+
+    <label>City *</label>
+    <input type="text" name="city" required />
+
+    <label>State / Province</label>
+    <select name="state" id="stateSelect">
+      <option value="">Select state</option>
+      <option>Alabama</option><option>Alaska</option><option>Arizona</option><option>Arkansas</option>
+      <option>California</option><option>Colorado</option><option>Connecticut</option><option>Delaware</option>
+      <option>Florida</option><option>Georgia</option><option>Hawaii</option><option>Idaho</option>
+      <option>Illinois</option><option>Indiana</option><option>Iowa</option><option>Kansas</option>
+      <option>Kentucky</option><option>Louisiana</option><option>Maine</option><option>Maryland</option>
+      <option>Massachusetts</option><option>Michigan</option><option>Minnesota</option><option>Mississippi</option>
+      <option>Missouri</option><option>Montana</option><option>Nebraska</option><option>Nevada</option>
+      <option>New Hampshire</option><option>New Jersey</option><option>New Mexico</option><option>New York</option>
+      <option>North Carolina</option><option>North Dakota</option><option>Ohio</option><option>Oklahoma</option>
+      <option>Oregon</option><option>Pennsylvania</option><option>Rhode Island</option><option>South Carolina</option>
+      <option>South Dakota</option><option>Tennessee</option><option>Texas</option><option>Utah</option>
+      <option>Vermont</option><option>Virginia</option><option>Washington</option><option>West Virginia</option>
+      <option>Wisconsin</option><option>Wyoming</option>
+      <option>Puerto Rico</option><option>U.S. Virgin Islands</option><option>Guam</option>
+    </select>
+
+    <label>Country *</label>
+    <select name="country" id="countrySelect" required>
+      <option value="">Select country</option>
+      <option>United States</option>
+      <option>Afghanistan</option><option>Albania</option><option>Algeria</option><option>Andorra</option>
+      <option>Angola</option><option>Argentina</option><option>Armenia</option><option>Australia</option>
+      <option>Austria</option><option>Azerbaijan</option>
+      <!-- all remaining countries alphabetically -->
+      <option>Zimbabwe</option>
+    </select>
+
+    <label>Venue</label>
+    <input type="text" name="venue" />
+
+    <label>Event Website *</label>
+    <input
+      type="text"
+      name="website"
+      placeholder="example.com"
+      required
+      pattern="^[^\s]+\.[^\s]+$"
+      title="Enter a valid website like example.com"
+    />
+    <div class="hint">Domain only is fine. No http or https needed.</div>
+
+    <label>Contact Email *</label>
+    <input
+      type="text"
+      name="email"
+      placeholder="name@email.com"
+      required
+      pattern=".+@.+"
+      title="Enter a valid email address"
+    />
+
+    <label>Can you provide a discount code?</label>
+    <div class="radio-group">
+      <label><input type="radio" name="discount_code" value="Yes"> Yes</label>
+      <label><input type="radio" name="discount_code" value="No"> No</label>
+    </div>
+
+    <button type="submit">Submit Event</button>
+
+  </form>
 
   <footer>
-    <strong>Disclaimer:</strong>
-    Proof of Conference is an independent, informational directory and is not necessarily affiliated with any conference or organization listed. Please visit each conference’s official website for official details.
+    Submissions are reviewed before being added.
   </footer>
+
 </div>
 
 <script>
-/* ✅ LOAD CSV FROM THIS SITE (NO GITHUB RAW) */
-const CSV_URL = "/Bitcoin Conference List - Sheet1.csv";
+  const today = new Date().toISOString().split("T")[0];
+  const start = document.getElementById("startDate");
+  const end = document.getElementById("endDate");
+  const country = document.getElementById("countrySelect");
+  const state = document.getElementById("stateSelect");
 
-const MONTHS = {
-  january:0,february:1,march:2,april:3,may:4,june:5,
-  july:6,august:7,september:8,october:9,november:10,december:11
-};
+  start.min = today;
+  end.min = today;
 
-let conferences = [];
-let featuredOrder = [];
-
-function parseCSV(text) {
-  const rows = [];
-  let row=[], value="", inQuotes=false;
-
-  for (let i=0;i<text.length;i++){
-    const c=text[i], n=text[i+1];
-    if(c=='"'&&inQuotes&&n=='"'){value+='"';i++;}
-    else if(c=='"'){inQuotes=!inQuotes;}
-    else if(c==","&&!inQuotes){row.push(value);value="";}
-    else if((c=="\n"||c=="\r")&&!inQuotes){
-      if(value||row.length){row.push(value);rows.push(row);row=[];value="";}
-    } else value+=c;
-  }
-  if(value||row.length){row.push(value);rows.push(row);}
-  return rows;
-}
-
-function clean(t){
-  return (t||"").replace(/[\r\n]+/g," ").replace(/^"+|"+$/g,"").trim();
-}
-
-function getYearMonth(range){
-  if(!range) return null;
-  const y=range.match(/\b(20\d{2})\b/);
-  const m=range.toLowerCase().match(/(january|february|march|april|may|june|july|august|september|october|november|december)/);
-  if(!y) return null;
-  return { year:parseInt(y[1],10), month:m?MONTHS[m[1]]:0 };
-}
-
-function isUpcoming(range){
-  const d=getYearMonth(range);
-  if(!d) return false;
-  const now=new Date();
-  return d.year>now.getFullYear() || (d.year===now.getFullYear() && d.month>=now.getMonth());
-}
-
-fetch(CSV_URL)
-  .then(r=>r.text())
-  .then(text=>{
-    const rows=parseCSV(text);
-    const headers=rows.shift();
-
-    conferences=rows
-      .map(r=>Object.fromEntries(headers.map((h,i)=>[h,clean(r[i])])))
-      .filter(c=>c["Not Active"].toLowerCase()!=="x");
-
-    featuredOrder=[...conferences];
-    populateFilters();
-    render();
+  start.addEventListener("change", () => {
+    end.min = start.value;
   });
 
-function populateFilters(){
-  ["Country","State","City"].forEach(f=>{
-    const s=document.getElementById(f.toLowerCase());
-    [...new Set(conferences.map(c=>c[f]).filter(Boolean))]
-      .sort()
-      .forEach(v=>{
-        const o=document.createElement("option");
-        o.value=v;
-        o.textContent=v;
-        s.appendChild(o);
-      });
+  country.addEventListener("change", () => {
+    state.required = country.value === "United States";
   });
-}
-
-["search","country","state","city","sort"]
-  .forEach(id=>document.getElementById(id).addEventListener("input",render));
-
-function render(){
-  const q=search.value.toLowerCase();
-  let list=[...featuredOrder];
-
-  if(sort.value==="featured"||sort.value==="upcoming"||sort.value==="az"){
-    list=list.filter(c=>isUpcoming(c["Date Range"]));
-  }
-
-  if(sort.value==="upcoming"){
-    list.sort((a,b)=>{
-      const A=getYearMonth(a["Date Range"]),B=getYearMonth(b["Date Range"]);
-      return A.year!==B.year?A.year-B.year:A.month-B.month;
-    });
-  }
-
-  if(sort.value==="past"){
-    list=featuredOrder.filter(c=>!isUpcoming(c["Date Range"]));
-  }
-
-  if(sort.value==="az"){
-    list.sort((a,b)=>a.Conference.localeCompare(b.Conference));
-  }
-
-  cards.innerHTML="";
-  list.forEach(c=>{
-    if(q&&!Object.values(c).join(" ").toLowerCase().includes(q))return;
-    if(country.value&&c.Country!==country.value)return;
-    if(state.value&&c.State!==state.value)return;
-    if(city.value&&c.City!==city.value)return;
-
-    const location=[c.City,c.State,c.Country].filter(Boolean).join(", ");
-
-    cards.innerHTML+=`
-      <div class="card">
-        ${c.Image?`<img src="${c.Image}" alt="${c.Conference}">`:""}
-        <h2>${c.Conference}</h2>
-        <p>📍 ${location}</p>
-        ${c.Venue?`<p>🏛️ ${c.Venue}</p>`:""}
-        <p>📅 ${c["Date Range"]}</p>
-        ${c.Discount?`<div class="discount">🎟️ ${c.Discount}</div>`:""}
-        <a class="cta" href="${c["Main Conference Link"]}" target="_blank">Get Tickets</a>
-      </div>`;
-  });
-}
 </script>
+
 </body>
 </html>
