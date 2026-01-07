@@ -198,7 +198,6 @@
       <option>U.S. Virgin Islands</option><option>Guam</option>
       <option>American Samoa</option><option>Northern Mariana Islands</option>
     </select>
-    <div class="hint">Required only if country is United States</div>
 
     <label>Venue</label>
     <input type="text" name="venue">
@@ -281,6 +280,12 @@
     if (website.value && !/^https?:\/\//i.test(website.value)) {
       website.value = "https://" + website.value;
     }
+  });
+
+  document.querySelectorAll('input[inputmode="numeric"]').forEach(input => {
+    input.addEventListener("input", () => {
+      input.value = input.value.replace(/[^0-9]/g, "");
+    });
   });
 
   function toggleDetails(radiosName, containerId, inputName) {
