@@ -98,7 +98,20 @@
       Submit a Bitcoin conference or event for inclusion on Proof of Conference.
     </div>
 
-    <form action="https://formspree.io/f/xpqwvrzk" method="POST">
+    <form
+      action="https://formspree.io/f/xpqwvrzk"
+      method="POST"
+      data-formspree-honeypot="company"
+    >
+
+      <!-- Honeypot field (hidden, anti-spam) -->
+      <input
+        type="text"
+        name="company"
+        tabindex="-1"
+        autocomplete="off"
+        style="display:none"
+      />
 
       <label>Event Name *</label>
       <input type="text" name="event_name" required />
@@ -118,6 +131,7 @@
       <select name="country" id="country" required>
         <option value="">Select country</option>
         <option>United States</option>
+        <!-- all other countries unchanged -->
         <option>Afghanistan</option>
         <option>Albania</option>
         <option>Algeria</option>
