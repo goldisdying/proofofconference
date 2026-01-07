@@ -258,6 +258,12 @@
         <option>Romania</option>
         <option>Russia</option>
         <option>Rwanda</option>
+        <option>Saint Kitts and Nevis</option>
+        <option>Saint Lucia</option>
+        <option>Saint Vincent and the Grenadines</option>
+        <option>Samoa</option>
+        <option>San Marino</option>
+        <option>Sao Tome and Principe</option>
         <option>Saudi Arabia</option>
         <option>Senegal</option>
         <option>Serbia</option>
@@ -269,7 +275,6 @@
         <option>Solomon Islands</option>
         <option>Somalia</option>
         <option>South Africa</option>
-        <option>South Korea</option>
         <option>South Sudan</option>
         <option>Spain</option>
         <option>Sri Lanka</option>
@@ -289,6 +294,7 @@
         <option>Tunisia</option>
         <option>Turkey</option>
         <option>Turkmenistan</option>
+        <option>Tuvalu</option>
         <option>Uganda</option>
         <option>Ukraine</option>
         <option>United Arab Emirates</option>
@@ -333,7 +339,7 @@
       <input type="text" name="venue" />
 
       <label>Event Website *</label>
-      <input type="url" name="website" required />
+      <input type="url" name="website" id="website" placeholder="https://example.com" required />
 
       <label>Contact Email *</label>
       <input type="email" name="email" required />
@@ -364,6 +370,7 @@
     const end = document.getElementById("end_date");
     const country = document.getElementById("country");
     const state = document.getElementById("state");
+    const website = document.getElementById("website");
 
     start.min = today;
     end.min = today;
@@ -380,6 +387,13 @@
         state.disabled = true;
         state.required = false;
         state.value = "";
+      }
+    });
+
+    website.addEventListener("blur", () => {
+      const value = website.value.trim();
+      if (value && !/^https?:\/\//i.test(value)) {
+        website.value = "https://" + value;
       }
     });
   </script>
