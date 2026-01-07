@@ -45,13 +45,17 @@
       font-size: 14px;
     }
 
-    input {
+    input, select {
       width: 100%;
       box-sizing: border-box;
       padding: 12px 14px;
       border-radius: 10px;
       border: none;
       font-size: 15px;
+    }
+
+    select:disabled {
+      opacity: 0.5;
     }
 
     .hint {
@@ -119,8 +123,52 @@
       <input type="date" name="end_date" id="end_date" required />
       <div class="hint">Can be the same as the start date</div>
 
-      <label>Location (City, State, Country) *</label>
-      <input type="text" name="location" required />
+      <label>City *</label>
+      <input type="text" name="city" required />
+
+      <label>Country *</label>
+      <select name="country" id="country" required>
+        <option value="">Select country</option>
+        <option value="United States">United States</option>
+        <option value="Canada">Canada</option>
+        <option value="Mexico">Mexico</option>
+        <option value="United Kingdom">United Kingdom</option>
+        <option value="Germany">Germany</option>
+        <option value="France">France</option>
+        <option value="Czech Republic">Czech Republic</option>
+        <option value="Spain">Spain</option>
+        <option value="Italy">Italy</option>
+        <option value="Portugal">Portugal</option>
+        <option value="El Salvador">El Salvador</option>
+        <option value="Japan">Japan</option>
+        <option value="Australia">Australia</option>
+        <option value="Other">Other</option>
+      </select>
+
+      <label>State / Territory</label>
+      <select name="state" id="state" disabled>
+        <option value="">Select state</option>
+        <option>Alabama</option><option>Alaska</option><option>Arizona</option><option>Arkansas</option>
+        <option>California</option><option>Colorado</option><option>Connecticut</option><option>Delaware</option>
+        <option>Florida</option><option>Georgia</option><option>Hawaii</option><option>Idaho</option>
+        <option>Illinois</option><option>Indiana</option><option>Iowa</option><option>Kansas</option>
+        <option>Kentucky</option><option>Louisiana</option><option>Maine</option><option>Maryland</option>
+        <option>Massachusetts</option><option>Michigan</option><option>Minnesota</option><option>Mississippi</option>
+        <option>Missouri</option><option>Montana</option><option>Nebraska</option><option>Nevada</option>
+        <option>New Hampshire</option><option>New Jersey</option><option>New Mexico</option><option>New York</option>
+        <option>North Carolina</option><option>North Dakota</option><option>Ohio</option><option>Oklahoma</option>
+        <option>Oregon</option><option>Pennsylvania</option><option>Rhode Island</option><option>South Carolina</option>
+        <option>South Dakota</option><option>Tennessee</option><option>Texas</option><option>Utah</option>
+        <option>Vermont</option><option>Virginia</option><option>Washington</option><option>West Virginia</option>
+        <option>Wisconsin</option><option>Wyoming</option>
+        <option>District of Columbia</option>
+        <option>Puerto Rico</option>
+        <option>U.S. Virgin Islands</option>
+        <option>Guam</option>
+        <option>American Samoa</option>
+        <option>Northern Mariana Islands</option>
+      </select>
+      <div class="hint">Required only if country is United States</div>
 
       <label>Venue</label>
       <input type="text" name="venue" />
@@ -133,26 +181,14 @@
 
       <label>Are you able to provide a discount code for the event?</label>
       <div class="radio-group">
-        <label>
-          <input type="radio" name="discount_code" value="Yes" required />
-          Yes
-        </label>
-        <label>
-          <input type="radio" name="discount_code" value="No" />
-          No
-        </label>
+        <label><input type="radio" name="discount_code" value="Yes" required /> Yes</label>
+        <label><input type="radio" name="discount_code" value="No" /> No</label>
       </div>
 
       <label>Do you have an affiliate program for ticket sales?</label>
       <div class="radio-group">
-        <label>
-          <input type="radio" name="affiliate_program" value="Yes" required />
-          Yes
-        </label>
-        <label>
-          <input type="radio" name="affiliate_program" value="No" />
-          No
-        </label>
+        <label><input type="radio" name="affiliate_program" value="Yes" required /> Yes</label>
+        <label><input type="radio" name="affiliate_program" value="No" /> No</label>
       </div>
 
       <button type="submit">Submit Event</button>
@@ -163,20 +199,30 @@
     </footer>
   </div>
 
-  <!-- Date validation logic -->
   <script>
     const today = new Date().toISOString().split("T")[0];
-
     const start = document.getElementById("start_date");
     const end = document.getElementById("end_date");
+    const country = document.getElementById("country");
+    const state = document.getElementById("state");
 
-    // Prevent dates before today
+    // Date rules
     start.min = today;
     end.min = today;
-
-    // Prevent end date before start date (same day allowed)
     start.addEventListener("change", () => {
       end.min = start.value;
+    });
+
+    // Country/state rules
+    country.addEventListener("change", () => {
+      if (country.value === "United States") {
+        state.disabled = false;
+        state.required = true;
+      } else {
+        state.disabled = true;
+        state.required = false;
+        state.value = "";
+      }
     });
   </script>
 </body>
