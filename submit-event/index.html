@@ -288,6 +288,25 @@
     });
   });
 
+  function enforcePercentageLimit(valueInput, typeSelect) {
+    if (typeSelect.value === "%" && valueInput.value !== "") {
+      if (parseInt(valueInput.value, 10) > 100) {
+        valueInput.value = "100";
+      }
+    }
+  }
+
+  function attachLimitHandlers(valueName, typeName) {
+    const valueInput = document.querySelector(`input[name="${valueName}"]`);
+    const typeSelect = document.querySelector(`select[name="${typeName}"]`);
+
+    valueInput.addEventListener("input", () => enforcePercentageLimit(valueInput, typeSelect));
+    typeSelect.addEventListener("change", () => enforcePercentageLimit(valueInput, typeSelect));
+  }
+
+  attachLimitHandlers("discount_value", "discount_type");
+  attachLimitHandlers("affiliate_value", "affiliate_type");
+
   function toggleDetails(radiosName, containerId, inputName) {
     const radios = document.querySelectorAll(`input[name="${radiosName}"]`);
     const container = document.getElementById(containerId);
