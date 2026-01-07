@@ -112,8 +112,11 @@
       <!-- Honeypot field (spam trap) -->
       <input type="text" name="_gotcha" style="display:none">
 
-      <!-- Subject line -->
+      <!-- Formspree metadata (HTML-only hardening) -->
       <input type="hidden" name="_subject" value="Proof of Conference — Contact Form Submission">
+      <input type="hidden" name="_format" value="plain">
+      <input type="hidden" name="_submission_method" value="html">
+      <input type="hidden" name="source" value="proofofconference.com contact page">
 
       <label for="name">Name</label>
       <input
