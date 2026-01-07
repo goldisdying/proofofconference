@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <title>Submit Event | Proof of Conference</title>
-  <meta name="description" content="Submit a Bitcoin conference or event to Proof of Conference." />
+  <meta name="description" content="Submit a Bitcoin conference or event for review." />
   <link rel="icon" href="/favicon.ico" />
 
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
@@ -53,14 +53,21 @@
       color: #9ca3af;
       margin-top: 6px;
     }
+    .radio-group {
+      margin-top: 8px;
+    }
+    .radio-group label {
+      font-weight: 400;
+      margin-right: 20px;
+    }
     button {
       width: 100%;
-      margin-top: 30px;
-      padding: 14px;
+      margin-top: 32px;
+      padding: 16px;
       background: #f7931a;
       color: #000;
       border: none;
-      border-radius: 24px;
+      border-radius: 28px;
       font-size: 18px;
       font-weight: 700;
       cursor: pointer;
@@ -75,9 +82,11 @@
 
   <form action="https://formspree.io/f/xpqwvrzk" method="POST" novalidate>
 
+    <!-- Event Name -->
     <label>Event Name *</label>
     <input type="text" name="event_name" required>
 
+    <!-- Website -->
     <label>Event Website *</label>
     <input
       type="text"
@@ -88,6 +97,7 @@
     >
     <div class="hint">No http required</div>
 
+    <!-- Email -->
     <label>Contact Email *</label>
     <input
       type="email"
@@ -96,11 +106,132 @@
       required
     >
 
-    <button type="submit" formnovalidate>
-      Submit Event
-    </button>
+    <!-- Dates -->
+    <label>Start Date *</label>
+    <input type="date" name="start_date" id="start_date" required>
+
+    <label>End Date *</label>
+    <input type="date" name="end_date" id="end_date" required>
+    <div class="hint">Can be the same as the start date</div>
+
+    <!-- Location -->
+    <label>City *</label>
+    <input type="text" name="city" required>
+
+    <label>Country *</label>
+    <select name="country" id="country" required>
+      <option value="">Select country</option>
+      <option value="United States">United States</option>
+      <option disabled>──────────</option>
+      <!-- All other countries alphabetically -->
+      <option>Afghanistan</option>
+      <option>Albania</option>
+      <option>Algeria</option>
+      <option>Andorra</option>
+      <option>Angola</option>
+      <option>Argentina</option>
+      <option>Australia</option>
+      <option>Austria</option>
+      <option>Bahamas</option>
+      <option>Bahrain</option>
+      <option>Bangladesh</option>
+      <option>Belgium</option>
+      <option>Brazil</option>
+      <option>Canada</option>
+      <option>Chile</option>
+      <option>Colombia</option>
+      <option>Costa Rica</option>
+      <option>Croatia</option>
+      <option>Czech Republic</option>
+      <option>Denmark</option>
+      <option>Estonia</option>
+      <option>Finland</option>
+      <option>France</option>
+      <option>Germany</option>
+      <option>Greece</option>
+      <option>Hungary</option>
+      <option>Iceland</option>
+      <option>India</option>
+      <option>Indonesia</option>
+      <option>Ireland</option>
+      <option>Israel</option>
+      <option>Italy</option>
+      <option>Japan</option>
+      <option>Mexico</option>
+      <option>Netherlands</option>
+      <option>New Zealand</option>
+      <option>Norway</option>
+      <option>Poland</option>
+      <option>Portugal</option>
+      <option>Singapore</option>
+      <option>Slovakia</option>
+      <option>Slovenia</option>
+      <option>South Africa</option>
+      <option>South Korea</option>
+      <option>Spain</option>
+      <option>Sweden</option>
+      <option>Switzerland</option>
+      <option>United Kingdom</option>
+    </select>
+
+    <!-- State (US only) -->
+    <div id="state-wrapper" style="display:none;">
+      <label>State *</label>
+      <select name="state" id="state">
+        <option value="">Select state</option>
+        <option>Alabama</option>
+        <option>Alaska</option>
+        <option>Arizona</option>
+        <option>California</option>
+        <option>Colorado</option>
+        <option>Florida</option>
+        <option>New York</option>
+        <option>Texas</option>
+        <option>Washington</option>
+        <option>Puerto Rico</option>
+        <option>Guam</option>
+      </select>
+    </div>
+
+    <!-- Discount -->
+    <label>Are you able to provide a discount code for the event? *</label>
+    <div class="radio-group">
+      <label><input type="radio" name="discount" value="Yes" required> Yes</label>
+      <label><input type="radio" name="discount" value="No" required> No</label>
+    </div>
+
+    <button type="submit" formnovalidate>Submit Event</button>
 
   </form>
 </div>
+
+<script>
+  const start = document.getElementById("start_date");
+  const end = document.getElementById("end_date");
+  const today = new Date().toISOString().split("T")[0];
+
+  start.min = today;
+  end.min = today;
+
+  start.addEventListener("change", () => {
+    end.min = start.value;
+  });
+
+  const country = document.getElementById("country");
+  const stateWrap = document.getElementById("state-wrapper");
+  const state = document.getElementById("state");
+
+  country.addEventListener("change", () => {
+    if (country.value === "United States") {
+      stateWrap.style.display = "block";
+      state.required = true;
+    } else {
+      stateWrap.style.display = "none";
+      state.required = false;
+      state.value = "";
+    }
+  });
+</script>
+
 </body>
 </html>
