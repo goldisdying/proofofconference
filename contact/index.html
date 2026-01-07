@@ -10,6 +10,13 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 
   <style>
+    /* --- Critical mobile fix --- */
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
     body {
       margin: 0;
       background: #000;
@@ -20,7 +27,7 @@
     .container {
       max-width: 520px;
       margin: 0 auto;
-      padding: 40px 20px;
+      padding: 40px 16px;
     }
 
     h1 {
@@ -35,6 +42,7 @@
       color: #aaa;
       margin-bottom: 32px;
       font-size: 15px;
+      line-height: 1.4;
     }
 
     form {
@@ -57,7 +65,7 @@
       color: #fff;
       border: 1px solid #333;
       border-radius: 6px;
-      font-size: 14px;
+      font-size: 16px; /* prevents iOS zoom */
       font-family: inherit;
     }
 
@@ -86,7 +94,7 @@
       color: #000;
       border: none;
       border-radius: 6px;
-      font-size: 15px;
+      font-size: 16px;
       font-weight: 700;
       cursor: pointer;
     }
@@ -108,11 +116,10 @@
       action="https://formspree.io/f/xykzrjqg"
       method="POST"
     >
-
-      <!-- Honeypot field (spam trap) -->
+      <!-- Honeypot field -->
       <input type="text" name="_gotcha" style="display:none">
 
-      <!-- Formspree metadata (HTML-only hardening) -->
+      <!-- Form metadata -->
       <input type="hidden" name="_subject" value="Proof of Conference — Contact Form Submission">
       <input type="hidden" name="_format" value="plain">
       <input type="hidden" name="_submission_method" value="html">
