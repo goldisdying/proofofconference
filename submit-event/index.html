@@ -66,6 +66,11 @@
       margin: 0;
       font-size: 14px;
     }
+    .inline-group {
+      display: flex;
+      gap: 10px;
+      margin-top: 6px;
+    }
     button {
       margin-top: 28px;
       width: 100%;
@@ -104,14 +109,8 @@
       data-formspree-honeypot="company"
     >
 
-      <!-- Honeypot field (hidden, anti-spam) -->
-      <input
-        type="text"
-        name="company"
-        tabindex="-1"
-        autocomplete="off"
-        style="display:none"
-      />
+      <!-- Honeypot field -->
+      <input type="text" name="company" tabindex="-1" autocomplete="off" style="display:none">
 
       <label>Event Name *</label>
       <input type="text" name="event_name" required />
@@ -127,11 +126,13 @@
       <label>City *</label>
       <input type="text" name="city" required />
 
+      <!-- COUNTRY SELECT UNCHANGED -->
+      <!-- (exact list preserved) -->
       <label>Country *</label>
       <select name="country" id="country" required>
         <option value="">Select country</option>
         <option>United States</option>
-        <!-- all other countries unchanged -->
+        <!-- full list unchanged -->
         <option>Afghanistan</option>
         <option>Albania</option>
         <option>Algeria</option>
@@ -358,16 +359,42 @@
       <label>Contact Email *</label>
       <input type="email" name="email" required />
 
-      <label>Are you able to provide a discount code for the event?</label>
+      <!-- DISCOUNT -->
+      <label>Is there a discount code available for Proof of Conference users?</label>
       <div class="radio-group">
         <label><input type="radio" name="discount_code" value="Yes" required /> Yes</label>
         <label><input type="radio" name="discount_code" value="No" /> No</label>
       </div>
 
-      <label>Do you have an affiliate program for ticket sales?</label>
+      <div id="discount-details" style="display:none;">
+        <label>What is the discount per ticket?</label>
+        <div class="hint">% or USD</div>
+        <div class="inline-group">
+          <input type="number" name="discount_value" min="0" step="0.01">
+          <select name="discount_type">
+            <option value="%">%</option>
+            <option value="USD">USD</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- AFFILIATE -->
+      <label>Is there a commission for referrals or ticket sales?</label>
       <div class="radio-group">
         <label><input type="radio" name="affiliate_program" value="Yes" required /> Yes</label>
         <label><input type="radio" name="affiliate_program" value="No" /> No</label>
+      </div>
+
+      <div id="affiliate-details" style="display:none;">
+        <label>What is the commission per ticket?</label>
+        <div class="hint">% or USD</div>
+        <div class="inline-group">
+          <input type="number" name="affiliate_value" min="0" step="0.01">
+          <select name="affiliate_type">
+            <option value="%">%</option>
+            <option value="USD">USD</option>
+          </select>
+        </div>
       </div>
 
       <button type="submit">Submit Event</button>
@@ -410,6 +437,28 @@
         website.value = "https://" + value;
       }
     });
+
+    function toggleDetails(radiosName, containerId, inputName) {
+      const radios = document.querySelectorAll(`input[name="${radiosName}"]`);
+      const container = document.getElementById(containerId);
+      const input = container.querySelector(`input[name="${inputName}"]`);
+
+      radios.forEach(radio => {
+        radio.addEventListener("change", () => {
+          if (radio.checked && radio.value === "Yes") {
+            container.style.display = "block";
+            input.required = true;
+          } else if (radio.checked && radio.value === "No") {
+            container.style.display = "none";
+            input.required = false;
+            input.value = "";
+          }
+        });
+      });
+    }
+
+    toggleDetails("discount_code", "discount-details", "discount_value");
+    toggleDetails("affiliate_program", "affiliate-details", "affiliate_value");
   </script>
 </body>
 </html>
