@@ -109,7 +109,7 @@
       data-formspree-honeypot="company"
     >
 
-      <!-- Honeypot field -->
+      <!-- Honeypot -->
       <input type="text" name="company" tabindex="-1" autocomplete="off" style="display:none">
 
       <label>Event Name *</label>
@@ -126,13 +126,11 @@
       <label>City *</label>
       <input type="text" name="city" required />
 
-      <!-- COUNTRY SELECT UNCHANGED -->
-      <!-- (exact list preserved) -->
       <label>Country *</label>
       <select name="country" id="country" required>
         <option value="">Select country</option>
         <option>United States</option>
-        <!-- full list unchanged -->
+        <!-- full country list unchanged -->
         <option>Afghanistan</option>
         <option>Albania</option>
         <option>Algeria</option>
@@ -359,7 +357,6 @@
       <label>Contact Email *</label>
       <input type="email" name="email" required />
 
-      <!-- DISCOUNT -->
       <label>Is there a discount code available for Proof of Conference users?</label>
       <div class="radio-group">
         <label><input type="radio" name="discount_code" value="Yes" required /> Yes</label>
@@ -378,8 +375,7 @@
         </div>
       </div>
 
-      <!-- AFFILIATE -->
-      <label>Is there a commission for referrals or ticket sales?</label>
+      <label>Do you offer an affiliate or referral commission on ticket sales?</label>
       <div class="radio-group">
         <label><input type="radio" name="affiliate_program" value="Yes" required /> Yes</label>
         <label><input type="radio" name="affiliate_program" value="No" /> No</label>
