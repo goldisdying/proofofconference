@@ -24,6 +24,33 @@
 
   <style>
     body { margin:0; background:#000; color:#fff; font-family:Inter,sans-serif; }
+
+    /* 🔶 TOP NAV */
+    .top-nav {
+      display:flex;
+      justify-content:center;
+      gap:18px;
+      padding:12px 10px;
+      background:#000;
+      border-bottom:1px solid rgba(255,255,255,0.08);
+      font-size:14px;
+    }
+
+    .top-nav a {
+      color:#f7931a;
+      text-decoration:none;
+      font-weight:600;
+      white-space:nowrap;
+    }
+
+    .top-nav a:hover {
+      text-decoration:underline;
+    }
+
+    @media (max-width:480px){
+      .top-nav { font-size:13px; gap:14px; }
+    }
+
     .container { max-width:480px; margin:0 auto; padding:20px; }
     h1 { color:#f7931a; font-size:36px; text-align:center; margin-bottom:6px; }
     .subtitle { text-align:center; font-size:18px; margin-bottom:20px; }
@@ -93,6 +120,14 @@
 </head>
 
 <body>
+
+<!-- 🔶 TOP NAV LINKS -->
+<div class="top-nav">
+  <a href="https://www.proofofconference.com/submit-event">Submit Event</a>
+  <a href="https://www.proofofconference.com/contact">Contact</a>
+  <a href="https://fomo21.com/" target="_blank" rel="noopener">Merch</a>
+</div>
+
 <div class="container">
   <h1>Proof of Conference</h1>
   <div class="subtitle">Track Every Bitcoin Conference</div>
@@ -119,7 +154,6 @@
 </div>
 
 <script>
-/* ✅ LOAD CSV FROM THIS SITE (NO GITHUB RAW) */
 const CSV_URL = "/Bitcoin Conference List - Sheet1.csv";
 
 const MONTHS = {
@@ -133,7 +167,6 @@ let featuredOrder = [];
 function parseCSV(text) {
   const rows = [];
   let row=[], value="", inQuotes=false;
-
   for (let i=0;i<text.length;i++){
     const c=text[i], n=text[i+1];
     if(c=='"'&&inQuotes&&n=='"'){value+='"';i++;}
@@ -171,11 +204,9 @@ fetch(CSV_URL)
   .then(text=>{
     const rows=parseCSV(text);
     const headers=rows.shift();
-
     conferences=rows
       .map(r=>Object.fromEntries(headers.map((h,i)=>[h,clean(r[i])])))
       .filter(c=>c["Not Active"].toLowerCase()!=="x");
-
     featuredOrder=[...conferences];
     populateFilters();
     render();
