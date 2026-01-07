@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <title>Submit Event | Proof of Conference</title>
-  <meta name="description" content="Submit a Bitcoin conference or event for review." />
+  <meta name="description" content="Submit a Bitcoin conference or event to Proof of Conference." />
   <link rel="icon" href="/favicon.ico" />
 
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
@@ -15,223 +15,373 @@
       margin: 0;
       background: #000;
       color: #fff;
-      font-family: Inter, sans-serif;
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
     }
     .container {
       max-width: 520px;
       margin: 0 auto;
-      padding: 24px;
+      padding: 32px 20px;
     }
     h1 {
       color: #f7931a;
       text-align: center;
-      margin-bottom: 6px;
-      font-size: 34px;
+      margin-bottom: 8px;
+      font-size: 32px;
     }
     .subtitle {
       text-align: center;
-      color: #ccc;
+      color: #d1d5db;
       margin-bottom: 28px;
-      font-size: 16px;
+      line-height: 1.4;
     }
     label {
       display: block;
-      margin-top: 18px;
-      margin-bottom: 6px;
       font-weight: 600;
+      margin: 18px 0 6px;
+      font-size: 14px;
     }
     input, select {
       width: 100%;
-      padding: 14px 16px;
-      border-radius: 24px;
-      border: none;
-      font-size: 16px;
       box-sizing: border-box;
+      padding: 12px 14px;
+      border-radius: 10px;
+      border: none;
+      font-size: 15px;
+    }
+    select:disabled {
+      opacity: 0.5;
     }
     .hint {
-      font-size: 13px;
+      font-size: 12px;
       color: #9ca3af;
-      margin-top: 6px;
+      margin-top: 4px;
     }
     .radio-group {
+      display: flex;
+      gap: 20px;
       margin-top: 8px;
     }
     .radio-group label {
       font-weight: 400;
-      margin-right: 20px;
+      margin: 0;
+      font-size: 14px;
     }
     button {
+      margin-top: 28px;
       width: 100%;
-      margin-top: 32px;
-      padding: 16px;
       background: #f7931a;
       color: #000;
       border: none;
-      border-radius: 28px;
-      font-size: 18px;
+      padding: 14px;
+      border-radius: 12px;
+      font-size: 16px;
       font-weight: 700;
       cursor: pointer;
+    }
+    footer {
+      margin-top: 40px;
+      font-size: 13px;
+      color: #9ca3af;
+      text-align: center;
+    }
+    a {
+      color: #f7931a;
+      text-decoration: none;
     }
   </style>
 </head>
 
 <body>
-<div class="container">
-  <h1>Submit Event</h1>
-  <div class="subtitle">Submit a Bitcoin conference or event for review</div>
+  <div class="container">
+    <h1>Submit an Event</h1>
+    <div class="subtitle">
+      Submit a Bitcoin conference or event for inclusion on Proof of Conference.
+    </div>
 
-  <form action="https://formspree.io/f/xpqwvrzk" method="POST" novalidate>
+    <form action="https://formspree.io/f/xpqwvrzk" method="POST">
 
-    <!-- Event Name -->
-    <label>Event Name *</label>
-    <input type="text" name="event_name" required>
+      <label>Event Name *</label>
+      <input type="text" name="event_name" required />
 
-    <!-- Website -->
-    <label>Event Website *</label>
-    <input
-      type="text"
-      name="website"
-      placeholder="fomo21.com"
-      required
-      autocomplete="off"
-    >
-    <div class="hint">No http required</div>
+      <label>Event Start Date *</label>
+      <input type="date" name="start_date" id="start_date" required />
+      <div class="hint">Must be today or later</div>
 
-    <!-- Email -->
-    <label>Contact Email *</label>
-    <input
-      type="email"
-      name="email"
-      placeholder="you@example.com"
-      required
-    >
+      <label>Event End Date *</label>
+      <input type="date" name="end_date" id="end_date" required />
+      <div class="hint">Can be the same as the start date</div>
 
-    <!-- Dates -->
-    <label>Start Date *</label>
-    <input type="date" name="start_date" id="start_date" required>
+      <label>City *</label>
+      <input type="text" name="city" required />
 
-    <label>End Date *</label>
-    <input type="date" name="end_date" id="end_date" required>
-    <div class="hint">Can be the same as the start date</div>
-
-    <!-- Location -->
-    <label>City *</label>
-    <input type="text" name="city" required>
-
-    <label>Country *</label>
-    <select name="country" id="country" required>
-      <option value="">Select country</option>
-      <option value="United States">United States</option>
-      <option disabled>──────────</option>
-      <!-- All other countries alphabetically -->
-      <option>Afghanistan</option>
-      <option>Albania</option>
-      <option>Algeria</option>
-      <option>Andorra</option>
-      <option>Angola</option>
-      <option>Argentina</option>
-      <option>Australia</option>
-      <option>Austria</option>
-      <option>Bahamas</option>
-      <option>Bahrain</option>
-      <option>Bangladesh</option>
-      <option>Belgium</option>
-      <option>Brazil</option>
-      <option>Canada</option>
-      <option>Chile</option>
-      <option>Colombia</option>
-      <option>Costa Rica</option>
-      <option>Croatia</option>
-      <option>Czech Republic</option>
-      <option>Denmark</option>
-      <option>Estonia</option>
-      <option>Finland</option>
-      <option>France</option>
-      <option>Germany</option>
-      <option>Greece</option>
-      <option>Hungary</option>
-      <option>Iceland</option>
-      <option>India</option>
-      <option>Indonesia</option>
-      <option>Ireland</option>
-      <option>Israel</option>
-      <option>Italy</option>
-      <option>Japan</option>
-      <option>Mexico</option>
-      <option>Netherlands</option>
-      <option>New Zealand</option>
-      <option>Norway</option>
-      <option>Poland</option>
-      <option>Portugal</option>
-      <option>Singapore</option>
-      <option>Slovakia</option>
-      <option>Slovenia</option>
-      <option>South Africa</option>
-      <option>South Korea</option>
-      <option>Spain</option>
-      <option>Sweden</option>
-      <option>Switzerland</option>
-      <option>United Kingdom</option>
-    </select>
-
-    <!-- State (US only) -->
-    <div id="state-wrapper" style="display:none;">
-      <label>State *</label>
-      <select name="state" id="state">
-        <option value="">Select state</option>
-        <option>Alabama</option>
-        <option>Alaska</option>
-        <option>Arizona</option>
-        <option>California</option>
-        <option>Colorado</option>
-        <option>Florida</option>
-        <option>New York</option>
-        <option>Texas</option>
-        <option>Washington</option>
-        <option>Puerto Rico</option>
-        <option>Guam</option>
+      <label>Country *</label>
+      <select name="country" id="country" required>
+        <option value="">Select country</option>
+        <option>United States</option>
+        <option>Afghanistan</option>
+        <option>Albania</option>
+        <option>Algeria</option>
+        <option>Andorra</option>
+        <option>Angola</option>
+        <option>Antigua and Barbuda</option>
+        <option>Argentina</option>
+        <option>Armenia</option>
+        <option>Australia</option>
+        <option>Austria</option>
+        <option>Azerbaijan</option>
+        <option>Bahamas</option>
+        <option>Bahrain</option>
+        <option>Bangladesh</option>
+        <option>Barbados</option>
+        <option>Belarus</option>
+        <option>Belgium</option>
+        <option>Belize</option>
+        <option>Benin</option>
+        <option>Bhutan</option>
+        <option>Bolivia</option>
+        <option>Bosnia and Herzegovina</option>
+        <option>Botswana</option>
+        <option>Brazil</option>
+        <option>Brunei</option>
+        <option>Bulgaria</option>
+        <option>Burkina Faso</option>
+        <option>Burundi</option>
+        <option>Cabo Verde</option>
+        <option>Cambodia</option>
+        <option>Cameroon</option>
+        <option>Canada</option>
+        <option>Central African Republic</option>
+        <option>Chad</option>
+        <option>Chile</option>
+        <option>China</option>
+        <option>Colombia</option>
+        <option>Comoros</option>
+        <option>Congo</option>
+        <option>Costa Rica</option>
+        <option>Croatia</option>
+        <option>Cuba</option>
+        <option>Cyprus</option>
+        <option>Czech Republic</option>
+        <option>Denmark</option>
+        <option>Djibouti</option>
+        <option>Dominica</option>
+        <option>Dominican Republic</option>
+        <option>Ecuador</option>
+        <option>Egypt</option>
+        <option>El Salvador</option>
+        <option>Equatorial Guinea</option>
+        <option>Eritrea</option>
+        <option>Estonia</option>
+        <option>Eswatini</option>
+        <option>Ethiopia</option>
+        <option>Fiji</option>
+        <option>Finland</option>
+        <option>France</option>
+        <option>Gabon</option>
+        <option>Gambia</option>
+        <option>Georgia</option>
+        <option>Germany</option>
+        <option>Ghana</option>
+        <option>Greece</option>
+        <option>Grenada</option>
+        <option>Guatemala</option>
+        <option>Guinea</option>
+        <option>Guinea-Bissau</option>
+        <option>Guyana</option>
+        <option>Haiti</option>
+        <option>Honduras</option>
+        <option>Hungary</option>
+        <option>Iceland</option>
+        <option>India</option>
+        <option>Indonesia</option>
+        <option>Iran</option>
+        <option>Iraq</option>
+        <option>Ireland</option>
+        <option>Israel</option>
+        <option>Italy</option>
+        <option>Jamaica</option>
+        <option>Japan</option>
+        <option>Jordan</option>
+        <option>Kazakhstan</option>
+        <option>Kenya</option>
+        <option>Kiribati</option>
+        <option>Kuwait</option>
+        <option>Kyrgyzstan</option>
+        <option>Laos</option>
+        <option>Latvia</option>
+        <option>Lebanon</option>
+        <option>Lesotho</option>
+        <option>Liberia</option>
+        <option>Libya</option>
+        <option>Liechtenstein</option>
+        <option>Lithuania</option>
+        <option>Luxembourg</option>
+        <option>Madagascar</option>
+        <option>Malawi</option>
+        <option>Malaysia</option>
+        <option>Maldives</option>
+        <option>Mali</option>
+        <option>Malta</option>
+        <option>Marshall Islands</option>
+        <option>Mauritania</option>
+        <option>Mauritius</option>
+        <option>Mexico</option>
+        <option>Micronesia</option>
+        <option>Moldova</option>
+        <option>Monaco</option>
+        <option>Mongolia</option>
+        <option>Montenegro</option>
+        <option>Morocco</option>
+        <option>Mozambique</option>
+        <option>Myanmar</option>
+        <option>Namibia</option>
+        <option>Nauru</option>
+        <option>Nepal</option>
+        <option>Netherlands</option>
+        <option>New Zealand</option>
+        <option>Nicaragua</option>
+        <option>Niger</option>
+        <option>Nigeria</option>
+        <option>North Macedonia</option>
+        <option>Norway</option>
+        <option>Oman</option>
+        <option>Pakistan</option>
+        <option>Palau</option>
+        <option>Panama</option>
+        <option>Papua New Guinea</option>
+        <option>Paraguay</option>
+        <option>Peru</option>
+        <option>Philippines</option>
+        <option>Poland</option>
+        <option>Portugal</option>
+        <option>Qatar</option>
+        <option>Romania</option>
+        <option>Russia</option>
+        <option>Rwanda</option>
+        <option>Saudi Arabia</option>
+        <option>Senegal</option>
+        <option>Serbia</option>
+        <option>Seychelles</option>
+        <option>Sierra Leone</option>
+        <option>Singapore</option>
+        <option>Slovakia</option>
+        <option>Slovenia</option>
+        <option>Solomon Islands</option>
+        <option>Somalia</option>
+        <option>South Africa</option>
+        <option>South Korea</option>
+        <option>South Sudan</option>
+        <option>Spain</option>
+        <option>Sri Lanka</option>
+        <option>Sudan</option>
+        <option>Suriname</option>
+        <option>Sweden</option>
+        <option>Switzerland</option>
+        <option>Syria</option>
+        <option>Taiwan</option>
+        <option>Tajikistan</option>
+        <option>Tanzania</option>
+        <option>Thailand</option>
+        <option>Timor-Leste</option>
+        <option>Togo</option>
+        <option>Tonga</option>
+        <option>Trinidad and Tobago</option>
+        <option>Tunisia</option>
+        <option>Turkey</option>
+        <option>Turkmenistan</option>
+        <option>Uganda</option>
+        <option>Ukraine</option>
+        <option>United Arab Emirates</option>
+        <option>United Kingdom</option>
+        <option>Uruguay</option>
+        <option>Uzbekistan</option>
+        <option>Vanuatu</option>
+        <option>Vatican City</option>
+        <option>Venezuela</option>
+        <option>Vietnam</option>
+        <option>Yemen</option>
+        <option>Zambia</option>
+        <option>Zimbabwe</option>
       </select>
-    </div>
 
-    <!-- Discount -->
-    <label>Are you able to provide a discount code for the event? *</label>
-    <div class="radio-group">
-      <label><input type="radio" name="discount" value="Yes" required> Yes</label>
-      <label><input type="radio" name="discount" value="No" required> No</label>
-    </div>
+      <label>State / Territory</label>
+      <select name="state" id="state" disabled>
+        <option value="">Select state</option>
+        <option>Alabama</option><option>Alaska</option><option>Arizona</option><option>Arkansas</option>
+        <option>California</option><option>Colorado</option><option>Connecticut</option><option>Delaware</option>
+        <option>Florida</option><option>Georgia</option><option>Hawaii</option><option>Idaho</option>
+        <option>Illinois</option><option>Indiana</option><option>Iowa</option><option>Kansas</option>
+        <option>Kentucky</option><option>Louisiana</option><option>Maine</option><option>Maryland</option>
+        <option>Massachusetts</option><option>Michigan</option><option>Minnesota</option><option>Mississippi</option>
+        <option>Missouri</option><option>Montana</option><option>Nebraska</option><option>Nevada</option>
+        <option>New Hampshire</option><option>New Jersey</option><option>New Mexico</option><option>New York</option>
+        <option>North Carolina</option><option>North Dakota</option><option>Ohio</option><option>Oklahoma</option>
+        <option>Oregon</option><option>Pennsylvania</option><option>Rhode Island</option><option>South Carolina</option>
+        <option>South Dakota</option><option>Tennessee</option><option>Texas</option><option>Utah</option>
+        <option>Vermont</option><option>Virginia</option><option>Washington</option><option>West Virginia</option>
+        <option>Wisconsin</option><option>Wyoming</option>
+        <option>District of Columbia</option>
+        <option>Puerto Rico</option>
+        <option>U.S. Virgin Islands</option>
+        <option>Guam</option>
+        <option>American Samoa</option>
+        <option>Northern Mariana Islands</option>
+      </select>
+      <div class="hint">Required only if country is United States</div>
 
-    <button type="submit" formnovalidate>Submit Event</button>
+      <label>Venue</label>
+      <input type="text" name="venue" />
 
-  </form>
-</div>
+      <label>Event Website *</label>
+      <input type="url" name="website" required />
 
-<script>
-  const start = document.getElementById("start_date");
-  const end = document.getElementById("end_date");
-  const today = new Date().toISOString().split("T")[0];
+      <label>Contact Email *</label>
+      <input type="email" name="email" required />
 
-  start.min = today;
-  end.min = today;
+      <label>Are you able to provide a discount code for the event?</label>
+      <div class="radio-group">
+        <label><input type="radio" name="discount_code" value="Yes" required /> Yes</label>
+        <label><input type="radio" name="discount_code" value="No" /> No</label>
+      </div>
 
-  start.addEventListener("change", () => {
-    end.min = start.value;
-  });
+      <label>Do you have an affiliate program for ticket sales?</label>
+      <div class="radio-group">
+        <label><input type="radio" name="affiliate_program" value="Yes" required /> Yes</label>
+        <label><input type="radio" name="affiliate_program" value="No" /> No</label>
+      </div>
 
-  const country = document.getElementById("country");
-  const stateWrap = document.getElementById("state-wrapper");
-  const state = document.getElementById("state");
+      <button type="submit">Submit Event</button>
+    </form>
 
-  country.addEventListener("change", () => {
-    if (country.value === "United States") {
-      stateWrap.style.display = "block";
-      state.required = true;
-    } else {
-      stateWrap.style.display = "none";
-      state.required = false;
-      state.value = "";
-    }
-  });
-</script>
+    <footer>
+      <a href="/">← Back to Proof of Conference</a>
+    </footer>
+  </div>
 
+  <script>
+    const today = new Date().toISOString().split("T")[0];
+    const start = document.getElementById("start_date");
+    const end = document.getElementById("end_date");
+    const country = document.getElementById("country");
+    const state = document.getElementById("state");
+
+    start.min = today;
+    end.min = today;
+
+    start.addEventListener("change", () => {
+      end.min = start.value;
+    });
+
+    country.addEventListener("change", () => {
+      if (country.value === "United States") {
+        state.disabled = false;
+        state.required = true;
+      } else {
+        state.disabled = true;
+        state.required = false;
+        state.value = "";
+      }
+    });
+  </script>
 </body>
 </html>
