@@ -54,6 +54,12 @@
       font-size: 15px;
     }
 
+    .hint {
+      font-size: 12px;
+      color: #9ca3af;
+      margin-top: 4px;
+    }
+
     .radio-group {
       display: flex;
       gap: 20px;
@@ -64,12 +70,6 @@
       font-weight: 400;
       margin: 0;
       font-size: 14px;
-    }
-
-    .hint {
-      font-size: 12px;
-      color: #9ca3af;
-      margin-top: 4px;
     }
 
     button {
@@ -112,12 +112,12 @@
       <input type="text" name="event_name" required />
 
       <label>Event Start Date *</label>
-      <input type="date" name="start_date" required />
-      <div class="hint">MM/DD/YYYY</div>
+      <input type="date" name="start_date" id="start_date" required />
+      <div class="hint">Must be today or later</div>
 
       <label>Event End Date</label>
-      <input type="date" name="end_date" />
-      <div class="hint">Leave blank for single-day events</div>
+      <input type="date" name="end_date" id="end_date" />
+      <div class="hint">Optional. Can be the same as the start date.</div>
 
       <label>Location (City, State, Country) *</label>
       <input type="text" name="location" required />
@@ -162,5 +162,22 @@
       <a href="/">← Back to Proof of Conference</a>
     </footer>
   </div>
+
+  <!-- Date validation logic -->
+  <script>
+    const today = new Date().toISOString().split("T")[0];
+
+    const start = document.getElementById("start_date");
+    const end = document.getElementById("end_date");
+
+    // Prevent dates before today
+    start.min = today;
+    end.min = today;
+
+    // Prevent end date before start date (same day allowed)
+    start.addEventListener("change", () => {
+      end.min = start.value;
+    });
+  </script>
 </body>
 </html>
