@@ -1,1 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
 
+  <title>Contact | Proof of Conference</title>
+  <meta name="description" content="Contact Proof of Conference with questions, partnerships, media inquiries, or technical issues." />
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      margin: 0;
+      background: #000;
+      color: #fff;
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    .container {
+      max-width: 520px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #f7931a;
+      margin-bottom: 8px;
+      font-size: 32px;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #aaa;
+      margin-bottom: 32px;
+      font-size: 15px;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    label {
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      padding: 12px 14px;
+      background: #111;
+      color: #fff;
+      border: 1px solid #333;
+      border-radius: 6px;
+      font-size: 14px;
+      font-family: inherit;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      outline: none;
+      border-color: #f7931a;
+    }
+
+    textarea {
+      min-height: 140px;
+      resize: vertical;
+    }
+
+    .hint {
+      font-size: 12px;
+      color: #888;
+      margin-top: -10px;
+    }
+
+    button {
+      margin-top: 8px;
+      padding: 14px;
+      background: #f7931a;
+      color: #000;
+      border: none;
+      border-radius: 6px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    button:hover {
+      opacity: 0.9;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>Contact</h1>
+    <p class="subtitle">
+      Have a question, partnership idea, or event submission? Send us a message.
+    </p>
+
+    <form
+      action="https://formspree.io/f/xykzrjqg"
+      method="POST"
+    >
+
+      <!-- Honeypot field (spam trap) -->
+      <input type="text" name="_gotcha" style="display:none">
+
+      <!-- Email metadata for deliverability -->
+      <input type="hidden" name="_subject" value="Proof of Conference — Contact Form Submission">
+      <input type="hidden" name="_replyto" value="%{email}">
+
+      <label for="name">Name</label>
+      <input
+        type="text"
+        id="name"
+        name="name"
+        required
+        placeholder="Your name"
+      />
+
+      <label for="email">Email</label>
+      <input
+        type="email"
+        id="email"
+        name="email"
+        required
+        placeholder="you@example.com"
+      />
+
+      <label for="topic">What can we help you with?</label>
+      <select id="topic" name="topic" required>
+        <option value="" disabled selected>Select an option</option>
+        <option>General question</option>
+        <option>Partnership / sponsorship</option>
+        <option>Submit an event</option>
+        <option>Media / press</option>
+        <option>Technical issue</option>
+        <option>Other</option>
+      </select>
+
+      <label for="message">Share the details of your inquiry</label>
+      <textarea
+        id="message"
+        name="message"
+        minlength="200"
+        maxlength="400"
+        required
+        placeholder="Please include as much detail as possible (200–400 characters)."
+      ></textarea>
+
+      <div class="hint">
+        Minimum 200 characters. Maximum 400 characters.
+      </div>
+
+      <button type="submit">Send Message</button>
+    </form>
+  </div>
+</body>
+</html>
