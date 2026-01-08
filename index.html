@@ -8,7 +8,6 @@
   <meta name="description" content="Track every Bitcoin conference worldwide." />
   <link rel="icon" href="/favicon.ico" />
 
-  <!-- Open Graph -->
   <meta property="og:title" content="Proof of Conference" />
   <meta property="og:description" content="An independent directory of Bitcoin conferences and events worldwide." />
   <meta property="og:type" content="website" />
@@ -30,14 +29,12 @@
       font-family:Inter,sans-serif;
     }
 
-    /* 🔶 TOP NAV */
     .top-nav {
       display:flex;
       justify-content:center;
       align-items:center;
       gap:14px;
       padding:18px 12px 14px;
-      background:#000;
       border-bottom:1px solid rgba(255,255,255,0.12);
       font-size:16px;
     }
@@ -46,28 +43,16 @@
       color:#ffffff;
       text-decoration:none;
       font-weight:600;
-      letter-spacing:0.2px;
-      white-space:nowrap;
     }
 
     .top-nav a:hover {
       color:#f7931a;
     }
 
-    .top-nav .dot {
+    .dot {
       color:rgba(255,255,255,0.4);
-      font-weight:400;
-      user-select:none;
     }
 
-    @media (max-width:480px) {
-      .top-nav {
-        font-size:16px;
-        padding-top:20px;
-      }
-    }
-
-    /* 🔧 ONLY CHANGE IS HERE */
     .container {
       max-width:480px;
       margin:0 auto;
@@ -89,12 +74,12 @@
 
     input, select {
       width:100%;
-      box-sizing:border-box;
       padding:14px 18px;
       margin-bottom:12px;
       border-radius:999px;
       border:none;
       font-size:16px;
+      box-sizing:border-box;
     }
 
     .card {
@@ -120,7 +105,6 @@
     .card p {
       margin:6px 0;
       font-size:15px;
-      line-height:1.4;
     }
 
     .discount {
@@ -154,11 +138,11 @@
 <body>
 
 <div class="top-nav">
-  <a href="https://www.proofofconference.com/submit-event">Submit Event</a>
+  <a href="/submit-event">Submit Event</a>
   <span class="dot">•</span>
-  <a href="https://www.proofofconference.com/contact">Contact</a>
+  <a href="/contact">Contact</a>
   <span class="dot">•</span>
-  <a href="https://fomo21.com/" target="_blank" rel="noopener">Merch</a>
+  <a href="https://fomo21.com/" target="_blank">Merch</a>
 </div>
 
 <div class="container">
@@ -177,133 +161,129 @@
   <select id="country"><option value="">All Countries</option></select>
   <select id="state"><option value="">All States</option></select>
   <select id="city"><option value="">All Cities</option></select>
+  <select id="speaker"><option value="">All Speakers / Notable Attendees</option></select>
 
   <div id="cards"></div>
 
   <footer>
     <strong>Disclaimer:</strong>
-    Proof of Conference is an independent, informational directory and is not necessarily affiliated with any conference or organization listed. Please visit each conference’s official website for official details.
+    Proof of Conference is an independent, informational directory and is not necessarily affiliated with any conference or organization listed.
   </footer>
 </div>
 
 <script>
 const CSV_URL = "/Bitcoin Conference List - Sheet1.csv";
 
-const MONTHS = {
-  january:0,february:1,march:2,april:3,may:4,june:5,
-  july:6,august:7,september:8,october:9,november:10,december:11
-};
-
 let conferences = [];
 let featuredOrder = [];
 
 function parseCSV(text) {
   const rows = [];
-  let row=[], value="", inQuotes=false;
-  for (let i=0;i<text.length;i++){
-    const c=text[i], n=text[i+1];
-    if(c=='"'&&inQuotes&&n=='"'){value+='"';i++;}
-    else if(c=='"'){inQuotes=!inQuotes;}
-    else if(c==","&&!inQuotes){row.push(value);value="";}
-    else if((c=="\n"||c=="\r")&&!inQuotes){
-      if(value||row.length){row.push(value);rows.push(row);row=[];value="";}
-    } else value+=c;
+  let row = [], value = "", inQuotes = false;
+
+  for (let i = 0; i < text.length; i++) {
+    const c = text[i];
+    if (c === '"') {
+      inQuotes = !inQuotes;
+    } else if (c === ',' && !inQuotes) {
+      row.push(value);
+      value = "";
+    } else if ((c === "\n" || c === "\r") && !inQuotes) {
+      if (value || row.length) {
+        row.push(value);
+        rows.push(row);
+        row = [];
+        value = "";
+      }
+    } else {
+      value += c;
+    }
   }
-  if(value||row.length){row.push(value);rows.push(row);}
+  if (value || row.length) {
+    row.push(value);
+    rows.push(row);
+  }
   return rows;
 }
 
-function clean(t){
-  return (t||"").replace(/[\r\n]+/g," ").replace(/^"+|"+$/g,"").trim();
-}
-
-function getYearMonth(range){
-  if(!range) return null;
-  const y=range.match(/\b(20\d{2})\b/);
-  const m=range.toLowerCase().match(/(january|february|march|april|may|june|july|august|september|october|november|december)/);
-  if(!y) return null;
-  return { year:parseInt(y[1],10), month:m?MONTHS[m[1]]:0 };
-}
-
-function isUpcoming(range){
-  const d=getYearMonth(range);
-  if(!d) return false;
-  const now=new Date();
-  return d.year>now.getFullYear() || (d.year===now.getFullYear() && d.month>=now.getMonth());
+function clean(t) {
+  return (t || "").replace(/[\r\n]+/g, " ").replace(/^"+|"+$/g, "").trim();
 }
 
 fetch(CSV_URL)
-  .then(r=>r.text())
-  .then(text=>{
-    const rows=parseCSV(text);
-    const headers=rows.shift();
-    conferences=rows
-      .map(r=>Object.fromEntries(headers.map((h,i)=>[h,clean(r[i])])))
-      .filter(c=>c["Not Active"].toLowerCase()!=="x");
-    featuredOrder=[...conferences];
+  .then(r => r.text())
+  .then(text => {
+    const rows = parseCSV(text);
+    const headers = rows.shift();
+
+    conferences = rows.map(r =>
+      Object.fromEntries(headers.map((h, i) => [h, clean(r[i])]))
+    );
+
+    featuredOrder = [...conferences];
     populateFilters();
     render();
   });
 
-function populateFilters(){
-  ["Country","State","City"].forEach(f=>{
-    const s=document.getElementById(f.toLowerCase());
-    [...new Set(conferences.map(c=>c[f]).filter(Boolean))]
+function populateFilters() {
+  ["Country", "State", "City"].forEach(field => {
+    const select = document.getElementById(field.toLowerCase());
+    [...new Set(conferences.map(c => c[field]).filter(Boolean))]
       .sort()
-      .forEach(v=>{
-        const o=document.createElement("option");
-        o.value=v;
-        o.textContent=v;
-        s.appendChild(o);
+      .forEach(v => {
+        const o = document.createElement("option");
+        o.value = v;
+        o.textContent = v;
+        select.appendChild(o);
       });
+  });
+
+  const speakerSet = new Set();
+  conferences.forEach(c => {
+    if (c["Speakers/Notable Attendees"]) {
+      c["Speakers/Notable Attendees"]
+        .split(",")
+        .map(s => s.trim())
+        .filter(Boolean)
+        .forEach(s => speakerSet.add(s));
+    }
+  });
+
+  [...speakerSet].sort().forEach(s => {
+    const o = document.createElement("option");
+    o.value = s;
+    o.textContent = s;
+    speaker.appendChild(o);
   });
 }
 
-["search","country","state","city","sort"]
-  .forEach(id=>document.getElementById(id).addEventListener("input",render));
+["search","country","state","city","speaker","sort"]
+  .forEach(id => document.getElementById(id).addEventListener("input", render));
 
-function render(){
-  const q=search.value.toLowerCase();
-  let list=[...featuredOrder];
+function render() {
+  const q = search.value.toLowerCase();
+  cards.innerHTML = "";
 
-  if(sort.value==="featured"||sort.value==="upcoming"||sort.value==="az"){
-    list=list.filter(c=>isUpcoming(c["Date Range"]));
-  }
+  featuredOrder.forEach(c => {
+    if (q && !Object.values(c).join(" ").toLowerCase().includes(q)) return;
+    if (country.value && c.Country !== country.value) return;
+    if (state.value && c.State !== state.value) return;
+    if (city.value && c.City !== city.value) return;
+    if (speaker.value && !c["Speakers/Notable Attendees"].includes(speaker.value)) return;
 
-  if(sort.value==="upcoming"){
-    list.sort((a,b)=>{
-      const A=getYearMonth(a["Date Range"]),B=getYearMonth(b["Date Range"]);
-      return A.year!==B.year?A.year-B.year:A.month-B.month;
-    });
-  }
+    const location = [c.City, c.State, c.Country].filter(Boolean).join(", ");
 
-  if(sort.value==="past"){
-    list=featuredOrder.filter(c=>!isUpcoming(c["Date Range"]));
-  }
-
-  if(sort.value==="az"){
-    list.sort((a,b)=>a.Conference.localeCompare(b.Conference));
-  }
-
-  cards.innerHTML="";
-  list.forEach(c=>{
-    if(q&&!Object.values(c).join(" ").toLowerCase().includes(q))return;
-    if(country.value&&c.Country!==country.value)return;
-    if(state.value&&c.State!==state.value)return;
-    if(city.value&&c.City!==city.value)return;
-
-    const location=[c.City,c.State,c.Country].filter(Boolean).join(", ");
-
-    cards.innerHTML+=`
+    cards.innerHTML += `
       <div class="card">
-        ${c.Image?`<img src="${c.Image}" alt="${c.Conference}">`:""}
+        ${c.Image ? `<img src="${c.Image}" alt="${c.Conference}">` : ""}
         <h2>${c.Conference}</h2>
         <p>📍 ${location}</p>
-        ${c.Venue?`<p>🏛️ ${c.Venue}</p>`:""}
+        ${c.Venue ? `<p>🏛️ ${c.Venue}</p>` : ""}
         <p>📅 ${c["Date Range"]}</p>
-        ${c.Discount?`<div class="discount">🎟️ ${c.Discount}</div>`:""}
+        ${c.Discount ? `<div class="discount">🎟️ ${c.Discount}</div>` : ""}
         <a class="cta" href="${c["Main Conference Link"]}" target="_blank">Get Tickets</a>
-      </div>`;
+      </div>
+    `;
   });
 }
 </script>
