@@ -18,29 +18,10 @@
   <meta property="og:image" content="https://www.proofofconference.com/og-proof-of-conference.jpg" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
-  <meta property="og:image:alt" content="Bitcoin conference directory and event discounts, often found via crypto conference searches" />
 
-  <!-- Twitter Card -->
+  <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Proof of Conference" />
-  <meta name="twitter:description" content="Verified Bitcoin conferences worldwide with speakers, dates, and discounts." />
   <meta name="twitter:image" content="https://www.proofofconference.com/og-proof-of-conference.jpg" />
-
-  <!-- Structured Data -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    "name": "Proof of Conference",
-    "url": "https://www.proofofconference.com/",
-    "description": "A directory of verified Bitcoin conferences worldwide. Frequently discovered by users searching for crypto conferences, blockchain events, and conference discount codes.",
-    "potentialAction": {
-      "@type": "SearchAction",
-      "target": "https://www.proofofconference.com/?q={search_term_string}",
-      "query-input": "required name=search_term_string"
-    }
-  }
-  </script>
 
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 
@@ -49,25 +30,20 @@
       margin: 0;
       background: #000;
       color: #fff;
-      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      font-family: Inter, system-ui, sans-serif;
     }
 
     .top-nav {
       display: flex;
       justify-content: center;
       gap: 14px;
-      padding: 14px 16px;
+      padding: 14px;
       font-size: 14px;
     }
 
     .top-nav a {
-      color: #ffffff;
+      color: #fff;
       text-decoration: none;
-      font-weight: 500;
-    }
-
-    .top-nav span {
-      color: #6b7280;
     }
 
     .container {
@@ -103,7 +79,6 @@
       border-radius: 24px;
       border: none;
       font-size: 16px;
-      box-sizing: border-box;
     }
 
     .sort-wrapper {
@@ -127,13 +102,12 @@
     .card h2 {
       color: #f7931a;
       font-size: 22px;
-      margin: 0 0 10px;
+      margin-bottom: 8px;
     }
 
     .card p {
       margin: 6px 0;
       font-size: 15px;
-      line-height: 1.4;
     }
 
     .discount {
@@ -152,60 +126,166 @@
       font-weight: 700;
       text-decoration: none;
     }
-
-    footer {
-      margin-top: 40px;
-      padding-top: 20px;
-      border-top: 1px solid #1f1f1f;
-      font-size: 13px;
-      color: #9ca3af;
-      text-align: center;
-    }
   </style>
 </head>
 
 <body>
 
-  <div class="top-nav">
-    <a href="/submit-event/">Submit Event</a>
-    <span>•</span>
-    <a href="mailto:LLCStacker@gmail.com">Contact</a>
-    <span>•</span>
-    <a href="https://fomo21.com" target="_blank">Merch</a>
+<div class="top-nav">
+  <a href="/submit-event/">Submit Event</a>
+  •
+  <a href="mailto:LLCStacker@gmail.com">Contact</a>
+  •
+  <a href="https://fomo21.com" target="_blank">Merch</a>
+</div>
+
+<div class="container">
+  <h1>Proof of Conference</h1>
+  <div class="subtitle">Track Every Bitcoin Conference</div>
+
+  <input id="search" placeholder="Search conferences..." />
+
+  <div class="sort-wrapper">
+    <div class="filter-label">Sort Conferences</div>
+    <select id="sort">
+      <option value="upcoming" selected>Upcoming</option>
+      <option value="discounts">Conference Discounts</option>
+      <option value="az">A to Z</option>
+      <option value="past">Past</option>
+    </select>
   </div>
 
-  <div class="container">
-    <h1>Proof of Conference</h1>
-    <div class="subtitle">Track Every Bitcoin Conference</div>
+  <select id="country"><option value="">All Countries</option></select>
+  <select id="state"><option value="">All States</option></select>
+  <select id="city"><option value="">All Cities</option></select>
+  <select id="speaker"><option value="">All Speakers / Notable Attendees</option></select>
 
-    <input id="search" placeholder="Search conferences..." />
-
-    <!-- SORT (PRIMARY CONTROL) -->
-    <div class="sort-wrapper">
-      <div class="filter-label">Sort Conferences</div>
-      <select id="sort">
-        <option value="upcoming" selected>Upcoming</option>
-        <option value="discounts">Conference Discounts</option>
-        <option value="az">A to Z</option>
-        <option value="past">Past</option>
-      </select>
-    </div>
-
-    <select id="country"><option value="">All Countries</option></select>
-    <select id="state"><option value="">All States</option></select>
-    <select id="city"><option value="">All Cities</option></select>
-    <select id="speaker"><option value="">All Speakers / Notable Attendees</option></select>
-
-    <div id="cards"></div>
-
-    <footer>
-      <strong>Disclaimer:</strong>
-      Proof of Conference is an independent, informational directory and is not necessarily affiliated with, endorsed by, or officially connected to any conference or organization listed. Please visit each conference’s official website for official details.
-    </footer>
-  </div>
+  <div id="cards"></div>
+</div>
 
 <script>
-/* JavaScript unchanged from last version */
+const CSV_URL = "https://raw.githubusercontent.com/goldisdying/proofofconference/main/Bitcoin%20Conference%20List%20-%20Sheet1.csv";
+
+const MONTHS = {
+  january:0,february:1,march:2,april:3,may:4,june:5,
+  july:6,august:7,september:8,october:9,november:10,december:11
+};
+
+const PRIORITY_SPEAKERS = [
+  "Michael Saylor","Jack Dorsey","Max Keiser","Jeff Booth",
+  "Lyn Alden","Natalie Brunell","Saifedean Ammous","Adam Back","Jack Mallers"
+];
+
+let conferences = [];
+
+function parseCSV(text) {
+  const rows = [];
+  let row = [], val = "", inQuotes = false;
+
+  for (let i = 0; i < text.length; i++) {
+    const c = text[i], n = text[i+1];
+    if (c === '"' && inQuotes && n === '"') { val += '"'; i++; }
+    else if (c === '"') inQuotes = !inQuotes;
+    else if (c === "," && !inQuotes) { row.push(val); val = ""; }
+    else if ((c === "\n" || c === "\r") && !inQuotes) {
+      if (val || row.length) { row.push(val); rows.push(row); row = []; val = ""; }
+    } else val += c;
+  }
+  if (val || row.length) { row.push(val); rows.push(row); }
+  return rows;
+}
+
+function clean(t) {
+  return (t || "").replace(/[\r\n]+/g, " ").replace(/^"+|"+$/g, "").trim();
+}
+
+function getYearMonth(range) {
+  const y = range.match(/\b(20\d{2})\b/);
+  const m = range.toLowerCase().match(/(january|february|march|april|may|june|july|august|september|october|november|december)/);
+  if (!y) return null;
+  return { year: +y[1], month: m ? MONTHS[m[1]] : 0 };
+}
+
+function isUpcoming(range) {
+  const d = getYearMonth(range);
+  if (!d) return false;
+  const now = new Date();
+  return d.year > now.getFullYear() || (d.year === now.getFullYear() && d.month >= now.getMonth());
+}
+
+fetch(CSV_URL)
+  .then(r => r.text())
+  .then(text => {
+    const rows = parseCSV(text);
+    const headers = rows.shift();
+    conferences = rows.map(r => Object.fromEntries(headers.map((h,i)=>[h,clean(r[i])])))
+      .filter(c => c["Not Active"].toLowerCase() !== "x");
+    populateFilters();
+    render();
+  });
+
+function populateFilters() {
+  ["Country","State","City"].forEach(f => {
+    const sel = document.getElementById(f.toLowerCase());
+    [...new Set(conferences.map(c=>c[f]).filter(Boolean))].sort()
+      .forEach(v => sel.add(new Option(v,v)));
+  });
+
+  const speakerSel = document.getElementById("speaker");
+  const set = new Set();
+
+  conferences.forEach(c => {
+    if (c["Speakers/Notable Attendees"])
+      c["Speakers/Notable Attendees"].split(",").forEach(s => set.add(s.trim()));
+  });
+
+  PRIORITY_SPEAKERS.forEach(n => {
+    if (set.has(n)) { speakerSel.add(new Option(n,n)); set.delete(n); }
+  });
+
+  speakerSel.add(new Option("──────","",true,false));
+
+  [...set].sort().forEach(n => speakerSel.add(new Option(n,n)));
+}
+
+["search","country","state","city","sort","speaker"].forEach(id =>
+  document.getElementById(id).addEventListener("input", render)
+);
+
+function render() {
+  const q = search.value.toLowerCase();
+  let list = conferences.slice();
+
+  if (sort.value !== "past")
+    list = list.filter(c => isUpcoming(c["Date Range"]));
+  if (sort.value === "discounts")
+    list = list.filter(c => c.Discount);
+  if (sort.value === "past")
+    list = conferences.filter(c => !isUpcoming(c["Date Range"]));
+  if (sort.value === "az")
+    list.sort((a,b)=>a.Conference.localeCompare(b.Conference));
+
+  cards.innerHTML = "";
+
+  list.forEach(c => {
+    if (q && !Object.values(c).join(" ").toLowerCase().includes(q)) return;
+    if (country.value && c.Country !== country.value) return;
+    if (state.value && c.State !== state.value) return;
+    if (city.value && c.City !== city.value) return;
+    if (speaker.value && !(c["Speakers/Notable Attendees"]||"").includes(speaker.value)) return;
+
+    const loc = [c.City,c.State,c.Country].filter(Boolean).join(", ");
+    cards.innerHTML += `
+      <div class="card">
+        ${c.Image ? `<img src="${c.Image}">` : ""}
+        <h2>${c.Conference}</h2>
+        <p>📍 ${loc}</p>
+        <p>📅 ${c["Date Range"]}</p>
+        ${c.Discount ? `<div class="discount">🎟️ ${c.Discount}</div>` : ""}
+        <a class="cta" href="${c["Main Conference Link"]}" target="_blank">Get Tickets</a>
+      </div>`;
+  });
+}
 </script>
 
 </body>
