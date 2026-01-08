@@ -8,14 +8,6 @@
   <meta name="description" content="Track every Bitcoin conference worldwide." />
   <link rel="icon" href="/favicon.ico" />
 
-  <meta property="og:title" content="Proof of Conference" />
-  <meta property="og:description" content="Track every Bitcoin conference worldwide." />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://proofofconference.com/" />
-  <meta property="og:image" content="https://proofofconference.com/og-proof-of-conference.jpg" />
-
-  <meta name="twitter:card" content="summary_large_image" />
-
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 
   <style>
@@ -25,57 +17,70 @@
       color: #fff;
       font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
     }
+
     .container {
-      max-width: 480px;
+      max-width: 520px;
       margin: 0 auto;
-      padding: 24px 20px;
+      padding: 28px 20px;
     }
+
     h1 {
       color: #f7931a;
-      font-size: 36px;
       text-align: center;
       margin-bottom: 6px;
+      font-size: 36px;
     }
+
     .subtitle {
       text-align: center;
       font-size: 18px;
-      margin-bottom: 24px;
+      margin-bottom: 22px;
+      color: #e5e7eb;
     }
-    input, select {
+
+    input,
+    select {
       width: 100%;
+      box-sizing: border-box;
       padding: 14px 18px;
       margin-bottom: 12px;
       border-radius: 999px;
       border: none;
       font-size: 16px;
     }
+
     .card {
       background: #121212;
       border-radius: 18px;
-      padding: 16px;
+      padding: 18px;
       margin-bottom: 22px;
       box-shadow: 0 0 0 1px #1f1f1f;
     }
+
     .card img {
       width: 100%;
       border-radius: 14px;
       margin-bottom: 12px;
     }
+
     .card h2 {
       color: #f7931a;
       font-size: 22px;
       margin: 0 0 10px;
     }
+
     .card p {
       margin: 6px 0;
       font-size: 15px;
       line-height: 1.4;
     }
+
     .discount {
       margin-top: 10px;
       color: #f7931a;
       font-weight: 600;
     }
+
     .cta {
       display: inline-block;
       margin-top: 14px;
@@ -86,6 +91,7 @@
       font-weight: 700;
       text-decoration: none;
     }
+
     footer {
       margin-top: 40px;
       padding-top: 20px;
@@ -94,38 +100,38 @@
       color: #9ca3af;
       text-align: center;
     }
-    option.priority {
-      font-weight: 700;
-    }
   </style>
 </head>
 
 <body>
-<div class="container">
-  <h1>Proof of Conference</h1>
-  <div class="subtitle">Track Every Bitcoin Conference</div>
+  <div class="container">
+    <h1>Proof of Conference</h1>
+    <div class="subtitle">Track Every Bitcoin Conference</div>
 
-  <input id="search" placeholder="Search conferences..." />
+    <input id="search" placeholder="Search conferences..." />
 
-  <select id="sort">
-    <option value="featured">Featured</option>
-    <option value="upcoming">Upcoming</option>
-    <option value="az">A to Z</option>
-    <option value="past">Past</option>
-  </select>
+    <select id="sort">
+      <option value="featured">Featured</option>
+      <option value="upcoming">Upcoming</option>
+      <option value="az">A to Z</option>
+      <option value="past">Past</option>
+    </select>
 
-  <select id="country"><option value="">All Countries</option></select>
-  <select id="state"><option value="">All States</option></select>
-  <select id="city"><option value="">All Cities</option></select>
-  <select id="speaker"><option value="">All Speakers / Notable Attendees</option></select>
+    <select id="country"><option value="">All Countries</option></select>
+    <select id="state"><option value="">All States</option></select>
+    <select id="city"><option value="">All Cities</option></select>
 
-  <div id="cards"></div>
+    <select id="speaker">
+      <option value="">All Speakers / Notable Attendees</option>
+    </select>
 
-  <footer>
-    <strong>Disclaimer:</strong>
-    Proof of Conference is an independent, informational directory and is not affiliated with any conference listed.
-  </footer>
-</div>
+    <div id="cards"></div>
+
+    <footer>
+      <strong>Disclaimer:</strong>
+      Proof of Conference is an independent, informational directory and is not affiliated with any conference listed.
+    </footer>
+  </div>
 
 <script>
 const CSV_URL = "https://raw.githubusercontent.com/goldisdying/proofofconference/main/Bitcoin%20Conference%20List%20-%20Sheet1.csv";
@@ -142,7 +148,13 @@ const PRIORITY_SPEAKERS = [
   "Jack Mallers"
 ];
 
+const MONTHS = {
+  january:0,february:1,march:2,april:3,may:4,june:5,
+  july:6,august:7,september:8,october:9,november:10,december:11
+};
+
 let conferences = [];
+let featuredOrder = [];
 
 function parseCSV(text) {
   const rows = [];
@@ -181,7 +193,22 @@ function parseCSV(text) {
 }
 
 function clean(text) {
-  return (text || "").replace(/[\r\n]+/g, " ").trim();
+  return (text || "").replace(/[\r\n]+/g, " ").replace(/^"+|"+$/g, "").trim();
+}
+
+function getYearMonth(range) {
+  const year = range.match(/\b(20\d{2})\b/);
+  const month = range.toLowerCase().match(/(january|february|march|april|may|june|july|august|september|october|november|december)/);
+  if (!year) return null;
+  return { year: parseInt(year[1]), month: month ? MONTHS[month[1]] : 0 };
+}
+
+function isUpcoming(range) {
+  const date = getYearMonth(range);
+  if (!date) return false;
+  const now = new Date();
+  return date.year > now.getFullYear() ||
+    (date.year === now.getFullYear() && date.month >= now.getMonth());
 }
 
 fetch(CSV_URL)
@@ -190,31 +217,28 @@ fetch(CSV_URL)
     const rows = parseCSV(text);
     const headers = rows.shift();
 
-    conferences = rows.map(row => {
-      const obj = {};
-      headers.forEach((h, i) => obj[h] = clean(row[i]));
-      return obj;
-    });
+    conferences = rows.map(row =>
+      Object.fromEntries(headers.map((h, i) => [h, clean(row[i])]))
+    ).filter(c => c["Not Active"]?.toLowerCase() !== "x");
 
-    populateFilters();
+    featuredOrder = [...conferences];
+
+    populateLocationFilters();
+    populateSpeakerFilter();
     render();
   });
 
-function populateFilters() {
-  populateSimpleFilter("Country", "country");
-  populateSimpleFilter("State", "state");
-  populateSimpleFilter("City", "city");
-  populateSpeakerFilter();
-}
-
-function populateSimpleFilter(field, elementId) {
-  const select = document.getElementById(elementId);
-  const values = [...new Set(conferences.map(c => c[field]).filter(Boolean))].sort();
-  values.forEach(v => {
-    const option = document.createElement("option");
-    option.value = v;
-    option.textContent = v;
-    select.appendChild(option);
+function populateLocationFilters() {
+  ["Country", "State", "City"].forEach(field => {
+    const select = document.getElementById(field.toLowerCase());
+    [...new Set(conferences.map(c => c[field]).filter(Boolean))]
+      .sort()
+      .forEach(value => {
+        const option = document.createElement("option");
+        option.value = value;
+        option.textContent = value;
+        select.appendChild(option);
+      });
   });
 }
 
@@ -222,26 +246,35 @@ function populateSpeakerFilter() {
   const select = document.getElementById("speaker");
   const allSpeakers = new Set();
 
-  conferences.forEach(c => {
-    if (c["Speakers/Notable Attendees"]) {
-      c["Speakers/Notable Attendees"]
-        .split(",")
-        .map(s => s.trim())
-        .filter(Boolean)
-        .forEach(s => allSpeakers.add(s));
-    }
+  conferences.forEach(conf => {
+    const raw = conf["Speakers/Notable Attendees"];
+    if (!raw) return;
+
+    raw.split(",")
+      .map(name => name.trim())
+      .filter(Boolean)
+      .forEach(name => allSpeakers.add(name));
   });
+
+  const featuredLabel = document.createElement("option");
+  featuredLabel.textContent = "Featured Speakers";
+  featuredLabel.disabled = true;
+  select.appendChild(featuredLabel);
 
   PRIORITY_SPEAKERS.forEach(name => {
     if (allSpeakers.has(name)) {
       const option = document.createElement("option");
       option.value = name;
       option.textContent = name;
-      option.className = "priority";
       select.appendChild(option);
       allSpeakers.delete(name);
     }
   });
+
+  const separator = document.createElement("option");
+  separator.textContent = "──────────────";
+  separator.disabled = true;
+  select.appendChild(separator);
 
   [...allSpeakers].sort().forEach(name => {
     const option = document.createElement("option");
@@ -251,29 +284,45 @@ function populateSpeakerFilter() {
   });
 }
 
-["search", "sort", "country", "state", "city", "speaker"].forEach(id => {
-  document.getElementById(id).addEventListener("input", render);
-});
+["search","country","state","city","sort","speaker"].forEach(id =>
+  document.getElementById(id).addEventListener("input", render)
+);
 
 function render() {
-  const q = search.value.toLowerCase();
-  const speakerFilter = speaker.value;
+  const query = search.value.toLowerCase();
+  let list = [...featuredOrder];
 
-  let list = [...conferences];
+  if (sort.value !== "past") {
+    list = list.filter(c => isUpcoming(c["Date Range"]));
+  }
+
+  if (sort.value === "upcoming") {
+    list.sort((a, b) => {
+      const A = getYearMonth(a["Date Range"]);
+      const B = getYearMonth(b["Date Range"]);
+      return A.year !== B.year ? A.year - B.year : A.month - B.month;
+    });
+  }
+
+  if (sort.value === "az") {
+    list.sort((a, b) => a.Conference.localeCompare(b.Conference));
+  }
+
+  if (sort.value === "past") {
+    list = featuredOrder.filter(c => !isUpcoming(c["Date Range"]));
+  }
 
   cards.innerHTML = "";
 
   list.forEach(c => {
-    if (q && !Object.values(c).join(" ").toLowerCase().includes(q)) return;
+    if (query && !Object.values(c).join(" ").toLowerCase().includes(query)) return;
     if (country.value && c.Country !== country.value) return;
     if (state.value && c.State !== state.value) return;
     if (city.value && c.City !== city.value) return;
 
-    if (speakerFilter) {
-      const speakers = (c["Speakers/Notable Attendees"] || "")
-        .split(",")
-        .map(s => s.trim());
-      if (!speakers.includes(speakerFilter)) return;
+    if (speaker.value) {
+      const speakers = (c["Speakers/Notable Attendees"] || "").toLowerCase();
+      if (!speakers.includes(speaker.value.toLowerCase())) return;
     }
 
     const location = [c.City, c.State, c.Country].filter(Boolean).join(", ");
@@ -287,7 +336,8 @@ function render() {
         <p>📅 ${c["Date Range"]}</p>
         ${c.Discount ? `<div class="discount">🎟️ ${c.Discount}</div>` : ""}
         <a class="cta" href="${c["Main Conference Link"]}" target="_blank">Get Tickets</a>
-      </div>`;
+      </div>
+    `;
   });
 }
 </script>
