@@ -8,11 +8,6 @@
   <meta name="description" content="Track every Bitcoin conference worldwide." />
   <link rel="icon" href="/favicon.ico" />
 
-  <meta property="og:title" content="Proof of Conference" />
-  <meta property="og:description" content="Track every Bitcoin conference worldwide." />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://proofofconference.com/" />
-
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 
   <style>
@@ -109,27 +104,15 @@
     <option value="past">Past</option>
   </select>
 
-  <select id="country">
-    <option value="">All Countries</option>
-  </select>
-
-  <select id="state">
-    <option value="">All States</option>
-  </select>
-
-  <select id="city">
-    <option value="">All Cities</option>
-  </select>
-
-  <select id="speaker">
-    <option value="">All Speakers / Notable Attendees</option>
-  </select>
+  <select id="country"><option value="">All Countries</option></select>
+  <select id="state"><option value="">All States</option></select>
+  <select id="city"><option value="">All Cities</option></select>
+  <select id="speaker"><option value="">All Speakers / Notable Attendees</option></select>
 
   <div id="cards"></div>
 
   <footer>
-    <strong>Disclaimer:</strong>
-    Proof of Conference is an independent, informational directory and is not affiliated with any listed event.
+    Proof of Conference is an independent, informational directory.
   </footer>
 </div>
 
@@ -147,7 +130,13 @@ const PRIORITY_SPEAKERS = [
   "Jack Mallers"
 ];
 
+const MONTHS = {
+  january:0,february:1,march:2,april:3,may:4,june:5,
+  july:6,august:7,september:8,october:9,november:10,december:11
+};
+
 let conferences = [];
+let featuredOrder = [];
 
 function parseCSV(text) {
   const rows = [];
@@ -169,6 +158,21 @@ function clean(t) {
   return (t || "").replace(/[\r\n]+/g, " ").replace(/^"+|"+$/g, "").trim();
 }
 
+function getYearMonth(range) {
+  const y = range.match(/\b(20\d{2})\b/);
+  const m = range.toLowerCase().match(/(january|february|march|april|may|june|july|august|september|october|november|december)/);
+  if (!y) return null;
+  return { year: parseInt(y[1], 10), month: m ? MONTHS[m[1]] : 0 };
+}
+
+function isUpcoming(range) {
+  const d = getYearMonth(range);
+  if (!d) return false;
+  const now = new Date();
+  return d.year > now.getFullYear() ||
+    (d.year === now.getFullYear() && d.month >= now.getMonth());
+}
+
 fetch(CSV_URL)
   .then(r => r.text())
   .then(text => {
@@ -184,6 +188,7 @@ fetch(CSV_URL)
       return obj;
     });
 
+    featuredOrder = [...conferences];
     populateFilters();
     render();
   });
@@ -196,23 +201,23 @@ function populateFilters() {
 }
 
 function populateSimple(field, select) {
-  const values = [...new Set(conferences.map(c => c[field]).filter(Boolean))].sort();
-  values.forEach(v => {
-    const o = document.createElement("option");
-    o.value = v;
-    o.textContent = v;
-    select.appendChild(o);
-  });
+  [...new Set(conferences.map(c => c[field]).filter(Boolean))].sort()
+    .forEach(v => {
+      const o = document.createElement("option");
+      o.value = v;
+      o.textContent = v;
+      select.appendChild(o);
+    });
 }
 
 function populateSpeakers() {
   const all = new Set();
   conferences.forEach(c => c._speakers.forEach(s => all.add(s)));
 
-  const presentPriority = PRIORITY_SPEAKERS.filter(s => all.has(s));
-  const remaining = [...all].filter(s => !presentPriority.includes(s)).sort();
+  const priority = PRIORITY_SPEAKERS.filter(s => all.has(s));
+  const rest = [...all].filter(s => !priority.includes(s)).sort();
 
-  [...presentPriority, ...remaining].forEach(name => {
+  [...priority, ...rest].forEach(name => {
     const o = document.createElement("option");
     o.value = name;
     o.textContent = name;
@@ -220,16 +225,38 @@ function populateSpeakers() {
   });
 }
 
-["search", "sort", "country", "state", "city", "speaker"].forEach(id =>
+["search","sort","country","state","city","speaker"].forEach(id =>
   document.getElementById(id).addEventListener("input", render)
 );
 
 function render() {
-  const q = search.value.toLowerCase();
+  let list = [...featuredOrder];
+
+  if (sort.value === "featured") {
+    list = list.filter(c => isUpcoming(c["Date Range"]));
+  }
+
+  if (sort.value === "upcoming") {
+    list = list.filter(c => isUpcoming(c["Date Range"]))
+      .sort((a, b) => {
+        const A = getYearMonth(a["Date Range"]);
+        const B = getYearMonth(b["Date Range"]);
+        return A.year !== B.year ? A.year - B.year : A.month - B.month;
+      });
+  }
+
+  if (sort.value === "past") {
+    list = list.filter(c => !isUpcoming(c["Date Range"]));
+  }
+
+  if (sort.value === "az") {
+    list = list.sort((a, b) => a.Conference.localeCompare(b.Conference));
+  }
+
   cards.innerHTML = "";
 
-  conferences.forEach(c => {
-    if (q && !Object.values(c).join(" ").toLowerCase().includes(q)) return;
+  list.forEach(c => {
+    if (search.value && !Object.values(c).join(" ").toLowerCase().includes(search.value.toLowerCase())) return;
     if (country.value && c.Country !== country.value) return;
     if (state.value && c.State !== state.value) return;
     if (city.value && c.City !== city.value) return;
