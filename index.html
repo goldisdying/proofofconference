@@ -77,6 +77,10 @@
       margin-bottom: 18px;
     }
 
+    .filter-wrapper {
+      position: relative;
+    }
+
     input, select {
       width: 100%;
       padding: 12px 16px;
@@ -85,6 +89,22 @@
       border: none;
       font-size: 16px;
       box-sizing: border-box;
+    }
+
+    .clear-btn {
+      position: absolute;
+      right: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 18px;
+      color: #9ca3af;
+      cursor: pointer;
+      display: none;
+      user-select: none;
+    }
+
+    .clear-btn:hover {
+      color: #ffffff;
     }
 
     .sort-wrapper {
@@ -173,10 +193,25 @@
     </select>
   </div>
 
-  <select id="country"><option value="">All Countries</option></select>
-  <select id="state"><option value="">All States</option></select>
-  <select id="city"><option value="">All Cities</option></select>
-  <select id="speaker"><option value="">All Speakers / Notable Attendees</option></select>
+  <div class="filter-wrapper">
+    <select id="country"><option value="">All Countries</option></select>
+    <span class="clear-btn" data-target="country">×</span>
+  </div>
+
+  <div class="filter-wrapper">
+    <select id="state"><option value="">All States</option></select>
+    <span class="clear-btn" data-target="state">×</span>
+  </div>
+
+  <div class="filter-wrapper">
+    <select id="city"><option value="">All Cities</option></select>
+    <span class="clear-btn" data-target="city">×</span>
+  </div>
+
+  <div class="filter-wrapper">
+    <select id="speaker"><option value="">All Speakers / Notable Attendees</option></select>
+    <span class="clear-btn" data-target="speaker">×</span>
+  </div>
 
   <div id="cards"></div>
 
@@ -218,14 +253,14 @@ function parseCSV(text) {
 }
 
 function clean(t) {
-  return (t || "").replace(/[\r\n]+/g, " ").replace(/^"+|"+$/g, "").trim();
+  return (t || "").replace(/[\r\n]+/g," ").replace(/^"+|"+$/g,"").trim();
 }
 
 function getYearMonth(range) {
   const y = range.match(/\b(20\d{2})\b/);
   const m = range.toLowerCase().match(/(january|february|march|april|may|june|july|august|september|october|november|december)/);
   if (!y) return null;
-  return { year: +y[1], month: m ? MONTHS[m[1]] : 0 };
+  return { year:+y[1], month:m?MONTHS[m[1]]:0 };
 }
 
 function isUpcoming(range) {
@@ -236,60 +271,78 @@ function isUpcoming(range) {
 }
 
 fetch(CSV_URL)
-  .then(r => r.text())
-  .then(text => {
+  .then(r=>r.text())
+  .then(text=>{
     const rows = parseCSV(text);
     const headers = rows.shift();
-    conferences = rows.map(r => Object.fromEntries(headers.map((h,i)=>[h,clean(r[i])])))
-      .filter(c => c["Not Active"].toLowerCase() !== "x");
+    conferences = rows.map(r=>Object.fromEntries(headers.map((h,i)=>[h,clean(r[i])])))
+      .filter(c=>c["Not Active"].toLowerCase()!=="x");
     populateFilters();
     render();
   });
 
 function populateFilters() {
-  ["Country","State","City"].forEach(f => {
+  ["Country","State","City"].forEach(f=>{
     const sel = document.getElementById(f.toLowerCase());
     [...new Set(conferences.map(c=>c[f]).filter(Boolean))].sort()
-      .forEach(v => sel.add(new Option(v,v)));
+      .forEach(v=>sel.add(new Option(v,v)));
   });
 
   const speakerSel = document.getElementById("speaker");
   const set = new Set();
 
-  conferences.forEach(c => {
+  conferences.forEach(c=>{
     if (c["Speakers/Notable Attendees"])
-      c["Speakers/Notable Attendees"].split(",").forEach(s => set.add(s.trim()));
+      c["Speakers/Notable Attendees"].split(",").forEach(s=>set.add(s.trim()));
   });
 
-  PRIORITY_SPEAKERS.forEach(n => {
+  PRIORITY_SPEAKERS.forEach(n=>{
     if (set.has(n)) { speakerSel.add(new Option(n,n)); set.delete(n); }
   });
 
   speakerSel.add(new Option("──────","",true,false));
-
-  [...set].sort().forEach(n => speakerSel.add(new Option(n,n)));
+  [...set].sort().forEach(n=>speakerSel.add(new Option(n,n)));
 }
 
-["search","country","state","city","sort","speaker"].forEach(id =>
-  document.getElementById(id).addEventListener("input", render)
-);
+function updateClearButtons() {
+  document.querySelectorAll(".clear-btn").forEach(btn=>{
+    const sel = document.getElementById(btn.dataset.target);
+    btn.style.display = sel.value ? "block" : "none";
+  });
+}
+
+["search","country","state","city","sort","speaker"].forEach(id=>{
+  document.getElementById(id).addEventListener("input", ()=>{
+    updateClearButtons();
+    render();
+  });
+});
+
+document.querySelectorAll(".clear-btn").forEach(btn=>{
+  btn.addEventListener("click", ()=>{
+    const sel = document.getElementById(btn.dataset.target);
+    sel.value = "";
+    updateClearButtons();
+    render();
+  });
+});
 
 function render() {
   const q = search.value.toLowerCase();
   let list = conferences.slice();
 
   if (sort.value !== "past")
-    list = list.filter(c => isUpcoming(c["Date Range"]));
+    list = list.filter(c=>isUpcoming(c["Date Range"]));
   if (sort.value === "discounts")
-    list = list.filter(c => c.Discount);
+    list = list.filter(c=>c.Discount);
   if (sort.value === "past")
-    list = conferences.filter(c => !isUpcoming(c["Date Range"]));
+    list = conferences.filter(c=>!isUpcoming(c["Date Range"]));
   if (sort.value === "az")
     list.sort((a,b)=>a.Conference.localeCompare(b.Conference));
 
   cards.innerHTML = "";
 
-  list.forEach(c => {
+  list.forEach(c=>{
     if (q && !Object.values(c).join(" ").toLowerCase().includes(q)) return;
     if (country.value && c.Country !== country.value) return;
     if (state.value && c.State !== state.value) return;
