@@ -177,6 +177,18 @@ const MONTHS = {
   july:6,august:7,september:8,october:9,november:10,december:11
 };
 
+const PRIORITY_SPEAKERS = [
+  "Michael Saylor",
+  "Jack Dorsey",
+  "Max Keiser",
+  "Jeff Booth",
+  "Lyn Alden",
+  "Natalie Brunell",
+  "Saifedean Ammous",
+  "Adam Back",
+  "Jack Mallers"
+];
+
 let conferences = [];
 let featuredOrder = [];
 
@@ -266,6 +278,21 @@ function populateFilters() {
       });
     }
   });
+
+  PRIORITY_SPEAKERS.forEach(name => {
+    if (speakerSet.has(name)) {
+      const o = document.createElement("option");
+      o.value = name;
+      o.textContent = name;
+      speakerSelect.appendChild(o);
+      speakerSet.delete(name);
+    }
+  });
+
+  const divider = document.createElement("option");
+  divider.disabled = true;
+  divider.textContent = "────────────";
+  speakerSelect.appendChild(divider);
 
   [...speakerSet].sort().forEach(name => {
     const o = document.createElement("option");
