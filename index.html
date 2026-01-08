@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <title>Proof of Conference | Bitcoin Conferences & Event Discounts Worldwide</title>
-  <meta name="description" content="Discover verified Bitcoin conferences worldwide, including upcoming events, speakers, and available conference discount or promo codes. Often found by users searching crypto conferences." />
+  <meta name="description" content="Discover verified Bitcoin conferences worldwide, including upcoming events, speakers, and available conference discount or promo codes." />
   <meta name="keywords" content="bitcoin conferences, bitcoin conference discounts, bitcoin event promo codes, crypto conferences, crypto conference discounts, blockchain events" />
   <link rel="canonical" href="https://www.proofofconference.com/" />
   <link rel="icon" href="/favicon.ico" />
@@ -30,7 +30,7 @@
       margin: 0;
       background: #000;
       color: #fff;
-      font-family: Inter, system-ui, sans-serif;
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
     }
 
     .top-nav {
@@ -44,6 +44,7 @@
     .top-nav a {
       color: #fff;
       text-decoration: none;
+      font-weight: 500;
     }
 
     .container {
@@ -68,8 +69,12 @@
     .filter-label {
       font-size: 13px;
       font-weight: 600;
-      color: #9ca3af;
+      color: #8df608;
       margin: 0 0 6px 4px;
+    }
+
+    .search-wrapper {
+      margin-bottom: 18px;
     }
 
     input, select {
@@ -79,6 +84,7 @@
       border-radius: 24px;
       border: none;
       font-size: 16px;
+      box-sizing: border-box;
     }
 
     .sort-wrapper {
@@ -108,6 +114,7 @@
     .card p {
       margin: 6px 0;
       font-size: 15px;
+      line-height: 1.4;
     }
 
     .discount {
@@ -126,6 +133,15 @@
       font-weight: 700;
       text-decoration: none;
     }
+
+    footer {
+      margin-top: 40px;
+      padding-top: 20px;
+      border-top: 1px solid #1f1f1f;
+      font-size: 13px;
+      color: #9ca3af;
+      text-align: center;
+    }
   </style>
 </head>
 
@@ -143,7 +159,9 @@
   <h1>Proof of Conference</h1>
   <div class="subtitle">Track Every Bitcoin Conference</div>
 
-  <input id="search" placeholder="Search conferences..." />
+  <div class="search-wrapper">
+    <input id="search" placeholder="Search conferences..." />
+  </div>
 
   <div class="sort-wrapper">
     <div class="filter-label">Sort Conferences</div>
@@ -161,6 +179,11 @@
   <select id="speaker"><option value="">All Speakers / Notable Attendees</option></select>
 
   <div id="cards"></div>
+
+  <footer>
+    <strong>Disclaimer:</strong>
+    Proof of Conference is an independent, informational directory and is not necessarily affiliated with, endorsed by, or officially connected to any conference or organization listed.
+  </footer>
 </div>
 
 <script>
@@ -181,7 +204,6 @@ let conferences = [];
 function parseCSV(text) {
   const rows = [];
   let row = [], val = "", inQuotes = false;
-
   for (let i = 0; i < text.length; i++) {
     const c = text[i], n = text[i+1];
     if (c === '"' && inQuotes && n === '"') { val += '"'; i++; }
@@ -277,7 +299,7 @@ function render() {
     const loc = [c.City,c.State,c.Country].filter(Boolean).join(", ");
     cards.innerHTML += `
       <div class="card">
-        ${c.Image ? `<img src="${c.Image}">` : ""}
+        ${c.Image ? `<img src="${c.Image}" alt="${c.Conference}">` : ""}
         <h2>${c.Conference}</h2>
         <p>📍 ${loc}</p>
         <p>📅 ${c["Date Range"]}</p>
