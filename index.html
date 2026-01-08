@@ -8,17 +8,6 @@
   <meta name="description" content="Track every Bitcoin conference worldwide." />
   <link rel="icon" href="/favicon.ico" />
 
-  <meta property="og:title" content="Proof of Conference" />
-  <meta property="og:description" content="An independent directory of Bitcoin conferences and events worldwide." />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://proofofconference.com/" />
-  <meta property="og:site_name" content="Proof of Conference" />
-  <meta property="og:image" content="https://proofofconference.com/og-proof-of-conference.jpg" />
-  <meta property="og:image:width" content="1200" />
-  <meta property="og:image:height" content="630" />
-
-  <meta name="twitter:card" content="summary_large_image" />
-
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 
   <style>
@@ -29,40 +18,16 @@
       font-family:Inter,sans-serif;
     }
 
-    .top-nav {
-      display:flex;
-      justify-content:center;
-      align-items:center;
-      gap:14px;
-      padding:18px 12px 14px;
-      border-bottom:1px solid rgba(255,255,255,0.12);
-      font-size:16px;
-    }
-
-    .top-nav a {
-      color:#ffffff;
-      text-decoration:none;
-      font-weight:600;
-    }
-
-    .top-nav a:hover {
-      color:#f7931a;
-    }
-
-    .dot {
-      color:rgba(255,255,255,0.4);
-    }
-
     .container {
       max-width:480px;
       margin:0 auto;
-      padding:14px 20px 20px;
+      padding:20px;
     }
 
     h1 {
       color:#f7931a;
-      font-size:36px;
       text-align:center;
+      font-size:36px;
       margin-bottom:6px;
     }
 
@@ -126,8 +91,6 @@
 
     footer {
       margin-top:40px;
-      padding-top:20px;
-      border-top:1px solid #1f1f1f;
       font-size:13px;
       color:#9ca3af;
       text-align:center;
@@ -137,26 +100,11 @@
 
 <body>
 
-<div class="top-nav">
-  <a href="/submit-event">Submit Event</a>
-  <span class="dot">•</span>
-  <a href="/contact">Contact</a>
-  <span class="dot">•</span>
-  <a href="https://fomo21.com/" target="_blank">Merch</a>
-</div>
-
 <div class="container">
   <h1>Proof of Conference</h1>
   <div class="subtitle">Track Every Bitcoin Conference</div>
 
   <input id="search" placeholder="Search conferences..." />
-
-  <select id="sort">
-    <option value="featured">Featured</option>
-    <option value="upcoming">Upcoming</option>
-    <option value="az">A to Z</option>
-    <option value="past">Past</option>
-  </select>
 
   <select id="country"><option value="">All Countries</option></select>
   <select id="state"><option value="">All States</option></select>
@@ -166,8 +114,7 @@
   <div id="cards"></div>
 
   <footer>
-    <strong>Disclaimer:</strong>
-    Proof of Conference is an independent, informational directory and is not necessarily affiliated with any conference or organization listed.
+    Proof of Conference is an independent, informational directory.
   </footer>
 </div>
 
@@ -175,7 +122,6 @@
 const CSV_URL = "/Bitcoin Conference List - Sheet1.csv";
 
 let conferences = [];
-let featuredOrder = [];
 
 function parseCSV(text) {
   const rows = [];
@@ -183,23 +129,18 @@ function parseCSV(text) {
 
   for (let i = 0; i < text.length; i++) {
     const c = text[i];
-    if (c === '"') {
-      inQuotes = !inQuotes;
-    } else if (c === ',' && !inQuotes) {
-      row.push(value);
-      value = "";
+    if (c === '"') inQuotes = !inQuotes;
+    else if (c === ',' && !inQuotes) {
+      row.push(value); value = "";
     } else if ((c === "\n" || c === "\r") && !inQuotes) {
-      if (value || row.length) {
+      if (row.length || value) {
         row.push(value);
         rows.push(row);
-        row = [];
-        value = "";
+        row = []; value = "";
       }
-    } else {
-      value += c;
-    }
+    } else value += c;
   }
-  if (value || row.length) {
+  if (row.length || value) {
     row.push(value);
     rows.push(row);
   }
@@ -207,7 +148,11 @@ function parseCSV(text) {
 }
 
 function clean(t) {
-  return (t || "").replace(/[\r\n]+/g, " ").replace(/^"+|"+$/g, "").trim();
+  return (t || "")
+    .normalize("NFKC")
+    .replace(/\s+/g, " ")
+    .replace(/^"+|"+$/g, "")
+    .trim();
 }
 
 fetch(CSV_URL)
@@ -217,16 +162,23 @@ fetch(CSV_URL)
     const headers = rows.shift();
 
     conferences = rows.map(r =>
-      Object.fromEntries(headers.map((h, i) => [h, clean(r[i])]))
+      Object.fromEntries(headers.map((h,i) => [h, clean(r[i])]))
     );
 
-    featuredOrder = [...conferences];
     populateFilters();
     render();
   });
 
+function normalizeName(name) {
+  return name
+    .normalize("NFKC")
+    .replace(/\s+/g, " ")
+    .trim()
+    .toLowerCase();
+}
+
 function populateFilters() {
-  ["Country", "State", "City"].forEach(field => {
+  ["Country","State","City"].forEach(field => {
     const select = document.getElementById(field.toLowerCase());
     [...new Set(conferences.map(c => c[field]).filter(Boolean))]
       .sort()
@@ -238,40 +190,54 @@ function populateFilters() {
       });
   });
 
-  const speakerSet = new Set();
+  const speakerMap = new Map();
+
   conferences.forEach(c => {
-    if (c["Speakers/Notable Attendees"]) {
-      c["Speakers/Notable Attendees"]
-        .split(",")
-        .map(s => s.trim())
-        .filter(Boolean)
-        .forEach(s => speakerSet.add(s));
-    }
+    if (!c["Speakers/Notable Attendees"]) return;
+
+    c["Speakers/Notable Attendees"]
+      .split(",")
+      .map(clean)
+      .filter(Boolean)
+      .forEach(name => {
+        const key = normalizeName(name);
+        if (!speakerMap.has(key)) {
+          speakerMap.set(key, name);
+        }
+      });
   });
 
-  [...speakerSet].sort().forEach(s => {
-    const o = document.createElement("option");
-    o.value = s;
-    o.textContent = s;
-    speaker.appendChild(o);
-  });
+  [...speakerMap.values()]
+    .sort((a,b) => a.localeCompare(b))
+    .forEach(name => {
+      const o = document.createElement("option");
+      o.value = normalizeName(name);
+      o.textContent = name;
+      speaker.appendChild(o);
+    });
 }
 
-["search","country","state","city","speaker","sort"]
+["search","country","state","city","speaker"]
   .forEach(id => document.getElementById(id).addEventListener("input", render));
 
 function render() {
   const q = search.value.toLowerCase();
   cards.innerHTML = "";
 
-  featuredOrder.forEach(c => {
+  conferences.forEach(c => {
     if (q && !Object.values(c).join(" ").toLowerCase().includes(q)) return;
     if (country.value && c.Country !== country.value) return;
     if (state.value && c.State !== state.value) return;
     if (city.value && c.City !== city.value) return;
-    if (speaker.value && !c["Speakers/Notable Attendees"].includes(speaker.value)) return;
 
-    const location = [c.City, c.State, c.Country].filter(Boolean).join(", ");
+    if (speaker.value) {
+      const speakers = (c["Speakers/Notable Attendees"] || "")
+        .split(",")
+        .map(s => normalizeName(clean(s)));
+      if (!speakers.includes(speaker.value)) return;
+    }
+
+    const location = [c.City,c.State,c.Country].filter(Boolean).join(", ");
 
     cards.innerHTML += `
       <div class="card">
