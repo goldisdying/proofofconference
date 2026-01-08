@@ -49,12 +49,7 @@
       font-size: 16px;
     }
 
-    select option.priority {
-      font-weight: 700;
-    }
-
     select option.divider {
-      text-align: center;
       color: #9ca3af;
       font-size: 14px;
     }
@@ -267,7 +262,6 @@ function populateSpeakerFilter() {
       const opt = document.createElement("option");
       opt.value = name;
       opt.textContent = name;
-      opt.className = "priority";
       select.appendChild(opt);
       allSpeakers.delete(name);
     }
