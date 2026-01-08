@@ -42,7 +42,7 @@
     }
 
     .top-nav a {
-      color: #fff;
+      color: #ffffff;
       text-decoration: none;
       font-weight: 500;
     }
@@ -77,38 +77,49 @@
       margin-bottom: 18px;
     }
 
-    .filter-wrapper {
-      position: relative;
-    }
-
     input, select {
       width: 100%;
       padding: 12px 16px;
-      margin-bottom: 10px;
       border-radius: 24px;
       border: none;
       font-size: 16px;
       box-sizing: border-box;
     }
 
+    .sort-wrapper {
+      margin-bottom: 18px;
+    }
+
+    /* FILTER ROW WITH EXTERNAL CLEAR */
+    .filter-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .filter-row select {
+      flex: 1;
+    }
+
     .clear-btn {
-      position: absolute;
-      right: 14px;
-      top: 50%;
-      transform: translateY(-50%);
-      font-size: 18px;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: 1px solid #2a2a2a;
+      background: #121212;
       color: #9ca3af;
+      font-size: 20px;
+      line-height: 28px;
+      text-align: center;
       cursor: pointer;
       display: none;
-      user-select: none;
+      flex-shrink: 0;
     }
 
     .clear-btn:hover {
       color: #ffffff;
-    }
-
-    .sort-wrapper {
-      margin-bottom: 18px;
+      border-color: #3a3a3a;
     }
 
     .card {
@@ -193,24 +204,24 @@
     </select>
   </div>
 
-  <div class="filter-wrapper">
+  <div class="filter-row">
     <select id="country"><option value="">All Countries</option></select>
-    <span class="clear-btn" data-target="country">×</span>
+    <button class="clear-btn" data-target="country">×</button>
   </div>
 
-  <div class="filter-wrapper">
+  <div class="filter-row">
     <select id="state"><option value="">All States</option></select>
-    <span class="clear-btn" data-target="state">×</span>
+    <button class="clear-btn" data-target="state">×</button>
   </div>
 
-  <div class="filter-wrapper">
+  <div class="filter-row">
     <select id="city"><option value="">All Cities</option></select>
-    <span class="clear-btn" data-target="city">×</span>
+    <button class="clear-btn" data-target="city">×</button>
   </div>
 
-  <div class="filter-wrapper">
+  <div class="filter-row">
     <select id="speaker"><option value="">All Speakers / Notable Attendees</option></select>
-    <span class="clear-btn" data-target="speaker">×</span>
+    <button class="clear-btn" data-target="speaker">×</button>
   </div>
 
   <div id="cards"></div>
@@ -307,7 +318,7 @@ function populateFilters() {
 function updateClearButtons() {
   document.querySelectorAll(".clear-btn").forEach(btn=>{
     const sel = document.getElementById(btn.dataset.target);
-    btn.style.display = sel.value ? "block" : "none";
+    btn.style.display = sel.value ? "flex" : "none";
   });
 }
 
