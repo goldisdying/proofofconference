@@ -100,11 +100,25 @@
     }
 
     .card {
+      position: relative;
       background: #121212;
       border-radius: 18px;
       padding: 16px;
       margin-bottom: 22px;
       box-shadow: 0 0 0 1px #1f1f1f;
+    }
+
+    .discount-badge {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: #0b1400;
+      color: #8df608;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 8px;
+      border-radius: 999px;
+      letter-spacing: 0.04em;
     }
 
     .card img {
@@ -125,7 +139,6 @@
       line-height: 1.4;
     }
 
-    /* UPDATED DISCOUNT COLOR */
     .discount {
       margin-top: 10px;
       color: #8df608;
@@ -320,8 +333,10 @@ function render(){
     if(speaker.value&&!(c["Speakers/Notable Attendees"]||"").includes(speaker.value))return;
 
     const loc=[c.City,c.State,c.Country].filter(Boolean).join(", ");
+
     cards.innerHTML+=`
     <div class="card">
+      ${c.Discount?`<div class="discount-badge">DISCOUNT</div>`:""}
       ${c.Image?`<img src="${c.Image}" alt="${c.Conference}">`:""}
       <h2>${c.Conference}</h2>
       <p>📍 ${loc}</p>
