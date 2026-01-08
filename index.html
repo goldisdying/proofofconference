@@ -169,9 +169,10 @@
 
     <input id="search" placeholder="Search conferences..." />
 
+    <!-- SORT -->
     <select id="sort">
-      <option value="featured">Featured</option>
-      <option value="upcoming">Upcoming</option>
+      <option value="upcoming" selected>Upcoming</option>
+      <option value="discounts">Conference Discounts</option>
       <option value="az">A to Z</option>
       <option value="past">Past</option>
     </select>
@@ -198,180 +199,137 @@ const MONTHS = {
 };
 
 const PRIORITY_SPEAKERS = [
-  "Michael Saylor",
-  "Jack Dorsey",
-  "Max Keiser",
-  "Jeff Booth",
-  "Lyn Alden",
-  "Natalie Brunell",
-  "Saifedean Ammous",
-  "Adam Back",
-  "Jack Mallers"
+  "Michael Saylor","Jack Dorsey","Max Keiser","Jeff Booth",
+  "Lyn Alden","Natalie Brunell","Saifedean Ammous","Adam Back","Jack Mallers"
 ];
 
 let conferences = [];
 let featuredOrder = [];
 
-function parseCSV(text) {
-  const rows = [];
-  let row = [], value = "", inQuotes = false;
-
-  for (let i = 0; i < text.length; i++) {
-    const c = text[i], n = text[i + 1];
-    if (c === '"' && inQuotes && n === '"') {
-      value += '"'; i++;
-    } else if (c === '"') {
-      inQuotes = !inQuotes;
-    } else if (c === "," && !inQuotes) {
-      row.push(value); value = "";
-    } else if ((c === "\n" || c === "\r") && !inQuotes) {
-      if (value || row.length) {
-        row.push(value);
-        rows.push(row);
-        row = []; value = "";
-      }
-    } else {
-      value += c;
-    }
+function parseCSV(text){
+  const rows=[]; let row=[],value="",inQuotes=false;
+  for(let i=0;i<text.length;i++){
+    const c=text[i],n=text[i+1];
+    if(c==='"'&&inQuotes&&n==='"'){value+='"';i++;}
+    else if(c==='"'){inQuotes=!inQuotes;}
+    else if(c===","&&!inQuotes){row.push(value);value="";}
+    else if((c==="\n"||c==="\r")&&!inQuotes){
+      if(value||row.length){row.push(value);rows.push(row);row=[];value="";}
+    } else {value+=c;}
   }
-
-  if (value || row.length) {
-    row.push(value);
-    rows.push(row);
-  }
-
+  if(value||row.length){row.push(value);rows.push(row);}
   return rows;
 }
 
-function clean(t) {
-  return (t || "").replace(/[\r\n]+/g, " ").replace(/^"+|"+$/g, "").trim();
+function clean(t){
+  return (t||"").replace(/[\r\n]+/g," ").replace(/^"+|"+$/g,"").trim();
 }
 
-function getYearMonth(range) {
-  const y = range.match(/\b(20\d{2})\b/);
-  const m = range.toLowerCase().match(/(january|february|march|april|may|june|july|august|september|october|november|december)/);
-  if (!y) return null;
-  return { year: parseInt(y[1], 10), month: m ? MONTHS[m[1]] : 0 };
+function getYearMonth(r){
+  const y=r.match(/\b(20\d{2})\b/);
+  const m=r.toLowerCase().match(/(january|february|march|april|may|june|july|august|september|october|november|december)/);
+  if(!y)return null;
+  return {year:+y[1],month:m?MONTHS[m[1]]:0};
 }
 
-function isUpcoming(range) {
-  const d = getYearMonth(range);
-  if (!d) return false;
-  const now = new Date();
-  return d.year > now.getFullYear() || (d.year === now.getFullYear() && d.month >= now.getMonth());
+function isUpcoming(r){
+  const d=getYearMonth(r); if(!d)return false;
+  const n=new Date();
+  return d.year>n.getFullYear()||(d.year===n.getFullYear()&&d.month>=n.getMonth());
 }
 
-fetch(CSV_URL)
-  .then(r => r.text())
-  .then(text => {
-    const rows = parseCSV(text);
-    const headers = rows.shift();
-    conferences = rows.map(r =>
-      Object.fromEntries(headers.map((h, i) => [h, clean(r[i])]))
-    ).filter(c => c["Not Active"].toLowerCase() !== "x");
+fetch(CSV_URL).then(r=>r.text()).then(text=>{
+  const rows=parseCSV(text); const headers=rows.shift();
+  conferences=rows.map(r=>Object.fromEntries(headers.map((h,i)=>[h,clean(r[i])])))
+    .filter(c=>c["Not Active"].toLowerCase()!=="x");
+  featuredOrder=[...conferences];
+  populateFilters();
+  render();
+});
 
-    featuredOrder = [...conferences];
-    populateFilters();
-    render();
+function populateFilters(){
+  ["Country","State","City"].forEach(f=>{
+    const s=document.getElementById(f.toLowerCase());
+    [...new Set(conferences.map(c=>c[f]).filter(Boolean))].sort()
+      .forEach(v=>{const o=document.createElement("option");o.value=v;o.textContent=v;s.appendChild(o);});
   });
 
-function populateFilters() {
-  ["Country", "State", "City"].forEach(f => {
-    const s = document.getElementById(f.toLowerCase());
-    [...new Set(conferences.map(c => c[f]).filter(Boolean))]
-      .sort()
-      .forEach(v => {
-        const o = document.createElement("option");
-        o.value = v;
-        o.textContent = v;
-        s.appendChild(o);
-      });
+  const speakerSelect=document.getElementById("speaker");
+  const speakerSet=new Set();
+
+  conferences.forEach(c=>{
+    if(c["Speakers/Notable Attendees"])
+      c["Speakers/Notable Attendees"].split(",").forEach(s=>speakerSet.add(s.trim()));
   });
 
-  const speakerSelect = document.getElementById("speaker");
-  const speakerSet = new Set();
-
-  conferences.forEach(c => {
-    if (c["Speakers/Notable Attendees"]) {
-      c["Speakers/Notable Attendees"].split(",").forEach(s => {
-        speakerSet.add(s.trim());
-      });
+  PRIORITY_SPEAKERS.forEach(n=>{
+    if(speakerSet.has(n)){
+      const o=document.createElement("option");o.value=n;o.textContent=n;
+      speakerSelect.appendChild(o); speakerSet.delete(n);
     }
   });
 
-  PRIORITY_SPEAKERS.forEach(name => {
-    if (speakerSet.has(name)) {
-      const o = document.createElement("option");
-      o.value = name;
-      o.textContent = name;
-      speakerSelect.appendChild(o);
-      speakerSet.delete(name);
-    }
-  });
+  const d=document.createElement("option");
+  d.disabled=true; d.textContent="──────";
+  speakerSelect.appendChild(d);
 
-  const divider = document.createElement("option");
-  divider.disabled = true;
-  divider.textContent = "──────";
-  speakerSelect.appendChild(divider);
-
-  [...speakerSet].sort().forEach(name => {
-    const o = document.createElement("option");
-    o.value = name;
-    o.textContent = name;
+  [...speakerSet].sort().forEach(n=>{
+    const o=document.createElement("option");o.value=n;o.textContent=n;
     speakerSelect.appendChild(o);
   });
 }
 
-["search", "country", "state", "city", "sort", "speaker"].forEach(id =>
-  document.getElementById(id).addEventListener("input", render)
-);
+["search","country","state","city","sort","speaker"].forEach(id=>{
+  document.getElementById(id).addEventListener("input",render);
+});
 
-function render() {
-  const q = search.value.toLowerCase();
-  let list = [...featuredOrder];
+function render(){
+  const q=search.value.toLowerCase();
+  let list=[...featuredOrder];
 
-  if (sort.value === "featured" || sort.value === "upcoming" || sort.value === "az") {
-    list = list.filter(c => isUpcoming(c["Date Range"]));
+  if(sort.value==="upcoming"||sort.value==="discounts"||sort.value==="az"){
+    list=list.filter(c=>isUpcoming(c["Date Range"]));
   }
 
-  if (sort.value === "upcoming") {
-    list.sort((a, b) => {
-      const A = getYearMonth(a["Date Range"]);
-      const B = getYearMonth(b["Date Range"]);
-      return A.year !== B.year ? A.year - B.year : A.month - B.month;
+  if(sort.value==="discounts"){
+    list=list.filter(c=>c.Discount && c.Discount.trim()!=="");
+  }
+
+  if(sort.value==="upcoming"||sort.value==="discounts"){
+    list.sort((a,b)=>{
+      const A=getYearMonth(a["Date Range"]),B=getYearMonth(b["Date Range"]);
+      return A.year!==B.year?A.year-B.year:A.month-B.month;
     });
   }
 
-  if (sort.value === "past") {
-    list = featuredOrder.filter(c => !isUpcoming(c["Date Range"]));
+  if(sort.value==="past"){
+    list=featuredOrder.filter(c=>!isUpcoming(c["Date Range"]));
   }
 
-  if (sort.value === "az") {
-    list.sort((a, b) => a.Conference.localeCompare(b.Conference));
+  if(sort.value==="az"){
+    list.sort((a,b)=>a.Conference.localeCompare(b.Conference));
   }
 
-  cards.innerHTML = "";
+  cards.innerHTML="";
 
-  list.forEach(c => {
-    if (q && !Object.values(c).join(" ").toLowerCase().includes(q)) return;
-    if (country.value && c.Country !== country.value) return;
-    if (state.value && c.State !== state.value) return;
-    if (city.value && c.City !== city.value) return;
-    if (speaker.value && !(c["Speakers/Notable Attendees"] || "").includes(speaker.value)) return;
+  list.forEach(c=>{
+    if(q&&!Object.values(c).join(" ").toLowerCase().includes(q))return;
+    if(country.value&&c.Country!==country.value)return;
+    if(state.value&&c.State!==state.value)return;
+    if(city.value&&c.City!==city.value)return;
+    if(speaker.value&&!(c["Speakers/Notable Attendees"]||"").includes(speaker.value))return;
 
-    const location = [c.City, c.State, c.Country].filter(Boolean).join(", ");
-
-    cards.innerHTML += `
-      <div class="card">
-        ${c.Image ? `<img src="${c.Image}" alt="${c.Conference}">` : ""}
-        <h2>${c.Conference}</h2>
-        <p>📍 ${location}</p>
-        ${c.Venue ? `<p>🏛️ ${c.Venue}</p>` : ""}
-        <p>📅 ${c["Date Range"]}</p>
-        ${c.Discount ? `<div class="discount">🎟️ ${c.Discount}</div>` : ""}
-        <a class="cta" href="${c["Main Conference Link"]}" target="_blank">Get Tickets</a>
-      </div>
-    `;
+    const loc=[c.City,c.State,c.Country].filter(Boolean).join(", ");
+    cards.innerHTML+=`
+    <div class="card">
+      ${c.Image?`<img src="${c.Image}" alt="${c.Conference}">`:""}
+      <h2>${c.Conference}</h2>
+      <p>📍 ${loc}</p>
+      ${c.Venue?`<p>🏛️ ${c.Venue}</p>`:""}
+      <p>📅 ${c["Date Range"]}</p>
+      ${c.Discount?`<div class="discount">🎟️ ${c.Discount}</div>`:""}
+      <a class="cta" href="${c["Main Conference Link"]}" target="_blank">Get Tickets</a>
+    </div>`;
   });
 }
 </script>
