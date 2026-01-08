@@ -49,6 +49,16 @@
       font-size: 16px;
     }
 
+    select option.priority {
+      font-weight: 700;
+    }
+
+    select option.divider {
+      text-align: center;
+      color: #9ca3af;
+      font-size: 14px;
+    }
+
     .card {
       background: #121212;
       border-radius: 18px;
@@ -104,34 +114,34 @@
 </head>
 
 <body>
-  <div class="container">
-    <h1>Proof of Conference</h1>
-    <div class="subtitle">Track Every Bitcoin Conference</div>
+<div class="container">
+  <h1>Proof of Conference</h1>
+  <div class="subtitle">Track Every Bitcoin Conference</div>
 
-    <input id="search" placeholder="Search conferences..." />
+  <input id="search" placeholder="Search conferences..." />
 
-    <select id="sort">
-      <option value="featured">Featured</option>
-      <option value="upcoming">Upcoming</option>
-      <option value="az">A to Z</option>
-      <option value="past">Past</option>
-    </select>
+  <select id="sort">
+    <option value="featured">Featured</option>
+    <option value="upcoming">Upcoming</option>
+    <option value="az">A to Z</option>
+    <option value="past">Past</option>
+  </select>
 
-    <select id="country"><option value="">All Countries</option></select>
-    <select id="state"><option value="">All States</option></select>
-    <select id="city"><option value="">All Cities</option></select>
+  <select id="country"><option value="">All Countries</option></select>
+  <select id="state"><option value="">All States</option></select>
+  <select id="city"><option value="">All Cities</option></select>
 
-    <select id="speaker">
-      <option value="">All Speakers / Notable Attendees</option>
-    </select>
+  <select id="speaker">
+    <option value="">All Speakers / Notable Attendees</option>
+  </select>
 
-    <div id="cards"></div>
+  <div id="cards"></div>
 
-    <footer>
-      <strong>Disclaimer:</strong>
-      Proof of Conference is an independent, informational directory and is not affiliated with any conference listed.
-    </footer>
-  </div>
+  <footer>
+    <strong>Disclaimer:</strong>
+    Proof of Conference is an independent, informational directory and is not affiliated with any conference listed.
+  </footer>
+</div>
 
 <script>
 const CSV_URL = "https://raw.githubusercontent.com/goldisdying/proofofconference/main/Bitcoin%20Conference%20List%20-%20Sheet1.csv";
@@ -212,7 +222,7 @@ function isUpcoming(range) {
 }
 
 fetch(CSV_URL)
-  .then(response => response.text())
+  .then(r => r.text())
   .then(text => {
     const rows = parseCSV(text);
     const headers = rows.shift();
@@ -229,7 +239,7 @@ fetch(CSV_URL)
   });
 
 function populateLocationFilters() {
-  ["Country", "State", "City"].forEach(field => {
+  ["Country","State","City"].forEach(field => {
     const select = document.getElementById(field.toLowerCase());
     [...new Set(conferences.map(c => c[field]).filter(Boolean))]
       .sort()
@@ -246,41 +256,34 @@ function populateSpeakerFilter() {
   const select = document.getElementById("speaker");
   const allSpeakers = new Set();
 
-  conferences.forEach(conf => {
-    const raw = conf["Speakers/Notable Attendees"];
+  conferences.forEach(c => {
+    const raw = c["Speakers/Notable Attendees"];
     if (!raw) return;
-
-    raw.split(",")
-      .map(name => name.trim())
-      .filter(Boolean)
-      .forEach(name => allSpeakers.add(name));
+    raw.split(",").map(s => s.trim()).filter(Boolean).forEach(s => allSpeakers.add(s));
   });
-
-  const featuredLabel = document.createElement("option");
-  featuredLabel.textContent = "Featured Speakers";
-  featuredLabel.disabled = true;
-  select.appendChild(featuredLabel);
 
   PRIORITY_SPEAKERS.forEach(name => {
     if (allSpeakers.has(name)) {
-      const option = document.createElement("option");
-      option.value = name;
-      option.textContent = name;
-      select.appendChild(option);
+      const opt = document.createElement("option");
+      opt.value = name;
+      opt.textContent = name;
+      opt.className = "priority";
+      select.appendChild(opt);
       allSpeakers.delete(name);
     }
   });
 
-  const separator = document.createElement("option");
-  separator.textContent = "──────────────";
-  separator.disabled = true;
-  select.appendChild(separator);
+  const divider = document.createElement("option");
+  divider.textContent = "────────";
+  divider.disabled = true;
+  divider.className = "divider";
+  select.appendChild(divider);
 
   [...allSpeakers].sort().forEach(name => {
-    const option = document.createElement("option");
-    option.value = name;
-    option.textContent = name;
-    select.appendChild(option);
+    const opt = document.createElement("option");
+    opt.value = name;
+    opt.textContent = name;
+    select.appendChild(opt);
   });
 }
 
