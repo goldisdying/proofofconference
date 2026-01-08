@@ -4,25 +4,43 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <title>Proof of Conference</title>
-  <meta name="description" content="Verified Bitcoin Events" />
+  <title>Proof of Conference | Bitcoin Conferences & Event Discounts Worldwide</title>
+  <meta name="description" content="Discover verified Bitcoin conferences worldwide, including upcoming events, speakers, and available conference discount or promo codes. Often found by users searching crypto conferences." />
+  <meta name="keywords" content="bitcoin conferences, bitcoin conference discounts, bitcoin event promo codes, crypto conferences, crypto conference discounts, blockchain events" />
+  <link rel="canonical" href="https://www.proofofconference.com/" />
   <link rel="icon" href="/favicon.ico" />
 
   <!-- Open Graph -->
   <meta property="og:type" content="website" />
   <meta property="og:title" content="Proof of Conference" />
-  <meta property="og:description" content="Verified Bitcoin Events" />
+  <meta property="og:description" content="Verified Bitcoin conferences worldwide with speakers, dates, and available discounts." />
   <meta property="og:url" content="https://www.proofofconference.com/" />
   <meta property="og:image" content="https://www.proofofconference.com/og-proof-of-conference.jpg" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
-  <meta property="og:image:alt" content="Proof of Conference – Verified Bitcoin Events" />
+  <meta property="og:image:alt" content="Bitcoin conference directory and event discounts, often found via crypto conference searches" />
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Proof of Conference" />
-  <meta name="twitter:description" content="Verified Bitcoin Events" />
+  <meta name="twitter:description" content="Verified Bitcoin conferences worldwide with speakers, dates, and discounts." />
   <meta name="twitter:image" content="https://www.proofofconference.com/og-proof-of-conference.jpg" />
+
+  <!-- Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Proof of Conference",
+    "url": "https://www.proofofconference.com/",
+    "description": "A directory of verified Bitcoin conferences worldwide. Frequently discovered by users searching for crypto conferences, blockchain events, and conference discount codes.",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "https://www.proofofconference.com/?q={search_term_string}",
+      "query-input": "required name=search_term_string"
+    }
+  }
+  </script>
 
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 
@@ -34,7 +52,6 @@
       font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
     }
 
-    /* ---------- TOP NAV ---------- */
     .top-nav {
       display: flex;
       justify-content: center;
@@ -53,7 +70,6 @@
       color: #6b7280;
     }
 
-    /* ---------- MAIN CONTAINER ---------- */
     .container {
       max-width: 480px;
       margin: 0 auto;
@@ -139,7 +155,6 @@
 
 <body>
 
-  <!-- TOP NAVIGATION -->
   <div class="top-nav">
     <a href="/submit-event/">Submit Event</a>
     <span>•</span>
@@ -161,21 +176,10 @@
       <option value="past">Past</option>
     </select>
 
-    <select id="country">
-      <option value="">All Countries</option>
-    </select>
-
-    <select id="state">
-      <option value="">All States</option>
-    </select>
-
-    <select id="city">
-      <option value="">All Cities</option>
-    </select>
-
-    <select id="speaker">
-      <option value="">All Speakers / Notable Attendees</option>
-    </select>
+    <select id="country"><option value="">All Countries</option></select>
+    <select id="state"><option value="">All States</option></select>
+    <select id="city"><option value="">All Cities</option></select>
+    <select id="speaker"><option value="">All Speakers / Notable Attendees</option></select>
 
     <div id="cards"></div>
 
@@ -307,7 +311,7 @@ function populateFilters() {
 
   const divider = document.createElement("option");
   divider.disabled = true;
-  divider.textContent = "────────────";
+  divider.textContent = "──────";
   speakerSelect.appendChild(divider);
 
   [...speakerSet].sort().forEach(name => {
