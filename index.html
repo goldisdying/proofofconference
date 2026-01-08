@@ -133,6 +133,7 @@
       width: 100%;
       border-radius: 14px;
       margin-bottom: 12px;
+      display: block;
     }
 
     .card h2 {
@@ -171,6 +172,7 @@
       font-size: 13px;
       color: #9ca3af;
       text-align: center;
+      line-height: 1.5;
     }
   </style>
 </head>
@@ -182,7 +184,7 @@
   •
   <a href="mailto:LLCStacker@gmail.com">Contact</a>
   •
-  <a href="https://fomo21.com" target="_blank">Merch</a>
+  <a href="https://fomo21.com" target="_blank" rel="noopener noreferrer">Merch</a>
 </div>
 
 <div class="container">
@@ -226,8 +228,11 @@
   <div id="cards"></div>
 
   <footer>
-    <strong>Disclaimer:</strong>
-    Proof of Conference is an independent, informational directory and is not necessarily affiliated with, endorsed by, or officially connected to any conference or organization listed.
+    <p>
+      <strong>Disclaimer:</strong>
+      Proof of Conference is an independent, informational directory and is not necessarily affiliated with, endorsed by, or officially connected to any conference or organization listed. Some events may include affiliate or referral links. Event details may change at any time. Please verify all information directly on the official conference websites. No information on this site is guaranteed to be accurate or up to date.
+    </p>
+    <p>© 2026 Proof of Conference. All rights reserved.</p>
   </footer>
 </div>
 
@@ -362,16 +367,20 @@ function render() {
     const loc = [c.City,c.State,c.Country].filter(Boolean).join(", ");
     const hasDiscount = c.Discount && c.Discount.trim() !== "";
     const buttonText = hasDiscount ? "Get Tickets" : "More Info";
+    const link = c["Main Conference Link"];
 
     cards.innerHTML += `
       <div class="card">
-        ${c.Image ? `<img src="${c.Image}" alt="${c.Conference}">` : ""}
+        ${c.Image ? `
+          <a href="${link}" target="_blank" rel="noopener noreferrer">
+            <img src="${c.Image}" alt="${c.Conference}">
+          </a>` : ""}
         <h2>${c.Conference}</h2>
         <p>📍 ${loc}</p>
         ${c.Venue ? `<p>🏛️ ${c.Venue}</p>` : ""}
         <p>📅 ${c["Date Range"]}</p>
         ${hasDiscount ? `<div class="discount">🎟️ ${c.Discount}</div>` : ""}
-        <a class="cta" href="${c["Main Conference Link"]}" target="_blank" rel="noopener noreferrer">
+        <a class="cta" href="${link}" target="_blank" rel="noopener noreferrer">
           ${buttonText}
         </a>
       </div>`;
