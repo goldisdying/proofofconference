@@ -18,11 +18,10 @@
       font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
     }
 
-    /* ---------- TOP NAV ---------- */
     .top-nav {
       display: flex;
       justify-content: center;
-      gap: 14px;
+      gap: 12px;
       padding: 14px 16px;
       font-size: 14px;
     }
@@ -37,7 +36,6 @@
       color: #6b7280;
     }
 
-    /* ---------- MAIN CONTAINER ---------- */
     .container {
       max-width: 480px;
       margin: 0 auto;
@@ -55,6 +53,7 @@
       text-align: center;
       font-size: 18px;
       margin-bottom: 20px;
+      color: #e5e7eb;
     }
 
     input, select {
@@ -123,59 +122,57 @@
 
 <body>
 
-  <!-- TOP NAVIGATION -->
-  <div class="top-nav">
-    <a href="/submit-event/">Submit Event</a>
-    <span>•</span>
-    <a href="mailto:LLCStacker@gmail.com">Contact</a>
-    <span>•</span>
-    <a href="https://fomo21.com" target="_blank">Merch</a>
-  </div>
+<div class="top-nav">
+  <a href="/submit-event/">Submit Event</a>
+  <span>•</span>
+  <a href="mailto:LLCStacker@gmail.com">Contact</a>
+  <span>•</span>
+  <a href="https://fomo21.com" target="_blank">Merch</a>
+</div>
 
-  <div class="container">
-    <h1>Proof of Conference</h1>
-    <div class="subtitle">Track Every Bitcoin Conference</div>
+<div class="container">
+  <h1>Proof of Conference</h1>
+  <div class="subtitle">Track Every Bitcoin Conference</div>
 
-    <input id="search" placeholder="Search conferences..." />
+  <input id="search" placeholder="Search conferences..." />
 
-    <select id="sort">
-      <option value="featured">Featured</option>
-      <option value="upcoming">Upcoming</option>
-      <option value="az">A to Z</option>
-      <option value="past">Past</option>
-    </select>
+  <select id="sort">
+    <option value="featured">Featured</option>
+    <option value="upcoming">Upcoming</option>
+    <option value="az">A to Z</option>
+    <option value="past">Past</option>
+  </select>
 
-    <select id="country">
-      <option value="">All Countries</option>
-    </select>
+  <select id="country"><option value="">All Countries</option></select>
+  <select id="state"><option value="">All States</option></select>
+  <select id="city"><option value="">All Cities</option></select>
 
-    <select id="state">
-      <option value="">All States</option>
-    </select>
+  <select id="speaker">
+    <option value="">All Speakers / Notable Attendees</option>
+  </select>
 
-    <select id="city">
-      <option value="">All Cities</option>
-    </select>
+  <div id="cards"></div>
 
-    <select id="speaker">
-      <option value="">All Speakers / Notable Attendees</option>
-    </select>
-
-    <div id="cards"></div>
-
-    <footer>
-      <strong>Disclaimer:</strong>
-      Proof of Conference is an independent, informational directory and is not necessarily affiliated with, endorsed by, or officially connected to any conference or organization listed. Please visit each conference’s official website for official details.
-    </footer>
-  </div>
+  <footer>
+    <strong>Disclaimer:</strong>
+    Proof of Conference is an independent, informational directory and is not affiliated with any conference listed.
+  </footer>
+</div>
 
 <script>
 const CSV_URL = "https://raw.githubusercontent.com/goldisdying/proofofconference/main/Bitcoin%20Conference%20List%20-%20Sheet1.csv";
 
-const MONTHS = {
-  january:0,february:1,march:2,april:3,may:4,june:5,
-  july:6,august:7,september:8,october:9,november:10,december:11
-};
+const PRIORITY_SPEAKERS = [
+  "Michael Saylor",
+  "Jack Dorsey",
+  "Max Keiser",
+  "Jeff Booth",
+  "Lyn Alden",
+  "Natalie Brunell",
+  "Saifedean Ammous",
+  "Adam Back",
+  "Jack Mallers"
+];
 
 let conferences = [];
 let featuredOrder = [];
@@ -215,36 +212,25 @@ function clean(t) {
   return (t || "").replace(/[\r\n]+/g, " ").replace(/^"+|"+$/g, "").trim();
 }
 
-function getYearMonth(range) {
-  const y = range.match(/\b(20\d{2})\b/);
-  const m = range.toLowerCase().match(/(january|february|march|april|may|june|july|august|september|october|november|december)/);
-  if (!y) return null;
-  return { year: parseInt(y[1], 10), month: m ? MONTHS[m[1]] : 0 };
-}
-
-function isUpcoming(range) {
-  const d = getYearMonth(range);
-  if (!d) return false;
-  const now = new Date();
-  return d.year > now.getFullYear() || (d.year === now.getFullYear() && d.month >= now.getMonth());
-}
-
 fetch(CSV_URL)
   .then(r => r.text())
   .then(text => {
     const rows = parseCSV(text);
     const headers = rows.shift();
+
     conferences = rows.map(r =>
       Object.fromEntries(headers.map((h, i) => [h, clean(r[i])]))
-    ).filter(c => c["Not Active"].toLowerCase() !== "x");
+    ).filter(c => c["Not Active"]?.toLowerCase() !== "x");
 
     featuredOrder = [...conferences];
+
     populateFilters();
+    populateSpeakerFilter();
     render();
   });
 
 function populateFilters() {
-  ["Country", "State", "City"].forEach(f => {
+  ["Country","State","City"].forEach(f => {
     const s = document.getElementById(f.toLowerCase());
     [...new Set(conferences.map(c => c[f]).filter(Boolean))]
       .sort()
@@ -255,58 +241,54 @@ function populateFilters() {
         s.appendChild(o);
       });
   });
+}
 
-  const speakerSelect = document.getElementById("speaker");
+function populateSpeakerFilter() {
+  const select = document.getElementById("speaker");
   const speakerSet = new Set();
 
   conferences.forEach(c => {
     if (c["Speakers/Notable Attendees"]) {
-      c["Speakers/Notable Attendees"].split(",").forEach(s => {
-        speakerSet.add(s.trim());
-      });
+      c["Speakers/Notable Attendees"].split(",")
+        .map(s => s.trim())
+        .filter(Boolean)
+        .forEach(s => speakerSet.add(s));
     }
   });
+
+  PRIORITY_SPEAKERS.forEach(name => {
+    if (speakerSet.has(name)) {
+      const o = document.createElement("option");
+      o.value = name;
+      o.textContent = name;
+      select.appendChild(o);
+      speakerSet.delete(name);
+    }
+  });
+
+  const divider = document.createElement("option");
+  divider.textContent = "──────";
+  divider.disabled = true;
+  select.appendChild(divider);
 
   [...speakerSet].sort().forEach(name => {
     const o = document.createElement("option");
     o.value = name;
     o.textContent = name;
-    speakerSelect.appendChild(o);
+    select.appendChild(o);
   });
 }
 
-["search", "country", "state", "city", "sort", "speaker"].forEach(id =>
+["search","country","state","city","sort","speaker"].forEach(id =>
   document.getElementById(id).addEventListener("input", render)
 );
 
 function render() {
-  const q = search.value.toLowerCase();
   let list = [...featuredOrder];
-
-  if (sort.value === "featured" || sort.value === "upcoming" || sort.value === "az") {
-    list = list.filter(c => isUpcoming(c["Date Range"]));
-  }
-
-  if (sort.value === "upcoming") {
-    list.sort((a, b) => {
-      const A = getYearMonth(a["Date Range"]);
-      const B = getYearMonth(b["Date Range"]);
-      return A.year !== B.year ? A.year - B.year : A.month - B.month;
-    });
-  }
-
-  if (sort.value === "past") {
-    list = featuredOrder.filter(c => !isUpcoming(c["Date Range"]));
-  }
-
-  if (sort.value === "az") {
-    list.sort((a, b) => a.Conference.localeCompare(b.Conference));
-  }
-
   cards.innerHTML = "";
 
   list.forEach(c => {
-    if (q && !Object.values(c).join(" ").toLowerCase().includes(q)) return;
+    if (search.value && !Object.values(c).join(" ").toLowerCase().includes(search.value.toLowerCase())) return;
     if (country.value && c.Country !== country.value) return;
     if (state.value && c.State !== state.value) return;
     if (city.value && c.City !== city.value) return;
@@ -319,7 +301,6 @@ function render() {
         ${c.Image ? `<img src="${c.Image}" alt="${c.Conference}">` : ""}
         <h2>${c.Conference}</h2>
         <p>📍 ${location}</p>
-        ${c.Venue ? `<p>🏛️ ${c.Venue}</p>` : ""}
         <p>📅 ${c["Date Range"]}</p>
         ${c.Discount ? `<div class="discount">🎟️ ${c.Discount}</div>` : ""}
         <a class="cta" href="${c["Main Conference Link"]}" target="_blank">Get Tickets</a>
