@@ -19,327 +19,165 @@
     }
 
     .container {
-      max-width: 520px;
+      max-width: 640px;
       margin: 0 auto;
-      padding: 28px 20px;
+      padding: 32px 20px;
     }
 
     h1 {
-      color: #f7931a;
       text-align: center;
+      color: #f7931a;
       margin-bottom: 6px;
       font-size: 36px;
     }
 
     .subtitle {
       text-align: center;
-      font-size: 18px;
-      margin-bottom: 22px;
       color: #e5e7eb;
+      margin-bottom: 26px;
+      font-size: 18px;
     }
 
     input,
     select {
       width: 100%;
       box-sizing: border-box;
-      padding: 14px 18px;
-      margin-bottom: 12px;
+      padding: 14px 16px;
       border-radius: 999px;
       border: none;
       font-size: 16px;
+      margin-bottom: 14px;
+    }
+
+    .filters select {
+      appearance: none;
+      background: #fff;
+    }
+
+    .speaker-priority {
+      font-weight: 700;
+    }
+
+    .cards {
+      margin-top: 24px;
     }
 
     .card {
-      background: #121212;
-      border-radius: 18px;
-      padding: 18px;
-      margin-bottom: 22px;
-      box-shadow: 0 0 0 1px #1f1f1f;
+      background: #111;
+      border-radius: 14px;
+      padding: 16px;
+      margin-bottom: 16px;
+      display: flex;
+      gap: 14px;
     }
 
     .card img {
-      width: 100%;
-      border-radius: 14px;
-      margin-bottom: 12px;
+      width: 90px;
+      height: 90px;
+      border-radius: 12px;
+      object-fit: cover;
     }
 
-    .card h2 {
-      color: #f7931a;
-      font-size: 22px;
-      margin: 0 0 10px;
+    .card h3 {
+      margin: 0 0 6px;
+      font-size: 18px;
     }
 
     .card p {
-      margin: 6px 0;
-      font-size: 15px;
-      line-height: 1.4;
-    }
-
-    .discount {
-      margin-top: 10px;
-      color: #f7931a;
-      font-weight: 600;
-    }
-
-    .cta {
-      display: inline-block;
-      margin-top: 14px;
-      background: #f7931a;
-      color: #000;
-      padding: 12px 18px;
-      border-radius: 10px;
-      font-weight: 700;
-      text-decoration: none;
-    }
-
-    footer {
-      margin-top: 40px;
-      padding-top: 20px;
-      border-top: 1px solid #1f1f1f;
-      font-size: 13px;
-      color: #9ca3af;
-      text-align: center;
+      margin: 0;
+      color: #d1d5db;
+      font-size: 14px;
     }
   </style>
 </head>
 
 <body>
   <div class="container">
+
     <h1>Proof of Conference</h1>
     <div class="subtitle">Track Every Bitcoin Conference</div>
 
-    <input id="search" placeholder="Search conferences..." />
+    <!-- Search -->
+    <input
+      type="text"
+      id="searchInput"
+      placeholder="Search conferences..."
+    />
 
-    <select id="sort">
-      <option value="featured">Featured</option>
-      <option value="upcoming">Upcoming</option>
-      <option value="az">A to Z</option>
-      <option value="past">Past</option>
-    </select>
+    <div class="filters">
+      <select id="featuredFilter">
+        <option value="Featured">Featured</option>
+        <option value="Upcoming">Upcoming</option>
+        <option value="A to Z">A to Z</option>
+        <option value="Past">Past</option>
+      </select>
 
-    <select id="country"><option value="">All Countries</option></select>
-    <select id="state"><option value="">All States</option></select>
-    <select id="city"><option value="">All Cities</option></select>
+      <select id="countryFilter">
+        <option value="">All Countries</option>
+      </select>
 
-    <select id="speaker">
-      <option value="">All Speakers / Notable Attendees</option>
-    </select>
+      <select id="stateFilter">
+        <option value="">All States</option>
+      </select>
 
-    <div id="cards"></div>
+      <select id="cityFilter">
+        <option value="">All Cities</option>
+      </select>
 
-    <footer>
-      <strong>Disclaimer:</strong>
-      Proof of Conference is an independent, informational directory and is not affiliated with any conference listed.
-    </footer>
+      <select id="speakerFilter">
+        <option value="">All Speakers / Notable Attendees</option>
+      </select>
+    </div>
+
+    <div class="cards" id="cards"></div>
   </div>
 
-<script>
-const CSV_URL = "https://raw.githubusercontent.com/goldisdying/proofofconference/main/Bitcoin%20Conference%20List%20-%20Sheet1.csv";
+  <script>
+    const PRIORITY_SPEAKERS = [
+      "Michael Saylor",
+      "Jack Dorsey",
+      "Max Keiser",
+      "Jeff Booth",
+      "Lyn Alden",
+      "Natalie Brunell",
+      "Saifedean Ammous",
+      "Adam Back",
+      "Jack Mallers"
+    ];
 
-const PRIORITY_SPEAKERS = [
-  "Michael Saylor",
-  "Jack Dorsey",
-  "Max Keiser",
-  "Jeff Booth",
-  "Lyn Alden",
-  "Natalie Brunell",
-  "Saifedean Ammous",
-  "Adam Back",
-  "Jack Mallers"
-];
+    function buildSpeakerDropdown(uniqueSpeakers) {
+      const speakerFilter = document.getElementById("speakerFilter");
 
-const MONTHS = {
-  january:0,february:1,march:2,april:3,may:4,june:5,
-  july:6,august:7,september:8,october:9,november:10,december:11
-};
+      speakerFilter.innerHTML = '<option value="">All Speakers / Notable Attendees</option>';
 
-let conferences = [];
-let featuredOrder = [];
-
-function parseCSV(text) {
-  const rows = [];
-  let row = [], value = "", inQuotes = false;
-
-  for (let i = 0; i < text.length; i++) {
-    const char = text[i];
-    const next = text[i + 1];
-
-    if (char === '"' && inQuotes && next === '"') {
-      value += '"';
-      i++;
-    } else if (char === '"') {
-      inQuotes = !inQuotes;
-    } else if (char === "," && !inQuotes) {
-      row.push(value);
-      value = "";
-    } else if ((char === "\n" || char === "\r") && !inQuotes) {
-      if (value || row.length) {
-        row.push(value);
-        rows.push(row);
-        row = [];
-        value = "";
-      }
-    } else {
-      value += char;
-    }
-  }
-
-  if (value || row.length) {
-    row.push(value);
-    rows.push(row);
-  }
-
-  return rows;
-}
-
-function clean(text) {
-  return (text || "").replace(/[\r\n]+/g, " ").replace(/^"+|"+$/g, "").trim();
-}
-
-function getYearMonth(range) {
-  const year = range.match(/\b(20\d{2})\b/);
-  const month = range.toLowerCase().match(/(january|february|march|april|may|june|july|august|september|october|november|december)/);
-  if (!year) return null;
-  return { year: parseInt(year[1]), month: month ? MONTHS[month[1]] : 0 };
-}
-
-function isUpcoming(range) {
-  const date = getYearMonth(range);
-  if (!date) return false;
-  const now = new Date();
-  return date.year > now.getFullYear() ||
-    (date.year === now.getFullYear() && date.month >= now.getMonth());
-}
-
-fetch(CSV_URL)
-  .then(response => response.text())
-  .then(text => {
-    const rows = parseCSV(text);
-    const headers = rows.shift();
-
-    conferences = rows.map(row =>
-      Object.fromEntries(headers.map((h, i) => [h, clean(row[i])]))
-    ).filter(c => c["Not Active"]?.toLowerCase() !== "x");
-
-    featuredOrder = [...conferences];
-
-    populateLocationFilters();
-    populateSpeakerFilter();
-    render();
-  });
-
-function populateLocationFilters() {
-  ["Country", "State", "City"].forEach(field => {
-    const select = document.getElementById(field.toLowerCase());
-    [...new Set(conferences.map(c => c[field]).filter(Boolean))]
-      .sort()
-      .forEach(value => {
-        const option = document.createElement("option");
-        option.value = value;
-        option.textContent = value;
-        select.appendChild(option);
+      PRIORITY_SPEAKERS.forEach(name => {
+        if (uniqueSpeakers.has(name)) {
+          const option = document.createElement("option");
+          option.value = name;
+          option.textContent = name;
+          option.className = "speaker-priority";
+          speakerFilter.appendChild(option);
+        }
       });
-  });
-}
 
-function populateSpeakerFilter() {
-  const select = document.getElementById("speaker");
-  const allSpeakers = new Set();
+      if (uniqueSpeakers.size > PRIORITY_SPEAKERS.length) {
+        const divider = document.createElement("option");
+        divider.disabled = true;
+        divider.textContent = "────────";
+        speakerFilter.appendChild(divider);
+      }
 
-  conferences.forEach(conf => {
-    const raw = conf["Speakers/Notable Attendees"];
-    if (!raw) return;
-
-    raw.split(",")
-      .map(name => name.trim())
-      .filter(Boolean)
-      .forEach(name => allSpeakers.add(name));
-  });
-
-  const featuredLabel = document.createElement("option");
-  featuredLabel.textContent = "Featured Speakers";
-  featuredLabel.disabled = true;
-  select.appendChild(featuredLabel);
-
-  PRIORITY_SPEAKERS.forEach(name => {
-    if (allSpeakers.has(name)) {
-      const option = document.createElement("option");
-      option.value = name;
-      option.textContent = name;
-      select.appendChild(option);
-      allSpeakers.delete(name);
+      Array.from(uniqueSpeakers)
+        .filter(name => !PRIORITY_SPEAKERS.includes(name))
+        .sort()
+        .forEach(name => {
+          const option = document.createElement("option");
+          option.value = name;
+          option.textContent = name;
+          speakerFilter.appendChild(option);
+        });
     }
-  });
+  </script>
 
-  const separator = document.createElement("option");
-  separator.textContent = "──────────────";
-  separator.disabled = true;
-  select.appendChild(separator);
-
-  [...allSpeakers].sort().forEach(name => {
-    const option = document.createElement("option");
-    option.value = name;
-    option.textContent = name;
-    select.appendChild(option);
-  });
-}
-
-["search","country","state","city","sort","speaker"].forEach(id =>
-  document.getElementById(id).addEventListener("input", render)
-);
-
-function render() {
-  const query = search.value.toLowerCase();
-  let list = [...featuredOrder];
-
-  if (sort.value !== "past") {
-    list = list.filter(c => isUpcoming(c["Date Range"]));
-  }
-
-  if (sort.value === "upcoming") {
-    list.sort((a, b) => {
-      const A = getYearMonth(a["Date Range"]);
-      const B = getYearMonth(b["Date Range"]);
-      return A.year !== B.year ? A.year - B.year : A.month - B.month;
-    });
-  }
-
-  if (sort.value === "az") {
-    list.sort((a, b) => a.Conference.localeCompare(b.Conference));
-  }
-
-  if (sort.value === "past") {
-    list = featuredOrder.filter(c => !isUpcoming(c["Date Range"]));
-  }
-
-  cards.innerHTML = "";
-
-  list.forEach(c => {
-    if (query && !Object.values(c).join(" ").toLowerCase().includes(query)) return;
-    if (country.value && c.Country !== country.value) return;
-    if (state.value && c.State !== state.value) return;
-    if (city.value && c.City !== city.value) return;
-
-    if (speaker.value) {
-      const speakers = (c["Speakers/Notable Attendees"] || "").toLowerCase();
-      if (!speakers.includes(speaker.value.toLowerCase())) return;
-    }
-
-    const location = [c.City, c.State, c.Country].filter(Boolean).join(", ");
-
-    cards.innerHTML += `
-      <div class="card">
-        ${c.Image ? `<img src="${c.Image}" alt="${c.Conference}">` : ""}
-        <h2>${c.Conference}</h2>
-        <p>📍 ${location}</p>
-        ${c.Venue ? `<p>🏛️ ${c.Venue}</p>` : ""}
-        <p>📅 ${c["Date Range"]}</p>
-        ${c.Discount ? `<div class="discount">🎟️ ${c.Discount}</div>` : ""}
-        <a class="cta" href="${c["Main Conference Link"]}" target="_blank">Get Tickets</a>
-      </div>
-    `;
-  });
-}
-</script>
 </body>
 </html>
