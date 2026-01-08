@@ -90,7 +90,6 @@
       margin-bottom: 18px;
     }
 
-    /* FILTER ROW WITH EXTERNAL CLEAR */
     .filter-row {
       display: flex;
       align-items: center;
@@ -361,14 +360,20 @@ function render() {
     if (speaker.value && !(c["Speakers/Notable Attendees"]||"").includes(speaker.value)) return;
 
     const loc = [c.City,c.State,c.Country].filter(Boolean).join(", ");
+    const hasDiscount = c.Discount && c.Discount.trim() !== "";
+    const buttonText = hasDiscount ? "Get Tickets" : "More Info";
+
     cards.innerHTML += `
       <div class="card">
         ${c.Image ? `<img src="${c.Image}" alt="${c.Conference}">` : ""}
         <h2>${c.Conference}</h2>
         <p>📍 ${loc}</p>
+        ${c.Venue ? `<p>🏛️ ${c.Venue}</p>` : ""}
         <p>📅 ${c["Date Range"]}</p>
-        ${c.Discount ? `<div class="discount">🎟️ ${c.Discount}</div>` : ""}
-        <a class="cta" href="${c["Main Conference Link"]}" target="_blank">Get Tickets</a>
+        ${hasDiscount ? `<div class="discount">🎟️ ${c.Discount}</div>` : ""}
+        <a class="cta" href="${c["Main Conference Link"]}" target="_blank" rel="noopener noreferrer">
+          ${buttonText}
+        </a>
       </div>`;
   });
 }
