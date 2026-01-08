@@ -8,15 +8,12 @@
   <meta name="description" content="Track every Bitcoin conference worldwide." />
   <link rel="icon" href="/favicon.ico" />
 
-  <!-- Open Graph -->
   <meta property="og:title" content="Proof of Conference" />
-  <meta property="og:description" content="An independent directory of Bitcoin conferences and events worldwide." />
+  <meta property="og:description" content="An independent directory of Bitcoin conferences worldwide." />
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://proofofconference.com/" />
-  <meta property="og:site_name" content="Proof of Conference" />
-  <meta property="og:image" content="https://proofofconference.com/og-proof-of-conference.jpg" />
-  <meta property="og:image:width" content="1200" />
-  <meta property="og:image:height" content="630" />
+  <meta property="og:url" content="https://www.proofofconference.com/" />
+  <meta property="og:image" content="https://www.proofofconference.com/og-proof-of-conference.jpg" />
+
   <meta name="twitter:card" content="summary_large_image" />
 
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
@@ -26,12 +23,12 @@
       margin: 0;
       background: #000;
       color: #fff;
-      font-family: Inter, sans-serif;
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
     }
     .container {
-      max-width: 480px;
+      max-width: 520px;
       margin: 0 auto;
-      padding: 20px;
+      padding: 28px 20px;
     }
     h1 {
       color: #f7931a;
@@ -42,15 +39,16 @@
     .subtitle {
       text-align: center;
       font-size: 18px;
-      margin-bottom: 20px;
+      margin-bottom: 22px;
     }
     input, select {
       width: 100%;
-      padding: 12px 16px;
-      margin-bottom: 10px;
-      border-radius: 24px;
+      padding: 14px 18px;
+      margin-bottom: 12px;
+      border-radius: 28px;
       border: none;
       font-size: 16px;
+      box-sizing: border-box;
     }
     .card {
       background: #121212;
@@ -119,7 +117,6 @@
   <select id="state"><option value="">All States</option></select>
   <select id="city"><option value="">All Cities</option></select>
 
-  <!-- NEW SPEAKER FILTER -->
   <select id="speaker">
     <option value="">All Speakers / Notable Attendees</option>
   </select>
@@ -128,13 +125,14 @@
 
   <footer>
     <strong>Disclaimer:</strong>
-    Proof of Conference is an independent, informational directory and is not necessarily affiliated with, endorsed by, or officially connected to any conference or organization listed. Please visit each conference’s official website for official details.
+    Proof of Conference is an independent, informational directory and is not affiliated with any event listed.
   </footer>
 
 </div>
 
 <script>
-const CSV_URL = "/Bitcoin Conference List - Sheet1.csv";
+const CSV_URL =
+  "https://raw.githubusercontent.com/goldisdying/proofofconference/main/Bitcoin%20Conference%20List%20-%20Sheet1.csv";
 
 const MONTHS = {
   january:0,february:1,march:2,april:3,may:4,june:5,
@@ -146,23 +144,21 @@ let featuredOrder = [];
 
 function parseCSV(text) {
   const rows = [];
-  let row = [];
-  let value = "";
-  let inQuotes = false;
+  let row = [], value = "", inQuotes = false;
 
   for (let i = 0; i < text.length; i++) {
-    const c = text[i];
-    const n = text[i + 1];
+    const char = text[i];
+    const next = text[i + 1];
 
-    if (c === '"' && inQuotes && n === '"') {
+    if (char === '"' && inQuotes && next === '"') {
       value += '"';
       i++;
-    } else if (c === '"') {
+    } else if (char === '"') {
       inQuotes = !inQuotes;
-    } else if (c === "," && !inQuotes) {
+    } else if (char === "," && !inQuotes) {
       row.push(value);
       value = "";
-    } else if ((c === "\n" || c === "\r") && !inQuotes) {
+    } else if ((char === "\n" || char === "\r") && !inQuotes) {
       if (value || row.length) {
         row.push(value);
         rows.push(row);
@@ -170,7 +166,7 @@ function parseCSV(text) {
         value = "";
       }
     } else {
-      value += c;
+      value += char;
     }
   }
 
@@ -191,16 +187,27 @@ function clean(text) {
 
 function getYearMonth(range) {
   const yearMatch = range.match(/\b(20\d{2})\b/);
-  const monthMatch = range.toLowerCase().match(/(january|february|march|april|may|june|july|august|september|october|november|december)/);
+  const monthMatch = range.toLowerCase().match(
+    /(january|february|march|april|may|june|july|august|september|october|november|december)/
+  );
+
   if (!yearMatch) return null;
-  return { year: parseInt(yearMatch[1], 10), month: monthMatch ? MONTHS[monthMatch[1]] : 0 };
+
+  return {
+    year: parseInt(yearMatch[1], 10),
+    month: monthMatch ? MONTHS[monthMatch[1]] : 0
+  };
 }
 
 function isUpcoming(range) {
-  const d = getYearMonth(range);
-  if (!d) return false;
+  const parsed = getYearMonth(range);
+  if (!parsed) return false;
+
   const now = new Date();
-  return d.year > now.getFullYear() || (d.year === now.getFullYear() && d.month >= now.getMonth());
+  return (
+    parsed.year > now.getFullYear() ||
+    (parsed.year === now.getFullYear() && parsed.month >= now.getMonth())
+  );
 }
 
 fetch(CSV_URL)
@@ -210,7 +217,9 @@ fetch(CSV_URL)
     const headers = rows.shift();
 
     conferences = rows
-      .map(row => Object.fromEntries(headers.map((h, i) => [h, clean(row[i])])))
+      .map(row =>
+        Object.fromEntries(headers.map((h, i) => [h, clean(row[i])]))
+      )
       .filter(c => c["Not Active"].toLowerCase() !== "x");
 
     featuredOrder = [...conferences];
@@ -220,18 +229,29 @@ fetch(CSV_URL)
   });
 
 function populateFilters() {
-  const countrySet = new Set();
-  const stateSet = new Set();
-  const citySet = new Set();
+  ["Country", "State", "City"].forEach(field => {
+    const select = document.getElementById(field.toLowerCase());
+    [...new Set(conferences.map(c => c[field]).filter(Boolean))]
+      .sort()
+      .forEach(value => {
+        const option = document.createElement("option");
+        option.value = value;
+        option.textContent = value;
+        select.appendChild(option);
+      });
+  });
+
   const speakerSet = new Set();
 
   conferences.forEach(c => {
-    if (c.Country) countrySet.add(c.Country);
-    if (c.State) stateSet.add(c.State);
-    if (c.City) citySet.add(c.City);
+    const speakerField =
+      c["Speakers / Notable Attendees"] ||
+      c["Speakers"] ||
+      c["Notable Attendees"] ||
+      "";
 
-    if (c["Speakers / Notable Attendees"]) {
-      c["Speakers / Notable Attendees"]
+    if (speakerField) {
+      speakerField
         .split(",")
         .map(s => s.trim())
         .filter(Boolean)
@@ -239,18 +259,23 @@ function populateFilters() {
     }
   });
 
-  [...countrySet].sort().forEach(v => country.append(new Option(v, v)));
-  [...stateSet].sort().forEach(v => state.append(new Option(v, v)));
-  [...citySet].sort().forEach(v => city.append(new Option(v, v)));
-  [...speakerSet].sort().forEach(v => speaker.append(new Option(v, v)));
+  [...speakerSet]
+    .sort((a, b) => a.localeCompare(b))
+    .forEach(name => {
+      const option = document.createElement("option");
+      option.value = name;
+      option.textContent = name;
+      document.getElementById("speaker").appendChild(option);
+    });
 }
 
-["search", "country", "state", "city", "speaker", "sort"].forEach(id => {
-  document.getElementById(id).addEventListener("input", render);
-});
+["search","country","state","city","speaker","sort"]
+  .forEach(id => document.getElementById(id).addEventListener("input", render));
 
 function render() {
   const query = search.value.toLowerCase();
+  const selectedSpeaker = speaker.value;
+
   let list = [...featuredOrder];
 
   if (sort.value === "featured" || sort.value === "upcoming" || sort.value === "az") {
@@ -281,11 +306,14 @@ function render() {
     if (state.value && c.State !== state.value) return;
     if (city.value && c.City !== city.value) return;
 
-    if (speaker.value) {
-      const speakers = (c["Speakers / Notable Attendees"] || "")
-        .split(",")
-        .map(s => s.trim().toLowerCase());
-      if (!speakers.includes(speaker.value.toLowerCase())) return;
+    if (selectedSpeaker) {
+      const speakerField =
+        c["Speakers / Notable Attendees"] ||
+        c["Speakers"] ||
+        c["Notable Attendees"] ||
+        "";
+
+      if (!speakerField.toLowerCase().includes(selectedSpeaker.toLowerCase())) return;
     }
 
     const location = [c.City, c.State, c.Country].filter(Boolean).join(", ");
