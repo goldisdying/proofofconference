@@ -10,7 +10,6 @@
   <link rel="canonical" href="https://www.proofofconference.com/" />
   <link rel="icon" href="/favicon.ico" />
 
-  <!-- Open Graph -->
   <meta property="og:type" content="website" />
   <meta property="og:title" content="Proof of Conference" />
   <meta property="og:description" content="Verified Bitcoin conferences worldwide with speakers, dates, and available discounts." />
@@ -19,7 +18,6 @@
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
 
-  <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:image" content="https://www.proofofconference.com/og-proof-of-conference.jpg" />
 
@@ -73,10 +71,6 @@
       margin: 0 0 6px 4px;
     }
 
-    .search-wrapper {
-      margin-bottom: 18px;
-    }
-
     input, select {
       width: 100%;
       padding: 12px 16px;
@@ -84,10 +78,6 @@
       border: none;
       font-size: 16px;
       box-sizing: border-box;
-    }
-
-    .sort-wrapper {
-      margin-bottom: 18px;
     }
 
     .filter-row {
@@ -114,11 +104,6 @@
       cursor: pointer;
       display: none;
       flex-shrink: 0;
-    }
-
-    .clear-btn:hover {
-      color: #ffffff;
-      border-color: #3a3a3a;
     }
 
     .card {
@@ -201,19 +186,15 @@
   <h1>Proof of Conference</h1>
   <div class="subtitle">Track Every Bitcoin Conference</div>
 
-  <div class="search-wrapper">
-    <input id="search" placeholder="Search conferences..." />
-  </div>
+  <input id="search" placeholder="Search conferences..." />
 
-  <div class="sort-wrapper">
-    <div class="filter-label">Sort Conferences</div>
-    <select id="sort">
-      <option value="upcoming" selected>Upcoming</option>
-      <option value="discounts">Conference Discounts</option>
-      <option value="az">A to Z</option>
-      <option value="past">Past</option>
-    </select>
-  </div>
+  <div class="filter-label">Sort Conferences</div>
+  <select id="sort">
+    <option value="upcoming" selected>Upcoming</option>
+    <option value="discounts">Conference Discounts</option>
+    <option value="az">A to Z</option>
+    <option value="past">Past</option>
+  </select>
 
   <div class="filter-row">
     <select id="country"><option value="">All Countries</option></select>
@@ -238,10 +219,7 @@
   <div id="cards"></div>
 
   <footer>
-    <p>
-      <strong>Disclaimer:</strong>
-      Proof of Conference is an independent, informational directory and is not necessarily affiliated with, endorsed by, or officially connected to any conference or organization listed. Some events may include affiliate or referral links. Event details may change at any time. Please verify all information directly on the official conference websites. No information on this site is guaranteed to be accurate or up to date.
-    </p>
+    <p><strong>Disclaimer:</strong> Proof of Conference is an independent, informational directory and is not necessarily affiliated with, endorsed by, or officially connected to any conference or organization listed. Some events may include affiliate or referral links. Event details may change at any time. Please verify all information directly on the official conference websites. No information on this site is guaranteed to be accurate or up to date.</p>
     <p>© 2026 Proof of Conference. All rights reserved.</p>
   </footer>
 </div>
@@ -254,47 +232,39 @@ const MONTHS = {
   july:6,august:7,september:8,october:9,november:10,december:11
 };
 
-const PRIORITY_SPEAKERS = [
-  "Michael Saylor","Jack Dorsey","Max Keiser","Jeff Booth",
-  "Lyn Alden","Natalie Brunell","Saifedean Ammous","Adam Back","Jack Mallers"
-];
+function parseDateRange(range) {
+  if (!range) return null;
 
-let conferences = [];
+  const yearMatch = range.match(/\b(20\d{2})\b/);
+  const monthMatch = range.toLowerCase().match(/(january|february|march|april|may|june|july|august|september|october|november|december)/);
+  if (!yearMatch || !monthMatch) return null;
 
-function parseCSV(text) {
-  const rows = [];
-  let row = [], val = "", inQuotes = false;
-  for (let i = 0; i < text.length; i++) {
-    const c = text[i], n = text[i+1];
-    if (c === '"' && inQuotes && n === '"') { val += '"'; i++; }
-    else if (c === '"') inQuotes = !inQuotes;
-    else if (c === "," && !inQuotes) { row.push(val); val = ""; }
-    else if ((c === "\n" || c === "\r") && !inQuotes) {
-      if (val || row.length) { row.push(val); rows.push(row); row = []; val = ""; }
-    } else val += c;
+  const year = parseInt(yearMatch[1], 10);
+  const month = MONTHS[monthMatch[1]];
+
+  const dayMatches = range.match(/\b(\d{1,2})\b/g);
+  let startDay = 1;
+  let endDay = null;
+
+  if (dayMatches && dayMatches.length >= 1) {
+    startDay = parseInt(dayMatches[0], 10);
+    endDay = dayMatches.length >= 2 ? parseInt(dayMatches[1], 10) : startDay;
   }
-  if (val || row.length) { row.push(val); rows.push(row); }
-  return rows;
-}
 
-function clean(t) {
-  return (t || "").replace(/[\r\n]+/g," ").replace(/^"+|"+$/g,"").trim();
-}
+  const startDate = new Date(year, month, startDay);
+  const endDate = new Date(year, month, endDay ?? startDay);
 
-function getStartDate(range) {
-  const year = range.match(/\b(20\d{2})\b/);
-  const month = range.toLowerCase().match(/(january|february|march|april|may|june|july|august|september|october|november|december)/);
-  if (!year || !month) return null;
-  return new Date(year[1], MONTHS[month[1]], 1);
+  return { startDate, endDate };
 }
 
 function getTimeAway(range) {
-  const start = getStartDate(range);
-  if (!start) return "";
-  const now = new Date();
-  const diffDays = Math.floor((start - now) / (1000 * 60 * 60 * 24));
+  const parsed = parseDateRange(range);
+  if (!parsed) return "";
 
-  if (diffDays < 0) return "";
+  const now = new Date();
+  const diffDays = Math.floor((parsed.startDate - now) / (1000 * 60 * 60 * 24));
+
+  if (diffDays < 0 && now <= parsed.endDate) return "Happening now";
   if (diffDays === 0) return "Happening now";
   if (diffDays <= 14) return `In ${diffDays} days`;
   if (diffDays <= 60) return `${Math.round(diffDays / 7)} weeks away`;
@@ -306,113 +276,9 @@ function getTimeAway(range) {
 }
 
 function isUpcoming(range) {
-  const d = getStartDate(range);
-  if (!d) return false;
-  return d >= new Date();
-}
-
-fetch(CSV_URL)
-  .then(r=>r.text())
-  .then(text=>{
-    const rows = parseCSV(text);
-    const headers = rows.shift();
-    conferences = rows.map(r=>Object.fromEntries(headers.map((h,i)=>[h,clean(r[i])])))
-      .filter(c=>c["Not Active"].toLowerCase()!=="x");
-    populateFilters();
-    render();
-  });
-
-function populateFilters() {
-  ["Country","State","City"].forEach(f=>{
-    const sel = document.getElementById(f.toLowerCase());
-    [...new Set(conferences.map(c=>c[f]).filter(Boolean))].sort()
-      .forEach(v=>sel.add(new Option(v,v)));
-  });
-
-  const speakerSel = document.getElementById("speaker");
-  const set = new Set();
-
-  conferences.forEach(c=>{
-    if (c["Speakers/Notable Attendees"])
-      c["Speakers/Notable Attendees"].split(",").forEach(s=>set.add(s.trim()));
-  });
-
-  PRIORITY_SPEAKERS.forEach(n=>{
-    if (set.has(n)) { speakerSel.add(new Option(n,n)); set.delete(n); }
-  });
-
-  speakerSel.add(new Option("──────","",true,false));
-  [...set].sort().forEach(n=>speakerSel.add(new Option(n,n)));
-}
-
-function updateClearButtons() {
-  document.querySelectorAll(".clear-btn").forEach(btn=>{
-    const sel = document.getElementById(btn.dataset.target);
-    btn.style.display = sel.value ? "flex" : "none";
-  });
-}
-
-["search","country","state","city","sort","speaker"].forEach(id=>{
-  document.getElementById(id).addEventListener("input", ()=>{
-    updateClearButtons();
-    render();
-  });
-});
-
-document.querySelectorAll(".clear-btn").forEach(btn=>{
-  btn.addEventListener("click", ()=>{
-    const sel = document.getElementById(btn.dataset.target);
-    sel.value = "";
-    updateClearButtons();
-    render();
-  });
-});
-
-function render() {
-  const q = search.value.toLowerCase();
-  let list = conferences.slice();
-
-  if (sort.value !== "past")
-    list = list.filter(c=>isUpcoming(c["Date Range"]));
-  if (sort.value === "discounts")
-    list = list.filter(c=>c.Discount);
-  if (sort.value === "past")
-    list = conferences.filter(c=>!isUpcoming(c["Date Range"]));
-  if (sort.value === "az")
-    list.sort((a,b)=>a.Conference.localeCompare(b.Conference));
-
-  cards.innerHTML = "";
-
-  list.forEach(c=>{
-    if (q && !Object.values(c).join(" ").toLowerCase().includes(q)) return;
-    if (country.value && c.Country !== country.value) return;
-    if (state.value && c.State !== state.value) return;
-    if (city.value && c.City !== city.value) return;
-    if (speaker.value && !(c["Speakers/Notable Attendees"]||"").includes(speaker.value)) return;
-
-    const loc = [c.City,c.State,c.Country].filter(Boolean).join(", ");
-    const hasDiscount = c.Discount && c.Discount.trim() !== "";
-    const buttonText = hasDiscount ? "Get Tickets" : "More Info";
-    const link = c["Main Conference Link"];
-    const timeAway = getTimeAway(c["Date Range"]);
-
-    cards.innerHTML += `
-      <div class="card">
-        ${c.Image ? `
-          <a href="${link}" target="_blank" rel="noopener noreferrer">
-            <img src="${c.Image}" alt="${c.Conference}">
-          </a>` : ""}
-        <h2>${c.Conference}</h2>
-        ${timeAway ? `<div class="time-away">${timeAway}</div>` : ""}
-        <p>📍 ${loc}</p>
-        ${c.Venue ? `<p>🏛️ ${c.Venue}</p>` : ""}
-        <p>📅 ${c["Date Range"]}</p>
-        ${hasDiscount ? `<div class="discount">🎟️ ${c.Discount}</div>` : ""}
-        <a class="cta" href="${link}" target="_blank" rel="noopener noreferrer">
-          ${buttonText}
-        </a>
-      </div>`;
-  });
+  const parsed = parseDateRange(range);
+  if (!parsed) return false;
+  return new Date() <= parsed.endDate;
 }
 </script>
 
