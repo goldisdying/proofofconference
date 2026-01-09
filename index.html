@@ -10,7 +10,6 @@
   <link rel="canonical" href="https://www.proofofconference.com/" />
   <link rel="icon" href="/favicon.ico" />
 
-  <!-- Open Graph -->
   <meta property="og:type" content="website" />
   <meta property="og:title" content="Proof of Conference" />
   <meta property="og:description" content="Verified Bitcoin conferences worldwide with speakers, dates, and available discounts." />
@@ -19,7 +18,6 @@
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
 
-  <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:image" content="https://www.proofofconference.com/og-proof-of-conference.jpg" />
 
@@ -238,10 +236,7 @@
   <div id="cards"></div>
 
   <footer>
-    <p>
-      <strong>Disclaimer:</strong>
-      Proof of Conference is an independent, informational directory and is not necessarily affiliated with, endorsed by, or officially connected to any conference or organization listed. Some events may include affiliate or referral links. Event details may change at any time. Please verify all information directly on the official conference websites. No information on this site is guaranteed to be accurate or up to date.
-    </p>
+    <p><strong>Disclaimer:</strong> Proof of Conference is an independent, informational directory and is not necessarily affiliated with, endorsed by, or officially connected to any conference or organization listed. Some events may include affiliate or referral links. Event details may change at any time. Please verify all information directly on the official conference websites. No information on this site is guaranteed to be accurate or up to date.</p>
     <p>© 2026 Proof of Conference. All rights reserved.</p>
   </footer>
 </div>
@@ -393,10 +388,20 @@ function render() {
 
   if (sort.value !== "past")
     list = list.filter(c=>isUpcoming(c["Date Range"]));
+
   if (sort.value === "discounts")
     list = list.filter(c=>c.Discount);
-  if (sort.value === "past")
-    list = conferences.filter(c=>!isUpcoming(c["Date Range"]));
+
+  if (sort.value === "past") {
+    list = conferences
+      .filter(c=>!isUpcoming(c["Date Range"]))
+      .sort((a,b)=>{
+        const da = parseDateRange(a["Date Range"])?.endDate;
+        const db = parseDateRange(b["Date Range"])?.endDate;
+        return (db || 0) - (da || 0);
+      });
+  }
+
   if (sort.value === "az")
     list.sort((a,b)=>a.Conference.localeCompare(b.Conference));
 
