@@ -139,6 +139,16 @@
     .card h2 {
       color: #f7931a;
       font-size: 22px;
+      margin-bottom: 4px;
+    }
+
+    .time-away {
+      display: inline-block;
+      font-size: 12px;
+      color: #9ca3af;
+      background: #1a1a1a;
+      padding: 4px 10px;
+      border-radius: 999px;
       margin-bottom: 8px;
     }
 
@@ -251,6 +261,55 @@ const PRIORITY_SPEAKERS = [
 
 let conferences = [];
 
+function parseDateRange(range) {
+  if (!range) return null;
+
+  const yearMatch = range.match(/\b(20\d{2})\b/);
+  const monthMatch = range.toLowerCase().match(/(january|february|march|april|may|june|july|august|september|october|november|december)/);
+  if (!yearMatch || !monthMatch) return null;
+
+  const year = parseInt(yearMatch[1], 10);
+  const month = MONTHS[monthMatch[1]];
+
+  const dayMatches = range.match(/\b(\d{1,2})\b/g);
+  let startDay = 1;
+  let endDay = null;
+
+  if (dayMatches && dayMatches.length >= 1) {
+    startDay = parseInt(dayMatches[0], 10);
+    endDay = dayMatches.length >= 2 ? parseInt(dayMatches[1], 10) : startDay;
+  }
+
+  const startDate = new Date(year, month, startDay);
+  const endDate = new Date(year, month, endDay ?? startDay);
+
+  return { startDate, endDate };
+}
+
+function getTimeAway(range) {
+  const parsed = parseDateRange(range);
+  if (!parsed) return "";
+
+  const now = new Date();
+  const diffDays = Math.floor((parsed.startDate - now) / (1000 * 60 * 60 * 24));
+
+  if (now >= parsed.startDate && now <= parsed.endDate) return "Happening now";
+  if (diffDays <= 0) return "";
+  if (diffDays <= 14) return `In ${diffDays} days`;
+  if (diffDays <= 60) return `${Math.round(diffDays / 7)} weeks away`;
+
+  const months = Math.round(diffDays / 30);
+  if (months <= 11) return `${months} months away`;
+
+  return "";
+}
+
+function isUpcoming(range) {
+  const parsed = parseDateRange(range);
+  if (!parsed) return false;
+  return new Date() <= parsed.endDate;
+}
+
 function parseCSV(text) {
   const rows = [];
   let row = [], val = "", inQuotes = false;
@@ -269,20 +328,6 @@ function parseCSV(text) {
 
 function clean(t) {
   return (t || "").replace(/[\r\n]+/g," ").replace(/^"+|"+$/g,"").trim();
-}
-
-function getYearMonth(range) {
-  const y = range.match(/\b(20\d{2})\b/);
-  const m = range.toLowerCase().match(/(january|february|march|april|may|june|july|august|september|october|november|december)/);
-  if (!y) return null;
-  return { year:+y[1], month:m?MONTHS[m[1]]:0 };
-}
-
-function isUpcoming(range) {
-  const d = getYearMonth(range);
-  if (!d) return false;
-  const now = new Date();
-  return d.year > now.getFullYear() || (d.year === now.getFullYear() && d.month >= now.getMonth());
 }
 
 fetch(CSV_URL)
@@ -368,6 +413,7 @@ function render() {
     const hasDiscount = c.Discount && c.Discount.trim() !== "";
     const buttonText = hasDiscount ? "Get Tickets" : "More Info";
     const link = c["Main Conference Link"];
+    const timeAway = getTimeAway(c["Date Range"]);
 
     cards.innerHTML += `
       <div class="card">
@@ -376,6 +422,7 @@ function render() {
             <img src="${c.Image}" alt="${c.Conference}">
           </a>` : ""}
         <h2>${c.Conference}</h2>
+        ${timeAway ? `<div class="time-away">${timeAway}</div>` : ""}
         <p>📍 ${loc}</p>
         ${c.Venue ? `<p>🏛️ ${c.Venue}</p>` : ""}
         <p>📅 ${c["Date Range"]}</p>
