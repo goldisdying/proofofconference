@@ -4,9 +4,22 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <title>Submit Event | Proof of Conference</title>
-  <meta name="description" content="Submit a Bitcoin conference or event to Proof of Conference." />
+  <title>Proof of Conference | Bitcoin Conferences & Event Discounts Worldwide</title>
+  <meta name="description" content="Discover verified Bitcoin conferences worldwide, including upcoming events, speakers, and available conference discount or promo codes." />
+  <meta name="keywords" content="bitcoin conferences, bitcoin conference discounts, bitcoin event promo codes, crypto conferences, crypto conference discounts, blockchain events" />
+  <link rel="canonical" href="https://www.proofofconference.com/" />
   <link rel="icon" href="/favicon.ico" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Proof of Conference" />
+  <meta property="og:description" content="Verified Bitcoin conferences worldwide with speakers, dates, and available discounts." />
+  <meta property="og:url" content="https://www.proofofconference.com/" />
+  <meta property="og:image" content="https://www.proofofconference.com/og-proof-of-conference.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="https://www.proofofconference.com/og-proof-of-conference.jpg" />
 
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 
@@ -17,320 +30,449 @@
       color: #fff;
       font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
     }
-    .container {
-      max-width: 520px;
-      margin: 0 auto;
-      padding: 32px 20px;
+
+    .top-nav {
+      display: flex;
+      justify-content: center;
+      gap: 14px;
+      padding: 14px;
+      font-size: 14px;
     }
+
+    .top-nav a {
+      color: #ffffff;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .container {
+      max-width: 480px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
     h1 {
       color: #f7931a;
+      font-size: 36px;
       text-align: center;
-      margin-bottom: 8px;
-      font-size: 32px;
+      margin-bottom: 6px;
     }
+
     .subtitle {
       text-align: center;
-      color: #d1d5db;
-      margin-bottom: 28px;
-      line-height: 1.4;
+      font-size: 18px;
+      margin-bottom: 24px;
     }
-    label {
-      display: block;
+
+    .filter-label {
+      font-size: 13px;
       font-weight: 600;
-      margin: 18px 0 6px;
-      font-size: 14px;
+      color: #8df608;
+      margin: 0 0 6px 4px;
     }
+
+    .search-wrapper {
+      margin-bottom: 18px;
+    }
+
     input, select {
       width: 100%;
-      box-sizing: border-box;
-      padding: 12px 14px;
-      border-radius: 10px;
+      padding: 12px 16px;
+      border-radius: 24px;
       border: none;
-      font-size: 15px;
+      font-size: 16px;
+      box-sizing: border-box;
     }
-    select:disabled {
-      opacity: 0.5;
+
+    .sort-wrapper {
+      margin-bottom: 18px;
     }
-    .hint {
+
+    .filter-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .filter-row select {
+      flex: 1;
+    }
+
+    .clear-btn {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: 1px solid #2a2a2a;
+      background: #121212;
+      color: #9ca3af;
+      font-size: 20px;
+      line-height: 28px;
+      text-align: center;
+      cursor: pointer;
+      display: none;
+      flex-shrink: 0;
+    }
+
+    .clear-btn:hover {
+      color: #ffffff;
+      border-color: #3a3a3a;
+    }
+
+    .card {
+      background: #121212;
+      border-radius: 18px;
+      padding: 16px;
+      margin-bottom: 22px;
+      box-shadow: 0 0 0 1px #1f1f1f;
+    }
+
+    .card img {
+      width: 100%;
+      border-radius: 14px;
+      margin-bottom: 12px;
+      display: block;
+    }
+
+    .card h2 {
+      color: #f7931a;
+      font-size: 22px;
+      margin-bottom: 4px;
+    }
+
+    .time-away {
+      display: inline-block;
       font-size: 12px;
       color: #9ca3af;
-      margin-top: 4px;
+      background: #1a1a1a;
+      padding: 4px 10px;
+      border-radius: 999px;
+      margin-bottom: 8px;
     }
-    .radio-group {
-      display: flex;
-      gap: 20px;
-      margin-top: 8px;
+
+    .card p {
+      margin: 6px 0;
+      font-size: 15px;
+      line-height: 1.4;
     }
-    .radio-group label {
-      font-weight: 400;
-      margin: 0;
-      font-size: 14px;
+
+    .discount {
+      margin-top: 10px;
+      color: #8df608;
+      font-weight: 600;
     }
-    .inline-group {
-      display: flex;
-      gap: 10px;
-      margin-top: 6px;
-    }
-    button {
-      margin-top: 28px;
-      width: 100%;
+
+    .cta {
+      display: inline-block;
+      margin-top: 14px;
       background: #f7931a;
       color: #000;
-      border: none;
-      padding: 14px;
-      border-radius: 12px;
-      font-size: 16px;
+      padding: 12px 18px;
+      border-radius: 10px;
       font-weight: 700;
-      cursor: pointer;
+      text-decoration: none;
     }
+
     footer {
       margin-top: 40px;
+      padding-top: 20px;
+      border-top: 1px solid #1f1f1f;
       font-size: 13px;
       color: #9ca3af;
       text-align: center;
-    }
-    a {
-      color: #f7931a;
-      text-decoration: none;
+      line-height: 1.5;
     }
   </style>
 </head>
 
 <body>
+
+<div class="top-nav">
+  <a href="/submit-event/">Submit Event</a>
+  •
+  <a href="https://www.proofofconference.com/contact">Contact</a>
+  •
+  <a href="https://fomo21.com/discount/POC15" target="_blank" rel="noopener noreferrer">Merch</a>
+</div>
+
 <div class="container">
-  <h1>Submit an Event</h1>
-  <div class="subtitle">
-    Submit a Bitcoin conference or event for inclusion on Proof of Conference.
+  <h1>Proof of Conference</h1>
+  <div class="subtitle">Track Every Bitcoin Conference</div>
+
+  <div class="search-wrapper">
+    <input id="search" placeholder="Search conferences..." aria-label="Search conferences" />
   </div>
 
-  <form action="https://formspree.io/f/xpqwvrzk" method="POST" data-formspree-honeypot="company">
-
-    <input type="text" name="company" tabindex="-1" autocomplete="off" style="display:none">
-
-    <label>Event Name *</label>
-    <input type="text" name="event_name" required>
-
-    <label>Event Start Date *</label>
-    <input type="date" name="start_date" id="start_date" required>
-    <div class="hint">Must be today or later</div>
-
-    <label>Event End Date *</label>
-    <input type="date" name="end_date" id="end_date" required>
-    <div class="hint">Can be the same as the start date</div>
-
-    <label>City *</label>
-    <input type="text" name="city" required>
-
-    <label>Country *</label>
-    <select name="country" id="country" required>
-      <option value="">Select country</option>
-      <option>United States</option>
-      <option>Afghanistan</option><option>Albania</option><option>Algeria</option><option>Andorra</option>
-      <option>Angola</option><option>Antigua and Barbuda</option><option>Argentina</option><option>Armenia</option>
-      <option>Australia</option><option>Austria</option><option>Azerbaijan</option><option>Bahamas</option>
-      <option>Bahrain</option><option>Bangladesh</option><option>Barbados</option><option>Belarus</option>
-      <option>Belgium</option><option>Belize</option><option>Benin</option><option>Bhutan</option>
-      <option>Bolivia</option><option>Bosnia and Herzegovina</option><option>Botswana</option><option>Brazil</option>
-      <option>Brunei</option><option>Bulgaria</option><option>Burkina Faso</option><option>Burundi</option>
-      <option>Cabo Verde</option><option>Cambodia</option><option>Cameroon</option><option>Canada</option>
-      <option>Central African Republic</option><option>Chad</option><option>Chile</option><option>China</option>
-      <option>Colombia</option><option>Comoros</option><option>Congo</option><option>Costa Rica</option>
-      <option>Croatia</option><option>Cuba</option><option>Cyprus</option><option>Czech Republic</option>
-      <option>Denmark</option><option>Djibouti</option><option>Dominica</option><option>Dominican Republic</option>
-      <option>Ecuador</option><option>Egypt</option><option>El Salvador</option><option>Equatorial Guinea</option>
-      <option>Eritrea</option><option>Estonia</option><option>Eswatini</option><option>Ethiopia</option>
-      <option>Fiji</option><option>Finland</option><option>France</option><option>Gabon</option>
-      <option>Gambia</option><option>Georgia</option><option>Germany</option><option>Ghana</option>
-      <option>Greece</option><option>Grenada</option><option>Guatemala</option><option>Guinea</option>
-      <option>Guinea-Bissau</option><option>Guyana</option><option>Haiti</option><option>Honduras</option>
-      <option>Hungary</option><option>Iceland</option><option>India</option><option>Indonesia</option>
-      <option>Iran</option><option>Iraq</option><option>Ireland</option><option>Israel</option>
-      <option>Italy</option><option>Jamaica</option><option>Japan</option><option>Jordan</option>
-      <option>Kazakhstan</option><option>Kenya</option><option>Kiribati</option><option>Kuwait</option>
-      <option>Kyrgyzstan</option><option>Laos</option><option>Latvia</option><option>Lebanon</option>
-      <option>Lesotho</option><option>Liberia</option><option>Libya</option><option>Liechtenstein</option>
-      <option>Lithuania</option><option>Luxembourg</option><option>Madagascar</option><option>Malawi</option>
-      <option>Malaysia</option><option>Maldives</option><option>Mali</option><option>Malta</option>
-      <option>Marshall Islands</option><option>Mauritania</option><option>Mauritius</option><option>Mexico</option>
-      <option>Micronesia</option><option>Moldova</option><option>Monaco</option><option>Mongolia</option>
-      <option>Montenegro</option><option>Morocco</option><option>Mozambique</option><option>Myanmar</option>
-      <option>Namibia</option><option>Nauru</option><option>Nepal</option><option>Netherlands</option>
-      <option>New Zealand</option><option>Nicaragua</option><option>Niger</option><option>Nigeria</option>
-      <option>North Macedonia</option><option>Norway</option><option>Oman</option><option>Pakistan</option>
-      <option>Palau</option><option>Panama</option><option>Papua New Guinea</option><option>Paraguay</option>
-      <option>Peru</option><option>Philippines</option><option>Poland</option><option>Portugal</option>
-      <option>Qatar</option><option>Romania</option><option>Russia</option><option>Rwanda</option>
-      <option>Saint Kitts and Nevis</option><option>Saint Lucia</option>
-      <option>Saint Vincent and the Grenadines</option>
-      <option>Samoa</option><option>San Marino</option><option>Sao Tome and Principe</option>
-      <option>Saudi Arabia</option><option>Senegal</option><option>Serbia</option><option>Seychelles</option>
-      <option>Sierra Leone</option><option>Singapore</option><option>Slovakia</option><option>Slovenia</option>
-      <option>Solomon Islands</option><option>Somalia</option><option>South Africa</option>
-      <option>South Sudan</option><option>Spain</option><option>Sri Lanka</option><option>Sudan</option>
-      <option>Suriname</option><option>Sweden</option><option>Switzerland</option><option>Syria</option>
-      <option>Taiwan</option><option>Tajikistan</option><option>Tanzania</option><option>Thailand</option>
-      <option>Timor-Leste</option><option>Togo</option><option>Tonga</option>
-      <option>Trinidad and Tobago</option><option>Tunisia</option><option>Turkey</option>
-      <option>Turkmenistan</option><option>Tuvalu</option><option>Uganda</option>
-      <option>Ukraine</option><option>United Arab Emirates</option>
-      <option>United Kingdom</option><option>Uruguay</option><option>Uzbekistan</option>
-      <option>Vanuatu</option><option>Vatican City</option><option>Venezuela</option>
-      <option>Vietnam</option><option>Yemen</option><option>Zambia</option><option>Zimbabwe</option>
+  <div class="sort-wrapper">
+    <div class="filter-label">Sort Conferences</div>
+    <select id="sort">
+      <option value="upcoming" selected>Upcoming</option>
+      <option value="discounts">Conference Discounts</option>
+      <option value="az">A to Z</option>
+      <option value="past">Past</option>
     </select>
+  </div>
 
-    <label>State / Territory</label>
-    <select name="state" id="state" disabled>
-      <option value="">Select state</option>
-      <option>Alabama</option><option>Alaska</option><option>Arizona</option><option>Arkansas</option>
-      <option>California</option><option>Colorado</option><option>Connecticut</option><option>Delaware</option>
-      <option>Florida</option><option>Georgia</option><option>Hawaii</option><option>Idaho</option>
-      <option>Illinois</option><option>Indiana</option><option>Iowa</option><option>Kansas</option>
-      <option>Kentucky</option><option>Louisiana</option><option>Maine</option><option>Maryland</option>
-      <option>Massachusetts</option><option>Michigan</option><option>Minnesota</option><option>Mississippi</option>
-      <option>Missouri</option><option>Montana</option><option>Nebraska</option><option>Nevada</option>
-      <option>New Hampshire</option><option>New Jersey</option><option>New Mexico</option><option>New York</option>
-      <option>North Carolina</option><option>North Dakota</option><option>Ohio</option><option>Oklahoma</option>
-      <option>Oregon</option><option>Pennsylvania</option><option>Rhode Island</option><option>South Carolina</option>
-      <option>South Dakota</option><option>Tennessee</option><option>Texas</option><option>Utah</option>
-      <option>Vermont</option><option>Virginia</option><option>Washington</option><option>West Virginia</option>
-      <option>Wisconsin</option><option>Wyoming</option>
-      <option>District of Columbia</option><option>Puerto Rico</option>
-      <option>U.S. Virgin Islands</option><option>Guam</option>
-      <option>American Samoa</option><option>Northern Mariana Islands</option>
-    </select>
+  <div class="filter-row">
+    <select id="country"><option value="">All Countries</option></select>
+    <button type="button" class="clear-btn" data-target="country">×</button>
+  </div>
 
-    <label>Venue</label>
-    <input type="text" name="venue">
+  <div class="filter-row">
+    <select id="state"><option value="">All States</option></select>
+    <button type="button" class="clear-btn" data-target="state">×</button>
+  </div>
 
-    <label>Event Website *</label>
-    <input type="url" name="website" id="website" placeholder="https://example.com" required>
+  <div class="filter-row">
+    <select id="city"><option value="">All Cities</option></select>
+    <button type="button" class="clear-btn" data-target="city">×</button>
+  </div>
 
-    <label>Contact Name *</label>
-    <input type="text" name="contact_name" required>
+  <div class="filter-row">
+    <select id="speaker"><option value="">All Speakers / Notable Attendees</option></select>
+    <button type="button" class="clear-btn" data-target="speaker">×</button>
+  </div>
 
-    <label>Contact Email *</label>
-    <input type="email" name="email" required>
-
-    <label>Is there a discount code available for Proof of Conference users?</label>
-    <div class="radio-group">
-      <label><input type="radio" name="discount_code" value="Yes" required> Yes</label>
-      <label><input type="radio" name="discount_code" value="No"> No</label>
-    </div>
-
-    <div id="discount-details" style="display:none;">
-      <label>What is the discount per ticket?</label>
-      <div class="hint">% or USD</div>
-      <div class="inline-group">
-        <input type="text" name="discount_value" inputmode="numeric" pattern="[0-9]*" placeholder="e.g. 10">
-        <select name="discount_type">
-          <option value="%">%</option>
-          <option value="USD">USD</option>
-        </select>
-      </div>
-    </div>
-
-    <label>Do you offer an affiliate or referral commission on ticket sales?</label>
-    <div class="radio-group">
-      <label><input type="radio" name="affiliate_program" value="Yes" required> Yes</label>
-      <label><input type="radio" name="affiliate_program" value="No"> No</label>
-    </div>
-
-    <div id="affiliate-details" style="display:none;">
-      <label>What is the commission per ticket?</label>
-      <div class="hint">% or USD</div>
-      <div class="inline-group">
-        <input type="text" name="affiliate_value" inputmode="numeric" pattern="[0-9]*" placeholder="e.g. 20">
-        <select name="affiliate_type">
-          <option value="%">%</option>
-          <option value="USD">USD</option>
-        </select>
-      </div>
-    </div>
-
-    <button type="submit">Submit Event</button>
-  </form>
+  <div id="cards"></div>
 
   <footer>
-    <a href="/">← Back to Proof of Conference</a>
+    <p><strong>Disclaimer:</strong> Proof of Conference is an independent, informational directory and is not necessarily affiliated with, endorsed by, or officially connected to any conference or organization listed. Some events may include affiliate or referral links. Event details may change at any time. Please verify all information directly on the official conference websites. No information on this site is guaranteed to be accurate or up to date.</p>
+    <p>© 2026 Proof of Conference. All rights reserved.</p>
   </footer>
 </div>
 
 <script>
-  const today = new Date().toISOString().split("T")[0];
-  const start = document.getElementById("start_date");
-  const end = document.getElementById("end_date");
-  const country = document.getElementById("country");
-  const state = document.getElementById("state");
-  const website = document.getElementById("website");
+const CSV_URL = "https://raw.githubusercontent.com/goldisdying/proofofconference/main/Bitcoin%20Conference%20List%20-%20Sheet1.csv";
 
-  start.min = today;
-  end.min = today;
+const MONTHS = {
+  january:0,february:1,march:2,april:3,may:4,june:5,
+  july:6,august:7,september:8,october:9,november:10,december:11
+};
 
-  start.addEventListener("change", () => end.min = start.value);
+const PRIORITY_SPEAKERS = [
+  "Michael Saylor","Jack Dorsey","Max Keiser","Jeff Booth",
+  "Lyn Alden","Natalie Brunell","Saifedean Ammous","Adam Back","Jack Mallers"
+];
 
-  country.addEventListener("change", () => {
-    if (country.value === "United States") {
-      state.disabled = false;
-      state.required = true;
-    } else {
-      state.disabled = true;
-      state.required = false;
-      state.value = "";
-    }
-  });
+const $ = (id) => document.getElementById(id);
 
-  website.addEventListener("blur", () => {
-    if (website.value && !/^https?:\/\//i.test(website.value)) {
-      website.value = "https://" + website.value;
-    }
-  });
+const searchEl = $("search");
+const sortEl = $("sort");
+const countryEl = $("country");
+const stateEl = $("state");
+const cityEl = $("city");
+const speakerEl = $("speaker");
+const cardsEl = $("cards");
 
-  document.querySelectorAll('input[inputmode="numeric"]').forEach(input => {
-    input.addEventListener("input", () => {
-      input.value = input.value.replace(/[^0-9]/g, "");
-    });
-  });
+let conferences = [];
 
-  function enforcePercentageLimit(valueInput, typeSelect) {
-    if (typeSelect.value === "%" && valueInput.value !== "") {
-      if (parseInt(valueInput.value, 10) > 100) {
-        valueInput.value = "100";
-      }
-    }
+function parseDateRange(range) {
+  if (!range) return null;
+
+  const text = String(range).replace(/[–—]/g, "-");
+
+  const yearMatch = text.match(/\b(20\d{2})\b/);
+  const monthMatch = text.toLowerCase().match(
+    /(january|february|march|april|may|june|july|august|september|october|november|december)/
+  );
+  if (!yearMatch || !monthMatch) return null;
+
+  const year = Number(yearMatch[1]);
+  const month = MONTHS[monthMatch[1]];
+
+  const nums = (text.match(/\b\d{1,2}\b/g) || [])
+    .map(Number)
+    .filter(n => n >= 1 && n <= 31);
+
+  const startDay = nums[0] ?? 1;
+  const endDay = nums[1] ?? startDay;
+
+  const startDate = new Date(year, month, startDay);
+  const endDate = new Date(year, month, endDay);
+
+  if (Number.isNaN(startDate.getTime()) || Number.isNaN(endDate.getTime())) return null;
+  return { startDate, endDate };
+}
+
+function getTimeAway(range) {
+  const parsed = parseDateRange(range);
+  if (!parsed) return "";
+
+  const now = new Date();
+  const diffDays = Math.floor((parsed.startDate - now) / (1000 * 60 * 60 * 24));
+
+  if (now >= parsed.startDate && now <= parsed.endDate) return "Happening now";
+  if (diffDays <= 0) return "";
+  if (diffDays <= 14) return `In ${diffDays} days`;
+  if (diffDays <= 60) return `${Math.round(diffDays / 7)} weeks away`;
+
+  const months = Math.round(diffDays / 30);
+  if (months <= 11) return `${months} months away`;
+
+  return "";
+}
+
+function isUpcoming(range) {
+  const parsed = parseDateRange(range);
+  if (!parsed) return false;
+  return new Date() <= parsed.endDate;
+}
+
+function parseCSV(text) {
+  const rows = [];
+  let row = [], val = "", inQuotes = false;
+  for (let i = 0; i < text.length; i++) {
+    const c = text[i], n = text[i+1];
+    if (c === '"' && inQuotes && n === '"') { val += '"'; i++; }
+    else if (c === '"') inQuotes = !inQuotes;
+    else if (c === "," && !inQuotes) { row.push(val); val = ""; }
+    else if ((c === "\n" || c === "\r") && !inQuotes) {
+      if (val || row.length) { row.push(val); rows.push(row); row = []; val = ""; }
+    } else val += c;
   }
+  if (val || row.length) { row.push(val); rows.push(row); }
+  return rows;
+}
 
-  function attachLimitHandlers(valueName, typeName) {
-    const valueInput = document.querySelector(`input[name="${valueName}"]`);
-    const typeSelect = document.querySelector(`select[name="${typeName}"]`);
+function clean(t) {
+  return (t || "").replace(/[\r\n]+/g," ").replace(/^"+|"+$/g,"").trim();
+}
 
-    valueInput.addEventListener("input", () => enforcePercentageLimit(valueInput, typeSelect));
-    typeSelect.addEventListener("change", () => enforcePercentageLimit(valueInput, typeSelect));
-  }
+function escapeHTML(str) {
+  return String(str ?? "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
 
-  attachLimitHandlers("discount_value", "discount_type");
-  attachLimitHandlers("affiliate_value", "affiliate_type");
+fetch(CSV_URL)
+  .then(r=>r.text())
+  .then(text=>{
+    const rows = parseCSV(text);
+    const headers = rows.shift();
+    conferences = rows.map(r=>Object.fromEntries(headers.map((h,i)=>[h,clean(r[i])])))
+      .filter(c=>c["Not Active"].toLowerCase()!=="x");
+    populateFilters();
+    updateClearButtons();
+    render();
+  });
 
-  function toggleDetails(radiosName, containerId, inputName) {
-    const radios = document.querySelectorAll(`input[name="${radiosName}"]`);
-    const container = document.getElementById(containerId);
-    const input = container.querySelector(`input[name="${inputName}"]`);
+function populateFilters() {
+  ["Country","State","City"].forEach(f=>{
+    const sel = document.getElementById(f.toLowerCase());
+    [...new Set(conferences.map(c=>c[f]).filter(Boolean))].sort()
+      .forEach(v=>sel.add(new Option(v,v)));
+  });
 
-    radios.forEach(radio => {
-      radio.addEventListener("change", () => {
-        if (radio.value === "Yes") {
-          container.style.display = "block";
-          input.required = true;
-        } else {
-          container.style.display = "none";
-          input.required = false;
-          input.value = "";
-        }
+  const speakerSel = document.getElementById("speaker");
+  const set = new Set();
+
+  conferences.forEach(c=>{
+    if (c["Speakers/Notable Attendees"])
+      c["Speakers/Notable Attendees"].split(",").forEach(s=>set.add(s.trim()));
+  });
+
+  PRIORITY_SPEAKERS.forEach(n=>{
+    if (set.has(n)) { speakerSel.add(new Option(n,n)); set.delete(n); }
+  });
+
+  const sep = new Option("──────────", "__sep__");
+  sep.disabled = true;
+  speakerSel.add(sep);
+
+  [...set].sort().forEach(n=>speakerSel.add(new Option(n,n)));
+}
+
+function updateClearButtons() {
+  document.querySelectorAll(".clear-btn").forEach(btn=>{
+    const sel = document.getElementById(btn.dataset.target);
+    btn.style.display = sel.value ? "flex" : "none";
+  });
+}
+
+["search","country","state","city","sort","speaker"].forEach(id=>{
+  document.getElementById(id).addEventListener("input", ()=>{
+    updateClearButtons();
+    render();
+  });
+});
+
+document.querySelectorAll(".clear-btn").forEach(btn=>{
+  btn.addEventListener("click", ()=>{
+    const sel = document.getElementById(btn.dataset.target);
+    sel.value = "";
+    updateClearButtons();
+    render();
+  });
+});
+
+function render() {
+  const q = searchEl.value.toLowerCase();
+  let list = conferences.slice();
+
+  if (sortEl.value !== "past")
+    list = list.filter(c=>isUpcoming(c["Date Range"]));
+
+  if (sortEl.value === "discounts")
+    list = list.filter(c=>c.Discount);
+
+  if (sortEl.value === "past") {
+    list = conferences
+      .filter(c=>!isUpcoming(c["Date Range"]))
+      .sort((a,b)=>{
+        const da = parseDateRange(a["Date Range"])?.endDate;
+        const db = parseDateRange(b["Date Range"])?.endDate;
+        return (db || 0) - (da || 0);
       });
-    });
   }
 
-  toggleDetails("discount_code", "discount-details", "discount_value");
-  toggleDetails("affiliate_program", "affiliate-details", "affiliate_value");
+  if (sortEl.value === "az")
+    list.sort((a,b)=>a.Conference.localeCompare(b.Conference));
+
+  const html = list
+    .filter(c => {
+      if (q && !Object.values(c).join(" ").toLowerCase().includes(q)) return false;
+      if (countryEl.value && c.Country !== countryEl.value) return false;
+      if (stateEl.value && c.State !== stateEl.value) return false;
+      if (cityEl.value && c.City !== cityEl.value) return false;
+      if (speakerEl.value && !(c["Speakers/Notable Attendees"]||"").includes(speakerEl.value)) return false;
+      return true;
+    })
+    .map(c => {
+      const loc = [c.City,c.State,c.Country].filter(Boolean).map(escapeHTML).join(", ");
+      const conf = escapeHTML(c.Conference);
+      const venue = escapeHTML(c.Venue);
+      const dateRange = escapeHTML(c["Date Range"]);
+      const discount = escapeHTML(c.Discount);
+      const hasDiscount = c.Discount && c.Discount.trim() !== "";
+      const buttonText = hasDiscount ? "Get Tickets" : "More Info";
+      const link = c["Main Conference Link"];
+      const timeAway = getTimeAway(c["Date Range"]);
+
+      return `
+      <div class="card">
+        ${c.Image ? `
+          <a href="${link}" target="_blank" rel="noopener noreferrer">
+            <img src="${c.Image}" alt="${conf}">
+          </a>` : ""}
+        <h2>${conf}</h2>
+        ${timeAway ? `<div class="time-away">${escapeHTML(timeAway)}</div>` : ""}
+        <p>📍 ${loc}</p>
+        ${c.Venue ? `<p>🏛️ ${venue}</p>` : ""}
+        <p>📅 ${dateRange}</p>
+        ${hasDiscount ? `<div class="discount">🎟️ ${discount}</div>` : ""}
+        <a class="cta" href="${link}" target="_blank" rel="noopener noreferrer">
+          ${buttonText}
+        </a>
+      </div>`;
+    })
+    .join("");
+
+  cardsEl.innerHTML = html || `<div class="card"><p>No matching conferences.</p></div>`;
+}
 </script>
+
 </body>
 </html>
