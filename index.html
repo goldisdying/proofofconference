@@ -6,20 +6,7 @@
 
   <title>Proof of Conference | Bitcoin Conferences & Event Discounts Worldwide</title>
   <meta name="description" content="Discover verified Bitcoin conferences worldwide, including upcoming events, speakers, and available conference discount or promo codes." />
-  <meta name="keywords" content="bitcoin conferences, bitcoin conference discounts, bitcoin event promo codes, crypto conferences, crypto conference discounts, blockchain events" />
   <link rel="canonical" href="https://www.proofofconference.com/" />
-  <link rel="icon" href="/favicon.ico" />
-
-  <meta property="og:type" content="website" />
-  <meta property="og:title" content="Proof of Conference" />
-  <meta property="og:description" content="Verified Bitcoin conferences worldwide with speakers, dates, and available discounts." />
-  <meta property="og:url" content="https://www.proofofconference.com/" />
-  <meta property="og:image" content="https://www.proofofconference.com/og-proof-of-conference.jpg" />
-  <meta property="og:image:width" content="1200" />
-  <meta property="og:image:height" content="630" />
-
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:image" content="https://www.proofofconference.com/og-proof-of-conference.jpg" />
 
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 
@@ -40,7 +27,7 @@
     }
 
     .top-nav a {
-      color: #ffffff;
+      color: #fff;
       text-decoration: none;
       font-weight: 500;
     }
@@ -64,61 +51,6 @@
       margin-bottom: 24px;
     }
 
-    .filter-label {
-      font-size: 13px;
-      font-weight: 600;
-      color: #8df608;
-      margin: 0 0 6px 4px;
-    }
-
-    .search-wrapper {
-      margin-bottom: 18px;
-    }
-
-    input, select {
-      width: 100%;
-      padding: 12px 16px;
-      border-radius: 24px;
-      border: none;
-      font-size: 16px;
-      box-sizing: border-box;
-    }
-
-    .sort-wrapper {
-      margin-bottom: 18px;
-    }
-
-    .filter-row {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 10px;
-    }
-
-    .filter-row select {
-      flex: 1;
-    }
-
-    .clear-btn {
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      border: 1px solid #2a2a2a;
-      background: #121212;
-      color: #9ca3af;
-      font-size: 20px;
-      line-height: 28px;
-      text-align: center;
-      cursor: pointer;
-      display: none;
-      flex-shrink: 0;
-    }
-
-    .clear-btn:hover {
-      color: #ffffff;
-      border-color: #3a3a3a;
-    }
-
     .card {
       background: #121212;
       border-radius: 18px;
@@ -131,13 +63,12 @@
       width: 100%;
       border-radius: 14px;
       margin-bottom: 12px;
-      display: block;
     }
 
     .card h2 {
       color: #f7931a;
       font-size: 22px;
-      margin-bottom: 4px;
+      margin-bottom: 6px;
     }
 
     .time-away {
@@ -153,13 +84,6 @@
     .card p {
       margin: 6px 0;
       font-size: 15px;
-      line-height: 1.4;
-    }
-
-    .discount {
-      margin-top: 10px;
-      color: #8df608;
-      font-weight: 600;
     }
 
     .cta {
@@ -173,14 +97,91 @@
       text-decoration: none;
     }
 
-    footer {
-      margin-top: 40px;
-      padding-top: 20px;
-      border-top: 1px solid #1f1f1f;
-      font-size: 13px;
+    /* =========================
+       CLEAN FEATURED SIGNUP CARD
+       ========================= */
+
+    .signup-card {
+      background: linear-gradient(180deg, #151515 0%, #101010 100%);
+      border: 1px solid rgba(247,147,26,.28);
+      box-shadow:
+        0 0 0 1px rgba(0,0,0,.5) inset,
+        0 14px 35px rgba(0,0,0,.55);
+    }
+
+    .signup-badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: .12em;
+      color: #f7931a;
+      background: rgba(247,147,26,.10);
+      border: 1px solid rgba(247,147,26,.22);
+      padding: 6px 10px;
+      border-radius: 999px;
+      margin-bottom: 10px;
+    }
+
+    .signup-sub {
       color: #9ca3af;
-      text-align: center;
-      line-height: 1.5;
+      font-size: 14px;
+      margin-bottom: 14px;
+      line-height: 1.45;
+    }
+
+    .signup-card .formkit-fields {
+      display: flex !important;
+      gap: 12px !important;
+      flex-wrap: wrap !important;
+      margin: 0 !important;
+    }
+
+    .signup-card .formkit-field {
+      flex: 1 1 240px !important;
+      margin: 0 !important;
+    }
+
+    .signup-card .formkit-input {
+      width: 100% !important;
+      background: #0f0f0f !important;
+      color: #fff !important;
+      border: 1px solid #2a2a2a !important;
+      border-radius: 12px !important;
+      padding: 13px 14px !important;
+      font-size: 15px !important;
+    }
+
+    .signup-card .formkit-input:focus {
+      outline: none !important;
+      border-color: rgba(247,147,26,.55) !important;
+      box-shadow: 0 0 0 4px rgba(247,147,26,.12) !important;
+    }
+
+    .signup-card .formkit-submit {
+      border: none !important;
+      border-radius: 12px !important;
+      background: #f7931a !important;
+      color: #000 !important;
+      font-weight: 800 !important;
+    }
+
+    .signup-card .formkit-submit > span {
+      padding: 13px 16px !important;
+    }
+
+    .signup-card .formkit-powered-by-convertkit-container a {
+      opacity: .55 !important;
+      filter: grayscale(1) !important;
+      text-decoration: none !important;
+    }
+
+    @media (max-width: 420px) {
+      .signup-card .formkit-fields {
+        flex-direction: column !important;
+      }
+      .signup-card .formkit-submit {
+        width: 100% !important;
+      }
     }
   </style>
 </head>
@@ -188,291 +189,64 @@
 <body>
 
 <div class="top-nav">
-  <a href="/submit-event/">Submit Event</a>
-  •
-  <a href="https://www.proofofconference.com/contact">Contact</a>
-  •
-  <a href="https://fomo21.com/discount/POC15" target="_blank" rel="noopener noreferrer">Merch</a>
+  <a href="/submit-event/">Submit Event</a> •
+  <a href="/contact">Contact</a>
 </div>
 
 <div class="container">
   <h1>Proof of Conference</h1>
   <div class="subtitle">Track Every Bitcoin Conference</div>
 
-  <div class="search-wrapper">
-    <input id="search" placeholder="Search conferences..." aria-label="Search conferences" />
+  <div id="cards">
+    <!-- Example conference card -->
+    <div class="card">
+      <img src="https://example.com/image.jpg">
+      <h2>Bitchill Island Retreat</h2>
+      <div class="time-away">In 7 days</div>
+      <p>📍 Próspera, Honduras</p>
+      <p>📅 January 18–28, 2026</p>
+      <a class="cta">More Info</a>
+    </div>
+
+    <!-- SIGNUP CARD -->
+    <div class="card signup-card">
+      <div class="signup-badge">UPDATES</div>
+      <h2>Get conference updates</h2>
+      <p class="signup-sub">
+        New conferences, speaker additions, and major updates. No spam.
+      </p>
+
+      <form action="https://app.kit.com/forms/8960292/subscriptions"
+            method="post"
+            class="formkit-form"
+            data-uid="e84dbf41dd"
+            data-format="inline">
+
+        <div class="formkit-fields">
+          <div class="formkit-field">
+            <input class="formkit-input"
+                   name="email_address"
+                   type="email"
+                   placeholder="Email address"
+                   required>
+          </div>
+
+          <button class="formkit-submit">
+            <span>Get updates</span>
+          </button>
+        </div>
+
+        <div class="formkit-powered-by-convertkit-container">
+          <a href="https://kit.com" target="_blank" rel="nofollow">
+            Built with Kit
+          </a>
+        </div>
+      </form>
+    </div>
   </div>
-
-  <div class="sort-wrapper">
-    <div class="filter-label">Sort Conferences</div>
-    <select id="sort">
-      <option value="upcoming" selected>Upcoming</option>
-      <option value="discounts">Conference Discounts</option>
-      <option value="az">A to Z</option>
-      <option value="past">Past</option>
-    </select>
-  </div>
-
-  <div class="filter-row">
-    <select id="country"><option value="">All Countries</option></select>
-    <button type="button" class="clear-btn" data-target="country">×</button>
-  </div>
-
-  <div class="filter-row">
-    <select id="state"><option value="">All States</option></select>
-    <button type="button" class="clear-btn" data-target="state">×</button>
-  </div>
-
-  <div class="filter-row">
-    <select id="city"><option value="">All Cities</option></select>
-    <button type="button" class="clear-btn" data-target="city">×</button>
-  </div>
-
-  <div class="filter-row">
-    <select id="speaker"><option value="">All Speakers / Notable Attendees</option></select>
-    <button type="button" class="clear-btn" data-target="speaker">×</button>
-  </div>
-
-  <div id="cards"></div>
-
-  <footer>
-    <p><strong>Disclaimer:</strong> Proof of Conference is an independent, informational directory and is not necessarily affiliated with, endorsed by, or officially connected to any conference or organization listed. Some events may include affiliate or referral links. Event details may change at any time. Please verify all information directly on the official conference websites. No information on this site is guaranteed to be accurate or up to date.</p>
-    <p>© 2026 Proof of Conference. All rights reserved.</p>
-  </footer>
 </div>
 
-<script>
-const CSV_URL = "https://raw.githubusercontent.com/goldisdying/proofofconference/main/Bitcoin%20Conference%20List%20-%20Sheet1.csv";
-
-const MONTHS = {
-  january:0,february:1,march:2,april:3,may:4,june:5,
-  july:6,august:7,september:8,october:9,november:10,december:11
-};
-
-const PRIORITY_SPEAKERS = [
-  "Michael Saylor","Jack Dorsey","Max Keiser","Jeff Booth",
-  "Lyn Alden","Natalie Brunell","Saifedean Ammous","Adam Back","Jack Mallers"
-];
-
-const $ = (id) => document.getElementById(id);
-
-const searchEl = $("search");
-const sortEl = $("sort");
-const countryEl = $("country");
-const stateEl = $("state");
-const cityEl = $("city");
-const speakerEl = $("speaker");
-const cardsEl = $("cards");
-
-let conferences = [];
-
-function parseDateRange(range) {
-  if (!range) return null;
-
-  const text = String(range).replace(/[–—]/g, "-");
-
-  const yearMatch = text.match(/\b(20\d{2})\b/);
-  const monthMatch = text.toLowerCase().match(
-    /(january|february|march|april|may|june|july|august|september|october|november|december)/
-  );
-  if (!yearMatch || !monthMatch) return null;
-
-  const year = Number(yearMatch[1]);
-  const month = MONTHS[monthMatch[1]];
-
-  const nums = (text.match(/\b\d{1,2}\b/g) || [])
-    .map(Number)
-    .filter(n => n >= 1 && n <= 31);
-
-  const startDay = nums[0] ?? 1;
-  const endDay = nums[1] ?? startDay;
-
-  const startDate = new Date(year, month, startDay);
-  const endDate = new Date(year, month, endDay);
-
-  if (Number.isNaN(startDate.getTime()) || Number.isNaN(endDate.getTime())) return null;
-  return { startDate, endDate };
-}
-
-function getTimeAway(range) {
-  const parsed = parseDateRange(range);
-  if (!parsed) return "";
-
-  const now = new Date();
-  const diffDays = Math.floor((parsed.startDate - now) / (1000 * 60 * 60 * 24));
-
-  if (now >= parsed.startDate && now <= parsed.endDate) return "Happening now";
-  if (diffDays <= 0) return "";
-  if (diffDays <= 14) return `In ${diffDays} days`;
-  if (diffDays <= 60) return `${Math.round(diffDays / 7)} weeks away`;
-
-  const months = Math.round(diffDays / 30);
-  if (months <= 11) return `${months} months away`;
-
-  return "";
-}
-
-function isUpcoming(range) {
-  const parsed = parseDateRange(range);
-  if (!parsed) return false;
-  return new Date() <= parsed.endDate;
-}
-
-function parseCSV(text) {
-  const rows = [];
-  let row = [], val = "", inQuotes = false;
-  for (let i = 0; i < text.length; i++) {
-    const c = text[i], n = text[i+1];
-    if (c === '"' && inQuotes && n === '"') { val += '"'; i++; }
-    else if (c === '"') inQuotes = !inQuotes;
-    else if (c === "," && !inQuotes) { row.push(val); val = ""; }
-    else if ((c === "\n" || c === "\r") && !inQuotes) {
-      if (val || row.length) { row.push(val); rows.push(row); row = []; val = ""; }
-    } else val += c;
-  }
-  if (val || row.length) { row.push(val); rows.push(row); }
-  return rows;
-}
-
-function clean(t) {
-  return (t || "").replace(/[\r\n]+/g," ").replace(/^"+|"+$/g,"").trim();
-}
-
-function escapeHTML(str) {
-  return String(str ?? "")
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#039;");
-}
-
-fetch(CSV_URL)
-  .then(r=>r.text())
-  .then(text=>{
-    const rows = parseCSV(text);
-    const headers = rows.shift();
-    conferences = rows.map(r=>Object.fromEntries(headers.map((h,i)=>[h,clean(r[i])])))
-      .filter(c=>c["Not Active"].toLowerCase()!=="x");
-    populateFilters();
-    updateClearButtons();
-    render();
-  });
-
-function populateFilters() {
-  ["Country","State","City"].forEach(f=>{
-    const sel = document.getElementById(f.toLowerCase());
-    [...new Set(conferences.map(c=>c[f]).filter(Boolean))].sort()
-      .forEach(v=>sel.add(new Option(v,v)));
-  });
-
-  const speakerSel = document.getElementById("speaker");
-  const set = new Set();
-
-  conferences.forEach(c=>{
-    if (c["Speakers/Notable Attendees"])
-      c["Speakers/Notable Attendees"].split(",").forEach(s=>set.add(s.trim()));
-  });
-
-  PRIORITY_SPEAKERS.forEach(n=>{
-    if (set.has(n)) { speakerSel.add(new Option(n,n)); set.delete(n); }
-  });
-
-  const sep = new Option("──────────", "__sep__");
-  sep.disabled = true;
-  speakerSel.add(sep);
-
-  [...set].sort().forEach(n=>speakerSel.add(new Option(n,n)));
-}
-
-function updateClearButtons() {
-  document.querySelectorAll(".clear-btn").forEach(btn=>{
-    const sel = document.getElementById(btn.dataset.target);
-    btn.style.display = sel.value ? "flex" : "none";
-  });
-}
-
-["search","country","state","city","sort","speaker"].forEach(id=>{
-  document.getElementById(id).addEventListener("input", ()=>{
-    updateClearButtons();
-    render();
-  });
-});
-
-document.querySelectorAll(".clear-btn").forEach(btn=>{
-  btn.addEventListener("click", ()=>{
-    const sel = document.getElementById(btn.dataset.target);
-    sel.value = "";
-    updateClearButtons();
-    render();
-  });
-});
-
-function render() {
-  const q = searchEl.value.toLowerCase();
-  let list = conferences.slice();
-
-  if (sortEl.value !== "past")
-    list = list.filter(c=>isUpcoming(c["Date Range"]));
-
-  if (sortEl.value === "discounts")
-    list = list.filter(c=>c.Discount);
-
-  if (sortEl.value === "past") {
-    list = conferences
-      .filter(c=>!isUpcoming(c["Date Range"]))
-      .sort((a,b)=>{
-        const da = parseDateRange(a["Date Range"])?.endDate;
-        const db = parseDateRange(b["Date Range"])?.endDate;
-        return (db || 0) - (da || 0);
-      });
-  }
-
-  if (sortEl.value === "az")
-    list.sort((a,b)=>a.Conference.localeCompare(b.Conference));
-
-  const html = list
-    .filter(c => {
-      if (q && !Object.values(c).join(" ").toLowerCase().includes(q)) return false;
-      if (countryEl.value && c.Country !== countryEl.value) return false;
-      if (stateEl.value && c.State !== stateEl.value) return false;
-      if (cityEl.value && c.City !== cityEl.value) return false;
-      if (speakerEl.value && !(c["Speakers/Notable Attendees"]||"").includes(speakerEl.value)) return false;
-      return true;
-    })
-    .map(c => {
-      const loc = [c.City,c.State,c.Country].filter(Boolean).map(escapeHTML).join(", ");
-      const conf = escapeHTML(c.Conference);
-      const venue = escapeHTML(c.Venue);
-      const dateRange = escapeHTML(c["Date Range"]);
-      const discount = escapeHTML(c.Discount);
-      const hasDiscount = c.Discount && c.Discount.trim() !== "";
-      const buttonText = hasDiscount ? "Get Tickets" : "More Info";
-      const link = c["Main Conference Link"];
-      const timeAway = getTimeAway(c["Date Range"]);
-
-      return `
-      <div class="card">
-        ${c.Image ? `
-          <a href="${link}" target="_blank" rel="noopener noreferrer">
-            <img src="${c.Image}" alt="${conf}">
-          </a>` : ""}
-        <h2>${conf}</h2>
-        ${timeAway ? `<div class="time-away">${escapeHTML(timeAway)}</div>` : ""}
-        <p>📍 ${loc}</p>
-        ${c.Venue ? `<p>🏛️ ${venue}</p>` : ""}
-        <p>📅 ${dateRange}</p>
-        ${hasDiscount ? `<div class="discount">🎟️ ${discount}</div>` : ""}
-        <a class="cta" href="${link}" target="_blank" rel="noopener noreferrer">
-          ${buttonText}
-        </a>
-      </div>`;
-    })
-    .join("");
-
-  cardsEl.innerHTML = html || `<div class="card"><p>No matching conferences.</p></div>`;
-}
-</script>
+<script defer src="https://f.convertkit.com/ckjs/ck.5.js"></script>
 
 </body>
 </html>
