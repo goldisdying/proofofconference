@@ -229,6 +229,21 @@
   </div>
 
   <div class="filter-row">
+    <select id="attendance">
+      <option value="">All Conference Sizes</option>
+      <option value="0–100">0–100</option>
+      <option value="101–200">101–200</option>
+      <option value="201–500">201–500</option>
+      <option value="501–1,000">501–1,000</option>
+      <option value="1,001–2,000">1,001–2,000</option>
+      <option value="2,001–5,000">2,001–5,000</option>
+      <option value="5,001–9,999">5,001–9,999</option>
+      <option value="10,000+">10,000+</option>
+    </select>
+    <button type="button" class="clear-btn" data-target="attendance">×</button>
+  </div>
+
+  <div class="filter-row">
     <select id="speaker"><option value="">All Speakers / Notable Attendees</option></select>
     <button type="button" class="clear-btn" data-target="speaker">×</button>
   </div>
@@ -261,6 +276,7 @@ const sortEl = $("sort");
 const countryEl = $("country");
 const stateEl = $("state");
 const cityEl = $("city");
+const attendanceEl = $("attendance");
 const speakerEl = $("speaker");
 const cardsEl = $("cards");
 
@@ -268,28 +284,19 @@ let conferences = [];
 
 function parseDateRange(range) {
   if (!range) return null;
-
   const text = String(range).replace(/[–—]/g, "-");
-
   const yearMatch = text.match(/\b(20\d{2})\b/);
   const monthMatch = text.toLowerCase().match(
     /(january|february|march|april|may|june|july|august|september|october|november|december)/
   );
   if (!yearMatch || !monthMatch) return null;
-
   const year = Number(yearMatch[1]);
   const month = MONTHS[monthMatch[1]];
-
-  const nums = (text.match(/\b\d{1,2}\b/g) || [])
-    .map(Number)
-    .filter(n => n >= 1 && n <= 31);
-
+  const nums = (text.match(/\b\d{1,2}\b/g) || []).map(Number).filter(n => n >= 1 && n <= 31);
   const startDay = nums[0] ?? 1;
   const endDay = nums[1] ?? startDay;
-
   const startDate = new Date(year, month, startDay);
   const endDate = new Date(year, month, endDay);
-
   if (Number.isNaN(startDate.getTime()) || Number.isNaN(endDate.getTime())) return null;
   return { startDate, endDate };
 }
@@ -297,18 +304,14 @@ function parseDateRange(range) {
 function getTimeAway(range) {
   const parsed = parseDateRange(range);
   if (!parsed) return "";
-
   const now = new Date();
   const diffDays = Math.floor((parsed.startDate - now) / (1000 * 60 * 60 * 24));
-
   if (now >= parsed.startDate && now <= parsed.endDate) return "Happening now";
   if (diffDays <= 0) return "";
   if (diffDays <= 14) return `In ${diffDays} days`;
   if (diffDays <= 60) return `${Math.round(diffDays / 7)} weeks away`;
-
   const months = Math.round(diffDays / 30);
   if (months <= 11) return `${months} months away`;
-
   return "";
 }
 
@@ -368,20 +371,16 @@ function populateFilters() {
 
   const speakerSel = document.getElementById("speaker");
   const set = new Set();
-
   conferences.forEach(c=>{
     if (c["Speakers/Notable Attendees"])
       c["Speakers/Notable Attendees"].split(",").forEach(s=>set.add(s.trim()));
   });
-
   PRIORITY_SPEAKERS.forEach(n=>{
     if (set.has(n)) { speakerSel.add(new Option(n,n)); set.delete(n); }
   });
-
   const sep = new Option("──────────", "__sep__");
   sep.disabled = true;
   speakerSel.add(sep);
-
   [...set].sort().forEach(n=>speakerSel.add(new Option(n,n)));
 }
 
@@ -392,7 +391,7 @@ function updateClearButtons() {
   });
 }
 
-["search","country","state","city","sort","speaker"].forEach(id=>{
+["search","country","state","city","attendance","sort","speaker"].forEach(id=>{
   document.getElementById(id).addEventListener("input", ()=>{
     updateClearButtons();
     render();
@@ -437,6 +436,7 @@ function render() {
       if (countryEl.value && c.Country !== countryEl.value) return false;
       if (stateEl.value && c.State !== stateEl.value) return false;
       if (cityEl.value && c.City !== cityEl.value) return false;
+      if (attendanceEl.value && c["Expected Attendance"] !== attendanceEl.value) return false;
       if (speakerEl.value && !(c["Speakers/Notable Attendees"]||"").includes(speakerEl.value)) return false;
       return true;
     })
@@ -445,6 +445,7 @@ function render() {
       const conf = escapeHTML(c.Conference);
       const venue = escapeHTML(c.Venue);
       const dateRange = escapeHTML(c["Date Range"]);
+      const attendance = escapeHTML(c["Expected Attendance"]);
       const discount = escapeHTML(c.Discount);
       const hasDiscount = c.Discount && c.Discount.trim() !== "";
       const buttonText = hasDiscount ? "Get Tickets" : "More Info";
@@ -462,6 +463,7 @@ function render() {
         <p>📍 ${loc}</p>
         ${c.Venue ? `<p>🏛️ ${venue}</p>` : ""}
         <p>📅 ${dateRange}</p>
+        ${attendance ? `<p>👤 Expected Attendance: ${attendance}</p>` : ""}
         ${hasDiscount ? `<div class="discount">🎟️ ${discount}</div>` : ""}
         <a class="cta" href="${link}" target="_blank" rel="noopener noreferrer">
           ${buttonText}
