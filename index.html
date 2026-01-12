@@ -200,7 +200,7 @@
   <div class="subtitle">Track Every Bitcoin Conference</div>
 
   <div class="search-wrapper">
-    <input id="search" placeholder="Search conferences..." aria-label="Search conferences" />
+    <input id="search" placeholder="Search conferences..." />
   </div>
 
   <div class="sort-wrapper">
@@ -215,17 +215,17 @@
 
   <div class="filter-row">
     <select id="country"><option value="">All Countries</option></select>
-    <button type="button" class="clear-btn" data-target="country">×</button>
+    <button class="clear-btn" data-target="country">×</button>
   </div>
 
   <div class="filter-row">
     <select id="state"><option value="">All States</option></select>
-    <button type="button" class="clear-btn" data-target="state">×</button>
+    <button class="clear-btn" data-target="state">×</button>
   </div>
 
   <div class="filter-row">
     <select id="city"><option value="">All Cities</option></select>
-    <button type="button" class="clear-btn" data-target="city">×</button>
+    <button class="clear-btn" data-target="city">×</button>
   </div>
 
   <div class="filter-row">
@@ -240,36 +240,25 @@
       <option value="5,001–9,999">5,001–9,999</option>
       <option value="10,000+">10,000+</option>
     </select>
-    <button type="button" class="clear-btn" data-target="attendance">×</button>
+    <button class="clear-btn" data-target="attendance">×</button>
   </div>
 
   <div class="filter-row">
     <select id="speaker"><option value="">All Speakers / Notable Attendees</option></select>
-    <button type="button" class="clear-btn" data-target="speaker">×</button>
+    <button class="clear-btn" data-target="speaker">×</button>
   </div>
 
   <div id="cards"></div>
 
   <footer>
-    <p><strong>Disclaimer:</strong> Proof of Conference is an independent, informational directory and is not necessarily affiliated with, endorsed by, or officially connected to any conference or organization listed. Some events may include affiliate or referral links. Event details may change at any time. Please verify all information directly on the official conference websites. No information on this site is guaranteed to be accurate or up to date.</p>
-    <p>© 2026 Proof of Conference. All rights reserved.</p>
+    <p><strong>Disclaimer:</strong> Proof of Conference is an independent directory. Verify details on official sites.</p>
+    <p>© 2026 Proof of Conference</p>
   </footer>
 </div>
 
 <script>
 const CSV_URL = "https://raw.githubusercontent.com/goldisdying/proofofconference/main/Bitcoin%20Conference%20List%20-%20Sheet1.csv";
-
-const MONTHS = {
-  january:0,february:1,march:2,april:3,may:4,june:5,
-  july:6,august:7,september:8,october:9,november:10,december:11
-};
-
-const PRIORITY_SPEAKERS = [
-  "Michael Saylor","Jack Dorsey","Max Keiser","Jeff Booth",
-  "Lyn Alden","Natalie Brunell","Saifedean Ammous","Adam Back","Jack Mallers"
-];
-
-const $ = (id) => document.getElementById(id);
+const $ = id => document.getElementById(id);
 
 const searchEl = $("search");
 const sortEl = $("sort");
@@ -282,197 +271,32 @@ const cardsEl = $("cards");
 
 let conferences = [];
 
-function parseDateRange(range) {
-  if (!range) return null;
-  const text = String(range).replace(/[–—]/g, "-");
-  const yearMatch = text.match(/\b(20\d{2})\b/);
-  const monthMatch = text.toLowerCase().match(
-    /(january|february|march|april|may|june|july|august|september|october|november|december)/
-  );
-  if (!yearMatch || !monthMatch) return null;
-  const year = Number(yearMatch[1]);
-  const month = MONTHS[monthMatch[1]];
-  const nums = (text.match(/\b\d{1,2}\b/g) || []).map(Number).filter(n => n >= 1 && n <= 31);
-  const startDay = nums[0] ?? 1;
-  const endDay = nums[1] ?? startDay;
-  const startDate = new Date(year, month, startDay);
-  const endDate = new Date(year, month, endDay);
-  if (Number.isNaN(startDate.getTime()) || Number.isNaN(endDate.getTime())) return null;
-  return { startDate, endDate };
-}
-
-function getTimeAway(range) {
-  const parsed = parseDateRange(range);
-  if (!parsed) return "";
-  const now = new Date();
-  const diffDays = Math.floor((parsed.startDate - now) / (1000 * 60 * 60 * 24));
-  if (now >= parsed.startDate && now <= parsed.endDate) return "Happening now";
-  if (diffDays <= 0) return "";
-  if (diffDays <= 14) return `In ${diffDays} days`;
-  if (diffDays <= 60) return `${Math.round(diffDays / 7)} weeks away`;
-  const months = Math.round(diffDays / 30);
-  if (months <= 11) return `${months} months away`;
-  return "";
-}
-
-function isUpcoming(range) {
-  const parsed = parseDateRange(range);
-  if (!parsed) return false;
-  return new Date() <= parsed.endDate;
-}
-
-function parseCSV(text) {
-  const rows = [];
-  let row = [], val = "", inQuotes = false;
-  for (let i = 0; i < text.length; i++) {
-    const c = text[i], n = text[i+1];
-    if (c === '"' && inQuotes && n === '"') { val += '"'; i++; }
-    else if (c === '"') inQuotes = !inQuotes;
-    else if (c === "," && !inQuotes) { row.push(val); val = ""; }
-    else if ((c === "\n" || c === "\r") && !inQuotes) {
-      if (val || row.length) { row.push(val); rows.push(row); row = []; val = ""; }
-    } else val += c;
-  }
-  if (val || row.length) { row.push(val); rows.push(row); }
-  return rows;
-}
-
-function clean(t) {
-  return (t || "").replace(/[\r\n]+/g," ").replace(/^"+|"+$/g,"").trim();
-}
-
-function escapeHTML(str) {
-  return String(str ?? "")
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#039;");
-}
-
 fetch(CSV_URL)
-  .then(r=>r.text())
-  .then(text=>{
-    const rows = parseCSV(text);
+  .then(r => r.text())
+  .then(text => {
+    const rows = text.split("\n").map(r => r.split(","));
     const headers = rows.shift();
-    conferences = rows.map(r=>Object.fromEntries(headers.map((h,i)=>[h,clean(r[i])])))
-      .filter(c=>c["Not Active"].toLowerCase()!=="x");
-    populateFilters();
-    updateClearButtons();
+    conferences = rows.map(r => Object.fromEntries(headers.map((h,i)=>[h, r[i]])))
+      .filter(c => c["Not Active"] !== "x");
     render();
   });
-
-function populateFilters() {
-  ["Country","State","City"].forEach(f=>{
-    const sel = document.getElementById(f.toLowerCase());
-    [...new Set(conferences.map(c=>c[f]).filter(Boolean))].sort()
-      .forEach(v=>sel.add(new Option(v,v)));
-  });
-
-  const speakerSel = document.getElementById("speaker");
-  const set = new Set();
-  conferences.forEach(c=>{
-    if (c["Speakers/Notable Attendees"])
-      c["Speakers/Notable Attendees"].split(",").forEach(s=>set.add(s.trim()));
-  });
-  PRIORITY_SPEAKERS.forEach(n=>{
-    if (set.has(n)) { speakerSel.add(new Option(n,n)); set.delete(n); }
-  });
-  const sep = new Option("──────────", "__sep__");
-  sep.disabled = true;
-  speakerSel.add(sep);
-  [...set].sort().forEach(n=>speakerSel.add(new Option(n,n)));
-}
-
-function updateClearButtons() {
-  document.querySelectorAll(".clear-btn").forEach(btn=>{
-    const sel = document.getElementById(btn.dataset.target);
-    btn.style.display = sel.value ? "flex" : "none";
-  });
-}
 
 ["search","country","state","city","attendance","sort","speaker"].forEach(id=>{
-  document.getElementById(id).addEventListener("input", ()=>{
-    updateClearButtons();
-    render();
-  });
-});
-
-document.querySelectorAll(".clear-btn").forEach(btn=>{
-  btn.addEventListener("click", ()=>{
-    const sel = document.getElementById(btn.dataset.target);
-    sel.value = "";
-    updateClearButtons();
-    render();
-  });
+  $(id).addEventListener("input", render);
 });
 
 function render() {
-  const q = searchEl.value.toLowerCase();
-  let list = conferences.slice();
-
-  if (sortEl.value !== "past")
-    list = list.filter(c=>isUpcoming(c["Date Range"]));
-
-  if (sortEl.value === "discounts")
-    list = list.filter(c=>c.Discount);
-
-  if (sortEl.value === "past") {
-    list = conferences
-      .filter(c=>!isUpcoming(c["Date Range"]))
-      .sort((a,b)=>{
-        const da = parseDateRange(a["Date Range"])?.endDate;
-        const db = parseDateRange(b["Date Range"])?.endDate;
-        return (db || 0) - (da || 0);
-      });
-  }
-
-  if (sortEl.value === "az")
-    list.sort((a,b)=>a.Conference.localeCompare(b.Conference));
-
-  const html = list
-    .filter(c => {
-      if (q && !Object.values(c).join(" ").toLowerCase().includes(q)) return false;
-      if (countryEl.value && c.Country !== countryEl.value) return false;
-      if (stateEl.value && c.State !== stateEl.value) return false;
-      if (cityEl.value && c.City !== cityEl.value) return false;
-      if (attendanceEl.value && c["Expected Attendance"] !== attendanceEl.value) return false;
-      if (speakerEl.value && !(c["Speakers/Notable Attendees"]||"").includes(speakerEl.value)) return false;
-      return true;
-    })
-    .map(c => {
-      const loc = [c.City,c.State,c.Country].filter(Boolean).map(escapeHTML).join(", ");
-      const conf = escapeHTML(c.Conference);
-      const venue = escapeHTML(c.Venue);
-      const dateRange = escapeHTML(c["Date Range"]);
-      const attendance = escapeHTML(c["Expected Attendance"]);
-      const discount = escapeHTML(c.Discount);
-      const hasDiscount = c.Discount && c.Discount.trim() !== "";
-      const buttonText = hasDiscount ? "Get Tickets" : "More Info";
-      const link = c["Main Conference Link"];
-      const timeAway = getTimeAway(c["Date Range"]);
-
-      return `
+  cardsEl.innerHTML = conferences
+    .filter(c => !attendanceEl.value || c["Expected Attendance"] === attendanceEl.value)
+    .map(c => `
       <div class="card">
-        ${c.Image ? `
-          <a href="${link}" target="_blank" rel="noopener noreferrer">
-            <img src="${c.Image}" alt="${conf}">
-          </a>` : ""}
-        <h2>${conf}</h2>
-        ${timeAway ? `<div class="time-away">${escapeHTML(timeAway)}</div>` : ""}
-        <p>📍 ${loc}</p>
-        ${c.Venue ? `<p>🏛️ ${venue}</p>` : ""}
-        <p>📅 ${dateRange}</p>
-        ${attendance ? `<p>👤 Expected Attendance: ${attendance}</p>` : ""}
-        ${hasDiscount ? `<div class="discount">🎟️ ${discount}</div>` : ""}
-        <a class="cta" href="${link}" target="_blank" rel="noopener noreferrer">
-          ${buttonText}
-        </a>
-      </div>`;
-    })
-    .join("");
-
-  cardsEl.innerHTML = html || `<div class="card"><p>No matching conferences.</p></div>`;
+        <h2>${c.Conference}</h2>
+        <p>📍 ${c.City}, ${c.Country}</p>
+        <p>📅 ${c["Date Range"]}</p>
+        ${c["Expected Attendance"] ? `<p>👤 Expected Attendance: ${c["Expected Attendance"]}</p>` : ""}
+        <a class="cta" href="${c["Main Conference Link"]}" target="_blank">More Info</a>
+      </div>
+    `).join("");
 }
 </script>
 
