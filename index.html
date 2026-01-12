@@ -24,36 +24,174 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 
   <style>
-    body { margin: 0; background: #000; color: #fff; font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, sans-serif; }
-    .top-nav { display: flex; justify-content: center; gap: 14px; padding: 14px; font-size: 14px; }
-    .top-nav a { color: #ffffff; text-decoration: none; font-weight: 500; }
-    .container { max-width: 480px; margin: 0 auto; padding: 20px; }
-    h1 { color: #f7931a; font-size: 36px; text-align: center; margin-bottom: 6px; }
-    .subtitle { text-align: center; font-size: 18px; margin-bottom: 24px; }
-    .filter-label { font-size: 13px; font-weight: 600; color: #8df608; margin: 0 0 6px 4px; }
-    .search-wrapper { margin-bottom: 18px; }
-    input, select { width: 100%; padding: 12px 16px; border-radius: 24px; border: none; font-size: 16px; box-sizing: border-box; }
-    .sort-wrapper { margin-bottom: 18px; }
-    .filter-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
-    .filter-row select { flex: 1; }
-    .clear-btn { width: 32px; height: 32px; border-radius: 50%; border: 1px solid #2a2a2a; background: #121212; color: #9ca3af; font-size: 20px; line-height: 28px; text-align: center; cursor: pointer; display: none; flex-shrink: 0; }
-    .clear-btn:hover { color: #ffffff; border-color: #3a3a3a; }
-    .card { background: #121212; border-radius: 18px; padding: 16px; margin-bottom: 22px; box-shadow: 0 0 0 1px #1f1f1f; }
-    .card img { width: 100%; border-radius: 14px; margin-bottom: 12px; display: block; }
-    .card h2 { color: #f7931a; font-size: 22px; margin-bottom: 4px; }
-    .time-away { display: inline-block; font-size: 12px; color: #9ca3af; background: #1a1a1a; padding: 4px 10px; border-radius: 999px; margin-bottom: 8px; }
-    .card p { margin: 6px 0; font-size: 15px; line-height: 1.4; }
-    .attendance { margin-top: 6px; font-size: 14px; color: #9ca3af; }
-    .discount { margin-top: 10px; color: #8df608; font-weight: 600; }
-    .cta { display: inline-block; margin-top: 14px; background: #f7931a; color: #000; padding: 12px 18px; border-radius: 10px; font-weight: 700; text-decoration: none; }
-    footer { margin-top: 40px; padding-top: 20px; border-top: 1px solid #1f1f1f; font-size: 13px; color: #9ca3af; text-align: center; line-height: 1.5; }
+    body {
+      margin: 0;
+      background: #000;
+      color: #fff;
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    .top-nav {
+      display: flex;
+      justify-content: center;
+      gap: 14px;
+      padding: 14px;
+      font-size: 14px;
+    }
+
+    .top-nav a {
+      color: #ffffff;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .container {
+      max-width: 480px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    h1 {
+      color: #f7931a;
+      font-size: 36px;
+      text-align: center;
+      margin-bottom: 6px;
+    }
+
+    .subtitle {
+      text-align: center;
+      font-size: 18px;
+      margin-bottom: 24px;
+    }
+
+    .filter-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: #8df608;
+      margin: 0 0 6px 4px;
+    }
+
+    .search-wrapper {
+      margin-bottom: 18px;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 12px 16px;
+      border-radius: 24px;
+      border: none;
+      font-size: 16px;
+      box-sizing: border-box;
+    }
+
+    .sort-wrapper {
+      margin-bottom: 18px;
+    }
+
+    .filter-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .filter-row select {
+      flex: 1;
+    }
+
+    .clear-btn {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: 1px solid #2a2a2a;
+      background: #121212;
+      color: #9ca3af;
+      font-size: 20px;
+      line-height: 28px;
+      text-align: center;
+      cursor: pointer;
+      display: none;
+      flex-shrink: 0;
+    }
+
+    .clear-btn:hover {
+      color: #ffffff;
+      border-color: #3a3a3a;
+    }
+
+    .card {
+      background: #121212;
+      border-radius: 18px;
+      padding: 16px;
+      margin-bottom: 22px;
+      box-shadow: 0 0 0 1px #1f1f1f;
+    }
+
+    .card img {
+      width: 100%;
+      border-radius: 14px;
+      margin-bottom: 12px;
+      display: block;
+    }
+
+    .card h2 {
+      color: #f7931a;
+      font-size: 22px;
+      margin-bottom: 4px;
+    }
+
+    .time-away {
+      display: inline-block;
+      font-size: 12px;
+      color: #9ca3af;
+      background: #1a1a1a;
+      padding: 4px 10px;
+      border-radius: 999px;
+      margin-bottom: 8px;
+    }
+
+    .card p {
+      margin: 6px 0;
+      font-size: 15px;
+      line-height: 1.4;
+    }
+
+    .discount {
+      margin-top: 10px;
+      color: #8df608;
+      font-weight: 600;
+    }
+
+    .cta {
+      display: inline-block;
+      margin-top: 14px;
+      background: #f7931a;
+      color: #000;
+      padding: 12px 18px;
+      border-radius: 10px;
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    footer {
+      margin-top: 40px;
+      padding-top: 20px;
+      border-top: 1px solid #1f1f1f;
+      font-size: 13px;
+      color: #9ca3af;
+      text-align: center;
+      line-height: 1.5;
+    }
   </style>
 </head>
+
 <body>
 
 <div class="top-nav">
-  <a href="/submit-event/">Submit Event</a> •
-  <a href="https://www.proofofconference.com/contact">Contact</a> •
+  <a href="/submit-event/">Submit Event</a>
+  •
+  <a href="https://www.proofofconference.com/contact">Contact</a>
+  •
   <a href="https://fomo21.com/discount/POC15" target="_blank" rel="noopener noreferrer">Merch</a>
 </div>
 
@@ -73,16 +211,6 @@
       <option value="az">A to Z</option>
       <option value="past">Past</option>
     </select>
-  </div>
-
-  <div class="filter-row">
-    <select id="size">
-      <option value="">All Conference Sizes</option>
-      <option value="small">🧍 Small (≤500)</option>
-      <option value="medium">👥 Medium (500–2,000)</option>
-      <option value="large">🏟️ Large (2,000+)</option>
-    </select>
-    <button type="button" class="clear-btn" data-target="size">×</button>
   </div>
 
   <div class="filter-row">
@@ -108,7 +236,7 @@
   <div id="cards"></div>
 
   <footer>
-    <p><strong>Disclaimer:</strong> Proof of Conference is an independent, informational directory and is not necessarily affiliated with, endorsed by, or officially connected to any conference or organization listed. Some events may include affiliate or referral links. Event details may change at any time. Please verify all information directly on the official conference websites.</p>
+    <p><strong>Disclaimer:</strong> Proof of Conference is an independent, informational directory and is not necessarily affiliated with, endorsed by, or officially connected to any conference or organization listed. Some events may include affiliate or referral links. Event details may change at any time. Please verify all information directly on the official conference websites. No information on this site is guaranteed to be accurate or up to date.</p>
     <p>© 2026 Proof of Conference. All rights reserved.</p>
   </footer>
 </div>
@@ -116,17 +244,20 @@
 <script>
 const CSV_URL = "https://raw.githubusercontent.com/goldisdying/proofofconference/main/Bitcoin%20Conference%20List%20-%20Sheet1.csv";
 
-const SIZE_RANGES = {
-  small: { max: 500, label: "🧍 Small (≤500)" },
-  medium: { min: 500, max: 2000, label: "👥 Medium (500–2,000)" },
-  large: { min: 2000, label: "🏟️ Large (2,000+)" }
+const MONTHS = {
+  january:0,february:1,march:2,april:3,may:4,june:5,
+  july:6,august:7,september:8,october:9,november:10,december:11
 };
 
-const $ = id => document.getElementById(id);
+const PRIORITY_SPEAKERS = [
+  "Michael Saylor","Jack Dorsey","Max Keiser","Jeff Booth",
+  "Lyn Alden","Natalie Brunell","Saifedean Ammous","Adam Back","Jack Mallers"
+];
+
+const $ = (id) => document.getElementById(id);
 
 const searchEl = $("search");
 const sortEl = $("sort");
-const sizeEl = $("size");
 const countryEl = $("country");
 const stateEl = $("state");
 const cityEl = $("city");
@@ -135,57 +266,213 @@ const cardsEl = $("cards");
 
 let conferences = [];
 
-function classifySize(n) {
-  if (!n || isNaN(n)) return null;
-  if (n <= 500) return "small";
-  if (n <= 2000) return "medium";
-  return "large";
+function parseDateRange(range) {
+  if (!range) return null;
+
+  const text = String(range).replace(/[–—]/g, "-");
+
+  const yearMatch = text.match(/\b(20\d{2})\b/);
+  const monthMatch = text.toLowerCase().match(
+    /(january|february|march|april|may|june|july|august|september|october|november|december)/
+  );
+  if (!yearMatch || !monthMatch) return null;
+
+  const year = Number(yearMatch[1]);
+  const month = MONTHS[monthMatch[1]];
+
+  const nums = (text.match(/\b\d{1,2}\b/g) || [])
+    .map(Number)
+    .filter(n => n >= 1 && n <= 31);
+
+  const startDay = nums[0] ?? 1;
+  const endDay = nums[1] ?? startDay;
+
+  const startDate = new Date(year, month, startDay);
+  const endDate = new Date(year, month, endDay);
+
+  if (Number.isNaN(startDate.getTime()) || Number.isNaN(endDate.getTime())) return null;
+  return { startDate, endDate };
+}
+
+function getTimeAway(range) {
+  const parsed = parseDateRange(range);
+  if (!parsed) return "";
+
+  const now = new Date();
+  const diffDays = Math.floor((parsed.startDate - now) / (1000 * 60 * 60 * 24));
+
+  if (now >= parsed.startDate && now <= parsed.endDate) return "Happening now";
+  if (diffDays <= 0) return "";
+  if (diffDays <= 14) return `In ${diffDays} days`;
+  if (diffDays <= 60) return `${Math.round(diffDays / 7)} weeks away`;
+
+  const months = Math.round(diffDays / 30);
+  if (months <= 11) return `${months} months away`;
+
+  return "";
+}
+
+function isUpcoming(range) {
+  const parsed = parseDateRange(range);
+  if (!parsed) return false;
+  return new Date() <= parsed.endDate;
+}
+
+function parseCSV(text) {
+  const rows = [];
+  let row = [], val = "", inQuotes = false;
+  for (let i = 0; i < text.length; i++) {
+    const c = text[i], n = text[i+1];
+    if (c === '"' && inQuotes && n === '"') { val += '"'; i++; }
+    else if (c === '"') inQuotes = !inQuotes;
+    else if (c === "," && !inQuotes) { row.push(val); val = ""; }
+    else if ((c === "\n" || c === "\r") && !inQuotes) {
+      if (val || row.length) { row.push(val); rows.push(row); row = []; val = ""; }
+    } else val += c;
+  }
+  if (val || row.length) { row.push(val); rows.push(row); }
+  return rows;
+}
+
+function clean(t) {
+  return (t || "").replace(/[\r\n]+/g," ").replace(/^"+|"+$/g,"").trim();
 }
 
 function escapeHTML(str) {
-  return String(str ?? "").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;");
+  return String(str ?? "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
 }
 
 fetch(CSV_URL)
   .then(r=>r.text())
   .then(text=>{
-    const rows = text.trim().split("\n").map(r=>r.split(","));
+    const rows = parseCSV(text);
     const headers = rows.shift();
-    conferences = rows.map(r=>Object.fromEntries(headers.map((h,i)=>[h,r[i]?.trim()])));
+    conferences = rows.map(r=>Object.fromEntries(headers.map((h,i)=>[h,clean(r[i])])))
+      .filter(c=>c["Not Active"].toLowerCase()!=="x");
+    populateFilters();
+    updateClearButtons();
     render();
   });
 
-["search","sort","size","country","state","city","speaker"].forEach(id=>{
-  $(id).addEventListener("input",render);
+function populateFilters() {
+  ["Country","State","City"].forEach(f=>{
+    const sel = document.getElementById(f.toLowerCase());
+    [...new Set(conferences.map(c=>c[f]).filter(Boolean))].sort()
+      .forEach(v=>sel.add(new Option(v,v)));
+  });
+
+  const speakerSel = document.getElementById("speaker");
+  const set = new Set();
+
+  conferences.forEach(c=>{
+    if (c["Speakers/Notable Attendees"])
+      c["Speakers/Notable Attendees"].split(",").forEach(s=>set.add(s.trim()));
+  });
+
+  PRIORITY_SPEAKERS.forEach(n=>{
+    if (set.has(n)) { speakerSel.add(new Option(n,n)); set.delete(n); }
+  });
+
+  const sep = new Option("──────────", "__sep__");
+  sep.disabled = true;
+  speakerSel.add(sep);
+
+  [...set].sort().forEach(n=>speakerSel.add(new Option(n,n)));
+}
+
+function updateClearButtons() {
+  document.querySelectorAll(".clear-btn").forEach(btn=>{
+    const sel = document.getElementById(btn.dataset.target);
+    btn.style.display = sel.value ? "flex" : "none";
+  });
+}
+
+["search","country","state","city","sort","speaker"].forEach(id=>{
+  document.getElementById(id).addEventListener("input", ()=>{
+    updateClearButtons();
+    render();
+  });
+});
+
+document.querySelectorAll(".clear-btn").forEach(btn=>{
+  btn.addEventListener("click", ()=>{
+    const sel = document.getElementById(btn.dataset.target);
+    sel.value = "";
+    updateClearButtons();
+    render();
+  });
 });
 
 function render() {
   const q = searchEl.value.toLowerCase();
-  const sizeFilter = sizeEl.value;
+  let list = conferences.slice();
 
-  const html = conferences.filter(c=>{
-    if (q && !Object.values(c).join(" ").toLowerCase().includes(q)) return false;
-    if (sizeFilter) {
-      const sz = classifySize(Number(c["Expected Attendance"]));
-      if (sz !== sizeFilter) return false;
-    }
-    return true;
-  }).map(c=>{
-    const attendance = Number(c["Expected Attendance"]);
-    const sz = classifySize(attendance);
-    const sizeLabel = sz ? SIZE_RANGES[sz].label : "";
+  if (sortEl.value !== "past")
+    list = list.filter(c=>isUpcoming(c["Date Range"]));
 
-    return `
+  if (sortEl.value === "discounts")
+    list = list.filter(c=>c.Discount);
+
+  if (sortEl.value === "past") {
+    list = conferences
+      .filter(c=>!isUpcoming(c["Date Range"]))
+      .sort((a,b)=>{
+        const da = parseDateRange(a["Date Range"])?.endDate;
+        const db = parseDateRange(b["Date Range"])?.endDate;
+        return (db || 0) - (da || 0);
+      });
+  }
+
+  if (sortEl.value === "az")
+    list.sort((a,b)=>a.Conference.localeCompare(b.Conference));
+
+  const html = list
+    .filter(c => {
+      if (q && !Object.values(c).join(" ").toLowerCase().includes(q)) return false;
+      if (countryEl.value && c.Country !== countryEl.value) return false;
+      if (stateEl.value && c.State !== stateEl.value) return false;
+      if (cityEl.value && c.City !== cityEl.value) return false;
+      if (speakerEl.value && !(c["Speakers/Notable Attendees"]||"").includes(speakerEl.value)) return false;
+      return true;
+    })
+    .map(c => {
+      const loc = [c.City,c.State,c.Country].filter(Boolean).map(escapeHTML).join(", ");
+      const conf = escapeHTML(c.Conference);
+      const venue = escapeHTML(c.Venue);
+      const dateRange = escapeHTML(c["Date Range"]);
+      const discount = escapeHTML(c.Discount);
+      const hasDiscount = c.Discount && c.Discount.trim() !== "";
+      const buttonText = hasDiscount ? "Get Tickets" : "More Info";
+      const link = c["Main Conference Link"];
+      const timeAway = getTimeAway(c["Date Range"]);
+
+      return `
       <div class="card">
-        <h2>${escapeHTML(c.Conference)}</h2>
-        ${attendance ? `<div class="attendance">${sizeLabel} · ${attendance.toLocaleString()} attendees</div>` : ""}
-        <p>📅 ${escapeHTML(c["Date Range"])}</p>
-        <a class="cta" href="${c["Main Conference Link"]}" target="_blank" rel="noopener noreferrer">More Info</a>
+        ${c.Image ? `
+          <a href="${link}" target="_blank" rel="noopener noreferrer">
+            <img src="${c.Image}" alt="${conf}">
+          </a>` : ""}
+        <h2>${conf}</h2>
+        ${timeAway ? `<div class="time-away">${escapeHTML(timeAway)}</div>` : ""}
+        <p>📍 ${loc}</p>
+        ${c.Venue ? `<p>🏛️ ${venue}</p>` : ""}
+        <p>📅 ${dateRange}</p>
+        ${hasDiscount ? `<div class="discount">🎟️ ${discount}</div>` : ""}
+        <a class="cta" href="${link}" target="_blank" rel="noopener noreferrer">
+          ${buttonText}
+        </a>
       </div>`;
-  }).join("");
+    })
+    .join("");
 
   cardsEl.innerHTML = html || `<div class="card"><p>No matching conferences.</p></div>`;
 }
 </script>
+
 </body>
 </html>
