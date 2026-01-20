@@ -24,6 +24,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 
   <style>
+    /* === GLOBAL STYLES === */
     body {
       margin: 0;
       background: #000;
@@ -31,6 +32,7 @@
       font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
     }
 
+    /* === TOP NAVIGATION === */
     .top-nav {
       display: flex;
       justify-content: center;
@@ -45,12 +47,14 @@
       font-weight: 500;
     }
 
+    /* === MAIN CONTAINER === */
     .container {
       max-width: 480px;
       margin: 0 auto;
       padding: 20px;
     }
 
+    /* === HEADER === */
     h1 {
       color: #f7931a;
       font-size: 36px;
@@ -64,6 +68,7 @@
       margin-bottom: 24px;
     }
 
+    /* === FILTERS === */
     .filter-label {
       font-size: 13px;
       font-weight: 600;
@@ -119,6 +124,7 @@
       border-color: #3a3a3a;
     }
 
+    /* === CONFERENCE CARDS === */
     .card {
       background: #121212;
       border-radius: 18px;
@@ -173,16 +179,7 @@
       text-decoration: none;
     }
 
-    footer {
-      margin-top: 40px;
-      padding-top: 20px;
-      border-top: 1px solid #1f1f1f;
-      font-size: 13px;
-      color: #9ca3af;
-      text-align: center;
-      line-height: 1.5;
-    }
-
+    /* === NEWSLETTER SIGNUP === */
     .newsletter-signup {
       background: #121212;
       border-radius: 18px;
@@ -248,6 +245,7 @@
       display: none;
     }
 
+    /* === FOMO21 AD === */
     .fomo21-ad {
       background: #121212;
       border-radius: 18px;
@@ -274,6 +272,18 @@
       opacity: 0.9;
     }
 
+    /* === FOOTER === */
+    footer {
+      margin-top: 40px;
+      padding-top: 20px;
+      border-top: 1px solid #1f1f1f;
+      font-size: 13px;
+      color: #9ca3af;
+      text-align: center;
+      line-height: 1.5;
+    }
+
+    /* === MOBILE RESPONSIVENESS === */
     @media (max-width: 480px) {
       .newsletter-signup form {
         flex-direction: column;
@@ -367,17 +377,31 @@
 </div>
 
 <script>
+// ============================================================================
+// CONFIGURATION & CONSTANTS
+// ============================================================================
+
 const CSV_URL = "https://raw.githubusercontent.com/goldisdying/proofofconference/main/Bitcoin%20Conference%20List%20-%20Sheet1.csv";
 
+// Month name to number mapping for date parsing
 const MONTHS = {
-  january:0,february:1,march:2,april:3,may:4,june:5,
-  july:6,august:7,september:8,october:9,november:10,december:11
+  january: 0, february: 1, march: 2, april: 3, may: 4, june: 5,
+  july: 6, august: 7, september: 8, october: 9, november: 10, december: 11
 };
 
+// Priority speakers to show first in dropdown
 const PRIORITY_SPEAKERS = [
-  "Michael Saylor","Jack Dorsey","Max Keiser","Jeff Booth",
-  "Lyn Alden","Natalie Brunell","Saifedean Ammous","Adam Back","Jack Mallers"
+  "Michael Saylor", "Jack Dorsey", "Max Keiser", "Jeff Booth",
+  "Lyn Alden", "Natalie Brunell", "Saifedean Ammous", "Adam Back", "Jack Mallers"
 ];
+
+// Card insertion positions (zero-indexed)
+const NEWSLETTER_CARD_POSITION = 3;  // After 4th card
+const FOMO21_AD_POSITION = 7;        // After 8th card
+
+// ============================================================================
+// DOM ELEMENT REFERENCES
+// ============================================================================
 
 const $ = (id) => document.getElementById(id);
 
@@ -390,22 +414,39 @@ const attendanceEl = $("attendance");
 const speakerEl = $("speaker");
 const cardsEl = $("cards");
 
+// ============================================================================
+// STATE
+// ============================================================================
+
 let conferences = [];
 
+// ============================================================================
+// DATE UTILITY FUNCTIONS
+// ============================================================================
+
+/**
+ * Parse a date range string into start and end dates
+ * Examples: "February 6-8, 2026", "March 15, 2026"
+ */
 function parseDateRange(range) {
   if (!range) return null;
 
+  // Normalize various dash types to standard hyphen
   const text = String(range).replace(/[––—]/g, "-");
 
+  // Extract year
   const yearMatch = text.match(/\b(20\d{2})\b/);
+  if (!yearMatch) return null;
+  const year = Number(yearMatch[1]);
+
+  // Extract month name
   const monthMatch = text.toLowerCase().match(
     /(january|february|march|april|may|june|july|august|september|october|november|december)/
   );
-  if (!yearMatch || !monthMatch) return null;
-
-  const year = Number(yearMatch[1]);
+  if (!monthMatch) return null;
   const month = MONTHS[monthMatch[1]];
 
+  // Extract day numbers (handles both single day and ranges)
   const nums = (text.match(/\b\d{1,2}\b/g) || [])
     .map(Number)
     .filter(n => n >= 1 && n <= 31);
@@ -416,10 +457,17 @@ function parseDateRange(range) {
   const startDate = new Date(year, month, startDay);
   const endDate = new Date(year, month, endDay);
 
-  if (Number.isNaN(startDate.getTime()) || Number.isNaN(endDate.getTime())) return null;
+  if (Number.isNaN(startDate.getTime()) || Number.isNaN(endDate.getTime())) {
+    return null;
+  }
+
   return { startDate, endDate };
 }
 
+/**
+ * Get human-readable time until conference starts
+ * Returns strings like "In 5 days", "2 weeks away", "Happening now"
+ */
 function getTimeAway(range) {
   const parsed = parseDateRange(range);
   if (!parsed) return "";
@@ -427,29 +475,61 @@ function getTimeAway(range) {
   const now = new Date();
   const diffDays = Math.floor((parsed.startDate - now) / (1000 * 60 * 60 * 24));
 
-  if (now >= parsed.startDate && now <= parsed.endDate) return "Happening now";
-  if (diffDays <= 0) return "";
-  if (diffDays <= 14) return `In ${diffDays} days`;
-  if (diffDays <= 60) return `${Math.round(diffDays / 7)} weeks away`;
+  // Conference is happening now
+  if (now >= parsed.startDate && now <= parsed.endDate) {
+    return "Happening now";
+  }
 
+  // Conference has passed
+  if (diffDays <= 0) return "";
+
+  // Less than 2 weeks away - show days
+  if (diffDays <= 14) {
+    return `In ${diffDays} days`;
+  }
+
+  // 2 weeks to 2 months away - show weeks
+  if (diffDays <= 60) {
+    const weeks = Math.round(diffDays / 7);
+    return `${weeks} weeks away`;
+  }
+
+  // More than 2 months away - show months
   const months = Math.round(diffDays / 30);
-  if (months <= 11) return `${months} months away`;
+  if (months <= 11) {
+    return `${months} months away`;
+  }
 
   return "";
 }
 
+/**
+ * Check if a conference is upcoming (hasn't ended yet)
+ */
 function isUpcoming(range) {
   const parsed = parseDateRange(range);
   if (!parsed) return false;
   return new Date() <= parsed.endDate;
 }
 
+// ============================================================================
+// ATTENDANCE UTILITY FUNCTIONS
+// ============================================================================
+
+/**
+ * Parse attendance string to number
+ * Handles commas and spaces: "1,500" -> 1500
+ */
 function parseAttendance(attendanceStr) {
   if (!attendanceStr) return null;
   const num = parseInt(attendanceStr.replace(/[,\s]/g, ''), 10);
   return isNaN(num) ? null : num;
 }
 
+/**
+ * Get attendance range category for display
+ * Returns strings like "Under 500", "1,000-5,000", etc.
+ */
 function getAttendanceRange(attendanceStr) {
   const num = parseAttendance(attendanceStr);
   if (!num) return "";
@@ -461,6 +541,9 @@ function getAttendanceRange(attendanceStr) {
   return "10,000+";
 }
 
+/**
+ * Check if attendance matches the selected filter
+ */
 function matchesAttendanceFilter(attendanceStr, filterValue) {
   if (!filterValue) return true;
   
@@ -483,26 +566,66 @@ function matchesAttendanceFilter(attendanceStr, filterValue) {
   }
 }
 
+// ============================================================================
+// CSV PARSING
+// ============================================================================
+
+/**
+ * Parse CSV text into array of rows
+ * Handles quoted fields with commas and newlines
+ */
 function parseCSV(text) {
   const rows = [];
   let row = [], val = "", inQuotes = false;
+  
   for (let i = 0; i < text.length; i++) {
-    const c = text[i], n = text[i+1];
-    if (c === '"' && inQuotes && n === '"') { val += '"'; i++; }
-    else if (c === '"') inQuotes = !inQuotes;
-    else if (c === "," && !inQuotes) { row.push(val); val = ""; }
-    else if ((c === "\n" || c === "\r") && !inQuotes) {
-      if (val || row.length) { row.push(val); rows.push(row); row = []; val = ""; }
-    } else val += c;
+    const c = text[i];
+    const n = text[i + 1];
+    
+    if (c === '"' && inQuotes && n === '"') {
+      // Escaped quote within quoted field
+      val += '"';
+      i++;
+    } else if (c === '"') {
+      // Toggle quote state
+      inQuotes = !inQuotes;
+    } else if (c === "," && !inQuotes) {
+      // Field separator (outside quotes)
+      row.push(val);
+      val = "";
+    } else if ((c === "\n" || c === "\r") && !inQuotes) {
+      // Row separator (outside quotes)
+      if (val || row.length) {
+        row.push(val);
+        rows.push(row);
+        row = [];
+        val = "";
+      }
+    } else {
+      val += c;
+    }
   }
-  if (val || row.length) { row.push(val); rows.push(row); }
+  
+  // Add final row if exists
+  if (val || row.length) {
+    row.push(val);
+    rows.push(row);
+  }
+  
   return rows;
 }
 
+/**
+ * Clean CSV field value
+ * Removes extra whitespace, newlines, and surrounding quotes
+ */
 function clean(t) {
-  return (t || "").replace(/[\r\n]+/g," ").replace(/^"+|"+$/g,"").trim();
+  return (t || "").replace(/[\r\n]+/g, " ").replace(/^"+|"+$/g, "").trim();
 }
 
+/**
+ * Escape HTML special characters to prevent XSS
+ */
 function escapeHTML(str) {
   return String(str ?? "")
     .replaceAll("&", "&amp;")
@@ -512,60 +635,101 @@ function escapeHTML(str) {
     .replaceAll("'", "&#039;");
 }
 
+// ============================================================================
+// DATA LOADING
+// ============================================================================
+
+/**
+ * Fetch and parse conference data from CSV
+ */
 fetch(CSV_URL)
-  .then(r=>r.text())
-  .then(text=>{
+  .then(r => r.text())
+  .then(text => {
     const rows = parseCSV(text);
     const headers = rows.shift();
-    conferences = rows.map(r=>Object.fromEntries(headers.map((h,i)=>[h,clean(r[i])])))
-      .filter(c=>c["Not Active"].toLowerCase()!=="x");
+    
+    // Convert rows to objects and filter out inactive conferences
+    conferences = rows
+      .map(r => Object.fromEntries(headers.map((h, i) => [h, clean(r[i])])))
+      .filter(c => c["Not Active"].toLowerCase() !== "x");
+    
     populateFilters();
     updateClearButtons();
     render();
   });
 
+// ============================================================================
+// FILTER POPULATION
+// ============================================================================
+
+/**
+ * Populate filter dropdowns with unique values from conferences
+ */
 function populateFilters() {
-  ["Country","State","City"].forEach(f=>{
-    const sel = document.getElementById(f.toLowerCase());
-    [...new Set(conferences.map(c=>c[f]).filter(Boolean))].sort()
-      .forEach(v=>sel.add(new Option(v,v)));
+  // Populate location filters (Country, State, City)
+  ["Country", "State", "City"].forEach(field => {
+    const sel = document.getElementById(field.toLowerCase());
+    const uniqueValues = [...new Set(conferences.map(c => c[field]).filter(Boolean))].sort();
+    uniqueValues.forEach(v => sel.add(new Option(v, v)));
   });
 
+  // Populate speaker filter with priority speakers first
   const speakerSel = document.getElementById("speaker");
-  const set = new Set();
+  const allSpeakers = new Set();
 
-  conferences.forEach(c=>{
-    if (c["Speakers/Notable Attendees"])
-      c["Speakers/Notable Attendees"].split(",").forEach(s=>set.add(s.trim()));
+  // Collect all unique speakers
+  conferences.forEach(c => {
+    if (c["Speakers/Notable Attendees"]) {
+      c["Speakers/Notable Attendees"].split(",").forEach(s => {
+        allSpeakers.add(s.trim());
+      });
+    }
   });
 
-  PRIORITY_SPEAKERS.forEach(n=>{
-    if (set.has(n)) { speakerSel.add(new Option(n,n)); set.delete(n); }
+  // Add priority speakers first
+  PRIORITY_SPEAKERS.forEach(name => {
+    if (allSpeakers.has(name)) {
+      speakerSel.add(new Option(name, name));
+      allSpeakers.delete(name);
+    }
   });
 
+  // Add separator
   const sep = new Option("──────────", "__sep__");
   sep.disabled = true;
   speakerSel.add(sep);
 
-  [...set].sort().forEach(n=>speakerSel.add(new Option(n,n)));
+  // Add remaining speakers alphabetically
+  [...allSpeakers].sort().forEach(name => {
+    speakerSel.add(new Option(name, name));
+  });
 }
 
+// ============================================================================
+// FILTER INTERACTION
+// ============================================================================
+
+/**
+ * Show/hide clear buttons based on filter selection
+ */
 function updateClearButtons() {
-  document.querySelectorAll(".clear-btn").forEach(btn=>{
+  document.querySelectorAll(".clear-btn").forEach(btn => {
     const sel = document.getElementById(btn.dataset.target);
     btn.style.display = sel.value ? "flex" : "none";
   });
 }
 
-["search","country","state","city","attendance","sort","speaker"].forEach(id=>{
-  document.getElementById(id).addEventListener("input", ()=>{
+// Add event listeners to filters
+["search", "country", "state", "city", "attendance", "sort", "speaker"].forEach(id => {
+  document.getElementById(id).addEventListener("input", () => {
     updateClearButtons();
     render();
   });
 });
 
-document.querySelectorAll(".clear-btn").forEach(btn=>{
-  btn.addEventListener("click", ()=>{
+// Add event listeners to clear buttons
+document.querySelectorAll(".clear-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
     const sel = document.getElementById(btn.dataset.target);
     sel.value = "";
     updateClearButtons();
@@ -573,40 +737,15 @@ document.querySelectorAll(".clear-btn").forEach(btn=>{
   });
 });
 
-function render() {
-  const q = searchEl.value.toLowerCase();
-  let list = conferences.slice();
+// ============================================================================
+// HTML TEMPLATE GENERATION
+// ============================================================================
 
-  if (sortEl.value !== "past")
-    list = list.filter(c=>isUpcoming(c["Date Range"]));
-
-  if (sortEl.value === "discounts")
-    list = list.filter(c=>c.Discount);
-
-  if (sortEl.value === "past") {
-    list = conferences
-      .filter(c=>!isUpcoming(c["Date Range"]))
-      .sort((a,b)=>{
-        const da = parseDateRange(a["Date Range"])?.endDate;
-        const db = parseDateRange(b["Date Range"])?.endDate;
-        return (db || 0) - (da || 0);
-      });
-  }
-
-  if (sortEl.value === "az")
-    list.sort((a,b)=>a.Conference.localeCompare(b.Conference));
-
-  const filteredList = list.filter(c => {
-    if (q && !Object.values(c).join(" ").toLowerCase().includes(q)) return false;
-    if (countryEl.value && c.Country !== countryEl.value) return false;
-    if (stateEl.value && c.State !== stateEl.value) return false;
-    if (cityEl.value && c.City !== cityEl.value) return false;
-    if (attendanceEl.value && !matchesAttendanceFilter(c["Expected Attendance"], attendanceEl.value)) return false;
-    if (speakerEl.value && !(c["Speakers/Notable Attendees"]||"").includes(speakerEl.value)) return false;
-    return true;
-  });
-
-  const newsletterHTML = `
+/**
+ * Generate newsletter signup HTML
+ */
+function getNewsletterHTML() {
+  return `
     <div class="newsletter-signup">
       <h3>📬 Stay Updated</h3>
       <p>Get notified about new Bitcoin conferences and event discounts</p>
@@ -617,62 +756,160 @@ function render() {
       <div class="success-message">Success! Check your email to confirm.</div>
     </div>
   `;
+}
 
-  const fomo21AdHTML = `
+/**
+ * Generate FOMO21 ad HTML
+ */
+function getFomo21AdHTML() {
+  return `
     <div class="fomo21-ad">
       <a href="https://fomo21.com/discount/POC15AD" target="_blank" rel="noopener noreferrer">
         <img src="https://raw.githubusercontent.com/goldisdying/proofofconference/main/proof-of-conference-fomo21-ad.jpg" alt="FOMO21 Premium Bitcoin Apparel">
       </a>
     </div>
   `;
+}
 
+/**
+ * Generate conference card HTML
+ */
+function getConferenceCardHTML(conference) {
+  const loc = [conference.City, conference.State, conference.Country]
+    .filter(Boolean)
+    .map(escapeHTML)
+    .join(", ");
+  
+  const conf = escapeHTML(conference.Conference);
+  const venue = escapeHTML(conference.Venue);
+  const dateRange = escapeHTML(conference["Date Range"]);
+  const discount = escapeHTML(conference.Discount);
+  const attendanceRange = getAttendanceRange(conference["Expected Attendance"]);
+  const hasDiscount = conference.Discount && conference.Discount.trim() !== "";
+  const buttonText = hasDiscount ? "Get Tickets" : "More Info";
+  const link = conference["Main Conference Link"];
+  const timeAway = getTimeAway(conference["Date Range"]);
+
+  return `
+    <div class="card">
+      ${conference.Image ? `
+        <a href="${link}" target="_blank" rel="noopener noreferrer">
+          <img src="${conference.Image}" alt="${conf}">
+        </a>` : ""}
+      <h2>${conf}</h2>
+      ${timeAway ? `<div class="time-away">${escapeHTML(timeAway)}</div>` : ""}
+      <p>📍 ${loc}</p>
+      ${conference.Venue ? `<p>🏛️ ${venue}</p>` : ""}
+      <p>📅 ${dateRange}</p>
+      ${attendanceRange ? `<p>👥 ${attendanceRange} attendees</p>` : ""}
+      ${hasDiscount ? `<div class="discount">🎟️ ${discount}</div>` : ""}
+      <a class="cta" href="${link}" target="_blank" rel="noopener noreferrer">
+        ${buttonText}
+      </a>
+    </div>
+  `;
+}
+
+// ============================================================================
+// FILTERING & SORTING
+// ============================================================================
+
+/**
+ * Apply all filters and sorting to conference list
+ */
+function getFilteredAndSortedConferences() {
+  const q = searchEl.value.toLowerCase();
+  let list = conferences.slice();
+
+  // Filter by upcoming/past based on sort selection
+  if (sortEl.value !== "past") {
+    list = list.filter(c => isUpcoming(c["Date Range"]));
+  }
+
+  // Filter by discounts if selected
+  if (sortEl.value === "discounts") {
+    list = list.filter(c => c.Discount);
+  }
+
+  // Sort past conferences by end date (most recent first)
+  if (sortEl.value === "past") {
+    list = conferences
+      .filter(c => !isUpcoming(c["Date Range"]))
+      .sort((a, b) => {
+        const da = parseDateRange(a["Date Range"])?.endDate;
+        const db = parseDateRange(b["Date Range"])?.endDate;
+        return (db || 0) - (da || 0);
+      });
+  }
+
+  // Sort alphabetically if selected
+  if (sortEl.value === "az") {
+    list.sort((a, b) => a.Conference.localeCompare(b.Conference));
+  }
+
+  // Apply all filter criteria
+  return list.filter(c => {
+    // Search filter
+    if (q && !Object.values(c).join(" ").toLowerCase().includes(q)) {
+      return false;
+    }
+    
+    // Location filters
+    if (countryEl.value && c.Country !== countryEl.value) return false;
+    if (stateEl.value && c.State !== stateEl.value) return false;
+    if (cityEl.value && c.City !== cityEl.value) return false;
+    
+    // Attendance filter
+    if (attendanceEl.value && !matchesAttendanceFilter(c["Expected Attendance"], attendanceEl.value)) {
+      return false;
+    }
+    
+    // Speaker filter
+    if (speakerEl.value && !(c["Speakers/Notable Attendees"] || "").includes(speakerEl.value)) {
+      return false;
+    }
+    
+    return true;
+  });
+}
+
+// ============================================================================
+// RENDERING
+// ============================================================================
+
+/**
+ * Render conference cards with inserted promotional content
+ */
+function render() {
+  const filteredList = getFilteredAndSortedConferences();
+
+  // Generate HTML for all cards with promotional inserts
   const html = filteredList
-    .map((c, index) => {
-      const loc = [c.City,c.State,c.Country].filter(Boolean).map(escapeHTML).join(", ");
-      const conf = escapeHTML(c.Conference);
-      const venue = escapeHTML(c.Venue);
-      const dateRange = escapeHTML(c["Date Range"]);
-      const discount = escapeHTML(c.Discount);
-      const attendanceRange = getAttendanceRange(c["Expected Attendance"]);
-      const hasDiscount = c.Discount && c.Discount.trim() !== "";
-      const buttonText = hasDiscount ? "Get Tickets" : "More Info";
-      const link = c["Main Conference Link"];
-      const timeAway = getTimeAway(c["Date Range"]);
-
-      const cardHTML = `
-      <div class="card">
-        ${c.Image ? `
-          <a href="${link}" target="_blank" rel="noopener noreferrer">
-            <img src="${c.Image}" alt="${conf}">
-          </a>` : ""}
-        <h2>${conf}</h2>
-        ${timeAway ? `<div class="time-away">${escapeHTML(timeAway)}</div>` : ""}
-        <p>📍 ${loc}</p>
-        ${c.Venue ? `<p>🏛️ ${venue}</p>` : ""}
-        <p>📅 ${dateRange}</p>
-        ${attendanceRange ? `<p>👥 ${attendanceRange} attendees</p>` : ""}
-        ${hasDiscount ? `<div class="discount">🎟️ ${discount}</div>` : ""}
-        <a class="cta" href="${link}" target="_blank" rel="noopener noreferrer">
-          ${buttonText}
-        </a>
-      </div>`;
+    .map((conference, index) => {
+      let cardHTML = getConferenceCardHTML(conference);
 
       // Insert newsletter after 4th card if there are 5+ results
-      if (index === 3 && filteredList.length >= 5) {
-        return cardHTML + newsletterHTML;
+      if (index === NEWSLETTER_CARD_POSITION && filteredList.length >= 5) {
+        cardHTML += getNewsletterHTML();
       }
+
       // Insert FOMO21 ad after 8th card if there are 9+ results
-      if (index === 7 && filteredList.length >= 9) {
-        return cardHTML + fomo21AdHTML;
+      if (index === FOMO21_AD_POSITION && filteredList.length >= 9) {
+        cardHTML += getFomo21AdHTML();
       }
+
       return cardHTML;
     })
     .join("");
 
+  // Update DOM
   cardsEl.innerHTML = html || `<div class="card"><p>No matching conferences.</p></div>`;
 }
 
-// Smooth scroll for Subscribe link
+// ============================================================================
+// SMOOTH SCROLL FOR SUBSCRIBE LINK
+// ============================================================================
+
 document.getElementById('subscribe-link')?.addEventListener('click', (e) => {
   e.preventDefault();
   document.getElementById('newsletter-bottom')?.scrollIntoView({ 
@@ -681,5 +918,6 @@ document.getElementById('subscribe-link')?.addEventListener('click', (e) => {
   });
 });
 </script>
+
 </body>
 </html>
