@@ -136,22 +136,21 @@
 
     /* === FAVORITES === */
     .favorite-btn {
-      position: absolute;
-      top: 24px;
-      right: 24px;
       background: rgba(18, 18, 18, 0.9);
       border: 2px solid #f7931a;
       border-radius: 50%;
       width: 44px;
       height: 44px;
-      display: flex;
+      display: inline-flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
       font-size: 20px;
       transition: all 0.2s ease;
-      z-index: 10;
       user-select: none;
+      margin-top: 14px;
+      margin-left: 10px;
+      vertical-align: middle;
     }
 
     .favorite-btn:hover {
@@ -161,6 +160,12 @@
 
     .favorite-btn.favorited {
       background: #f7931a;
+    }
+
+    .card-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
 
     .card img {
@@ -878,12 +883,6 @@ function getConferenceCardHTML(conference) {
 
   return `
     <div class="card">
-      <button class="favorite-btn ${favorited ? 'favorited' : ''}" 
-              data-conference-id="${confId}" 
-              aria-label="Add to favorites"
-              title="${favorited ? 'Remove from favorites' : 'Add to favorites'}">
-        ${favorited ? '❤️' : '🤍'}
-      </button>
       ${conference.Image ? `
         <a href="${link}" target="_blank" rel="noopener noreferrer">
           <img src="${conference.Image}" alt="${conf}">
@@ -895,9 +894,17 @@ function getConferenceCardHTML(conference) {
       <p>📅 ${dateRange}</p>
       ${attendanceRange ? `<p>👥 ${attendanceRange} attendees</p>` : ""}
       ${hasDiscount ? `<div class="discount">🎟️ ${discount}</div>` : ""}
-      <a class="cta" href="${link}" target="_blank" rel="noopener noreferrer">
-        ${buttonText}
-      </a>
+      <div class="card-actions">
+        <a class="cta" href="${link}" target="_blank" rel="noopener noreferrer">
+          ${buttonText}
+        </a>
+        <button class="favorite-btn ${favorited ? 'favorited' : ''}" 
+                data-conference-id="${confId}" 
+                aria-label="Add to favorites"
+                title="${favorited ? 'Remove from favorites' : 'Add to favorites'}">
+          ${favorited ? '❤️' : '🤍'}
+        </button>
+      </div>
     </div>
   `;
 }
