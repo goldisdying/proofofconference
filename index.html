@@ -229,6 +229,18 @@
   </div>
 
   <div class="filter-row">
+    <select id="attendance">
+      <option value="">All Attendance Sizes</option>
+      <option value="0-500">Under 500</option>
+      <option value="500-1000">500-1,000</option>
+      <option value="1000-5000">1,000-5,000</option>
+      <option value="5000-10000">5,000-10,000</option>
+      <option value="10000+">10,000+</option>
+    </select>
+    <button type="button" class="clear-btn" data-target="attendance">×</button>
+  </div>
+
+  <div class="filter-row">
     <select id="speaker"><option value="">All Speakers / Notable Attendees</option></select>
     <button type="button" class="clear-btn" data-target="speaker">×</button>
   </div>
@@ -261,6 +273,7 @@ const sortEl = $("sort");
 const countryEl = $("country");
 const stateEl = $("state");
 const cityEl = $("city");
+const attendanceEl = $("attendance");
 const speakerEl = $("speaker");
 const cardsEl = $("cards");
 
@@ -269,7 +282,7 @@ let conferences = [];
 function parseDateRange(range) {
   if (!range) return null;
 
-  const text = String(range).replace(/[–—]/g, "-");
+  const text = String(range).replace(/[––—]/g, "-");
 
   const yearMatch = text.match(/\b(20\d{2})\b/);
   const monthMatch = text.toLowerCase().match(
@@ -316,6 +329,40 @@ function isUpcoming(range) {
   const parsed = parseDateRange(range);
   if (!parsed) return false;
   return new Date() <= parsed.endDate;
+}
+
+function parseAttendance(attendanceStr) {
+  if (!attendanceStr) return null;
+  const num = parseInt(attendanceStr.replace(/[,\s]/g, ''), 10);
+  return isNaN(num) ? null : num;
+}
+
+function formatAttendance(attendanceStr) {
+  const num = parseAttendance(attendanceStr);
+  if (!num) return "";
+  return num.toLocaleString();
+}
+
+function matchesAttendanceFilter(attendanceStr, filterValue) {
+  if (!filterValue) return true;
+  
+  const num = parseAttendance(attendanceStr);
+  if (!num) return false;
+
+  switch(filterValue) {
+    case "0-500":
+      return num < 500;
+    case "500-1000":
+      return num >= 500 && num < 1000;
+    case "1000-5000":
+      return num >= 1000 && num < 5000;
+    case "5000-10000":
+      return num >= 5000 && num < 10000;
+    case "10000+":
+      return num >= 10000;
+    default:
+      return true;
+  }
 }
 
 function parseCSV(text) {
@@ -392,7 +439,7 @@ function updateClearButtons() {
   });
 }
 
-["search","country","state","city","sort","speaker"].forEach(id=>{
+["search","country","state","city","attendance","sort","speaker"].forEach(id=>{
   document.getElementById(id).addEventListener("input", ()=>{
     updateClearButtons();
     render();
@@ -437,6 +484,7 @@ function render() {
       if (countryEl.value && c.Country !== countryEl.value) return false;
       if (stateEl.value && c.State !== stateEl.value) return false;
       if (cityEl.value && c.City !== cityEl.value) return false;
+      if (attendanceEl.value && !matchesAttendanceFilter(c["Expected Attendance"], attendanceEl.value)) return false;
       if (speakerEl.value && !(c["Speakers/Notable Attendees"]||"").includes(speakerEl.value)) return false;
       return true;
     })
@@ -446,6 +494,7 @@ function render() {
       const venue = escapeHTML(c.Venue);
       const dateRange = escapeHTML(c["Date Range"]);
       const discount = escapeHTML(c.Discount);
+      const attendance = formatAttendance(c["Expected Attendance"]);
       const hasDiscount = c.Discount && c.Discount.trim() !== "";
       const buttonText = hasDiscount ? "Get Tickets" : "More Info";
       const link = c["Main Conference Link"];
@@ -462,6 +511,7 @@ function render() {
         <p>📍 ${loc}</p>
         ${c.Venue ? `<p>🏛️ ${venue}</p>` : ""}
         <p>📅 ${dateRange}</p>
+        ${attendance ? `<p>👥 ${attendance} expected attendees</p>` : ""}
         ${hasDiscount ? `<div class="discount">🎟️ ${discount}</div>` : ""}
         <a class="cta" href="${link}" target="_blank" rel="noopener noreferrer">
           ${buttonText}
