@@ -384,16 +384,6 @@
 
   <section id="cards" aria-label="Conference listings"></section>
 
-  <aside id="newsletter-bottom" class="newsletter-signup" aria-labelledby="newsletter-heading">
-    <h3 id="newsletter-heading">📬 Stay Updated</h3>
-    <p>Get notified about new Bitcoin conferences and event discounts</p>
-    <form action="https://app.kit.com/forms/8960292/subscriptions" method="post">
-      <input type="email" name="email_address" placeholder="Enter your email" required aria-label="Email address">
-      <button type="submit">Subscribe</button>
-    </form>
-    <div class="success-message" role="status">Success! Check your email to confirm.</div>
-  </aside>
-
   <footer>
     <p><strong>Disclaimer:</strong> Proof of Conference is an independent, informational directory and is not necessarily affiliated with, endorsed by, or officially connected to any conference or organization listed. Some events may include affiliate or referral links. Event details may change at any time. Please verify all information directly on the official conference websites. No information on this site is guaranteed to be accurate or up to date.</p>
     <p>© 2026 Proof of Conference. All rights reserved.</p>
@@ -1061,6 +1051,12 @@ function render() {
 
   // Update DOM
   cardsEl.innerHTML = html || `<div class="card"><p>No matching conferences found. Try adjusting your filters.</p></div>`;
+  
+  // Always add newsletter at the bottom
+  const bottomNewsletter = document.createElement('div');
+  bottomNewsletter.id = 'newsletter-bottom';
+  bottomNewsletter.innerHTML = getNewsletterHTML();
+  cardsEl.parentNode.insertBefore(bottomNewsletter.firstElementChild, cardsEl.nextSibling);
   
   // Lazy load images
   setupLazyLoading();
