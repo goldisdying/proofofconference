@@ -267,6 +267,8 @@
   •
   <a href="https://www.proofofconference.com/contact">Contact</a>
   •
+  <a href="#newsletter-bottom" id="subscribe-link">Subscribe</a>
+  •
   <a href="https://fomo21.com/discount/POC15" target="_blank" rel="noopener noreferrer">Merch</a>
 </div>
 
@@ -631,7 +633,15 @@ function render() {
 
   cardsEl.innerHTML = html || `<div class="card"><p>No matching conferences.</p></div>`;
 }
-</script>
 
+// Smooth scroll for Subscribe link
+document.getElementById('subscribe-link')?.addEventListener('click', (e) => {
+  e.preventDefault();
+  document.getElementById('newsletter-bottom')?.scrollIntoView({ 
+    behavior: 'smooth',
+    block: 'center'
+  });
+});
+</script>
 </body>
 </html>
