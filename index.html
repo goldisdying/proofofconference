@@ -131,6 +131,36 @@
       padding: 16px;
       margin-bottom: 22px;
       box-shadow: 0 0 0 1px #1f1f1f;
+      position: relative;
+    }
+
+    /* === FAVORITES === */
+    .favorite-btn {
+      position: absolute;
+      top: 24px;
+      right: 24px;
+      background: rgba(18, 18, 18, 0.9);
+      border: 2px solid #f7931a;
+      border-radius: 50%;
+      width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 20px;
+      transition: all 0.2s ease;
+      z-index: 10;
+      user-select: none;
+    }
+
+    .favorite-btn:hover {
+      transform: scale(1.1);
+      background: rgba(247, 147, 26, 0.2);
+    }
+
+    .favorite-btn.favorited {
+      background: #f7931a;
     }
 
     .card img {
@@ -320,6 +350,7 @@
     <div class="filter-label">Sort Conferences</div>
     <select id="sort">
       <option value="upcoming" selected>Upcoming</option>
+      <option value="favorites">❤️ My Favorites</option>
       <option value="discounts">Conference Discounts</option>
       <option value="az">A to Z</option>
       <option value="past">Past</option>
@@ -419,6 +450,58 @@ const cardsEl = $("cards");
 // ============================================================================
 
 let conferences = [];
+
+// ============================================================================
+// FAVORITES - LOCALSTORAGE MANAGEMENT
+// ============================================================================
+
+/**
+ * Get all favorited conference IDs from localStorage
+ */
+function getFavorites() {
+  const stored = localStorage.getItem('poc_favorites');
+  return stored ? JSON.parse(stored) : [];
+}
+
+/**
+ * Save favorites to localStorage
+ */
+function saveFavorites(favorites) {
+  localStorage.setItem('poc_favorites', JSON.stringify(favorites));
+}
+
+/**
+ * Check if a conference is favorited
+ */
+function isFavorited(conferenceId) {
+  return getFavorites().includes(conferenceId);
+}
+
+/**
+ * Toggle favorite status for a conference
+ */
+function toggleFavorite(conferenceId) {
+  let favorites = getFavorites();
+  
+  if (favorites.includes(conferenceId)) {
+    // Remove from favorites
+    favorites = favorites.filter(id => id !== conferenceId);
+  } else {
+    // Add to favorites
+    favorites.push(conferenceId);
+  }
+  
+  saveFavorites(favorites);
+  return favorites.includes(conferenceId);
+}
+
+/**
+ * Get unique ID for a conference
+ */
+function getConferenceId(conference) {
+  // Use conference name + date range as unique ID
+  return `${conference.Conference}-${conference["Date Range"]}`.replace(/[^a-zA-Z0-9]/g, '-');
+}
 
 // ============================================================================
 // DATE UTILITY FUNCTIONS
@@ -789,9 +872,18 @@ function getConferenceCardHTML(conference) {
   const buttonText = hasDiscount ? "Get Tickets" : "More Info";
   const link = conference["Main Conference Link"];
   const timeAway = getTimeAway(conference["Date Range"]);
+  
+  const confId = getConferenceId(conference);
+  const favorited = isFavorited(confId);
 
   return `
     <div class="card">
+      <button class="favorite-btn ${favorited ? 'favorited' : ''}" 
+              data-conference-id="${confId}" 
+              aria-label="Add to favorites"
+              title="${favorited ? 'Remove from favorites' : 'Add to favorites'}">
+        ${favorited ? '❤️' : '🤍'}
+      </button>
       ${conference.Image ? `
         <a href="${link}" target="_blank" rel="noopener noreferrer">
           <img src="${conference.Image}" alt="${conf}">
@@ -821,8 +913,14 @@ function getFilteredAndSortedConferences() {
   const q = searchEl.value.toLowerCase();
   let list = conferences.slice();
 
+  // Filter by favorites if selected
+  if (sortEl.value === "favorites") {
+    const favorites = getFavorites();
+    list = list.filter(c => favorites.includes(getConferenceId(c)));
+  }
+
   // Filter by upcoming/past based on sort selection
-  if (sortEl.value !== "past") {
+  if (sortEl.value !== "past" && sortEl.value !== "favorites") {
     list = list.filter(c => isUpcoming(c["Date Range"]));
   }
 
@@ -903,7 +1001,47 @@ function render() {
     .join("");
 
   // Update DOM
-  cardsEl.innerHTML = html || `<div class="card"><p>No matching conferences.</p></div>`;
+  if (html) {
+    cardsEl.innerHTML = html;
+  } else if (sortEl.value === 'favorites') {
+    cardsEl.innerHTML = `<div class="card"><p>No favorites yet! Click the ❤️ icon on any conference to save it here.</p></div>`;
+  } else {
+    cardsEl.innerHTML = `<div class="card"><p>No matching conferences.</p></div>`;
+  }
+  
+  // Attach event listeners to favorite buttons
+  attachFavoriteListeners();
+}
+
+/**
+ * Attach click handlers to favorite buttons
+ */
+function attachFavoriteListeners() {
+  document.querySelectorAll('.favorite-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      
+      const conferenceId = btn.dataset.conferenceId;
+      const isFav = toggleFavorite(conferenceId);
+      
+      // Update button appearance
+      if (isFav) {
+        btn.classList.add('favorited');
+        btn.innerHTML = '❤️';
+        btn.title = 'Remove from favorites';
+      } else {
+        btn.classList.remove('favorited');
+        btn.innerHTML = '🤍';
+        btn.title = 'Add to favorites';
+      }
+      
+      // If viewing favorites, re-render to remove unfavorited items
+      if (sortEl.value === 'favorites') {
+        render();
+      }
+    });
+  });
 }
 
 // ============================================================================
