@@ -248,6 +248,39 @@
       display: none;
     }
 
+    .fomo21-ad {
+      background: #121212;
+      border-radius: 18px;
+      padding: 16px;
+      margin: 32px 0;
+      box-shadow: 0 0 0 1px #1f1f1f;
+      text-align: center;
+    }
+
+    .fomo21-ad a {
+      display: block;
+      text-decoration: none;
+    }
+
+    .fomo21-ad img {
+      width: 100%;
+      border-radius: 14px;
+      display: block;
+      transition: transform 0.2s ease, opacity 0.2s ease;
+    }
+
+    .fomo21-ad a:hover img {
+      transform: scale(1.02);
+      opacity: 0.9;
+    }
+
+    .fomo21-ad p {
+      color: #8df608;
+      font-size: 13px;
+      margin: 10px 0 0 0;
+      font-weight: 600;
+    }
+
     @media (max-width: 480px) {
       .newsletter-signup form {
         flex-direction: column;
@@ -592,6 +625,15 @@ function render() {
     </div>
   `;
 
+  const fomo21AdHTML = `
+    <div class="fomo21-ad">
+      <a href="https://fomo21.com/discount/POC15" target="_blank" rel="noopener noreferrer">
+        <img src="https://raw.githubusercontent.com/goldisdying/proofofconference/main/proof-of-conference-fomo21-ad.jpg" alt="FOMO21 Premium Bitcoin Apparel">
+      </a>
+      <p>Use code POC15 for 15% off</p>
+    </div>
+  `;
+
   const html = filteredList
     .map((c, index) => {
       const loc = [c.City,c.State,c.Country].filter(Boolean).map(escapeHTML).join(", ");
@@ -626,6 +668,10 @@ function render() {
       // Insert newsletter after 4th card if there are 5+ results
       if (index === 3 && filteredList.length >= 5) {
         return cardHTML + newsletterHTML;
+      }
+      // Insert FOMO21 ad after 8th card if there are 9+ results
+      if (index === 7 && filteredList.length >= 9) {
+        return cardHTML + fomo21AdHTML;
       }
       return cardHTML;
     })
