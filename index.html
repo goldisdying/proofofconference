@@ -5,31 +5,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <title>Proof of Conference | Bitcoin Conferences & Event Discounts Worldwide</title>
-  <meta name="description" content="Find upcoming Bitcoin conferences, events, and meetups worldwide. Compare prices, get exclusive discount codes, and discover the best crypto conferences in 2026. Track speakers, dates, and venues." />
-  <meta name="keywords" content="bitcoin conferences, bitcoin conference discounts, bitcoin event promo codes, crypto conferences, crypto conference discounts, blockchain events, bitcoin meetups, bitcoin 2026, cryptocurrency events" />
+  <meta name="description" content="Discover verified Bitcoin conferences worldwide, including upcoming events, speakers, and available conference discount or promo codes." />
+  <meta name="keywords" content="bitcoin conferences, bitcoin conference discounts, bitcoin event promo codes, crypto conferences, crypto conference discounts, blockchain events" />
   <link rel="canonical" href="https://www.proofofconference.com/" />
   <link rel="icon" href="/favicon.ico" />
 
-  <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website" />
-  <meta property="og:title" content="Proof of Conference | Bitcoin Conferences & Event Discounts Worldwide" />
-  <meta property="og:description" content="Find upcoming Bitcoin conferences, events, and meetups worldwide. Compare prices, get exclusive discount codes, and discover the best crypto conferences in 2026." />
+  <meta property="og:title" content="Proof of Conference" />
+  <meta property="og:description" content="Verified Bitcoin conferences worldwide with speakers, dates, and available discounts." />
   <meta property="og:url" content="https://www.proofofconference.com/" />
   <meta property="og:image" content="https://www.proofofconference.com/og-proof-of-conference.jpg" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
-  <meta property="og:site_name" content="Proof of Conference" />
 
-  <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Proof of Conference | Bitcoin Conferences & Event Discounts Worldwide" />
-  <meta name="twitter:description" content="Find upcoming Bitcoin conferences, events, and meetups worldwide. Compare prices and get exclusive discount codes." />
   <meta name="twitter:image" content="https://www.proofofconference.com/og-proof-of-conference.jpg" />
-
-  <!-- Additional SEO -->
-  <meta name="robots" content="index, follow" />
-  <meta name="author" content="Proof of Conference" />
-  <meta name="theme-color" content="#f7931a" />
 
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 
@@ -303,22 +293,12 @@
         width: 100%;
       }
     }
-
-    /* === LAZY LOADING === */
-    img[loading="lazy"] {
-      opacity: 0;
-      transition: opacity 0.3s;
-    }
-
-    img[loading="lazy"].loaded {
-      opacity: 1;
-    }
   </style>
 </head>
 
 <body>
 
-<nav class="top-nav" role="navigation" aria-label="Main navigation">
+<div class="top-nav">
   <a href="/submit-event/">Submit Event</a>
   •
   <a href="https://www.proofofconference.com/contact">Contact</a>
@@ -326,69 +306,75 @@
   <a href="#newsletter-bottom" id="subscribe-link">Subscribe</a>
   •
   <a href="https://fomo21.com/discount/POC15" target="_blank" rel="noopener noreferrer">Merch</a>
-</nav>
+</div>
 
-<main class="container">
-  <header>
-    <h1>Proof of Conference</h1>
-    <p class="subtitle">Track Every Bitcoin Conference</p>
-  </header>
+<div class="container">
+  <h1>Proof of Conference</h1>
+  <div class="subtitle">Track Every Bitcoin Conference</div>
 
-  <section aria-label="Search and filter conferences">
-    <div class="search-wrapper">
-      <input id="search" placeholder="Search conferences..." aria-label="Search conferences" />
-    </div>
+  <div class="search-wrapper">
+    <input id="search" placeholder="Search conferences..." aria-label="Search conferences" />
+  </div>
 
-    <div class="sort-wrapper">
-      <label class="filter-label" for="sort">Sort Conferences</label>
-      <select id="sort" aria-label="Sort conferences">
-        <option value="upcoming" selected>Upcoming</option>
-        <option value="discounts">Conference Discounts</option>
-        <option value="az">A to Z</option>
-        <option value="past">Past</option>
-      </select>
-    </div>
+  <div class="sort-wrapper">
+    <div class="filter-label">Sort Conferences</div>
+    <select id="sort">
+      <option value="upcoming" selected>Upcoming</option>
+      <option value="discounts">Conference Discounts</option>
+      <option value="az">A to Z</option>
+      <option value="past">Past</option>
+    </select>
+  </div>
 
-    <div class="filter-row">
-      <select id="country" aria-label="Filter by country"><option value="">All Countries</option></select>
-      <button type="button" class="clear-btn" data-target="country" aria-label="Clear country filter">×</button>
-    </div>
+  <div class="filter-row">
+    <select id="country"><option value="">All Countries</option></select>
+    <button type="button" class="clear-btn" data-target="country">×</button>
+  </div>
 
-    <div class="filter-row">
-      <select id="state" aria-label="Filter by state"><option value="">All States</option></select>
-      <button type="button" class="clear-btn" data-target="state" aria-label="Clear state filter">×</button>
-    </div>
+  <div class="filter-row">
+    <select id="state"><option value="">All States</option></select>
+    <button type="button" class="clear-btn" data-target="state">×</button>
+  </div>
 
-    <div class="filter-row">
-      <select id="city" aria-label="Filter by city"><option value="">All Cities</option></select>
-      <button type="button" class="clear-btn" data-target="city" aria-label="Clear city filter">×</button>
-    </div>
+  <div class="filter-row">
+    <select id="city"><option value="">All Cities</option></select>
+    <button type="button" class="clear-btn" data-target="city">×</button>
+  </div>
 
-    <div class="filter-row">
-      <select id="attendance" aria-label="Filter by attendance size">
-        <option value="">All Attendance Sizes</option>
-        <option value="0-500">Under 500</option>
-        <option value="500-1000">500-1,000</option>
-        <option value="1000-5000">1,000-5,000</option>
-        <option value="5000-10000">5,000-10,000</option>
-        <option value="10000+">10,000+</option>
-      </select>
-      <button type="button" class="clear-btn" data-target="attendance" aria-label="Clear attendance filter">×</button>
-    </div>
+  <div class="filter-row">
+    <select id="attendance">
+      <option value="">All Attendance Sizes</option>
+      <option value="0-500">Under 500</option>
+      <option value="500-1000">500-1,000</option>
+      <option value="1000-5000">1,000-5,000</option>
+      <option value="5000-10000">5,000-10,000</option>
+      <option value="10000+">10,000+</option>
+    </select>
+    <button type="button" class="clear-btn" data-target="attendance">×</button>
+  </div>
 
-    <div class="filter-row">
-      <select id="speaker" aria-label="Filter by speaker"><option value="">All Speakers / Notable Attendees</option></select>
-      <button type="button" class="clear-btn" data-target="speaker" aria-label="Clear speaker filter">×</button>
-    </div>
-  </section>
+  <div class="filter-row">
+    <select id="speaker"><option value="">All Speakers / Notable Attendees</option></select>
+    <button type="button" class="clear-btn" data-target="speaker">×</button>
+  </div>
 
-  <section id="cards" aria-label="Conference listings"></section>
+  <div id="cards"></div>
+
+  <div id="newsletter-bottom" class="newsletter-signup">
+    <h3>📬 Stay Updated</h3>
+    <p>Get notified about new Bitcoin conferences and event discounts</p>
+    <form action="https://app.kit.com/forms/8960292/subscriptions" method="post">
+      <input type="email" name="email_address" placeholder="Enter your email" required>
+      <button type="submit">Subscribe</button>
+    </form>
+    <div class="success-message">Success! Check your email to confirm.</div>
+  </div>
 
   <footer>
     <p><strong>Disclaimer:</strong> Proof of Conference is an independent, informational directory and is not necessarily affiliated with, endorsed by, or officially connected to any conference or organization listed. Some events may include affiliate or referral links. Event details may change at any time. Please verify all information directly on the official conference websites. No information on this site is guaranteed to be accurate or up to date.</p>
     <p>© 2026 Proof of Conference. All rights reserved.</p>
   </footer>
-</main>
+</div>
 
 <script>
 // ============================================================================
@@ -433,36 +419,6 @@ const cardsEl = $("cards");
 // ============================================================================
 
 let conferences = [];
-
-// ============================================================================
-// SEO: DYNAMIC TITLE UPDATES
-// ============================================================================
-
-/**
- * Update page title based on active filters for better SEO
- */
-function updatePageTitle() {
-  const parts = [];
-  
-  if (cityEl.value) parts.push(cityEl.value);
-  if (stateEl.value && !cityEl.value) parts.push(stateEl.value);
-  if (countryEl.value && !cityEl.value && !stateEl.value) parts.push(countryEl.value);
-  
-  if (sortEl.value === "discounts") {
-    parts.push("Conference Discounts");
-  }
-  
-  const location = parts.length > 0 ? parts.join(", ") : "";
-  const prefix = location ? `Bitcoin Conferences in ${location}` : "Bitcoin Conferences & Event Discounts Worldwide";
-  
-  document.title = `${prefix} | Proof of Conference`;
-  
-  // Update meta description dynamically
-  const metaDesc = document.querySelector('meta[name="description"]');
-  if (location) {
-    metaDesc.content = `Find upcoming Bitcoin conferences in ${location}. Compare prices, get exclusive discount codes, and discover the best crypto conferences in 2026.`;
-  }
-}
 
 // ============================================================================
 // DATE UTILITY FUNCTIONS
@@ -554,14 +510,6 @@ function isUpcoming(range) {
   const parsed = parseDateRange(range);
   if (!parsed) return false;
   return new Date() <= parsed.endDate;
-}
-
-/**
- * Format date for ISO 8601 (required for structured data)
- */
-function formatISODate(date) {
-  if (!date || !(date instanceof Date) || isNaN(date.getTime())) return "";
-  return date.toISOString();
 }
 
 // ============================================================================
@@ -688,84 +636,6 @@ function escapeHTML(str) {
 }
 
 // ============================================================================
-// SEO: STRUCTURED DATA (SCHEMA.ORG)
-// ============================================================================
-
-/**
- * Generate JSON-LD structured data for a conference event
- * This helps search engines display rich snippets in results
- */
-function generateEventSchema(conference) {
-  const parsed = parseDateRange(conference["Date Range"]);
-  if (!parsed) return "";
-
-  const location = [conference.City, conference.State, conference.Country]
-    .filter(Boolean)
-    .join(", ");
-
-  const schema = {
-    "@context": "https://schema.org",
-    "@type": "Event",
-    "name": conference.Conference,
-    "startDate": formatISODate(parsed.startDate),
-    "endDate": formatISODate(parsed.endDate),
-    "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
-    "eventStatus": isUpcoming(conference["Date Range"]) 
-      ? "https://schema.org/EventScheduled" 
-      : "https://schema.org/EventScheduled",
-    "location": {
-      "@type": "Place",
-      "name": conference.Venue || location,
-      "address": {
-        "@type": "PostalAddress",
-        "addressLocality": conference.City || "",
-        "addressRegion": conference.State || "",
-        "addressCountry": conference.Country || ""
-      }
-    },
-    "description": `Bitcoin conference in ${location}`,
-    "url": conference["Main Conference Link"],
-    "organizer": {
-      "@type": "Organization",
-      "name": conference.Conference,
-      "url": conference["Main Conference Link"]
-    }
-  };
-
-  // Add image if available
-  if (conference.Image) {
-    schema.image = conference.Image;
-  }
-
-  // Add offers if discount available
-  if (conference.Discount) {
-    schema.offers = {
-      "@type": "Offer",
-      "url": conference["Main Conference Link"],
-      "availability": "https://schema.org/InStock",
-      "description": conference.Discount
-    };
-  }
-
-  // Add performers (speakers)
-  if (conference["Speakers/Notable Attendees"]) {
-    const speakers = conference["Speakers/Notable Attendees"]
-      .split(",")
-      .map(s => s.trim())
-      .filter(Boolean);
-    
-    if (speakers.length > 0) {
-      schema.performer = speakers.map(name => ({
-        "@type": "Person",
-        "name": name
-      }));
-    }
-  }
-
-  return `<script type="application/ld+json">${JSON.stringify(schema)}</script>`;
-}
-
-// ============================================================================
 // DATA LOADING
 // ============================================================================
 
@@ -853,7 +723,6 @@ function updateClearButtons() {
 ["search", "country", "state", "city", "attendance", "sort", "speaker"].forEach(id => {
   document.getElementById(id).addEventListener("input", () => {
     updateClearButtons();
-    updatePageTitle(); // SEO: Update title when filters change
     render();
   });
 });
@@ -864,7 +733,6 @@ document.querySelectorAll(".clear-btn").forEach(btn => {
     const sel = document.getElementById(btn.dataset.target);
     sel.value = "";
     updateClearButtons();
-    updatePageTitle(); // SEO: Update title when filters change
     render();
   });
 });
@@ -882,10 +750,10 @@ function getNewsletterHTML() {
       <h3>📬 Stay Updated</h3>
       <p>Get notified about new Bitcoin conferences and event discounts</p>
       <form action="https://app.kit.com/forms/8960292/subscriptions" method="post">
-        <input type="email" name="email_address" placeholder="Enter your email" required aria-label="Email address">
+        <input type="email" name="email_address" placeholder="Enter your email" required>
         <button type="submit">Subscribe</button>
       </form>
-      <div class="success-message" role="status">Success! Check your email to confirm.</div>
+      <div class="success-message">Success! Check your email to confirm.</div>
     </div>
   `;
 }
@@ -897,16 +765,14 @@ function getFomo21AdHTML() {
   return `
     <div class="fomo21-ad">
       <a href="https://fomo21.com/discount/POC15AD" target="_blank" rel="noopener noreferrer">
-        <img src="https://raw.githubusercontent.com/goldisdying/proofofconference/main/proof-of-conference-fomo21-ad.jpg" 
-             alt="FOMO21 Premium Bitcoin Apparel - Special Discount" 
-             loading="lazy">
+        <img src="https://raw.githubusercontent.com/goldisdying/proofofconference/main/proof-of-conference-fomo21-ad.jpg" alt="FOMO21 Premium Bitcoin Apparel">
       </a>
     </div>
   `;
 }
 
 /**
- * Generate conference card HTML with structured data
+ * Generate conference card HTML
  */
 function getConferenceCardHTML(conference) {
   const loc = [conference.City, conference.State, conference.Country]
@@ -924,36 +790,23 @@ function getConferenceCardHTML(conference) {
   const link = conference["Main Conference Link"];
   const timeAway = getTimeAway(conference["Date Range"]);
 
-  // Generate alt text for image
-  const imageAlt = `${conf} conference in ${loc}`;
-
   return `
-    ${generateEventSchema(conference)}
-    <article class="card" itemscope itemtype="https://schema.org/Event">
+    <div class="card">
       ${conference.Image ? `
         <a href="${link}" target="_blank" rel="noopener noreferrer">
-          <img src="${conference.Image}" 
-               alt="${imageAlt}" 
-               loading="lazy"
-               itemprop="image">
+          <img src="${conference.Image}" alt="${conf}">
         </a>` : ""}
-      <h2 itemprop="name">${conf}</h2>
+      <h2>${conf}</h2>
       ${timeAway ? `<div class="time-away">${escapeHTML(timeAway)}</div>` : ""}
-      <p itemprop="location" itemscope itemtype="https://schema.org/Place">
-        <span itemprop="address">📍 ${loc}</span>
-      </p>
-      ${conference.Venue ? `<p>🏛️ <span itemprop="location">${venue}</span></p>` : ""}
-      <p>
-        <time itemprop="startDate" datetime="${formatISODate(parseDateRange(conference["Date Range"])?.startDate)}">
-          📅 ${dateRange}
-        </time>
-      </p>
+      <p>📍 ${loc}</p>
+      ${conference.Venue ? `<p>🏛️ ${venue}</p>` : ""}
+      <p>📅 ${dateRange}</p>
       ${attendanceRange ? `<p>👥 ${attendanceRange} attendees</p>` : ""}
       ${hasDiscount ? `<div class="discount">🎟️ ${discount}</div>` : ""}
-      <a class="cta" href="${link}" target="_blank" rel="noopener noreferrer" itemprop="url">
+      <a class="cta" href="${link}" target="_blank" rel="noopener noreferrer">
         ${buttonText}
       </a>
-    </article>
+    </div>
   `;
 }
 
@@ -1050,41 +903,7 @@ function render() {
     .join("");
 
   // Update DOM
-  cardsEl.innerHTML = html || `<div class="card"><p>No matching conferences found. Try adjusting your filters.</p></div>`;
-  
-  // Always add newsletter at the bottom
-  const bottomNewsletter = document.createElement('div');
-  bottomNewsletter.id = 'newsletter-bottom';
-  bottomNewsletter.innerHTML = getNewsletterHTML();
-  cardsEl.parentNode.insertBefore(bottomNewsletter.firstElementChild, cardsEl.nextSibling);
-  
-  // Lazy load images
-  setupLazyLoading();
-}
-
-// ============================================================================
-// LAZY LOADING IMAGES
-// ============================================================================
-
-/**
- * Setup lazy loading for images to improve page speed
- */
-function setupLazyLoading() {
-  if ('IntersectionObserver' in window) {
-    const imageObserver = new IntersectionObserver((entries, observer) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          const img = entry.target;
-          img.classList.add('loaded');
-          observer.unobserve(img);
-        }
-      });
-    });
-
-    document.querySelectorAll('img[loading="lazy"]').forEach(img => {
-      imageObserver.observe(img);
-    });
-  }
+  cardsEl.innerHTML = html || `<div class="card"><p>No matching conferences.</p></div>`;
 }
 
 // ============================================================================
