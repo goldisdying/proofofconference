@@ -182,6 +182,81 @@
       text-align: center;
       line-height: 1.5;
     }
+
+    .newsletter-signup {
+      background: #121212;
+      border-radius: 18px;
+      padding: 24px;
+      margin: 32px 0;
+      box-shadow: 0 0 0 1px #1f1f1f;
+      text-align: center;
+    }
+
+    .newsletter-signup h3 {
+      color: #f7931a;
+      font-size: 20px;
+      margin: 0 0 8px 0;
+    }
+
+    .newsletter-signup p {
+      color: #9ca3af;
+      font-size: 14px;
+      margin: 0 0 18px 0;
+    }
+
+    .newsletter-signup form {
+      display: flex;
+      gap: 10px;
+      max-width: 400px;
+      margin: 0 auto;
+    }
+
+    .newsletter-signup input[type="email"] {
+      flex: 1;
+      padding: 12px 16px;
+      border-radius: 24px;
+      border: none;
+      font-size: 15px;
+      background: #1a1a1a;
+      color: #fff;
+    }
+
+    .newsletter-signup input[type="email"]::placeholder {
+      color: #6b7280;
+    }
+
+    .newsletter-signup button {
+      padding: 12px 24px;
+      background: #f7931a;
+      color: #000;
+      border: none;
+      border-radius: 24px;
+      font-weight: 700;
+      font-size: 15px;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .newsletter-signup button:hover {
+      background: #ff9d1f;
+    }
+
+    .newsletter-signup .success-message {
+      color: #8df608;
+      font-size: 14px;
+      margin-top: 12px;
+      display: none;
+    }
+
+    @media (max-width: 480px) {
+      .newsletter-signup form {
+        flex-direction: column;
+      }
+      
+      .newsletter-signup button {
+        width: 100%;
+      }
+    }
   </style>
 </head>
 
@@ -246,6 +321,16 @@
   </div>
 
   <div id="cards"></div>
+
+  <div id="newsletter-bottom" class="newsletter-signup">
+    <h3>📬 Stay Updated</h3>
+    <p>Get notified about new Bitcoin conferences and event discounts</p>
+    <form action="https://app.kit.com/forms/8960292/subscriptions" method="post">
+      <input type="email" name="email_address" placeholder="Enter your email" required>
+      <button type="submit">Subscribe</button>
+    </form>
+    <div class="success-message">Success! Check your email to confirm.</div>
+  </div>
 
   <footer>
     <p><strong>Disclaimer:</strong> Proof of Conference is an independent, informational directory and is not necessarily affiliated with, endorsed by, or officially connected to any conference or organization listed. Some events may include affiliate or referral links. Event details may change at any time. Please verify all information directly on the official conference websites. No information on this site is guaranteed to be accurate or up to date.</p>
@@ -483,17 +568,30 @@ function render() {
   if (sortEl.value === "az")
     list.sort((a,b)=>a.Conference.localeCompare(b.Conference));
 
-  const html = list
-    .filter(c => {
-      if (q && !Object.values(c).join(" ").toLowerCase().includes(q)) return false;
-      if (countryEl.value && c.Country !== countryEl.value) return false;
-      if (stateEl.value && c.State !== stateEl.value) return false;
-      if (cityEl.value && c.City !== cityEl.value) return false;
-      if (attendanceEl.value && !matchesAttendanceFilter(c["Expected Attendance"], attendanceEl.value)) return false;
-      if (speakerEl.value && !(c["Speakers/Notable Attendees"]||"").includes(speakerEl.value)) return false;
-      return true;
-    })
-    .map(c => {
+  const filteredList = list.filter(c => {
+    if (q && !Object.values(c).join(" ").toLowerCase().includes(q)) return false;
+    if (countryEl.value && c.Country !== countryEl.value) return false;
+    if (stateEl.value && c.State !== stateEl.value) return false;
+    if (cityEl.value && c.City !== cityEl.value) return false;
+    if (attendanceEl.value && !matchesAttendanceFilter(c["Expected Attendance"], attendanceEl.value)) return false;
+    if (speakerEl.value && !(c["Speakers/Notable Attendees"]||"").includes(speakerEl.value)) return false;
+    return true;
+  });
+
+  const newsletterHTML = `
+    <div class="newsletter-signup">
+      <h3>📬 Stay Updated</h3>
+      <p>Get notified about new Bitcoin conferences and event discounts</p>
+      <form action="https://app.kit.com/forms/8960292/subscriptions" method="post">
+        <input type="email" name="email_address" placeholder="Enter your email" required>
+        <button type="submit">Subscribe</button>
+      </form>
+      <div class="success-message">Success! Check your email to confirm.</div>
+    </div>
+  `;
+
+  const html = filteredList
+    .map((c, index) => {
       const loc = [c.City,c.State,c.Country].filter(Boolean).map(escapeHTML).join(", ");
       const conf = escapeHTML(c.Conference);
       const venue = escapeHTML(c.Venue);
@@ -505,7 +603,7 @@ function render() {
       const link = c["Main Conference Link"];
       const timeAway = getTimeAway(c["Date Range"]);
 
-      return `
+      const cardHTML = `
       <div class="card">
         ${c.Image ? `
           <a href="${link}" target="_blank" rel="noopener noreferrer">
@@ -522,6 +620,12 @@ function render() {
           ${buttonText}
         </a>
       </div>`;
+
+      // Insert newsletter after 4th card if there are 5+ results
+      if (index === 3 && filteredList.length >= 5) {
+        return cardHTML + newsletterHTML;
+      }
+      return cardHTML;
     })
     .join("");
 
