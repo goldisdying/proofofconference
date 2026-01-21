@@ -453,6 +453,7 @@
 // ============================================================================
 
 const CSV_URL = "https://raw.githubusercontent.com/goldisdying/proofofconference/main/Bitcoin%20Conference%20List%20-%20Sheet1.csv";
+const ADS_CSV_URL = "https://raw.githubusercontent.com/goldisdying/proofofconference/main/poc-ad-list%20-%20Sheet1.csv";
 
 // Month name to number mapping for date parsing
 const MONTHS = {
@@ -466,9 +467,8 @@ const PRIORITY_SPEAKERS = [
   "Lyn Alden", "Natalie Brunell", "Saifedean Ammous", "Adam Back", "Jack Mallers"
 ];
 
-// Card insertion positions (zero-indexed)
+// Card insertion position for newsletter
 const NEWSLETTER_CARD_POSITION = 3;  // After 4th card
-const FOMO21_AD_POSITION = 7;        // After 8th card
 
 // ============================================================================
 // DOM ELEMENT REFERENCES
@@ -489,6 +489,7 @@ const cardsEl = $("cards");
 // ============================================================================
 
 let conferences = [];
+let ads = [];
 
 // ============================================================================
 // FAVORITES - LOCALSTORAGE MANAGEMENT
@@ -780,6 +781,24 @@ fetch(CSV_URL)
     render();
   });
 
+/**
+ * Fetch and parse ad data from CSV
+ */
+fetch(ADS_CSV_URL)
+  .then(r => r.text())
+  .then(text => {
+    const rows = parseCSV(text);
+    const headers = rows.shift();
+    
+    // Convert rows to objects and filter active ads
+    ads = rows
+      .map(r => Object.fromEntries(headers.map((h, i) => [h, clean(r[i])])))
+      .filter(ad => ad.Active.toLowerCase() === "yes")
+      .filter(ad => ad["Image URL"] && ad["Link URL"]); // Only ads with image and link
+    
+    render();
+  });
+
 // ============================================================================
 // FILTER POPULATION
 // ============================================================================
@@ -881,13 +900,20 @@ function getNewsletterHTML() {
 }
 
 /**
- * Generate FOMO21 ad HTML
+ * Generate ad HTML for a specific position
  */
-function getFomo21AdHTML() {
+function getAdHTML(position) {
+  const ad = ads.find(a => parseInt(a.Position) === position);
+  if (!ad) return "";
+  
+  const imageUrl = ad["Image URL"].startsWith("http") 
+    ? ad["Image URL"]
+    : `https://raw.githubusercontent.com/goldisdying/proofofconference/main/${ad["Image URL"]}`;
+  
   return `
     <div class="fomo21-ad">
-      <a href="https://fomo21.com/discount/POC15AD" target="_blank" rel="noopener noreferrer">
-        <img src="https://raw.githubusercontent.com/goldisdying/proofofconference/main/proof-of-conference-fomo21-ad.jpg" alt="FOMO21 Premium Bitcoin Apparel">
+      <a href="${ad["Link URL"]}" target="_blank" rel="noopener noreferrer">
+        <img src="${imageUrl}" alt="${escapeHTML(ad["Ad Name"])}">
       </a>
     </div>
   `;
@@ -1031,9 +1057,12 @@ function render() {
         cardHTML += getNewsletterHTML();
       }
 
-      // Insert FOMO21 ad after 8th card if there are 9+ results
-      if (index === FOMO21_AD_POSITION && filteredList.length >= 9) {
-        cardHTML += getFomo21AdHTML();
+      // Insert ads at positions defined in CSV
+      // Check if any ad should appear after this card position
+      const adPosition = index;
+      const adHTML = getAdHTML(adPosition);
+      if (adHTML) {
+        cardHTML += adHTML;
       }
 
       return cardHTML;
