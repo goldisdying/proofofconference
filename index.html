@@ -371,11 +371,6 @@
   </div>
 
   <div class="filter-row">
-    <select id="city"><option value="">All Cities</option></select>
-    <button type="button" class="clear-btn" data-target="city">×</button>
-  </div>
-
-  <div class="filter-row">
     <select id="attendance">
       <option value="">All Attendance Sizes</option>
       <option value="0-500">Under 500</option>
@@ -443,7 +438,6 @@ const searchEl = $("search");
 const sortEl = $("sort");
 const countryEl = $("country");
 const stateEl = $("state");
-const cityEl = $("city");
 const attendanceEl = $("attendance");
 const speakerEl = $("speaker");
 const cardsEl = $("cards");
@@ -752,8 +746,8 @@ fetch(CSV_URL)
  * Populate filter dropdowns with unique values from conferences
  */
 function populateFilters() {
-  // Populate location filters (Country, State, City)
-  ["Country", "State", "City"].forEach(field => {
+  // Populate location filters (Country, State)
+  ["Country", "State"].forEach(field => {
     const sel = document.getElementById(field.toLowerCase());
     const uniqueValues = [...new Set(conferences.map(c => c[field]).filter(Boolean))].sort();
     uniqueValues.forEach(v => sel.add(new Option(v, v)));
@@ -806,7 +800,7 @@ function updateClearButtons() {
 }
 
 // Add event listeners to filters
-["search", "country", "state", "city", "attendance", "sort", "speaker"].forEach(id => {
+["search", "country", "state", "attendance", "sort", "speaker"].forEach(id => {
   document.getElementById(id).addEventListener("input", () => {
     updateClearButtons();
     render();
@@ -960,7 +954,6 @@ function getFilteredAndSortedConferences() {
     // Location filters
     if (countryEl.value && c.Country !== countryEl.value) return false;
     if (stateEl.value && c.State !== stateEl.value) return false;
-    if (cityEl.value && c.City !== cityEl.value) return false;
     
     // Attendance filter
     if (attendanceEl.value && !matchesAttendanceFilter(c["Expected Attendance"], attendanceEl.value)) {
