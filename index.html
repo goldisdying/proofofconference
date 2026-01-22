@@ -1215,22 +1215,44 @@ backToTopBtn.addEventListener('click', () => {
     }
   });
 
-  // Close on successful form submission
-  document.addEventListener('submit', function(e) {
-    if (e.target.closest('#giveaway-popup form')) {
-      // Show success message
-      const successMsg = document.querySelector('.giveaway-success');
-      const consentMsg = document.querySelector('.giveaway-consent');
-      if (successMsg) {
-        successMsg.style.display = 'block';
-      }
-      if (consentMsg) {
-        consentMsg.style.display = 'none';
-      }
-      // Dismiss after 3 seconds
-      setTimeout(dismissPopup, 3000);
-    }
-  });
+  // Watch for Kit's success state
+  function watchForSuccess() {
+    const popup = document.getElementById('giveaway-popup');
+    if (!popup) return;
+    
+    // Kit adds a success message or changes form state after submission
+    const observer = new MutationObserver(function(mutations) {
+      mutations.forEach(function(mutation) {
+        // Check if Kit added its success message
+        const kitSuccess = popup.querySelector('.formkit-alert-success');
+        if (kitSuccess) {
+          // Show our success message
+          const successMsg = popup.querySelector('.giveaway-success');
+          const consentMsg = popup.querySelector('.giveaway-consent');
+          const form = popup.querySelector('form');
+          
+          if (successMsg) successMsg.style.display = 'block';
+          if (consentMsg) consentMsg.style.display = 'none';
+          if (kitSuccess) kitSuccess.style.display = 'none';
+          
+          // Hide form fields
+          const input = popup.querySelector('input[type="email"]');
+          const button = popup.querySelector('button[type="submit"]');
+          if (input) input.style.display = 'none';
+          if (button) button.style.display = 'none';
+          
+          // Dismiss after 4 seconds
+          setTimeout(dismissPopup, 4000);
+          
+          observer.disconnect();
+        }
+      });
+    });
+    
+    observer.observe(popup, { childList: true, subtree: true, attributes: true });
+  }
+  
+  watchForSuccess();
 })();
 </script>
 
