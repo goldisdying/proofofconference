@@ -1158,7 +1158,8 @@ backToTopBtn.addEventListener('click', () => {
 (function() {
   const POPUP_COOKIE_NAME = 'poc_giveaway_dismissed';
   const POPUP_COOKIE_DAYS = 15;
-  const SCROLL_TRIGGER_PERCENT = 40;
+  const SCROLL_TRIGGER_PERCENT = 20;
+  const TIME_TRIGGER_SECONDS = 5;
 
   // Check if popup was recently dismissed
   function isPopupDismissed() {
@@ -1180,25 +1181,32 @@ backToTopBtn.addEventListener('click', () => {
   }
 
   // Show popup
+  let popupShown = false;
   function showPopup() {
+    if (popupShown || isPopupDismissed()) return;
+    popupShown = true;
+    
     const popup = document.getElementById('giveaway-popup');
-    if (popup && !isPopupDismissed()) {
+    if (popup) {
       popup.style.display = 'block';
       setTimeout(() => popup.classList.add('visible'), 10);
     }
   }
 
-  // Initialize popup on scroll
-  let popupShown = false;
+  // Trigger on scroll (20%)
   window.addEventListener('scroll', function() {
     if (popupShown || isPopupDismissed()) return;
     
     const scrollPercent = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
     if (scrollPercent >= SCROLL_TRIGGER_PERCENT) {
-      popupShown = true;
       showPopup();
     }
   });
+
+  // Trigger on time (5 seconds)
+  setTimeout(function() {
+    showPopup();
+  }, TIME_TRIGGER_SECONDS * 1000);
 
   // Close button handler
   document.addEventListener('click', function(e) {
