@@ -1215,44 +1215,32 @@ backToTopBtn.addEventListener('click', () => {
     }
   });
 
-  // Watch for Kit's success state
-  function watchForSuccess() {
-    const popup = document.getElementById('giveaway-popup');
-    if (!popup) return;
-    
-    // Kit adds a success message or changes form state after submission
-    const observer = new MutationObserver(function(mutations) {
-      mutations.forEach(function(mutation) {
-        // Check if Kit added its success message
-        const kitSuccess = popup.querySelector('.formkit-alert-success');
-        if (kitSuccess) {
-          // Show our success message
-          const successMsg = popup.querySelector('.giveaway-success');
-          const consentMsg = popup.querySelector('.giveaway-consent');
-          const form = popup.querySelector('form');
-          
-          if (successMsg) successMsg.style.display = 'block';
-          if (consentMsg) consentMsg.style.display = 'none';
-          if (kitSuccess) kitSuccess.style.display = 'none';
-          
-          // Hide form fields
-          const input = popup.querySelector('input[type="email"]');
-          const button = popup.querySelector('button[type="submit"]');
-          if (input) input.style.display = 'none';
-          if (button) button.style.display = 'none';
-          
-          // Dismiss after 4 seconds
-          setTimeout(dismissPopup, 4000);
-          
-          observer.disconnect();
-        }
-      });
+  // Show success message on form submit
+  const popupForm = document.querySelector('#giveaway-popup form');
+  if (popupForm) {
+    popupForm.addEventListener('submit', function() {
+      // Wait for Kit to process, then show success
+      setTimeout(function() {
+        const popup = document.getElementById('giveaway-popup');
+        const successMsg = popup.querySelector('.giveaway-success');
+        const consentMsg = popup.querySelector('.giveaway-consent');
+        const input = popup.querySelector('input[type="email"]');
+        const button = popup.querySelector('button[type="submit"]');
+        
+        if (successMsg) successMsg.style.display = 'block';
+        if (consentMsg) consentMsg.style.display = 'none';
+        if (input) input.style.display = 'none';
+        if (button) button.style.display = 'none';
+        
+        // Hide any Kit messages
+        const kitMsg = popup.querySelector('.formkit-alert');
+        if (kitMsg) kitMsg.style.display = 'none';
+        
+        // Dismiss after 4 seconds
+        setTimeout(dismissPopup, 4000);
+      }, 1500);
     });
-    
-    observer.observe(popup, { childList: true, subtree: true, attributes: true });
   }
-  
-  watchForSuccess();
 })();
 </script>
 
