@@ -1215,13 +1215,15 @@ backToTopBtn.addEventListener('click', () => {
     }
   });
 
-  // Show success message on form submit
-  const popupForm = document.querySelector('#giveaway-popup form');
-  if (popupForm) {
-    popupForm.addEventListener('submit', function() {
+  // Show success message on form submit - use event delegation
+  document.addEventListener('click', function(e) {
+    const submitBtn = e.target.closest('#giveaway-popup button[type="submit"]');
+    if (submitBtn) {
       // Wait for Kit to process, then show success
       setTimeout(function() {
         const popup = document.getElementById('giveaway-popup');
+        if (!popup) return;
+        
         const successMsg = popup.querySelector('.giveaway-success');
         const consentMsg = popup.querySelector('.giveaway-consent');
         const input = popup.querySelector('input[type="email"]');
@@ -1233,14 +1235,13 @@ backToTopBtn.addEventListener('click', () => {
         if (button) button.style.display = 'none';
         
         // Hide any Kit messages
-        const kitMsg = popup.querySelector('.formkit-alert');
-        if (kitMsg) kitMsg.style.display = 'none';
+        popup.querySelectorAll('.formkit-alert').forEach(el => el.style.display = 'none');
         
         // Dismiss after 4 seconds
         setTimeout(dismissPopup, 4000);
       }, 1500);
-    });
-  }
+    }
+  });
 })();
 </script>
 
