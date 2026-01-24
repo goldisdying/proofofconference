@@ -391,6 +391,7 @@
     <div class="filter-label">Sort Conferences</div>
     <select id="sort">
       <option value="upcoming" selected>Upcoming</option>
+      <option value="recent">Recently Added</option>
       <option value="favorites">❤️ My Favorites</option>
       <option value="discounts">Conference Discounts</option>
       <option value="az">A to Z</option>
@@ -990,8 +991,19 @@ function getFilteredAndSortedConferences() {
     list = list.filter(c => favorites.includes(getConferenceId(c)));
   }
 
+  // Filter by recently added if selected
+  if (sortEl.value === "recent") {
+    list = list
+      .filter(c => c["Recently Added"] && isUpcoming(c["Date Range"]))
+      .sort((a, b) => {
+        const da = new Date(a["Recently Added"]);
+        const db = new Date(b["Recently Added"]);
+        return db - da; // Most recent first
+      });
+  }
+
   // Filter by upcoming/past based on sort selection
-  if (sortEl.value !== "past" && sortEl.value !== "favorites") {
+  if (sortEl.value !== "past" && sortEl.value !== "favorites" && sortEl.value !== "recent") {
     list = list.filter(c => isUpcoming(c["Date Range"]));
   }
 
