@@ -1320,22 +1320,20 @@ function renderAccordionView(filteredList) {
 
   // Generate accordion HTML
   let html = '';
-  sortedMonths.forEach((monthKey, index) => {
+  sortedMonths.forEach((monthKey) => {
     const month = grouped[monthKey];
-    const isFirst = index === 0;
-    const openClass = isFirst ? ' open' : '';
     const conferenceWord = month.conferences.length === 1 ? 'conference' : 'conferences';
     
     html += `
       <div class="accordion-month">
-        <div class="accordion-header${openClass}" data-month="${monthKey}">
+        <div class="accordion-header" data-month="${monthKey}">
           <span class="accordion-month-name">${month.label}</span>
           <div class="accordion-meta">
             <span class="accordion-count">${month.conferences.length} ${conferenceWord}</span>
             <span class="accordion-arrow">▼</span>
           </div>
         </div>
-        <div class="accordion-content${openClass}">
+        <div class="accordion-content">
     `;
     
     month.conferences.forEach(conference => {
