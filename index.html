@@ -124,6 +124,168 @@
       border-color: #3a3a3a;
     }
 
+    /* === VIEW TOGGLE === */
+    .view-toggle {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+
+    .view-btn {
+      flex: 1;
+      padding: 10px 16px;
+      border: 2px solid #2a2a2a;
+      background: #121212;
+      color: #9ca3af;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .view-btn:hover {
+      border-color: #3a3a3a;
+      color: #fff;
+    }
+
+    .view-btn.active {
+      border-color: #f7931a;
+      background: #f7931a;
+      color: #000;
+    }
+
+    /* === ACCORDION CALENDAR === */
+    .accordion-month {
+      margin-bottom: 12px;
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 0 0 1px #1f1f1f;
+    }
+
+    .accordion-header {
+      background: #121212;
+      padding: 16px 20px;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: background 0.2s ease;
+    }
+
+    .accordion-header:hover {
+      background: #1a1a1a;
+    }
+
+    .accordion-header.open {
+      background: #1a1a1a;
+      border-bottom: 1px solid #2a2a2a;
+    }
+
+    .accordion-month-name {
+      color: #f7931a;
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    .accordion-meta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .accordion-count {
+      color: #9ca3af;
+      font-size: 14px;
+    }
+
+    .accordion-arrow {
+      color: #9ca3af;
+      font-size: 18px;
+      transition: transform 0.2s ease;
+    }
+
+    .accordion-header.open .accordion-arrow {
+      transform: rotate(180deg);
+    }
+
+    .accordion-content {
+      display: none;
+      background: #0a0a0a;
+      padding: 16px;
+    }
+
+    .accordion-content.open {
+      display: block;
+    }
+
+    .accordion-item {
+      background: #121212;
+      border-radius: 12px;
+      padding: 14px 16px;
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .accordion-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .accordion-item-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .accordion-item-name {
+      color: #fff;
+      font-weight: 600;
+      font-size: 15px;
+      margin-bottom: 4px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .accordion-item-details {
+      color: #9ca3af;
+      font-size: 13px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .accordion-item-date {
+      color: #8df608;
+    }
+
+    .accordion-item-discount {
+      background: #1a2e1a;
+      color: #8df608;
+      padding: 2px 8px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .accordion-item-btn {
+      background: #f7931a;
+      color: #000;
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 700;
+      text-decoration: none;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .accordion-item-btn:hover {
+      background: #ff9d1f;
+    }
+
     /* === CONFERENCE CARDS === */
     .card {
       background: #121212;
@@ -426,6 +588,11 @@
     <button type="button" class="clear-btn" data-target="speaker">×</button>
   </div>
 
+  <div class="view-toggle">
+    <button type="button" class="view-btn active" data-view="cards">Cards</button>
+    <button type="button" class="view-btn" data-view="calendar">Calendar</button>
+  </div>
+
   <div id="cards"></div>
 
   <div id="newsletter-bottom" class="newsletter-signup">
@@ -495,6 +662,7 @@ const cardsEl = $("cards");
 
 let conferences = [];
 let ads = [];
+let currentView = 'cards'; // 'cards' or 'calendar'
 
 // ============================================================================
 // FAVORITES - LOCALSTORAGE MANAGEMENT
@@ -888,6 +1056,19 @@ document.querySelectorAll(".clear-btn").forEach(btn => {
   });
 });
 
+// Add event listeners to view toggle buttons
+document.querySelectorAll(".view-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    // Update active state
+    document.querySelectorAll(".view-btn").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    
+    // Update current view and re-render
+    currentView = btn.dataset.view;
+    render();
+  });
+});
+
 // ============================================================================
 // HTML TEMPLATE GENERATION
 // ============================================================================
@@ -1063,32 +1244,147 @@ function getFilteredAndSortedConferences() {
 // ============================================================================
 
 /**
+ * Get month key and label from a date range
+ */
+function getMonthFromDate(dateRange) {
+  const parsed = parseDateRange(dateRange);
+  if (!parsed || !parsed.startDate) return null;
+  const date = new Date(parsed.startDate);
+  return {
+    key: `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`,
+    label: date.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })
+  };
+}
+
+/**
+ * Format date range for accordion display (shorter format)
+ */
+function getShortDate(dateRange) {
+  const parsed = parseDateRange(dateRange);
+  if (!parsed || !parsed.startDate) return dateRange;
+  const start = new Date(parsed.startDate);
+  const options = { month: 'short', day: 'numeric' };
+  if (parsed.endDate && parsed.endDate !== parsed.startDate) {
+    const end = new Date(parsed.endDate);
+    if (start.getMonth() === end.getMonth()) {
+      return `${start.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}-${end.getDate()}`;
+    }
+    return `${start.toLocaleDateString('en-US', options)} - ${end.toLocaleDateString('en-US', options)}`;
+  }
+  return start.toLocaleDateString('en-US', options);
+}
+
+/**
+ * Render accordion calendar view
+ */
+function renderAccordionView(filteredList) {
+  // Only show upcoming conferences in calendar view
+  const upcomingList = filteredList.filter(c => isUpcoming(c["Date Range"]));
+  
+  // Group by month
+  const grouped = {};
+  upcomingList.forEach(conference => {
+    const monthData = getMonthFromDate(conference["Date Range"]);
+    if (monthData) {
+      if (!grouped[monthData.key]) {
+        grouped[monthData.key] = { label: monthData.label, conferences: [] };
+      }
+      grouped[monthData.key].conferences.push(conference);
+    }
+  });
+
+  // Sort months chronologically
+  const sortedMonths = Object.keys(grouped).sort();
+
+  if (sortedMonths.length === 0) {
+    return `<div class="card"><p>No upcoming conferences found.</p></div>`;
+  }
+
+  // Generate accordion HTML
+  let html = '';
+  sortedMonths.forEach((monthKey, index) => {
+    const month = grouped[monthKey];
+    const isFirst = index === 0;
+    const openClass = isFirst ? ' open' : '';
+    const conferenceWord = month.conferences.length === 1 ? 'conference' : 'conferences';
+    
+    html += `
+      <div class="accordion-month">
+        <div class="accordion-header${openClass}" data-month="${monthKey}">
+          <span class="accordion-month-name">${month.label}</span>
+          <div class="accordion-meta">
+            <span class="accordion-count">${month.conferences.length} ${conferenceWord}</span>
+            <span class="accordion-arrow">▼</span>
+          </div>
+        </div>
+        <div class="accordion-content${openClass}">
+    `;
+    
+    month.conferences.forEach(conference => {
+      const hasDiscount = conference.Discount && conference.Discount.trim() !== '';
+      const location = [conference.City, conference.State, conference.Country].filter(Boolean).join(', ');
+      const shortDate = getShortDate(conference["Date Range"]);
+      
+      html += `
+        <div class="accordion-item">
+          <div class="accordion-item-info">
+            <div class="accordion-item-name">${escapeHTML(conference.Conference)}</div>
+            <div class="accordion-item-details">
+              <span class="accordion-item-date">📅 ${escapeHTML(shortDate)}</span>
+              <span>📍 ${escapeHTML(location)}</span>
+              ${hasDiscount ? `<span class="accordion-item-discount">💰 Discount</span>` : ''}
+            </div>
+          </div>
+          <a href="${conference["Main Conference Link"]}" target="_blank" rel="noopener noreferrer" class="accordion-item-btn">
+            ${hasDiscount ? 'Get Deal' : 'View'}
+          </a>
+        </div>
+      `;
+    });
+    
+    html += `
+        </div>
+      </div>
+    `;
+  });
+
+  return html;
+}
+
+/**
  * Render conference cards with inserted promotional content
  */
 function render() {
   const filteredList = getFilteredAndSortedConferences();
 
-  // Generate HTML for all cards with promotional inserts
-  const html = filteredList
-    .map((conference, index) => {
-      let cardHTML = getConferenceCardHTML(conference);
+  let html = '';
 
-      // Insert newsletter after 4th card if there are 5+ results
-      if (index === NEWSLETTER_CARD_POSITION && filteredList.length >= 5) {
-        cardHTML += getNewsletterHTML();
-      }
+  if (currentView === 'calendar') {
+    // Accordion calendar view
+    html = renderAccordionView(filteredList);
+  } else {
+    // Cards view - original rendering
+    html = filteredList
+      .map((conference, index) => {
+        let cardHTML = getConferenceCardHTML(conference);
 
-      // Insert ads at positions defined in CSV
-      // Check if any ad should appear after this card position
-      const adPosition = index;
-      const adHTML = getAdHTML(adPosition);
-      if (adHTML) {
-        cardHTML += adHTML;
-      }
+        // Insert newsletter after 4th card if there are 5+ results
+        if (index === NEWSLETTER_CARD_POSITION && filteredList.length >= 5) {
+          cardHTML += getNewsletterHTML();
+        }
 
-      return cardHTML;
-    })
-    .join("");
+        // Insert ads at positions defined in CSV
+        // Check if any ad should appear after this card position
+        const adPosition = index;
+        const adHTML = getAdHTML(adPosition);
+        if (adHTML) {
+          cardHTML += adHTML;
+        }
+
+        return cardHTML;
+      })
+      .join("");
+  }
 
   // Update DOM
   if (html) {
@@ -1099,8 +1395,24 @@ function render() {
     cardsEl.innerHTML = `<div class="card"><p>No matching conferences.</p></div>`;
   }
   
-  // Attach event listeners to favorite buttons
+  // Attach event listeners
   attachFavoriteListeners();
+  if (currentView === 'calendar') {
+    attachAccordionListeners();
+  }
+}
+
+/**
+ * Attach click handlers to accordion headers
+ */
+function attachAccordionListeners() {
+  document.querySelectorAll('.accordion-header').forEach(header => {
+    header.addEventListener('click', () => {
+      const content = header.nextElementSibling;
+      header.classList.toggle('open');
+      content.classList.toggle('open');
+    });
+  });
 }
 
 /**
