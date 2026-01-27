@@ -600,11 +600,16 @@ function getTimeAway(range) {
   const parsed = parseDateRange(range);
   if (!parsed) return "";
 
+  // Normalize to start of day for accurate day counting
   const now = new Date();
-  const diffDays = Math.floor((parsed.startDate - now) / (1000 * 60 * 60 * 24));
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const startDay = new Date(parsed.startDate.getFullYear(), parsed.startDate.getMonth(), parsed.startDate.getDate());
+  const endDay = new Date(parsed.endDate.getFullYear(), parsed.endDate.getMonth(), parsed.endDate.getDate());
+  
+  const diffDays = Math.round((startDay - today) / (1000 * 60 * 60 * 24));
 
   // Conference is happening now
-  if (now >= parsed.startDate && now <= parsed.endDate) {
+  if (today >= startDay && today <= endDay) {
     return "Happening now";
   }
 
@@ -613,19 +618,19 @@ function getTimeAway(range) {
 
   // Less than 2 weeks away - show days
   if (diffDays <= 14) {
-    return `In ${diffDays} days`;
+    return `In ${diffDays} day${diffDays === 1 ? '' : 's'}`;
   }
 
   // 2 weeks to 2 months away - show weeks
   if (diffDays <= 60) {
     const weeks = Math.round(diffDays / 7);
-    return `${weeks} weeks away`;
+    return `${weeks} week${weeks === 1 ? '' : 's'} away`;
   }
 
   // More than 2 months away - show months
   const months = Math.round(diffDays / 30);
   if (months <= 11) {
-    return `${months} months away`;
+    return `${months} month${months === 1 ? '' : 's'} away`;
   }
 
   return "";
