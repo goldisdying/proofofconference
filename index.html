@@ -1260,18 +1260,36 @@ function getMonthFromDate(dateRange) {
  * Format date range for accordion display (shorter format)
  */
 function getShortDate(dateRange) {
+  if (!dateRange) return '';
+  
+  // Check if it's just a month and year (like "December 2026")
+  const monthOnlyMatch = dateRange.match(/^([A-Za-z]+)\s+(\d{4})$/);
+  if (monthOnlyMatch) {
+    const monthName = monthOnlyMatch[1];
+    return monthName.substring(0, 3);
+  }
+  
   const parsed = parseDateRange(dateRange);
   if (!parsed || !parsed.startDate) return dateRange;
-  const start = new Date(parsed.startDate);
+  
+  const start = parsed.startDate;
+  const end = parsed.endDate;
   const options = { month: 'short', day: 'numeric' };
-  if (parsed.endDate && parsed.endDate !== parsed.startDate) {
-    const end = new Date(parsed.endDate);
-    if (start.getMonth() === end.getMonth()) {
-      return `${start.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}-${end.getDate()}`;
-    }
-    return `${start.toLocaleDateString('en-US', options)} - ${end.toLocaleDateString('en-US', options)}`;
+  
+  // Check if it's a single day (same start and end date)
+  if (!end || (start.getFullYear() === end.getFullYear() && 
+               start.getMonth() === end.getMonth() && 
+               start.getDate() === end.getDate())) {
+    return start.toLocaleDateString('en-US', options);
   }
-  return start.toLocaleDateString('en-US', options);
+  
+  // Multi-day event in same month - show "Sep 12-14"
+  if (start.getMonth() === end.getMonth() && start.getFullYear() === end.getFullYear()) {
+    return `${start.toLocaleDateString('en-US', options)}-${end.getDate()}`;
+  }
+  
+  // Multi-day event across months - show "Sep 28 - Oct 2"
+  return `${start.toLocaleDateString('en-US', options)} - ${end.toLocaleDateString('en-US', options)}`;
 }
 
 /**
