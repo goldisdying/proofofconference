@@ -1364,8 +1364,9 @@ function renderAccordionView(filteredList) {
       </div>
     `;
     
-    // Insert ad after every 2 months
-    if ((index + 1) % 2 === 0 && ads.length > 0) {
+    // Insert ad after every 4 months (but not after the last month)
+    const isLastMonth = index === sortedMonths.length - 1;
+    if ((index + 1) % 4 === 0 && !isLastMonth && ads.length > 0) {
       const ad = ads[adIndex % ads.length];
       if (ad) {
         const imageUrl = ad["Image URL"].startsWith("http") 
