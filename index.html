@@ -270,6 +270,23 @@
       font-weight: 600;
     }
 
+    .accordion-format-badge {
+      padding: 2px 8px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .accordion-format-badge.virtual {
+      background: #1a1a2e;
+      color: #818cf8;
+    }
+
+    .accordion-format-badge.hybrid {
+      background: #2e1a2e;
+      color: #c084fc;
+    }
+
     .accordion-item-btn {
       background: #f7931a;
       color: #000;
@@ -349,6 +366,25 @@
       padding: 4px 10px;
       border-radius: 999px;
       margin-bottom: 8px;
+    }
+
+    .format-badge {
+      display: inline-block;
+      font-size: 12px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+
+    .format-badge.virtual {
+      background: #1a1a2e;
+      color: #818cf8;
+    }
+
+    .format-badge.hybrid {
+      background: #2e1a2e;
+      color: #c084fc;
     }
 
     .card p {
@@ -1141,6 +1177,15 @@ function getConferenceCardHTML(conference) {
   
   const confId = getConferenceId(conference);
   const favorited = isFavorited(confId);
+  
+  // Format badge (Virtual/Hybrid)
+  const format = (conference.Format || "").trim().toLowerCase();
+  let formatBadge = "";
+  if (format === "virtual") {
+    formatBadge = `<span class="format-badge virtual">💻 Virtual</span>`;
+  } else if (format === "hybrid") {
+    formatBadge = `<span class="format-badge hybrid">🔄 Hybrid</span>`;
+  }
 
   return `
     <div class="card">
@@ -1149,6 +1194,7 @@ function getConferenceCardHTML(conference) {
           <img src="${conference.Image}" alt="${conf}">
         </a>` : ""}
       <h2>${conf}</h2>
+      ${formatBadge}
       ${timeAway ? `<div class="time-away">${escapeHTML(timeAway)}</div>` : ""}
       <p>📍 ${loc}</p>
       ${conference.Venue ? `<p>🏛️ ${venue}</p>` : ""}
@@ -1352,6 +1398,15 @@ function renderAccordionView(filteredList) {
       const location = [conference.City, conference.State, conference.Country].filter(Boolean).join(', ');
       const shortDate = getShortDate(conference["Date Range"]);
       
+      // Format badge for accordion
+      const format = (conference.Format || "").trim().toLowerCase();
+      let formatBadgeAccordion = "";
+      if (format === "virtual") {
+        formatBadgeAccordion = `<span class="accordion-format-badge virtual">💻 Virtual</span>`;
+      } else if (format === "hybrid") {
+        formatBadgeAccordion = `<span class="accordion-format-badge hybrid">🔄 Hybrid</span>`;
+      }
+      
       html += `
         <div class="accordion-item">
           <div class="accordion-item-info">
@@ -1359,6 +1414,7 @@ function renderAccordionView(filteredList) {
             <div class="accordion-item-details">
               <span class="accordion-item-date">📅 ${escapeHTML(shortDate)}</span>
               <span>📍 ${escapeHTML(location)}</span>
+              ${formatBadgeAccordion}
               ${hasDiscount ? `<span class="accordion-item-discount">🎟️ ${escapeHTML(conference.Discount)}</span>` : ''}
             </div>
           </div>
