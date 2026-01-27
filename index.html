@@ -124,6 +124,51 @@
       border-color: #3a3a3a;
     }
 
+    /* === VIEW TOGGLE === */
+    .view-toggle {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+
+    .view-btn {
+      flex: 1;
+      padding: 10px 16px;
+      border: 2px solid #2a2a2a;
+      background: #121212;
+      color: #9ca3af;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .view-btn:hover {
+      border-color: #3a3a3a;
+      color: #fff;
+    }
+
+    .view-btn.active {
+      border-color: #f7931a;
+      background: #f7931a;
+      color: #000;
+    }
+
+    /* === MONTH HEADERS === */
+    .month-header {
+      color: #f7931a;
+      font-size: 22px;
+      font-weight: 700;
+      margin: 28px 0 16px 0;
+      padding-bottom: 8px;
+      border-bottom: 2px solid #1f1f1f;
+    }
+
+    .month-header:first-child {
+      margin-top: 0;
+    }
+
     /* === CONFERENCE CARDS === */
     .card {
       background: #121212;
@@ -426,6 +471,11 @@
     <button type="button" class="clear-btn" data-target="speaker">×</button>
   </div>
 
+  <div class="view-toggle">
+    <button type="button" class="view-btn active" data-view="cards">Cards</button>
+    <button type="button" class="view-btn" data-view="calendar">Calendar</button>
+  </div>
+
   <div id="cards"></div>
 
   <div id="newsletter-bottom" class="newsletter-signup">
@@ -495,6 +545,7 @@ const cardsEl = $("cards");
 
 let conferences = [];
 let ads = [];
+let currentView = 'cards'; // 'cards' or 'calendar'
 
 // ============================================================================
 // FAVORITES - LOCALSTORAGE MANAGEMENT
@@ -888,6 +939,19 @@ document.querySelectorAll(".clear-btn").forEach(btn => {
   });
 });
 
+// Add event listeners to view toggle buttons
+document.querySelectorAll(".view-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    // Update active state
+    document.querySelectorAll(".view-btn").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    
+    // Update current view and re-render
+    currentView = btn.dataset.view;
+    render();
+  });
+});
+
 // ============================================================================
 // HTML TEMPLATE GENERATION
 // ============================================================================
@@ -1063,32 +1127,91 @@ function getFilteredAndSortedConferences() {
 // ============================================================================
 
 /**
+ * Get month and year from a date range string
+ */
+function getMonthYear(dateRange) {
+  const parsed = parseDateRange(dateRange);
+  if (!parsed || !parsed.startDate) return null;
+  const date = new Date(parsed.startDate);
+  return {
+    key: `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`,
+    label: date.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })
+  };
+}
+
+/**
+ * Render conferences grouped by month (calendar view)
+ */
+function renderCalendarView(filteredList) {
+  // Only show upcoming conferences in calendar view
+  const upcomingList = filteredList.filter(c => isUpcoming(c["Date Range"]));
+  
+  // Group by month
+  const grouped = {};
+  upcomingList.forEach(conference => {
+    const monthYear = getMonthYear(conference["Date Range"]);
+    if (monthYear) {
+      if (!grouped[monthYear.key]) {
+        grouped[monthYear.key] = { label: monthYear.label, conferences: [] };
+      }
+      grouped[monthYear.key].conferences.push(conference);
+    }
+  });
+
+  // Sort months chronologically
+  const sortedMonths = Object.keys(grouped).sort();
+
+  if (sortedMonths.length === 0) {
+    return `<div class="card"><p>No upcoming conferences found.</p></div>`;
+  }
+
+  // Generate HTML
+  let html = '';
+  sortedMonths.forEach(monthKey => {
+    const month = grouped[monthKey];
+    html += `<div class="month-header">${month.label}</div>`;
+    month.conferences.forEach(conference => {
+      html += getConferenceCardHTML(conference);
+    });
+  });
+
+  return html;
+}
+
+/**
  * Render conference cards with inserted promotional content
  */
 function render() {
   const filteredList = getFilteredAndSortedConferences();
 
-  // Generate HTML for all cards with promotional inserts
-  const html = filteredList
-    .map((conference, index) => {
-      let cardHTML = getConferenceCardHTML(conference);
+  let html = '';
 
-      // Insert newsletter after 4th card if there are 5+ results
-      if (index === NEWSLETTER_CARD_POSITION && filteredList.length >= 5) {
-        cardHTML += getNewsletterHTML();
-      }
+  if (currentView === 'calendar') {
+    // Calendar view - grouped by month
+    html = renderCalendarView(filteredList);
+  } else {
+    // Cards view - original rendering
+    html = filteredList
+      .map((conference, index) => {
+        let cardHTML = getConferenceCardHTML(conference);
 
-      // Insert ads at positions defined in CSV
-      // Check if any ad should appear after this card position
-      const adPosition = index;
-      const adHTML = getAdHTML(adPosition);
-      if (adHTML) {
-        cardHTML += adHTML;
-      }
+        // Insert newsletter after 4th card if there are 5+ results
+        if (index === NEWSLETTER_CARD_POSITION && filteredList.length >= 5) {
+          cardHTML += getNewsletterHTML();
+        }
 
-      return cardHTML;
-    })
-    .join("");
+        // Insert ads at positions defined in CSV
+        // Check if any ad should appear after this card position
+        const adPosition = index;
+        const adHTML = getAdHTML(adPosition);
+        if (adHTML) {
+          cardHTML += adHTML;
+        }
+
+        return cardHTML;
+      })
+      .join("");
+  }
 
   // Update DOM
   if (html) {
