@@ -1062,8 +1062,19 @@ document.querySelectorAll(".view-btn").forEach(btn => {
     document.querySelectorAll(".view-btn").forEach(b => b.classList.remove("active"));
     btn.classList.add("active");
     
-    // Update current view and re-render
+    // Update current view
     currentView = btn.dataset.view;
+    
+    // Hide sort dropdown in calendar view, show in cards view
+    const sortWrapper = document.querySelector('.sort-wrapper');
+    if (currentView === 'calendar') {
+      sortWrapper.style.display = 'none';
+      // Reset to upcoming when switching to calendar
+      sortEl.value = 'upcoming';
+    } else {
+      sortWrapper.style.display = 'block';
+    }
+    
     render();
   });
 });
