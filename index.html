@@ -1178,13 +1178,13 @@ function getConferenceCardHTML(conference) {
   const confId = getConferenceId(conference);
   const favorited = isFavorited(confId);
   
-  // Format badge (Virtual/Hybrid)
+  // Format badge (Online/Hybrid)
   const format = (conference.Format || "").trim().toLowerCase();
   let formatBadge = "";
-  if (format === "virtual") {
-    formatBadge = `<span class="format-badge virtual">💻 Virtual</span>`;
+  if (format === "online") {
+    formatBadge = `<span class="format-badge virtual">💻 Online Event</span>`;
   } else if (format === "hybrid") {
-    formatBadge = `<span class="format-badge hybrid">🔄 Hybrid</span>`;
+    formatBadge = `<span class="format-badge hybrid">🔄 In-Person & Online</span>`;
   }
 
   return `
@@ -1401,10 +1401,10 @@ function renderAccordionView(filteredList) {
       // Format badge for accordion
       const format = (conference.Format || "").trim().toLowerCase();
       let formatBadgeAccordion = "";
-      if (format === "virtual") {
-        formatBadgeAccordion = `<span class="accordion-format-badge virtual">💻 Virtual</span>`;
+      if (format === "online") {
+        formatBadgeAccordion = `<span class="accordion-format-badge virtual">💻 Online Event</span>`;
       } else if (format === "hybrid") {
-        formatBadgeAccordion = `<span class="accordion-format-badge hybrid">🔄 Hybrid</span>`;
+        formatBadgeAccordion = `<span class="accordion-format-badge hybrid">🔄 In-Person & Online</span>`;
       }
       
       html += `
