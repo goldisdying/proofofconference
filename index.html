@@ -1320,7 +1320,8 @@ function renderAccordionView(filteredList) {
 
   // Generate accordion HTML
   let html = '';
-  sortedMonths.forEach((monthKey) => {
+  let adIndex = 0;
+  sortedMonths.forEach((monthKey, index) => {
     const month = grouped[monthKey];
     const conferenceWord = month.conferences.length === 1 ? 'conference' : 'conferences';
     
@@ -1362,6 +1363,15 @@ function renderAccordionView(filteredList) {
         </div>
       </div>
     `;
+    
+    // Insert ad after every 3 months
+    if ((index + 1) % 3 === 0) {
+      const adHTML = getAdHTML(adIndex);
+      if (adHTML) {
+        html += adHTML;
+        adIndex++;
+      }
+    }
   });
 
   return html;
