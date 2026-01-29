@@ -1942,10 +1942,13 @@ function parseDateRangeForCalendar(dateRange) {
     'september': '09', 'october': '10', 'november': '11', 'december': '12'
   };
   
+  // Normalize dashes (en-dash, em-dash to hyphen)
+  const normalizedRange = dateRange.replace(/[–—]/g, '-');
+  
   let startDate, endDate;
   
   // Try to match "Month Day-Day, Year" (e.g., "February 6-8, 2026")
-  let match = dateRange.match(/(\w+)\s+(\d+)-(\d+),?\s*(\d{4})/i);
+  let match = normalizedRange.match(/(\w+)\s+(\d+)\s*-\s*(\d+),?\s*(\d{4})/i);
   if (match) {
     const month = months[match[1].toLowerCase()];
     const year = match[4];
@@ -1955,7 +1958,7 @@ function parseDateRangeForCalendar(dateRange) {
   }
   
   // Try to match "Month Day - Month Day, Year" (e.g., "September 28 - October 2, 2026")
-  match = dateRange.match(/(\w+)\s+(\d+)\s*-\s*(\w+)\s+(\d+),?\s*(\d{4})/i);
+  match = normalizedRange.match(/(\w+)\s+(\d+)\s*-\s*(\w+)\s+(\d+),?\s*(\d{4})/i);
   if (match) {
     const startMonth = months[match[1].toLowerCase()];
     const endMonth = months[match[3].toLowerCase()];
@@ -1966,7 +1969,7 @@ function parseDateRangeForCalendar(dateRange) {
   }
   
   // Try to match single day "Month Day, Year" (e.g., "March 15, 2026")
-  match = dateRange.match(/(\w+)\s+(\d+),?\s*(\d{4})/i);
+  match = normalizedRange.match(/(\w+)\s+(\d+),?\s*(\d{4})/i);
   if (match) {
     const month = months[match[1].toLowerCase()];
     const year = match[3];
