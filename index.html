@@ -1910,6 +1910,10 @@ document.addEventListener('DOMContentLoaded', function() {
   const POPUP_COOKIE_DAYS = 15;
   const SCROLL_TRIGGER_PERCENT = 20;
   const TIME_TRIGGER_SECONDS = 5;
+  const SHARED_LINK_DELAY_SECONDS = 8;
+  
+  // Check if this is a shared link (has hash in URL)
+  const isSharedLink = window.location.hash.length > 1;
 
   // Check if popup was recently dismissed
   function isPopupDismissed() {
@@ -1932,6 +1936,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // Show popup
   let popupShown = false;
+  let popupEnabled = !isSharedLink; // Disable scroll/time triggers initially for shared links
+  
   function showPopup() {
     if (popupShown || isPopupDismissed()) return;
     popupShown = true;
@@ -1945,7 +1951,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // Trigger on scroll (20%)
   window.addEventListener('scroll', function() {
-    if (popupShown || isPopupDismissed()) return;
+    if (popupShown || isPopupDismissed() || !popupEnabled) return;
     
     const scrollPercent = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
     if (scrollPercent >= SCROLL_TRIGGER_PERCENT) {
@@ -1953,10 +1959,19 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   });
 
-  // Trigger on time (5 seconds)
-  setTimeout(function() {
-    showPopup();
-  }, TIME_TRIGGER_SECONDS * 1000);
+  // Trigger on time
+  if (isSharedLink) {
+    // For shared links, wait 8 seconds then enable popup
+    setTimeout(function() {
+      popupEnabled = true;
+      showPopup();
+    }, SHARED_LINK_DELAY_SECONDS * 1000);
+  } else {
+    // Normal trigger at 5 seconds
+    setTimeout(function() {
+      showPopup();
+    }, TIME_TRIGGER_SECONDS * 1000);
+  }
 
   // Close button handler
   document.addEventListener('click', function(e) {
