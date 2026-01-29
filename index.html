@@ -378,10 +378,35 @@
       background: #f7931a;
     }
 
+    .share-btn {
+      background: rgba(18, 18, 18, 0.9);
+      border: 2px solid #f7931a;
+      border-radius: 50%;
+      width: 44px;
+      height: 44px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 18px;
+      transition: all 0.2s ease;
+      user-select: none;
+      flex-shrink: 0;
+    }
+
+    .share-btn:hover {
+      transform: scale(1.1);
+      background: rgba(247, 147, 26, 0.2);
+    }
+
     .card-actions {
       display: flex;
       align-items: center;
-      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .card-actions .cta {
+      flex: 1;
     }
 
     .card img {
@@ -840,6 +865,31 @@ function getConferenceId(conference) {
   return `${conference.Conference}-${conference["Date Range"]}`.replace(/[^a-zA-Z0-9]/g, '-');
 }
 
+/**
+ * Generate URL-friendly slug from conference name + start date
+ * "Baltic Honeybadger" + "November 7-9, 2026" → "baltic-honeybadger-nov-7-2026"
+ */
+function getShareSlug(conference) {
+  const name = conference.Conference.toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '');
+  
+  // Parse start date from date range
+  const dateRange = conference["Date Range"] || "";
+  const monthMatch = dateRange.match(/^([A-Za-z]+)\s+(\d+)/);
+  const yearMatch = dateRange.match(/(\d{4})/);
+  
+  if (monthMatch && yearMatch) {
+    const month = monthMatch[1].slice(0, 3).toLowerCase();
+    const day = monthMatch[2];
+    const year = yearMatch[1];
+    return `${name}-${month}-${day}-${year}`;
+  }
+  
+  // Fallback to just name if date parsing fails
+  return name;
+}
+
 // ============================================================================
 // DATE UTILITY FUNCTIONS
 // ============================================================================
@@ -1082,6 +1132,9 @@ fetch(CSV_URL)
     updateClearButtons();
     updateStats();
     render();
+    
+    // Scroll to specific conference if hash is present in URL
+    scrollToHashOnLoad();
   });
 
 /**
@@ -1302,6 +1355,7 @@ function getConferenceCardHTML(conference) {
   
   const confId = getConferenceId(conference);
   const favorited = isFavorited(confId);
+  const shareSlug = getShareSlug(conference);
   
   // Format badge (Online/Hybrid)
   const format = (conference.Format || "").trim().toLowerCase();
@@ -1336,9 +1390,13 @@ function getConferenceCardHTML(conference) {
       `;
     }
   }
+  
+  // Share data
+  const shareTitle = conference.Conference;
+  const shareText = `Check out ${conference.Conference} in ${[conference.City, conference.Country].filter(Boolean).join(", ")} – ${conference["Date Range"]}!`;
 
   return `
-    <div class="card">
+    <div class="card" id="${shareSlug}">
       ${conference.Image ? `
         <a href="${link}" target="_blank" rel="noopener noreferrer">
           <img src="${conference.Image}" alt="${conf}">
@@ -1361,6 +1419,14 @@ function getConferenceCardHTML(conference) {
                 aria-label="Add to favorites"
                 title="${favorited ? 'Remove from favorites' : 'Add to favorites'}">
           ${favorited ? '❤️' : '🤍'}
+        </button>
+        <button class="share-btn" 
+                data-share-slug="${shareSlug}"
+                data-share-title="${escapeHTML(shareTitle)}"
+                data-share-text="${escapeHTML(shareText)}"
+                aria-label="Share this conference"
+                title="Share">
+          ↗️
         </button>
       </div>
     </div>
@@ -1651,6 +1717,7 @@ function render() {
   // Attach event listeners
   attachFavoriteListeners();
   attachSpeakerToggleListeners();
+  attachShareListeners();
   if (currentView === 'calendar') {
     attachAccordionListeners();
   }
@@ -1719,6 +1786,78 @@ function attachSpeakerToggleListeners() {
       }
     });
   });
+}
+
+/**
+ * Attach click handlers to share buttons
+ */
+function attachShareListeners() {
+  document.querySelectorAll('.share-btn').forEach(btn => {
+    btn.addEventListener('click', async (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      
+      const slug = btn.dataset.shareSlug;
+      const title = btn.dataset.shareTitle;
+      const text = btn.dataset.shareText;
+      const url = `${window.location.origin}${window.location.pathname}#${slug}`;
+      
+      // Use native share if available (mobile)
+      if (navigator.share) {
+        try {
+          await navigator.share({
+            title: title,
+            text: text,
+            url: url
+          });
+        } catch (err) {
+          // User cancelled or error - fall back to copy
+          if (err.name !== 'AbortError') {
+            copyToClipboard(url, btn);
+          }
+        }
+      } else {
+        // Desktop fallback - copy link to clipboard
+        copyToClipboard(url, btn);
+      }
+    });
+  });
+}
+
+/**
+ * Copy text to clipboard and show feedback
+ */
+function copyToClipboard(text, btn) {
+  navigator.clipboard.writeText(text).then(() => {
+    const originalText = btn.innerHTML;
+    btn.innerHTML = '✓';
+    setTimeout(() => {
+      btn.innerHTML = originalText;
+    }, 1500);
+  }).catch(err => {
+    console.error('Failed to copy:', err);
+  });
+}
+
+/**
+ * Scroll to conference card if URL has hash
+ */
+function scrollToHashOnLoad() {
+  if (window.location.hash) {
+    const targetId = window.location.hash.slice(1); // Remove the #
+    const targetCard = document.getElementById(targetId);
+    if (targetCard) {
+      // Small delay to ensure page is fully rendered
+      setTimeout(() => {
+        targetCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        // Flash effect to highlight the card
+        targetCard.style.boxShadow = '0 0 0 3px #f7931a';
+        setTimeout(() => {
+          targetCard.style.boxShadow = '';
+        }, 2000);
+      }, 300);
+    }
+  }
 }
 
 // ============================================================================
