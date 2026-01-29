@@ -1527,6 +1527,12 @@ function getFilteredAndSortedConferences() {
   // Filter by upcoming/past based on sort selection
   if (sortEl.value !== "past" && sortEl.value !== "favorites" && sortEl.value !== "recent") {
     list = list.filter(c => isUpcoming(c["Date Range"]));
+    // Sort by soonest first
+    list.sort((a, b) => {
+      const da = parseDateRange(a["Date Range"])?.startDate;
+      const db = parseDateRange(b["Date Range"])?.startDate;
+      return (da || 0) - (db || 0);
+    });
   }
 
   // Filter by discounts if selected
