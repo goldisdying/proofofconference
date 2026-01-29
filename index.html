@@ -402,11 +402,12 @@
     .card-actions {
       display: flex;
       align-items: center;
-      gap: 10px;
+      justify-content: space-between;
     }
 
-    .card-actions .cta {
-      flex: 1;
+    .card-actions-buttons {
+      display: flex;
+      gap: 10px;
     }
 
     .card img {
@@ -1414,20 +1415,26 @@ function getConferenceCardHTML(conference) {
         <a class="cta" href="${link}" target="_blank" rel="noopener noreferrer">
           ${buttonText}
         </a>
-        <button class="favorite-btn ${favorited ? 'favorited' : ''}" 
-                data-conference-id="${confId}" 
-                aria-label="Add to favorites"
-                title="${favorited ? 'Remove from favorites' : 'Add to favorites'}">
-          ${favorited ? '❤️' : '🤍'}
-        </button>
-        <button class="share-btn" 
-                data-share-slug="${shareSlug}"
-                data-share-title="${escapeHTML(shareTitle)}"
-                data-share-text="${escapeHTML(shareText)}"
-                aria-label="Share this conference"
-                title="Share">
-          ↗️
-        </button>
+        <div class="card-actions-buttons">
+          <button class="favorite-btn ${favorited ? 'favorited' : ''}" 
+                  data-conference-id="${confId}" 
+                  aria-label="Add to favorites"
+                  title="${favorited ? 'Remove from favorites' : 'Add to favorites'}">
+            ${favorited ? '❤️' : '🤍'}
+          </button>
+          <button class="share-btn" 
+                  data-share-slug="${shareSlug}"
+                  data-share-title="${escapeHTML(shareTitle)}"
+                  data-share-text="${escapeHTML(shareText)}"
+                  aria-label="Share this conference"
+                  title="Share">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f7931a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/>
+              <polyline points="16 6 12 2 8 6"/>
+              <line x1="12" y1="2" x2="12" y2="15"/>
+            </svg>
+          </button>
+        </div>
       </div>
     </div>
   `;
@@ -1829,10 +1836,10 @@ function attachShareListeners() {
  */
 function copyToClipboard(text, btn) {
   navigator.clipboard.writeText(text).then(() => {
-    const originalText = btn.innerHTML;
-    btn.innerHTML = '✓';
+    const originalHTML = btn.innerHTML;
+    btn.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8df608" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
     setTimeout(() => {
-      btn.innerHTML = originalText;
+      btn.innerHTML = originalHTML;
     }, 1500);
   }).catch(err => {
     console.error('Failed to copy:', err);
