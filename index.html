@@ -68,6 +68,35 @@
       margin-bottom: 24px;
     }
 
+    /* === STATS ROW === */
+    .stats-row {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+
+    .stat-box {
+      background: #121212;
+      border-radius: 12px;
+      padding: 14px 20px;
+      text-align: center;
+      min-width: 80px;
+      box-shadow: 0 0 0 1px #1f1f1f;
+    }
+
+    .stat-number {
+      font-size: 28px;
+      font-weight: 700;
+      color: #f7931a;
+    }
+
+    .stat-label {
+      font-size: 12px;
+      color: #9ca3af;
+      margin-top: 4px;
+    }
+
     /* === FILTERS === */
     .filter-label {
       font-size: 13px;
@@ -579,6 +608,21 @@
   <h1>Proof of Conference</h1>
   <div class="subtitle">Track Every Bitcoin Conference</div>
 
+  <div class="stats-row">
+    <div class="stat-box">
+      <div class="stat-number" id="stat-events">0</div>
+      <div class="stat-label">Events</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-number" id="stat-countries">0</div>
+      <div class="stat-label">Countries</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-number" id="stat-speakers">0</div>
+      <div class="stat-label">Speakers</div>
+    </div>
+  </div>
+
   <div class="search-wrapper">
     <input id="search" placeholder="Search conferences..." aria-label="Search conferences" />
   </div>
@@ -991,6 +1035,7 @@ fetch(CSV_URL)
     
     populateFilters();
     updateClearButtons();
+    updateStats();
     render();
   });
 
@@ -1011,6 +1056,41 @@ fetch(ADS_CSV_URL)
     
     render();
   });
+
+// ============================================================================
+// STATS DISPLAY
+// ============================================================================
+
+/**
+ * Update the stats display with counts from upcoming conferences
+ */
+function updateStats() {
+  // Filter to upcoming conferences only
+  const upcoming = conferences.filter(c => isUpcoming(c["Date Range"]));
+  
+  // Count events
+  const eventCount = upcoming.length;
+  
+  // Count unique countries
+  const countries = new Set(upcoming.map(c => c.Country).filter(Boolean));
+  const countryCount = countries.size;
+  
+  // Count unique speakers
+  const speakers = new Set();
+  upcoming.forEach(c => {
+    const speakerList = c["Speakers/Notable Attendees"] || "";
+    speakerList.split(",").forEach(s => {
+      const trimmed = s.trim();
+      if (trimmed) speakers.add(trimmed);
+    });
+  });
+  const speakerCount = speakers.size;
+  
+  // Update DOM
+  document.getElementById("stat-events").textContent = eventCount;
+  document.getElementById("stat-countries").textContent = countryCount;
+  document.getElementById("stat-speakers").textContent = speakerCount;
+}
 
 // ============================================================================
 // FILTER POPULATION
