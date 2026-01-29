@@ -432,6 +432,24 @@
       line-height: 1.4;
     }
 
+    .speakers-section {
+      margin: 10px 0;
+      font-size: 14px;
+      color: #d1d5db;
+      line-height: 1.5;
+    }
+
+    .speakers-toggle {
+      color: #f7931a;
+      cursor: pointer;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .speakers-toggle:hover {
+      text-decoration: underline;
+    }
+
     .discount {
       margin-top: 10px;
       color: #8df608;
@@ -1276,6 +1294,31 @@ function getConferenceCardHTML(conference) {
   } else if (format === "hybrid") {
     formatBadge = `<span class="format-badge hybrid">🔄 In-Person & Online</span>`;
   }
+  
+  // Speaker section
+  const speakerList = (conference["Speakers/Notable Attendees"] || "").split(",").map(s => s.trim()).filter(Boolean);
+  let speakerHTML = "";
+  if (speakerList.length > 0) {
+    const previewCount = 3;
+    const previewSpeakers = speakerList.slice(0, previewCount).map(escapeHTML).join(", ");
+    const remainingCount = speakerList.length - previewCount;
+    const allSpeakers = speakerList.map(escapeHTML).join(", ");
+    
+    if (speakerList.length <= previewCount) {
+      speakerHTML = `<div class="speakers-section">🎤 ${previewSpeakers}</div>`;
+    } else {
+      speakerHTML = `
+        <div class="speakers-section" data-conf-id="${confId}">
+          <div class="speakers-preview">
+            🎤 ${previewSpeakers} <span class="speakers-toggle" data-action="expand">+${remainingCount} more ▼</span>
+          </div>
+          <div class="speakers-full" style="display: none;">
+            🎤 ${allSpeakers} <span class="speakers-toggle" data-action="collapse">Show less ▲</span>
+          </div>
+        </div>
+      `;
+    }
+  }
 
   return `
     <div class="card">
@@ -1290,6 +1333,7 @@ function getConferenceCardHTML(conference) {
       ${conference.Venue ? `<p>🏛️ ${venue}</p>` : ""}
       <p>📅 ${dateRange}</p>
       ${attendanceRange ? `<p>👥 ${attendanceRange} attendees</p>` : ""}
+      ${speakerHTML}
       ${hasDiscount ? `<div class="discount">🎟️ ${discount}</div>` : ""}
       <div class="card-actions">
         <a class="cta" href="${link}" target="_blank" rel="noopener noreferrer">
@@ -1589,6 +1633,7 @@ function render() {
   
   // Attach event listeners
   attachFavoriteListeners();
+  attachSpeakerToggleListeners();
   if (currentView === 'calendar') {
     attachAccordionListeners();
   }
@@ -1633,6 +1678,27 @@ function attachFavoriteListeners() {
       // If viewing favorites, re-render to remove unfavorited items
       if (sortEl.value === 'favorites') {
         render();
+      }
+    });
+  });
+}
+
+/**
+ * Attach click handlers to speaker toggle buttons
+ */
+function attachSpeakerToggleListeners() {
+  document.querySelectorAll('.speakers-toggle').forEach(toggle => {
+    toggle.addEventListener('click', (e) => {
+      const section = toggle.closest('.speakers-section');
+      const preview = section.querySelector('.speakers-preview');
+      const full = section.querySelector('.speakers-full');
+      
+      if (toggle.dataset.action === 'expand') {
+        preview.style.display = 'none';
+        full.style.display = 'block';
+      } else {
+        preview.style.display = 'block';
+        full.style.display = 'none';
       }
     });
   });
