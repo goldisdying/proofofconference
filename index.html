@@ -619,7 +619,7 @@
     </div>
     <div class="stat-box">
       <div class="stat-number" id="stat-speakers">0</div>
-      <div class="stat-label">Speakers</div>
+      <div class="stat-label">Speaker Appearances</div>
     </div>
   </div>
 
@@ -1075,16 +1075,14 @@ function updateStats() {
   const countries = new Set(upcoming.map(c => c.Country).filter(Boolean));
   const countryCount = countries.size;
   
-  // Count unique speakers
-  const speakers = new Set();
+  // Count speaker appearances (including duplicates)
+  let speakerCount = 0;
   upcoming.forEach(c => {
     const speakerList = c["Speakers/Notable Attendees"] || "";
     speakerList.split(",").forEach(s => {
-      const trimmed = s.trim();
-      if (trimmed) speakers.add(trimmed);
+      if (s.trim()) speakerCount++;
     });
   });
-  const speakerCount = speakers.size;
   
   // Update DOM
   document.getElementById("stat-events").textContent = eventCount;
