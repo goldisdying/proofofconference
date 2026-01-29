@@ -460,6 +460,53 @@
       line-height: 1.4;
     }
 
+    .add-calendar {
+      position: relative;
+      display: inline-block;
+      margin-bottom: 6px;
+    }
+
+    .add-calendar-link {
+      color: #f7931a;
+      font-size: 13px;
+      cursor: pointer;
+    }
+
+    .add-calendar-link:hover {
+      text-decoration: underline;
+    }
+
+    .calendar-dropdown {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      background: #1a1a1a;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+      z-index: 100;
+      min-width: 150px;
+      overflow: hidden;
+      margin-top: 4px;
+    }
+
+    .calendar-dropdown.open {
+      display: block;
+    }
+
+    .calendar-option {
+      display: block;
+      padding: 10px 14px;
+      color: #fff;
+      text-decoration: none;
+      font-size: 13px;
+      cursor: pointer;
+    }
+
+    .calendar-option:hover {
+      background: #2a2a2a;
+    }
+
     .speakers-section {
       margin: 10px 0;
       font-size: 14px;
@@ -1409,6 +1456,13 @@ function getConferenceCardHTML(conference) {
       <p>📍 ${loc}</p>
       ${conference.Venue ? `<p>🏛️ ${venue}</p>` : ""}
       <p>📅 ${dateRange}</p>
+      <div class="add-calendar">
+        <span class="add-calendar-link" data-conf-name="${escapeHTML(conference.Conference)}" data-date-range="${escapeHTML(conference["Date Range"])}" data-location="${escapeHTML(loc)}" data-link="${link}">+ Add to Calendar</span>
+        <div class="calendar-dropdown">
+          <a class="calendar-option google-cal">Google Calendar</a>
+          <a class="calendar-option apple-cal">Apple Calendar</a>
+        </div>
+      </div>
       ${attendanceRange ? `<p>👥 ${attendanceRange} attendees</p>` : ""}
       ${speakerHTML}
       ${hasDiscount ? `<div class="discount">🎟️ ${discount}</div>` : ""}
@@ -1726,6 +1780,7 @@ function render() {
   attachFavoriteListeners();
   attachSpeakerToggleListeners();
   attachShareListeners();
+  attachCalendarListeners();
   if (currentView === 'calendar') {
     attachAccordionListeners();
   }
@@ -1830,6 +1885,158 @@ function attachShareListeners() {
       }
     });
   });
+}
+
+/**
+ * Attach click handlers to calendar links
+ */
+function attachCalendarListeners() {
+  // Toggle dropdown
+  document.querySelectorAll('.add-calendar-link').forEach(link => {
+    link.addEventListener('click', (e) => {
+      e.stopPropagation();
+      
+      // Close any other open dropdowns
+      document.querySelectorAll('.calendar-dropdown.open').forEach(d => {
+        if (d !== link.nextElementSibling) d.classList.remove('open');
+      });
+      
+      const dropdown = link.nextElementSibling;
+      dropdown.classList.toggle('open');
+      
+      // Set up the calendar links
+      const confName = link.dataset.confName;
+      const dateRange = link.dataset.dateRange;
+      const location = link.dataset.location;
+      const confLink = link.dataset.link;
+      
+      const dates = parseDateRangeForCalendar(dateRange);
+      
+      // Google Calendar
+      const googleUrl = buildGoogleCalendarUrl(confName, dates.start, dates.end, location, confLink);
+      dropdown.querySelector('.google-cal').href = googleUrl;
+      dropdown.querySelector('.google-cal').target = '_blank';
+      
+      // Apple Calendar
+      dropdown.querySelector('.apple-cal').onclick = () => {
+        downloadICS(confName, dates.start, dates.end, location, confLink);
+        dropdown.classList.remove('open');
+      };
+    });
+  });
+  
+  // Close dropdown when clicking elsewhere
+  document.addEventListener('click', () => {
+    document.querySelectorAll('.calendar-dropdown.open').forEach(d => d.classList.remove('open'));
+  });
+}
+
+/**
+ * Parse date range string into start/end dates for calendar
+ */
+function parseDateRangeForCalendar(dateRange) {
+  // Examples: "February 6-8, 2026", "March 15, 2026", "September 28 - October 2, 2026"
+  const months = {
+    'january': '01', 'february': '02', 'march': '03', 'april': '04',
+    'may': '05', 'june': '06', 'july': '07', 'august': '08',
+    'september': '09', 'october': '10', 'november': '11', 'december': '12'
+  };
+  
+  let startDate, endDate;
+  
+  // Try to match "Month Day-Day, Year" (e.g., "February 6-8, 2026")
+  let match = dateRange.match(/(\w+)\s+(\d+)-(\d+),?\s*(\d{4})/i);
+  if (match) {
+    const month = months[match[1].toLowerCase()];
+    const year = match[4];
+    startDate = `${year}${month}${match[2].padStart(2, '0')}`;
+    endDate = `${year}${month}${match[3].padStart(2, '0')}`;
+    return { start: startDate, end: endDate };
+  }
+  
+  // Try to match "Month Day - Month Day, Year" (e.g., "September 28 - October 2, 2026")
+  match = dateRange.match(/(\w+)\s+(\d+)\s*-\s*(\w+)\s+(\d+),?\s*(\d{4})/i);
+  if (match) {
+    const startMonth = months[match[1].toLowerCase()];
+    const endMonth = months[match[3].toLowerCase()];
+    const year = match[5];
+    startDate = `${year}${startMonth}${match[2].padStart(2, '0')}`;
+    endDate = `${year}${endMonth}${match[4].padStart(2, '0')}`;
+    return { start: startDate, end: endDate };
+  }
+  
+  // Try to match single day "Month Day, Year" (e.g., "March 15, 2026")
+  match = dateRange.match(/(\w+)\s+(\d+),?\s*(\d{4})/i);
+  if (match) {
+    const month = months[match[1].toLowerCase()];
+    const year = match[3];
+    startDate = `${year}${month}${match[2].padStart(2, '0')}`;
+    endDate = startDate;
+    return { start: startDate, end: endDate };
+  }
+  
+  // Fallback - return empty
+  return { start: '', end: '' };
+}
+
+/**
+ * Build Google Calendar URL
+ */
+function buildGoogleCalendarUrl(title, startDate, endDate, location, link) {
+  // Add one day to end date for all-day events
+  if (endDate) {
+    const y = parseInt(endDate.slice(0, 4));
+    const m = parseInt(endDate.slice(4, 6)) - 1;
+    const d = parseInt(endDate.slice(6, 8)) + 1;
+    const nextDay = new Date(y, m, d);
+    endDate = `${nextDay.getFullYear()}${String(nextDay.getMonth() + 1).padStart(2, '0')}${String(nextDay.getDate()).padStart(2, '0')}`;
+  }
+  
+  const params = new URLSearchParams({
+    action: 'TEMPLATE',
+    text: title,
+    dates: `${startDate}/${endDate}`,
+    location: location,
+    details: `More info: ${link}`
+  });
+  
+  return `https://calendar.google.com/calendar/render?${params.toString()}`;
+}
+
+/**
+ * Download ICS file for Apple Calendar
+ */
+function downloadICS(title, startDate, endDate, location, link) {
+  // Add one day to end date for all-day events
+  if (endDate) {
+    const y = parseInt(endDate.slice(0, 4));
+    const m = parseInt(endDate.slice(4, 6)) - 1;
+    const d = parseInt(endDate.slice(6, 8)) + 1;
+    const nextDay = new Date(y, m, d);
+    endDate = `${nextDay.getFullYear()}${String(nextDay.getMonth() + 1).padStart(2, '0')}${String(nextDay.getDate()).padStart(2, '0')}`;
+  }
+  
+  const icsContent = `BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Proof of Conference//EN
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:${startDate}
+DTEND;VALUE=DATE:${endDate}
+SUMMARY:${title}
+LOCATION:${location}
+DESCRIPTION:More info: ${link}
+END:VEVENT
+END:VCALENDAR`;
+
+  const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `${title.replace(/[^a-z0-9]/gi, '-')}.ics`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
 }
 
 /**
