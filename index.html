@@ -177,16 +177,6 @@
       user-select: none;
     }
 
-    .speaker-select-display::after {
-      content: "▼";
-      position: absolute;
-      right: 16px;
-      top: 50%;
-      transform: translateY(-50%);
-      font-size: 10px;
-      color: #007AFF;
-    }
-
     .speaker-dropdown {
       display: none;
       position: absolute;
@@ -199,6 +189,7 @@
       z-index: 1000;
       margin-top: 4px;
       overflow: hidden;
+      max-height: 300px;
     }
 
     .speaker-dropdown.open {
@@ -207,9 +198,8 @@
 
     .speaker-list {
       flex: 1;
-      max-height: 300px;
       overflow-y: auto;
-      padding: 8px 0;
+      padding: 8px 0 0 0;
     }
 
     .speaker-list-header {
@@ -220,6 +210,11 @@
       background: #1a1a1a;
       position: sticky;
       top: 0;
+    }
+
+    .speaker-list-separator {
+      border-top: 1px solid #333;
+      margin: 8px 16px;
     }
 
     .speaker-list-item {
@@ -238,29 +233,24 @@
       color: #000;
     }
 
-    .speaker-list-item.priority {
-      color: #f7931a;
-    }
-
-    .speaker-list-item.priority:hover {
-      background: #2a2a2a;
-      color: #f7931a;
-    }
-
     .alphabet-scrubber {
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 8px 6px;
+      justify-content: space-between;
+      padding: 4px 6px;
       background: #121212;
       border-left: 1px solid #2a2a2a;
+      user-select: none;
+      touch-action: none;
+      overflow: hidden;
     }
 
     .alphabet-scrubber span {
-      font-size: 9px;
+      font-size: 8px;
       font-weight: 600;
       color: #9ca3af;
-      padding: 2px 4px;
+      padding: 1px 4px;
       cursor: pointer;
       user-select: none;
     }
@@ -920,7 +910,6 @@
             <!-- Populated by JS -->
           </div>
           <div class="alphabet-scrubber" id="alphabet-scrubber">
-            <span data-letter="#">#</span>
             <span data-letter="A">A</span>
             <span data-letter="B">B</span>
             <span data-letter="C">C</span>
@@ -1456,22 +1445,21 @@ function populateSpeakerDropdown() {
   allOption.textContent = "All Speakers / Notable Attendees";
   speakerList.appendChild(allOption);
   
-  // Add priority speakers section
+  // Add priority speakers (no header, just the names)
   const priorityInList = PRIORITY_SPEAKERS.filter(name => allSpeakersCache.includes(name));
   if (priorityInList.length > 0) {
-    const priorityHeader = document.createElement("div");
-    priorityHeader.className = "speaker-list-header";
-    priorityHeader.textContent = "⭐ Featured";
-    priorityHeader.id = "speaker-section-priority";
-    speakerList.appendChild(priorityHeader);
-    
     priorityInList.forEach(name => {
       const item = document.createElement("div");
-      item.className = "speaker-list-item priority";
+      item.className = "speaker-list-item";
       item.dataset.value = name;
       item.textContent = name;
       speakerList.appendChild(item);
     });
+    
+    // Add separator line after priority speakers
+    const separator = document.createElement("div");
+    separator.className = "speaker-list-separator";
+    speakerList.appendChild(separator);
   }
   
   // Group remaining speakers by first letter
@@ -1597,23 +1585,53 @@ speakerListEl.addEventListener("click", (e) => {
   render();
 });
 
-// Handle alphabet scrubber
-document.getElementById("alphabet-scrubber").addEventListener("click", (e) => {
-  const letter = e.target.dataset.letter;
+// Handle alphabet scrubber - click and touch slide
+const alphabetScrubber = document.getElementById("alphabet-scrubber");
+
+function scrollToLetter(letter) {
   if (!letter) return;
   
-  // Find the section header for this letter
-  let targetId;
-  if (letter === "#") {
-    targetId = "speaker-section-priority";
-  } else {
-    targetId = `speaker-section-${letter}`;
-  }
-  
+  const targetId = `speaker-section-${letter}`;
   const target = document.getElementById(targetId);
   if (target) {
-    target.scrollIntoView({ behavior: "smooth", block: "start" });
+    target.scrollIntoView({ behavior: "auto", block: "start" });
   }
+}
+
+function getLetterFromTouch(e) {
+  const touch = e.touches ? e.touches[0] : e;
+  const element = document.elementFromPoint(touch.clientX, touch.clientY);
+  if (element && element.dataset.letter) {
+    return element.dataset.letter;
+  }
+  return null;
+}
+
+// Click handler
+alphabetScrubber.addEventListener("click", (e) => {
+  const letter = e.target.dataset.letter;
+  scrollToLetter(letter);
+});
+
+// Touch handlers for sliding
+let isTouchingScrubber = false;
+
+alphabetScrubber.addEventListener("touchstart", (e) => {
+  e.preventDefault();
+  isTouchingScrubber = true;
+  const letter = getLetterFromTouch(e);
+  scrollToLetter(letter);
+}, { passive: false });
+
+alphabetScrubber.addEventListener("touchmove", (e) => {
+  if (!isTouchingScrubber) return;
+  e.preventDefault();
+  const letter = getLetterFromTouch(e);
+  scrollToLetter(letter);
+}, { passive: false });
+
+alphabetScrubber.addEventListener("touchend", () => {
+  isTouchingScrubber = false;
 });
 
 // Close dropdown when clicking outside
