@@ -144,13 +144,11 @@
     }
 
     .speaker-filter {
-      position: relative;
+      /* Inherits from .filter-row */
     }
 
     .speaker-filter .clear-btn {
-      position: relative;
-      right: auto;
-      margin-top: 0;
+      /* Uses default clear-btn styling */
     }
 
     .speaker-select-wrapper {
@@ -161,6 +159,7 @@
     .speaker-select-display {
       width: 100%;
       padding: 12px 16px;
+      padding-right: 40px;
       border-radius: 24px;
       border: none;
       font-size: 16px;
@@ -171,6 +170,17 @@
       user-select: none;
       -webkit-appearance: none;
       appearance: none;
+    }
+
+    .speaker-select-wrapper::after {
+      content: "⇅";
+      position: absolute;
+      right: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 12px;
+      color: #007AFF;
+      pointer-events: none;
     }
 
     .speaker-dropdown {
@@ -185,7 +195,7 @@
       z-index: 1000;
       margin-top: 4px;
       overflow: hidden;
-      max-height: 300px;
+      height: 300px;
     }
 
     .speaker-dropdown.open {
@@ -233,22 +243,23 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: space-between;
-      padding: 4px 6px;
+      justify-content: space-around;
+      padding: 4px 8px;
       background: #121212;
       border-left: 1px solid #2a2a2a;
       user-select: none;
       touch-action: none;
-      overflow: hidden;
+      min-width: 24px;
     }
 
     .alphabet-scrubber span {
-      font-size: 8px;
+      font-size: 9px;
       font-weight: 600;
       color: #9ca3af;
-      padding: 1px 4px;
+      padding: 0;
       cursor: pointer;
       user-select: none;
+      line-height: 1;
     }
 
     .alphabet-scrubber span:hover {
@@ -1456,14 +1467,19 @@ function populateSpeakerDropdown() {
     speakerList.appendChild(separator);
   }
   
-  // Group remaining speakers by first letter
+  // Helper to normalize first letter (remove accents, uppercase)
+  function getNormalizedFirstLetter(name) {
+    return name.charAt(0).normalize("NFD").replace(/[\u0300-\u036f]/g, "").toUpperCase();
+  }
+  
+  // Group remaining speakers by first letter (case-insensitive, accent-insensitive)
   const otherSpeakers = allSpeakersCache
     .filter(s => !PRIORITY_SPEAKERS.includes(s))
-    .sort();
+    .sort((a, b) => a.localeCompare(b, 'en', { sensitivity: 'base' }));
   
   let currentLetter = "";
   otherSpeakers.forEach(name => {
-    const firstLetter = name.charAt(0).toUpperCase();
+    const firstLetter = getNormalizedFirstLetter(name);
     
     // Add letter header if new letter
     if (firstLetter !== currentLetter) {
@@ -1581,7 +1597,6 @@ speakerListEl.addEventListener("click", (e) => {
 
 // Handle alphabet scrubber - click and touch slide
 const alphabetScrubber = document.getElementById("alphabet-scrubber");
-const scrubberLetters = alphabetScrubber.querySelectorAll("span");
 
 function scrollToLetter(letter) {
   if (!letter) return;
@@ -1593,9 +1608,10 @@ function scrollToLetter(letter) {
   }
 }
 
-function getLetterFromY(y) {
+function getLetterFromY(clientY) {
+  const scrubberLetters = alphabetScrubber.querySelectorAll("span");
   const rect = alphabetScrubber.getBoundingClientRect();
-  const relativeY = y - rect.top;
+  const relativeY = clientY - rect.top;
   const letterHeight = rect.height / scrubberLetters.length;
   const index = Math.floor(relativeY / letterHeight);
   const clampedIndex = Math.max(0, Math.min(index, scrubberLetters.length - 1));
@@ -1609,19 +1625,33 @@ alphabetScrubber.addEventListener("click", (e) => {
 });
 
 // Touch handlers for sliding
+let lastTouchLetter = null;
+
 alphabetScrubber.addEventListener("touchstart", (e) => {
   e.preventDefault();
+  e.stopPropagation();
   const touch = e.touches[0];
   const letter = getLetterFromY(touch.clientY);
-  scrollToLetter(letter);
+  if (letter !== lastTouchLetter) {
+    lastTouchLetter = letter;
+    scrollToLetter(letter);
+  }
 }, { passive: false });
 
 alphabetScrubber.addEventListener("touchmove", (e) => {
   e.preventDefault();
+  e.stopPropagation();
   const touch = e.touches[0];
   const letter = getLetterFromY(touch.clientY);
-  scrollToLetter(letter);
+  if (letter !== lastTouchLetter) {
+    lastTouchLetter = letter;
+    scrollToLetter(letter);
+  }
 }, { passive: false });
+
+alphabetScrubber.addEventListener("touchend", () => {
+  lastTouchLetter = null;
+});
 
 // Close dropdown when clicking outside
 document.addEventListener("click", (e) => {
