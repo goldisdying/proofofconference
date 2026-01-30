@@ -144,24 +144,18 @@
     }
 
     .speaker-filter {
-      flex-direction: column;
-      align-items: stretch;
-    }
-
-    .speaker-filter-container {
-      display: flex;
-      flex-direction: column;
-      flex: 1;
+      position: relative;
     }
 
     .speaker-filter .clear-btn {
-      position: absolute;
-      right: 20px;
-      margin-top: 8px;
+      position: relative;
+      right: auto;
+      margin-top: 0;
     }
 
     .speaker-select-wrapper {
       position: relative;
+      flex: 1;
     }
 
     .speaker-select-display {
@@ -175,6 +169,8 @@
       color: #007AFF;
       cursor: pointer;
       user-select: none;
+      -webkit-appearance: none;
+      appearance: none;
     }
 
     .speaker-dropdown {
@@ -901,42 +897,40 @@
   </div>
 
   <div class="filter-row speaker-filter">
-    <div class="speaker-filter-container">
-      <div class="speaker-select-wrapper">
-        <div class="speaker-select-display" id="speaker-display">All Speakers / Notable Attendees</div>
-        <input type="hidden" id="speaker" value="">
-        <div class="speaker-dropdown" id="speaker-dropdown">
-          <div class="speaker-list" id="speaker-list">
-            <!-- Populated by JS -->
-          </div>
-          <div class="alphabet-scrubber" id="alphabet-scrubber">
-            <span data-letter="A">A</span>
-            <span data-letter="B">B</span>
-            <span data-letter="C">C</span>
-            <span data-letter="D">D</span>
-            <span data-letter="E">E</span>
-            <span data-letter="F">F</span>
-            <span data-letter="G">G</span>
-            <span data-letter="H">H</span>
-            <span data-letter="I">I</span>
-            <span data-letter="J">J</span>
-            <span data-letter="K">K</span>
-            <span data-letter="L">L</span>
-            <span data-letter="M">M</span>
-            <span data-letter="N">N</span>
-            <span data-letter="O">O</span>
-            <span data-letter="P">P</span>
-            <span data-letter="Q">Q</span>
-            <span data-letter="R">R</span>
-            <span data-letter="S">S</span>
-            <span data-letter="T">T</span>
-            <span data-letter="U">U</span>
-            <span data-letter="V">V</span>
-            <span data-letter="W">W</span>
-            <span data-letter="X">X</span>
-            <span data-letter="Y">Y</span>
-            <span data-letter="Z">Z</span>
-          </div>
+    <div class="speaker-select-wrapper">
+      <div class="speaker-select-display" id="speaker-display">All Speakers / Notable Attendees</div>
+      <input type="hidden" id="speaker" value="">
+      <div class="speaker-dropdown" id="speaker-dropdown">
+        <div class="speaker-list" id="speaker-list">
+          <!-- Populated by JS -->
+        </div>
+        <div class="alphabet-scrubber" id="alphabet-scrubber">
+          <span data-letter="A">A</span>
+          <span data-letter="B">B</span>
+          <span data-letter="C">C</span>
+          <span data-letter="D">D</span>
+          <span data-letter="E">E</span>
+          <span data-letter="F">F</span>
+          <span data-letter="G">G</span>
+          <span data-letter="H">H</span>
+          <span data-letter="I">I</span>
+          <span data-letter="J">J</span>
+          <span data-letter="K">K</span>
+          <span data-letter="L">L</span>
+          <span data-letter="M">M</span>
+          <span data-letter="N">N</span>
+          <span data-letter="O">O</span>
+          <span data-letter="P">P</span>
+          <span data-letter="Q">Q</span>
+          <span data-letter="R">R</span>
+          <span data-letter="S">S</span>
+          <span data-letter="T">T</span>
+          <span data-letter="U">U</span>
+          <span data-letter="V">V</span>
+          <span data-letter="W">W</span>
+          <span data-letter="X">X</span>
+          <span data-letter="Y">Y</span>
+          <span data-letter="Z">Z</span>
         </div>
       </div>
     </div>
@@ -1587,6 +1581,7 @@ speakerListEl.addEventListener("click", (e) => {
 
 // Handle alphabet scrubber - click and touch slide
 const alphabetScrubber = document.getElementById("alphabet-scrubber");
+const scrubberLetters = alphabetScrubber.querySelectorAll("span");
 
 function scrollToLetter(letter) {
   if (!letter) return;
@@ -1598,13 +1593,13 @@ function scrollToLetter(letter) {
   }
 }
 
-function getLetterFromTouch(e) {
-  const touch = e.touches ? e.touches[0] : e;
-  const element = document.elementFromPoint(touch.clientX, touch.clientY);
-  if (element && element.dataset.letter) {
-    return element.dataset.letter;
-  }
-  return null;
+function getLetterFromY(y) {
+  const rect = alphabetScrubber.getBoundingClientRect();
+  const relativeY = y - rect.top;
+  const letterHeight = rect.height / scrubberLetters.length;
+  const index = Math.floor(relativeY / letterHeight);
+  const clampedIndex = Math.max(0, Math.min(index, scrubberLetters.length - 1));
+  return scrubberLetters[clampedIndex]?.dataset.letter;
 }
 
 // Click handler
@@ -1614,25 +1609,19 @@ alphabetScrubber.addEventListener("click", (e) => {
 });
 
 // Touch handlers for sliding
-let isTouchingScrubber = false;
-
 alphabetScrubber.addEventListener("touchstart", (e) => {
   e.preventDefault();
-  isTouchingScrubber = true;
-  const letter = getLetterFromTouch(e);
+  const touch = e.touches[0];
+  const letter = getLetterFromY(touch.clientY);
   scrollToLetter(letter);
 }, { passive: false });
 
 alphabetScrubber.addEventListener("touchmove", (e) => {
-  if (!isTouchingScrubber) return;
   e.preventDefault();
-  const letter = getLetterFromTouch(e);
+  const touch = e.touches[0];
+  const letter = getLetterFromY(touch.clientY);
   scrollToLetter(letter);
 }, { passive: false });
-
-alphabetScrubber.addEventListener("touchend", () => {
-  isTouchingScrubber = false;
-});
 
 // Close dropdown when clicking outside
 document.addEventListener("click", (e) => {
