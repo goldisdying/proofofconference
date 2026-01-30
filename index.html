@@ -1250,10 +1250,15 @@ function escapeHTML(str) {
 fetch(FEATURED_SPEAKERS_CSV_URL)
   .then(r => r.text())
   .then(text => {
-    // Simple CSV with one name per line
-    PRIORITY_SPEAKERS = text.split('\n')
-      .map(line => line.trim())
-      .filter(line => line.length > 0);
+    // Parse CSV with headers (Speakers, Featured)
+    const rows = parseCSV(text);
+    const headers = rows.shift();
+    
+    // Only include speakers with "X" in Featured column
+    PRIORITY_SPEAKERS = rows
+      .map(r => Object.fromEntries(headers.map((h, i) => [h, clean(r[i])])))
+      .filter(row => row.Featured && row.Featured.toLowerCase() === 'x')
+      .map(row => row.Speakers);
   })
   .catch(() => {
     // Fallback if CSV fails to load
