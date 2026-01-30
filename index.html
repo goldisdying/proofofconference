@@ -143,6 +143,61 @@
       flex: 1;
     }
 
+    .speaker-filter {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .speaker-filter-container {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      gap: 8px;
+    }
+
+    .speaker-filter .clear-btn {
+      position: absolute;
+      right: 20px;
+      margin-top: 38px;
+    }
+
+    .alphabet-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      justify-content: center;
+    }
+
+    .alpha-letter {
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 600;
+      color: #9ca3af;
+      background: #1a1a1a;
+      border-radius: 4px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .alpha-letter:hover {
+      background: #2a2a2a;
+      color: #fff;
+    }
+
+    .alpha-letter.active {
+      background: #f7931a;
+      color: #000;
+    }
+
+    .alpha-letter[data-letter=""] {
+      width: auto;
+      padding: 0 8px;
+    }
+
     .clear-btn {
       width: 32px;
       height: 32px;
@@ -780,8 +835,39 @@
     <button type="button" class="clear-btn" data-target="attendance">×</button>
   </div>
 
-  <div class="filter-row">
-    <select id="speaker"><option value="">All Speakers / Notable Attendees</option></select>
+  <div class="filter-row speaker-filter">
+    <div class="speaker-filter-container">
+      <div class="alphabet-bar">
+        <span class="alpha-letter active" data-letter="">All</span>
+        <span class="alpha-letter" data-letter="A">A</span>
+        <span class="alpha-letter" data-letter="B">B</span>
+        <span class="alpha-letter" data-letter="C">C</span>
+        <span class="alpha-letter" data-letter="D">D</span>
+        <span class="alpha-letter" data-letter="E">E</span>
+        <span class="alpha-letter" data-letter="F">F</span>
+        <span class="alpha-letter" data-letter="G">G</span>
+        <span class="alpha-letter" data-letter="H">H</span>
+        <span class="alpha-letter" data-letter="I">I</span>
+        <span class="alpha-letter" data-letter="J">J</span>
+        <span class="alpha-letter" data-letter="K">K</span>
+        <span class="alpha-letter" data-letter="L">L</span>
+        <span class="alpha-letter" data-letter="M">M</span>
+        <span class="alpha-letter" data-letter="N">N</span>
+        <span class="alpha-letter" data-letter="O">O</span>
+        <span class="alpha-letter" data-letter="P">P</span>
+        <span class="alpha-letter" data-letter="Q">Q</span>
+        <span class="alpha-letter" data-letter="R">R</span>
+        <span class="alpha-letter" data-letter="S">S</span>
+        <span class="alpha-letter" data-letter="T">T</span>
+        <span class="alpha-letter" data-letter="U">U</span>
+        <span class="alpha-letter" data-letter="V">V</span>
+        <span class="alpha-letter" data-letter="W">W</span>
+        <span class="alpha-letter" data-letter="X">X</span>
+        <span class="alpha-letter" data-letter="Y">Y</span>
+        <span class="alpha-letter" data-letter="Z">Z</span>
+      </div>
+      <select id="speaker"><option value="">All Speakers / Notable Attendees</option></select>
+    </div>
     <button type="button" class="clear-btn" data-target="speaker">×</button>
   </div>
 
@@ -862,6 +948,7 @@ const cardsEl = $("cards");
 let conferences = [];
 let ads = [];
 let currentView = 'cards'; // 'cards' or 'calendar'
+let allSpeakersCache = [];
 
 // ============================================================================
 // FAVORITES - LOCALSTORAGE MANAGEMENT
@@ -1268,6 +1355,9 @@ function populateFilters() {
     }
   });
 
+  // Cache all speakers for alphabet filtering
+  allSpeakersCache = [...allSpeakers];
+
   // Add priority speakers first
   PRIORITY_SPEAKERS.forEach(name => {
     if (allSpeakers.has(name)) {
@@ -1314,6 +1404,14 @@ document.querySelectorAll(".clear-btn").forEach(btn => {
   btn.addEventListener("click", () => {
     const sel = document.getElementById(btn.dataset.target);
     sel.value = "";
+    
+    // Reset alphabet bar if clearing speaker filter
+    if (btn.dataset.target === "speaker") {
+      document.querySelectorAll(".alpha-letter").forEach(l => l.classList.remove("active"));
+      document.querySelector('.alpha-letter[data-letter=""]').classList.add("active");
+      filterSpeakersByLetter("");
+    }
+    
     updateClearButtons();
     render();
   });
@@ -1340,6 +1438,64 @@ document.querySelectorAll(".view-btn").forEach(btn => {
     }
     
     render();
+  });
+});
+
+/**
+ * Update speaker dropdown based on selected letter
+ */
+function filterSpeakersByLetter(letter) {
+  const speakerSel = document.getElementById("speaker");
+  speakerSel.innerHTML = '<option value="">All Speakers / Notable Attendees</option>';
+  
+  let filteredSpeakers;
+  if (letter === "") {
+    // Show all - priority first, then alphabetical
+    filteredSpeakers = [];
+    PRIORITY_SPEAKERS.forEach(name => {
+      if (allSpeakersCache.includes(name)) {
+        filteredSpeakers.push(name);
+      }
+    });
+    // Add separator if we have priority speakers
+    if (filteredSpeakers.length > 0) {
+      const sep = new Option("──────────", "__sep__");
+      sep.disabled = true;
+      speakerSel.add(sep);
+    }
+    // Add remaining alphabetically
+    allSpeakersCache.filter(s => !PRIORITY_SPEAKERS.includes(s)).sort().forEach(name => {
+      speakerSel.add(new Option(name, name));
+    });
+    // Add priority speakers at top
+    filteredSpeakers.forEach(name => {
+      const opt = new Option(name, name);
+      speakerSel.add(opt, speakerSel.options[1]);
+    });
+  } else {
+    // Filter by letter
+    filteredSpeakers = allSpeakersCache
+      .filter(s => s.toUpperCase().startsWith(letter))
+      .sort();
+    filteredSpeakers.forEach(name => {
+      speakerSel.add(new Option(name, name));
+    });
+  }
+}
+
+// Add event listeners to alphabet letters
+document.querySelectorAll(".alpha-letter").forEach(letter => {
+  letter.addEventListener("click", () => {
+    // Update active state
+    document.querySelectorAll(".alpha-letter").forEach(l => l.classList.remove("active"));
+    letter.classList.add("active");
+    
+    // Filter speakers
+    filterSpeakersByLetter(letter.dataset.letter);
+    
+    // Reset speaker selection
+    document.getElementById("speaker").value = "";
+    updateClearButtons();
   });
 });
 
