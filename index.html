@@ -1393,6 +1393,11 @@ function getConferenceCardHTML(conference) {
     .map(escapeHTML)
     .join(", ");
   
+  // Location display (show "Online" for online events)
+  const format = (conference.Format || "").trim().toLowerCase();
+  const isOnline = format === "online";
+  const locationDisplay = isOnline ? "🌐 Online" : `📍 ${loc}`;
+  
   const conf = escapeHTML(conference.Conference);
   const venue = escapeHTML(conference.Venue);
   const dateRange = escapeHTML(conference["Date Range"]);
@@ -1407,8 +1412,7 @@ function getConferenceCardHTML(conference) {
   const favorited = isFavorited(confId);
   const shareSlug = getShareSlug(conference);
   
-  // Format badge (Online/Hybrid)
-  const format = (conference.Format || "").trim().toLowerCase();
+  // Format badge (Online/Hybrid) - uses format variable defined above
   let formatBadge = "";
   if (format === "online") {
     formatBadge = `<span class="format-badge virtual">💻 Online Event</span>`;
@@ -1443,7 +1447,9 @@ function getConferenceCardHTML(conference) {
   
   // Share data
   const shareTitle = conference.Conference;
-  const shareText = `Check out ${conference.Conference} in ${[conference.City, conference.Country].filter(Boolean).join(", ")} – ${conference["Date Range"]}!`;
+  const shareText = isOnline 
+    ? `Check out ${conference.Conference} (Online Event) – ${conference["Date Range"]}!`
+    : `Check out ${conference.Conference} in ${[conference.City, conference.Country].filter(Boolean).join(", ")} – ${conference["Date Range"]}!`;
 
   return `
     <div class="card" id="${shareSlug}">
@@ -1454,11 +1460,11 @@ function getConferenceCardHTML(conference) {
       <h2>${conf}</h2>
       ${formatBadge}
       ${timeAway ? `<div class="time-away">${escapeHTML(timeAway)}</div>` : ""}
-      <p>📍 ${loc}</p>
-      ${conference.Venue ? `<p>🏛️ ${venue}</p>` : ""}
+      <p>${locationDisplay}</p>
+      ${conference.Venue && !isOnline ? `<p>🏛️ ${venue}</p>` : ""}
       <p>📅 ${dateRange}</p>
       <div class="add-calendar">
-        <span class="add-calendar-link" data-conf-name="${escapeHTML(conference.Conference)}" data-date-range="${escapeHTML(conference["Date Range"])}" data-location="${escapeHTML(loc)}" data-link="${link}">+ Add to Calendar</span>
+        <span class="add-calendar-link" data-conf-name="${escapeHTML(conference.Conference)}" data-date-range="${escapeHTML(conference["Date Range"])}" data-location="${isOnline ? 'Online' : escapeHTML(loc)}" data-link="${link}">+ Add to Calendar</span>
         <div class="calendar-dropdown">
           <a class="calendar-option google-cal">Google Calendar</a>
           <a class="calendar-option apple-cal">Apple Calendar</a>
@@ -1686,6 +1692,9 @@ function renderAccordionView(filteredList) {
       
       // Format badge for accordion
       const format = (conference.Format || "").trim().toLowerCase();
+      const isOnline = format === "online";
+      const locationDisplay = isOnline ? "🌐 Online" : `📍 ${escapeHTML(location)}`;
+      
       let formatBadgeAccordion = "";
       if (format === "online") {
         formatBadgeAccordion = `<span class="accordion-format-badge virtual">💻 Online Event</span>`;
@@ -1699,7 +1708,7 @@ function renderAccordionView(filteredList) {
             <div class="accordion-item-name">${escapeHTML(conference.Conference)}</div>
             <div class="accordion-item-details">
               <span class="accordion-item-date">📅 ${escapeHTML(shortDate)}</span>
-              <span>📍 ${escapeHTML(location)}</span>
+              <span>${locationDisplay}</span>
               ${formatBadgeAccordion}
               ${hasDiscount ? `<span class="accordion-item-discount">🎟️ ${escapeHTML(conference.Discount)}</span>` : ''}
             </div>
