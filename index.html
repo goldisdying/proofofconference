@@ -125,7 +125,14 @@
       border-radius: 24px;
       border: none;
       font-size: 16px;
+      line-height: 1.2;
       box-sizing: border-box;
+      height: 48px;
+    }
+
+    select {
+      color: #007AFF;
+      background-color: #fff;
     }
 
     .sort-wrapper {
@@ -156,31 +163,37 @@
       flex: 1;
     }
 
+    .speaker-select-wrapper::after {
+      content: "";
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 12px;
+      height: 20px;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 20'%3E%3Cpath fill='%23007AFF' d='M6 0l5 6H1l5-6zm0 20l-5-6h10l-5 6z'/%3E%3C/svg%3E");
+      background-size: contain;
+      background-repeat: no-repeat;
+      pointer-events: none;
+    }
+
     .speaker-select-display {
       width: 100%;
-      padding: 12px 16px;
-      padding-right: 40px;
+      padding: 12px 36px 12px 16px;
       border-radius: 24px;
       border: none;
       font-size: 16px;
+      line-height: 1.2;
       box-sizing: border-box;
-      background: #fff;
+      background-color: #fff;
       color: #007AFF;
       cursor: pointer;
       user-select: none;
       -webkit-appearance: none;
       appearance: none;
-    }
-
-    .speaker-select-wrapper::after {
-      content: "⇅";
-      position: absolute;
-      right: 14px;
-      top: 50%;
-      transform: translateY(-50%);
-      font-size: 12px;
-      color: #007AFF;
-      pointer-events: none;
+      height: 48px;
+      display: flex;
+      align-items: center;
     }
 
     .speaker-dropdown {
@@ -200,6 +213,7 @@
 
     .speaker-dropdown.open {
       display: flex;
+      touch-action: none;
     }
 
     .speaker-list {
@@ -244,21 +258,25 @@
       flex-direction: column;
       align-items: center;
       justify-content: space-around;
-      padding: 4px 8px;
+      padding: 8px 12px;
       background: #121212;
       border-left: 1px solid #2a2a2a;
       user-select: none;
       touch-action: none;
-      min-width: 24px;
+      -webkit-user-select: none;
+      -webkit-touch-callout: none;
+      min-width: 32px;
     }
 
     .alphabet-scrubber span {
-      font-size: 9px;
+      font-size: 10px;
       font-weight: 600;
       color: #9ca3af;
-      padding: 0;
+      padding: 1px 6px;
       cursor: pointer;
       user-select: none;
+      touch-action: none;
+      -webkit-user-select: none;
       line-height: 1;
     }
 
@@ -1608,7 +1626,7 @@ function scrollToLetter(letter) {
   }
 }
 
-function getLetterFromY(clientY) {
+function getLetterAtY(clientY) {
   const scrubberLetters = alphabetScrubber.querySelectorAll("span");
   const rect = alphabetScrubber.getBoundingClientRect();
   const relativeY = clientY - rect.top;
@@ -1618,40 +1636,28 @@ function getLetterFromY(clientY) {
   return scrubberLetters[clampedIndex]?.dataset.letter;
 }
 
-// Click handler
+// Click handler for individual letters
 alphabetScrubber.addEventListener("click", (e) => {
-  const letter = e.target.dataset.letter;
-  scrollToLetter(letter);
+  if (e.target.dataset.letter) {
+    scrollToLetter(e.target.dataset.letter);
+  }
 });
 
-// Touch handlers for sliding
-let lastTouchLetter = null;
-
-alphabetScrubber.addEventListener("touchstart", (e) => {
+// Touch sliding - all events directly on the scrubber
+function handleTouchOnScrubber(e) {
   e.preventDefault();
   e.stopPropagation();
-  const touch = e.touches[0];
-  const letter = getLetterFromY(touch.clientY);
-  if (letter !== lastTouchLetter) {
-    lastTouchLetter = letter;
-    scrollToLetter(letter);
+  const touch = e.touches[0] || e.changedTouches[0];
+  if (touch) {
+    const letter = getLetterAtY(touch.clientY);
+    if (letter) scrollToLetter(letter);
   }
-}, { passive: false });
+}
 
-alphabetScrubber.addEventListener("touchmove", (e) => {
-  e.preventDefault();
-  e.stopPropagation();
-  const touch = e.touches[0];
-  const letter = getLetterFromY(touch.clientY);
-  if (letter !== lastTouchLetter) {
-    lastTouchLetter = letter;
-    scrollToLetter(letter);
-  }
-}, { passive: false });
-
-alphabetScrubber.addEventListener("touchend", () => {
-  lastTouchLetter = null;
-});
+alphabetScrubber.ontouchstart = handleTouchOnScrubber;
+alphabetScrubber.ontouchmove = handleTouchOnScrubber;
+alphabetScrubber.ontouchend = function(e) { e.preventDefault(); };
+alphabetScrubber.ontouchcancel = function(e) { e.preventDefault(); };
 
 // Close dropdown when clicking outside
 document.addEventListener("click", (e) => {
