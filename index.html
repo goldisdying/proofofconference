@@ -1351,15 +1351,42 @@ let allSpeakersList = [];
 let prioritySpeakersList = [];
 
 function populateFilters() {
-  // Populate location filters (Country, State)
-  ["Country", "State"].forEach(field => {
-    const sel = document.getElementById(field.toLowerCase());
-    const uniqueValues = [...new Set(conferences.map(c => c[field]).filter(Boolean))].sort();
-    uniqueValues.forEach(v => sel.add(new Option(v, v)));
+  // Get upcoming conferences for counts
+  const upcomingConferences = conferences.filter(c => isUpcoming(c["Date Range"]));
+
+  // Count upcoming conferences per country
+  const countryUpcomingCounts = {};
+  upcomingConferences.forEach(c => {
+    if (c.Country) {
+      countryUpcomingCounts[c.Country] = (countryUpcomingCounts[c.Country] || 0) + 1;
+    }
   });
 
-  // Get upcoming conferences only for speaker counts
-  const upcomingConferences = conferences.filter(c => isUpcoming(c["Date Range"]));
+  // Count upcoming conferences per state
+  const stateUpcomingCounts = {};
+  upcomingConferences.forEach(c => {
+    if (c.State) {
+      stateUpcomingCounts[c.State] = (stateUpcomingCounts[c.State] || 0) + 1;
+    }
+  });
+
+  // Populate Country filter with counts
+  const countrySel = document.getElementById("country");
+  const uniqueCountries = [...new Set(conferences.map(c => c.Country).filter(Boolean))].sort();
+  uniqueCountries.forEach(v => {
+    const count = countryUpcomingCounts[v] || 0;
+    const label = count > 0 ? `${v} (${count})` : v;
+    countrySel.add(new Option(label, v));
+  });
+
+  // Populate State filter with counts
+  const stateSel = document.getElementById("state");
+  const uniqueStates = [...new Set(conferences.map(c => c.State).filter(Boolean))].sort();
+  uniqueStates.forEach(v => {
+    const count = stateUpcomingCounts[v] || 0;
+    const label = count > 0 ? `${v} (${count})` : v;
+    stateSel.add(new Option(label, v));
+  });
 
   // Count upcoming conferences per speaker
   speakerConferenceCounts = {};
