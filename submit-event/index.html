@@ -65,6 +65,13 @@
     select:disabled {
       opacity: 0.5;
     }
+    input:disabled {
+      opacity: 0.5;
+      background: #e5e5e5;
+    }
+    .field-disabled label {
+      opacity: 0.5;
+    }
     .hint {
       font-size: 12px;
       color: #9ca3af;
@@ -132,10 +139,18 @@
     <input type="date" name="end_date" id="end_date" required>
     <div class="hint">Can be the same as the start date</div>
 
-    <label>City *</label>
-    <input type="text" name="city" required>
+    <label>Event Format *</label>
+    <select name="event_format" id="event_format" required>
+      <option value="">Select format</option>
+      <option value="In-Person">In-Person</option>
+      <option value="Online">Online</option>
+      <option value="Hybrid">Hybrid (In-Person and Online)</option>
+    </select>
 
-    <label>Country *</label>
+    <label id="city-label">City *</label>
+    <input type="text" name="city" id="city" required>
+
+    <label id="country-label">Country *</label>
     <select name="country" id="country" required>
       <option value="">Select country</option>
       <option>United States</option>
@@ -192,7 +207,7 @@
       <option>Vietnam</option><option>Yemen</option><option>Zambia</option><option>Zimbabwe</option>
     </select>
 
-    <label>State / Territory</label>
+    <label id="state-label">State / Territory</label>
     <select name="state" id="state" disabled>
       <option value="">Select state</option>
       <option>Alabama</option><option>Alaska</option><option>Arizona</option><option>Arkansas</option>
@@ -213,8 +228,8 @@
       <option>American Samoa</option><option>Northern Mariana Islands</option>
     </select>
 
-    <label>Venue</label>
-    <input type="text" name="venue">
+    <label id="venue-label">Venue</label>
+    <input type="text" name="venue" id="venue">
 
     <label>Expected Attendance *</label>
     <select name="expected_attendance" required>
@@ -293,14 +308,53 @@
   const country = document.getElementById("country");
   const state = document.getElementById("state");
   const website = document.getElementById("website");
+  const eventFormat = document.getElementById("event_format");
+  const city = document.getElementById("city");
+  const venue = document.getElementById("venue");
+
+  // Location field labels
+  const cityLabel = document.getElementById("city-label");
+  const countryLabel = document.getElementById("country-label");
+  const stateLabel = document.getElementById("state-label");
+  const venueLabel = document.getElementById("venue-label");
 
   start.min = today;
   end.min = today;
 
   start.addEventListener("change", () => end.min = start.value);
 
+  // Event format change - toggle location fields
+  eventFormat.addEventListener("change", () => {
+    const isOnline = eventFormat.value === "Online";
+    
+    // Disable/enable location fields
+    city.disabled = isOnline;
+    country.disabled = isOnline;
+    state.disabled = isOnline || country.value !== "United States";
+    venue.disabled = isOnline;
+    
+    // Update required status
+    city.required = !isOnline;
+    country.required = !isOnline;
+    
+    // Clear values when disabled
+    if (isOnline) {
+      city.value = "";
+      country.value = "";
+      state.value = "";
+      venue.value = "";
+    }
+    
+    // Update label opacity
+    cityLabel.style.opacity = isOnline ? "0.5" : "1";
+    countryLabel.style.opacity = isOnline ? "0.5" : "1";
+    stateLabel.style.opacity = isOnline ? "0.5" : "1";
+    venueLabel.style.opacity = isOnline ? "0.5" : "1";
+  });
+
   country.addEventListener("change", () => {
-    if (country.value === "United States") {
+    const isOnline = eventFormat.value === "Online";
+    if (country.value === "United States" && !isOnline) {
       state.disabled = false;
       state.required = true;
     } else {
