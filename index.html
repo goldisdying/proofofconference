@@ -1412,11 +1412,9 @@ function getConferenceCardHTML(conference) {
   const favorited = isFavorited(confId);
   const shareSlug = getShareSlug(conference);
   
-  // Format badge (Online/Hybrid) - uses format variable defined above
+  // Format badge (Hybrid only - Online is shown in location line)
   let formatBadge = "";
-  if (format === "online") {
-    formatBadge = `<span class="format-badge virtual">💻 Online Event</span>`;
-  } else if (format === "hybrid") {
+  if (format === "hybrid") {
     formatBadge = `<span class="format-badge hybrid">🔄 In-Person & Online</span>`;
   }
   
@@ -1696,9 +1694,7 @@ function renderAccordionView(filteredList) {
       const locationDisplay = isOnline ? "🌐 Online Event" : `📍 ${escapeHTML(location)}`;
       
       let formatBadgeAccordion = "";
-      if (format === "online") {
-        formatBadgeAccordion = `<span class="accordion-format-badge virtual">💻 Online Event</span>`;
-      } else if (format === "hybrid") {
+      if (format === "hybrid") {
         formatBadgeAccordion = `<span class="accordion-format-badge hybrid">🔄 In-Person & Online</span>`;
       }
       
