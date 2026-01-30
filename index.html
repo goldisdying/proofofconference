@@ -125,14 +125,7 @@
       border-radius: 24px;
       border: none;
       font-size: 16px;
-      line-height: 1.2;
       box-sizing: border-box;
-      height: 48px;
-    }
-
-    select {
-      color: #007AFF;
-      background-color: #fff;
     }
 
     .sort-wrapper {
@@ -148,144 +141,6 @@
 
     .filter-row select {
       flex: 1;
-    }
-
-    .speaker-filter {
-      /* Inherits from .filter-row */
-    }
-
-    .speaker-filter .clear-btn {
-      /* Uses default clear-btn styling */
-    }
-
-    .speaker-select-wrapper {
-      position: relative;
-      flex: 1;
-    }
-
-    .speaker-select-wrapper::after {
-      content: "";
-      position: absolute;
-      right: 12px;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 12px;
-      height: 20px;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 20'%3E%3Cpath fill='%23007AFF' d='M6 0l5 6H1l5-6zm0 20l-5-6h10l-5 6z'/%3E%3C/svg%3E");
-      background-size: contain;
-      background-repeat: no-repeat;
-      pointer-events: none;
-    }
-
-    .speaker-select-display {
-      width: 100%;
-      padding: 12px 36px 12px 16px;
-      border-radius: 24px;
-      border: none;
-      font-size: 16px;
-      line-height: 1.2;
-      box-sizing: border-box;
-      background-color: #fff;
-      color: #007AFF;
-      cursor: pointer;
-      user-select: none;
-      -webkit-appearance: none;
-      appearance: none;
-      height: 48px;
-      display: flex;
-      align-items: center;
-    }
-
-    .speaker-dropdown {
-      display: none;
-      position: absolute;
-      top: 100%;
-      left: 0;
-      right: 0;
-      background: #1a1a1a;
-      border-radius: 12px;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.6);
-      z-index: 1000;
-      margin-top: 4px;
-      overflow: hidden;
-      height: 300px;
-    }
-
-    .speaker-dropdown.open {
-      display: flex;
-      touch-action: none;
-    }
-
-    .speaker-list {
-      flex: 1;
-      overflow-y: auto;
-      padding: 8px 0 0 0;
-    }
-
-    .speaker-list-header {
-      padding: 8px 16px 4px;
-      font-size: 12px;
-      font-weight: 700;
-      color: #f7931a;
-      background: #1a1a1a;
-      position: sticky;
-      top: 0;
-    }
-
-    .speaker-list-separator {
-      border-top: 1px solid #333;
-      margin: 8px 16px;
-    }
-
-    .speaker-list-item {
-      padding: 10px 16px;
-      color: #fff;
-      cursor: pointer;
-      font-size: 14px;
-    }
-
-    .speaker-list-item:hover {
-      background: #2a2a2a;
-    }
-
-    .speaker-list-item.selected {
-      background: #f7931a;
-      color: #000;
-    }
-
-    .alphabet-scrubber {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: space-around;
-      padding: 8px 12px;
-      background: #121212;
-      border-left: 1px solid #2a2a2a;
-      user-select: none;
-      touch-action: none;
-      -webkit-user-select: none;
-      -webkit-touch-callout: none;
-      min-width: 32px;
-    }
-
-    .alphabet-scrubber span {
-      font-size: 10px;
-      font-weight: 600;
-      color: #9ca3af;
-      padding: 1px 6px;
-      cursor: pointer;
-      user-select: none;
-      touch-action: none;
-      -webkit-user-select: none;
-      line-height: 1;
-    }
-
-    .alphabet-scrubber span:hover {
-      color: #f7931a;
-    }
-
-    .alphabet-scrubber span.active {
-      color: #f7931a;
     }
 
     .clear-btn {
@@ -925,44 +780,8 @@
     <button type="button" class="clear-btn" data-target="attendance">×</button>
   </div>
 
-  <div class="filter-row speaker-filter">
-    <div class="speaker-select-wrapper">
-      <div class="speaker-select-display" id="speaker-display">All Speakers / Notable Attendees</div>
-      <input type="hidden" id="speaker" value="">
-      <div class="speaker-dropdown" id="speaker-dropdown">
-        <div class="speaker-list" id="speaker-list">
-          <!-- Populated by JS -->
-        </div>
-        <div class="alphabet-scrubber" id="alphabet-scrubber">
-          <span data-letter="A">A</span>
-          <span data-letter="B">B</span>
-          <span data-letter="C">C</span>
-          <span data-letter="D">D</span>
-          <span data-letter="E">E</span>
-          <span data-letter="F">F</span>
-          <span data-letter="G">G</span>
-          <span data-letter="H">H</span>
-          <span data-letter="I">I</span>
-          <span data-letter="J">J</span>
-          <span data-letter="K">K</span>
-          <span data-letter="L">L</span>
-          <span data-letter="M">M</span>
-          <span data-letter="N">N</span>
-          <span data-letter="O">O</span>
-          <span data-letter="P">P</span>
-          <span data-letter="Q">Q</span>
-          <span data-letter="R">R</span>
-          <span data-letter="S">S</span>
-          <span data-letter="T">T</span>
-          <span data-letter="U">U</span>
-          <span data-letter="V">V</span>
-          <span data-letter="W">W</span>
-          <span data-letter="X">X</span>
-          <span data-letter="Y">Y</span>
-          <span data-letter="Z">Z</span>
-        </div>
-      </div>
-    </div>
+  <div class="filter-row">
+    <select id="speaker"><option value="">All Speakers / Notable Attendees</option></select>
     <button type="button" class="clear-btn" data-target="speaker">×</button>
   </div>
 
@@ -1043,7 +862,6 @@ const cardsEl = $("cards");
 let conferences = [];
 let ads = [];
 let currentView = 'cards'; // 'cards' or 'calendar'
-let allSpeakersCache = [];
 
 // ============================================================================
 // FAVORITES - LOCALSTORAGE MANAGEMENT
@@ -1437,8 +1255,11 @@ function populateFilters() {
     uniqueValues.forEach(v => sel.add(new Option(v, v)));
   });
 
-  // Collect all unique speakers
+  // Populate speaker filter with priority speakers first
+  const speakerSel = document.getElementById("speaker");
   const allSpeakers = new Set();
+
+  // Collect all unique speakers
   conferences.forEach(c => {
     if (c["Speakers/Notable Attendees"]) {
       c["Speakers/Notable Attendees"].split(",").forEach(s => {
@@ -1447,73 +1268,22 @@ function populateFilters() {
     }
   });
 
-  // Cache all speakers for custom dropdown
-  allSpeakersCache = [...allSpeakers];
-  
-  // Populate custom speaker dropdown
-  populateSpeakerDropdown();
-}
-
-/**
- * Populate the custom speaker dropdown with alphabetically grouped speakers
- */
-function populateSpeakerDropdown() {
-  const speakerList = document.getElementById("speaker-list");
-  speakerList.innerHTML = '';
-  
-  // Add "All Speakers" option
-  const allOption = document.createElement("div");
-  allOption.className = "speaker-list-item";
-  allOption.dataset.value = "";
-  allOption.textContent = "All Speakers / Notable Attendees";
-  speakerList.appendChild(allOption);
-  
-  // Add priority speakers (no header, just the names)
-  const priorityInList = PRIORITY_SPEAKERS.filter(name => allSpeakersCache.includes(name));
-  if (priorityInList.length > 0) {
-    priorityInList.forEach(name => {
-      const item = document.createElement("div");
-      item.className = "speaker-list-item";
-      item.dataset.value = name;
-      item.textContent = name;
-      speakerList.appendChild(item);
-    });
-    
-    // Add separator line after priority speakers
-    const separator = document.createElement("div");
-    separator.className = "speaker-list-separator";
-    speakerList.appendChild(separator);
-  }
-  
-  // Helper to normalize first letter (remove accents, uppercase)
-  function getNormalizedFirstLetter(name) {
-    return name.charAt(0).normalize("NFD").replace(/[\u0300-\u036f]/g, "").toUpperCase();
-  }
-  
-  // Group remaining speakers by first letter (case-insensitive, accent-insensitive)
-  const otherSpeakers = allSpeakersCache
-    .filter(s => !PRIORITY_SPEAKERS.includes(s))
-    .sort((a, b) => a.localeCompare(b, 'en', { sensitivity: 'base' }));
-  
-  let currentLetter = "";
-  otherSpeakers.forEach(name => {
-    const firstLetter = getNormalizedFirstLetter(name);
-    
-    // Add letter header if new letter
-    if (firstLetter !== currentLetter) {
-      currentLetter = firstLetter;
-      const header = document.createElement("div");
-      header.className = "speaker-list-header";
-      header.textContent = firstLetter;
-      header.id = `speaker-section-${firstLetter}`;
-      speakerList.appendChild(header);
+  // Add priority speakers first
+  PRIORITY_SPEAKERS.forEach(name => {
+    if (allSpeakers.has(name)) {
+      speakerSel.add(new Option(name, name));
+      allSpeakers.delete(name);
     }
-    
-    const item = document.createElement("div");
-    item.className = "speaker-list-item";
-    item.dataset.value = name;
-    item.textContent = name;
-    speakerList.appendChild(item);
+  });
+
+  // Add separator
+  const sep = new Option("──────────", "__sep__");
+  sep.disabled = true;
+  speakerSel.add(sep);
+
+  // Add remaining speakers alphabetically
+  [...allSpeakers].sort().forEach(name => {
+    speakerSel.add(new Option(name, name));
   });
 }
 
@@ -1532,7 +1302,7 @@ function updateClearButtons() {
 }
 
 // Add event listeners to filters
-["search", "country", "state", "attendance", "sort"].forEach(id => {
+["search", "country", "state", "attendance", "sort", "speaker"].forEach(id => {
   document.getElementById(id).addEventListener("input", () => {
     updateClearButtons();
     render();
@@ -1542,15 +1312,8 @@ function updateClearButtons() {
 // Add event listeners to clear buttons
 document.querySelectorAll(".clear-btn").forEach(btn => {
   btn.addEventListener("click", () => {
-    const target = btn.dataset.target;
-    const sel = document.getElementById(target);
+    const sel = document.getElementById(btn.dataset.target);
     sel.value = "";
-    
-    // Reset speaker display if clearing speaker filter
-    if (target === "speaker") {
-      document.getElementById("speaker-display").textContent = "All Speakers / Notable Attendees";
-    }
-    
     updateClearButtons();
     render();
   });
@@ -1578,92 +1341,6 @@ document.querySelectorAll(".view-btn").forEach(btn => {
     
     render();
   });
-});
-
-// ============================================================================
-// CUSTOM SPEAKER DROPDOWN
-// ============================================================================
-
-const speakerDisplay = document.getElementById("speaker-display");
-const speakerDropdown = document.getElementById("speaker-dropdown");
-const speakerListEl = document.getElementById("speaker-list");
-const speakerInput = document.getElementById("speaker");
-
-// Toggle dropdown on display click
-speakerDisplay.addEventListener("click", (e) => {
-  e.stopPropagation();
-  speakerDropdown.classList.toggle("open");
-});
-
-// Handle speaker selection
-speakerListEl.addEventListener("click", (e) => {
-  const item = e.target.closest(".speaker-list-item");
-  if (!item) return;
-  
-  const value = item.dataset.value;
-  speakerInput.value = value;
-  speakerDisplay.textContent = value || "All Speakers / Notable Attendees";
-  speakerDropdown.classList.remove("open");
-  
-  // Update selected state
-  speakerListEl.querySelectorAll(".speaker-list-item").forEach(i => i.classList.remove("selected"));
-  item.classList.add("selected");
-  
-  updateClearButtons();
-  render();
-});
-
-// Handle alphabet scrubber - click and touch slide
-const alphabetScrubber = document.getElementById("alphabet-scrubber");
-
-function scrollToLetter(letter) {
-  if (!letter) return;
-  
-  const targetId = `speaker-section-${letter}`;
-  const target = document.getElementById(targetId);
-  if (target) {
-    target.scrollIntoView({ behavior: "auto", block: "start" });
-  }
-}
-
-function getLetterAtY(clientY) {
-  const scrubberLetters = alphabetScrubber.querySelectorAll("span");
-  const rect = alphabetScrubber.getBoundingClientRect();
-  const relativeY = clientY - rect.top;
-  const letterHeight = rect.height / scrubberLetters.length;
-  const index = Math.floor(relativeY / letterHeight);
-  const clampedIndex = Math.max(0, Math.min(index, scrubberLetters.length - 1));
-  return scrubberLetters[clampedIndex]?.dataset.letter;
-}
-
-// Click handler for individual letters
-alphabetScrubber.addEventListener("click", (e) => {
-  if (e.target.dataset.letter) {
-    scrollToLetter(e.target.dataset.letter);
-  }
-});
-
-// Touch sliding - all events directly on the scrubber
-function handleTouchOnScrubber(e) {
-  e.preventDefault();
-  e.stopPropagation();
-  const touch = e.touches[0] || e.changedTouches[0];
-  if (touch) {
-    const letter = getLetterAtY(touch.clientY);
-    if (letter) scrollToLetter(letter);
-  }
-}
-
-alphabetScrubber.ontouchstart = handleTouchOnScrubber;
-alphabetScrubber.ontouchmove = handleTouchOnScrubber;
-alphabetScrubber.ontouchend = function(e) { e.preventDefault(); };
-alphabetScrubber.ontouchcancel = function(e) { e.preventDefault(); };
-
-// Close dropdown when clicking outside
-document.addEventListener("click", (e) => {
-  if (!e.target.closest(".speaker-select-wrapper")) {
-    speakerDropdown.classList.remove("open");
-  }
 });
 
 // ============================================================================
