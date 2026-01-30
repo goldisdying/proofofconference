@@ -143,6 +143,68 @@
       flex: 1;
     }
 
+    .speaker-autocomplete-wrapper {
+      position: relative;
+      flex: 1;
+    }
+
+    #speaker-search {
+      width: 100%;
+      padding: 12px 16px;
+      border-radius: 24px;
+      border: none;
+      font-size: 16px;
+      box-sizing: border-box;
+    }
+
+    #speaker-search.has-selection {
+      color: #007AFF;
+    }
+
+    .speaker-autocomplete-dropdown {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: #1a1a1a;
+      border-radius: 12px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.6);
+      z-index: 1000;
+      margin-top: 4px;
+      max-height: 280px;
+      overflow-y: auto;
+    }
+
+    .speaker-autocomplete-dropdown.open {
+      display: block;
+    }
+
+    .speaker-autocomplete-item {
+      padding: 12px 16px;
+      color: #fff;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .speaker-autocomplete-item:hover,
+    .speaker-autocomplete-item.highlighted {
+      background: #2a2a2a;
+    }
+
+    .speaker-autocomplete-item.priority {
+      color: #f7931a;
+    }
+
+    .speaker-autocomplete-header {
+      padding: 8px 16px;
+      font-size: 11px;
+      font-weight: 600;
+      color: #9ca3af;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
     .clear-btn {
       width: 32px;
       height: 32px;
@@ -781,7 +843,11 @@
   </div>
 
   <div class="filter-row">
-    <select id="speaker"><option value="">All Speakers / Notable Attendees</option></select>
+    <div class="speaker-autocomplete-wrapper">
+      <input type="text" id="speaker-search" placeholder="🔍 Search speakers..." autocomplete="off">
+      <input type="hidden" id="speaker" value="">
+      <div class="speaker-autocomplete-dropdown" id="speaker-dropdown"></div>
+    </div>
     <button type="button" class="clear-btn" data-target="speaker">×</button>
   </div>
 
@@ -1247,6 +1313,9 @@ function updateStats() {
 /**
  * Populate filter dropdowns with unique values from conferences
  */
+let allSpeakersList = [];
+let prioritySpeakersList = [];
+
 function populateFilters() {
   // Populate location filters (Country, State)
   ["Country", "State"].forEach(field => {
@@ -1255,11 +1324,8 @@ function populateFilters() {
     uniqueValues.forEach(v => sel.add(new Option(v, v)));
   });
 
-  // Populate speaker filter with priority speakers first
-  const speakerSel = document.getElementById("speaker");
-  const allSpeakers = new Set();
-
   // Collect all unique speakers
+  const allSpeakers = new Set();
   conferences.forEach(c => {
     if (c["Speakers/Notable Attendees"]) {
       c["Speakers/Notable Attendees"].split(",").forEach(s => {
@@ -1268,23 +1334,150 @@ function populateFilters() {
     }
   });
 
-  // Add priority speakers first
-  PRIORITY_SPEAKERS.forEach(name => {
-    if (allSpeakers.has(name)) {
-      speakerSel.add(new Option(name, name));
-      allSpeakers.delete(name);
+  // Build priority speakers list (ones that exist in data)
+  prioritySpeakersList = PRIORITY_SPEAKERS.filter(name => allSpeakers.has(name));
+  
+  // Build all speakers list (sorted, excluding priority)
+  const otherSpeakers = [...allSpeakers]
+    .filter(s => !PRIORITY_SPEAKERS.includes(s))
+    .sort((a, b) => a.localeCompare(b, 'en', { sensitivity: 'base' }));
+  
+  allSpeakersList = [...prioritySpeakersList, ...otherSpeakers];
+  
+  // Initialize autocomplete
+  initSpeakerAutocomplete();
+}
+
+/**
+ * Initialize speaker autocomplete functionality
+ */
+function initSpeakerAutocomplete() {
+  const searchInput = document.getElementById("speaker-search");
+  const hiddenInput = document.getElementById("speaker");
+  const dropdown = document.getElementById("speaker-dropdown");
+  let highlightedIndex = -1;
+  
+  // Show dropdown with filtered results
+  function showDropdown(filter = "") {
+    const filterLower = filter.toLowerCase();
+    let html = "";
+    
+    if (filter === "") {
+      // Show priority speakers when no filter
+      html += `<div class="speaker-autocomplete-header">Featured Speakers</div>`;
+      prioritySpeakersList.forEach(name => {
+        html += `<div class="speaker-autocomplete-item priority" data-value="${escapeHTML(name)}">${escapeHTML(name)}</div>`;
+      });
+    } else {
+      // Filter all speakers
+      const matches = allSpeakersList.filter(name => 
+        name.toLowerCase().includes(filterLower)
+      ).slice(0, 20); // Limit to 20 results
+      
+      if (matches.length === 0) {
+        html = `<div class="speaker-autocomplete-header">No speakers found</div>`;
+      } else {
+        matches.forEach(name => {
+          const isPriority = prioritySpeakersList.includes(name);
+          html += `<div class="speaker-autocomplete-item${isPriority ? ' priority' : ''}" data-value="${escapeHTML(name)}">${escapeHTML(name)}</div>`;
+        });
+      }
+    }
+    
+    dropdown.innerHTML = html;
+    dropdown.classList.add("open");
+    highlightedIndex = -1;
+  }
+  
+  // Hide dropdown
+  function hideDropdown() {
+    dropdown.classList.remove("open");
+    highlightedIndex = -1;
+  }
+  
+  // Select a speaker
+  function selectSpeaker(name) {
+    hiddenInput.value = name;
+    searchInput.value = name;
+    searchInput.classList.add("has-selection");
+    hideDropdown();
+    updateClearButtons();
+    render();
+  }
+  
+  // Clear selection
+  function clearSelection() {
+    hiddenInput.value = "";
+    searchInput.value = "";
+    searchInput.classList.remove("has-selection");
+    updateClearButtons();
+    render();
+  }
+  
+  // Handle keyboard navigation
+  function updateHighlight(items) {
+    items.forEach((item, i) => {
+      item.classList.toggle("highlighted", i === highlightedIndex);
+    });
+    if (highlightedIndex >= 0 && items[highlightedIndex]) {
+      items[highlightedIndex].scrollIntoView({ block: "nearest" });
+    }
+  }
+  
+  // Event: Focus on input
+  searchInput.addEventListener("focus", () => {
+    if (!hiddenInput.value) {
+      showDropdown("");
     }
   });
-
-  // Add separator
-  const sep = new Option("──────────", "__sep__");
-  sep.disabled = true;
-  speakerSel.add(sep);
-
-  // Add remaining speakers alphabetically
-  [...allSpeakers].sort().forEach(name => {
-    speakerSel.add(new Option(name, name));
+  
+  // Event: Input changes
+  searchInput.addEventListener("input", () => {
+    searchInput.classList.remove("has-selection");
+    hiddenInput.value = "";
+    showDropdown(searchInput.value);
   });
+  
+  // Event: Keyboard navigation
+  searchInput.addEventListener("keydown", (e) => {
+    const items = dropdown.querySelectorAll(".speaker-autocomplete-item");
+    
+    if (e.key === "ArrowDown") {
+      e.preventDefault();
+      highlightedIndex = Math.min(highlightedIndex + 1, items.length - 1);
+      updateHighlight(items);
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault();
+      highlightedIndex = Math.max(highlightedIndex - 1, 0);
+      updateHighlight(items);
+    } else if (e.key === "Enter") {
+      e.preventDefault();
+      if (highlightedIndex >= 0 && items[highlightedIndex]) {
+        selectSpeaker(items[highlightedIndex].dataset.value);
+      }
+    } else if (e.key === "Escape") {
+      hideDropdown();
+      searchInput.blur();
+    }
+  });
+  
+  // Event: Click on dropdown item
+  dropdown.addEventListener("click", (e) => {
+    const item = e.target.closest(".speaker-autocomplete-item");
+    if (item) {
+      selectSpeaker(item.dataset.value);
+    }
+  });
+  
+  // Event: Click outside to close
+  document.addEventListener("click", (e) => {
+    if (!e.target.closest(".speaker-autocomplete-wrapper")) {
+      hideDropdown();
+    }
+  });
+  
+  // Expose clear function for clear button
+  window.clearSpeakerSelection = clearSelection;
 }
 
 // ============================================================================
@@ -1302,7 +1495,7 @@ function updateClearButtons() {
 }
 
 // Add event listeners to filters
-["search", "country", "state", "attendance", "sort", "speaker"].forEach(id => {
+["search", "country", "state", "attendance", "sort"].forEach(id => {
   document.getElementById(id).addEventListener("input", () => {
     updateClearButtons();
     render();
@@ -1312,7 +1505,15 @@ function updateClearButtons() {
 // Add event listeners to clear buttons
 document.querySelectorAll(".clear-btn").forEach(btn => {
   btn.addEventListener("click", () => {
-    const sel = document.getElementById(btn.dataset.target);
+    const target = btn.dataset.target;
+    
+    // Special handling for speaker autocomplete
+    if (target === "speaker") {
+      window.clearSpeakerSelection();
+      return;
+    }
+    
+    const sel = document.getElementById(target);
     sel.value = "";
     updateClearButtons();
     render();
