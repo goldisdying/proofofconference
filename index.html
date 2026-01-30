@@ -1396,7 +1396,7 @@ function getConferenceCardHTML(conference) {
   // Location display (show "Online" for online events)
   const format = (conference.Format || "").trim().toLowerCase();
   const isOnline = format === "online";
-  const locationDisplay = isOnline ? "🌐 Online" : `📍 ${loc}`;
+  const locationDisplay = isOnline ? "🌐 Online Event" : `📍 ${loc}`;
   
   const conf = escapeHTML(conference.Conference);
   const venue = escapeHTML(conference.Venue);
@@ -1693,7 +1693,7 @@ function renderAccordionView(filteredList) {
       // Format badge for accordion
       const format = (conference.Format || "").trim().toLowerCase();
       const isOnline = format === "online";
-      const locationDisplay = isOnline ? "🌐 Online" : `📍 ${escapeHTML(location)}`;
+      const locationDisplay = isOnline ? "🌐 Online Event" : `📍 ${escapeHTML(location)}`;
       
       let formatBadgeAccordion = "";
       if (format === "online") {
