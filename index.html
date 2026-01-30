@@ -213,6 +213,11 @@
       margin: 8px 16px;
     }
 
+    .speaker-count {
+      color: #9ca3af;
+      font-size: 12px;
+    }
+
     .clear-btn {
       width: 32px;
       height: 32px;
@@ -899,6 +904,7 @@
 
 const CSV_URL = "https://raw.githubusercontent.com/goldisdying/proofofconference/main/Bitcoin%20Conference%20List%20-%20Sheet1.csv";
 const ADS_CSV_URL = "https://raw.githubusercontent.com/goldisdying/proofofconference/main/poc-ad-list%20-%20Sheet1.csv";
+const FEATURED_SPEAKERS_CSV_URL = "https://raw.githubusercontent.com/goldisdying/proofofconference/main/Bitcoin%20Conference%20List%20-%20Featured%20Speakers.csv";
 
 // Month name to number mapping for date parsing
 const MONTHS = {
@@ -906,11 +912,11 @@ const MONTHS = {
   july: 6, august: 7, september: 8, october: 9, november: 10, december: 11
 };
 
-// Priority speakers to show first in dropdown
-const PRIORITY_SPEAKERS = [
-  "Michael Saylor", "Jack Dorsey", "Max Keiser", "Jeff Booth",
-  "Lyn Alden", "Natalie Brunell", "Saifedean Ammous", "Adam Back", "Jack Mallers"
-];
+// Priority speakers loaded from CSV
+let PRIORITY_SPEAKERS = [];
+
+// Speaker conference counts (for upcoming events)
+let speakerConferenceCounts = {};
 
 // Card insertion position for newsletter
 const NEWSLETTER_CARD_POSITION = 3;  // After 4th card
@@ -1239,26 +1245,41 @@ function escapeHTML(str) {
 // ============================================================================
 
 /**
- * Fetch and parse conference data from CSV
+ * Fetch featured speakers from CSV
  */
-fetch(CSV_URL)
+fetch(FEATURED_SPEAKERS_CSV_URL)
   .then(r => r.text())
   .then(text => {
-    const rows = parseCSV(text);
-    const headers = rows.shift();
-    
-    // Convert rows to objects and filter out inactive conferences
-    conferences = rows
-      .map(r => Object.fromEntries(headers.map((h, i) => [h, clean(r[i])])))
-      .filter(c => c["Not Active"].toLowerCase() !== "x");
-    
-    populateFilters();
-    updateClearButtons();
-    updateStats();
-    render();
-    
-    // Scroll to specific conference if hash is present in URL
-    scrollToHashOnLoad();
+    // Simple CSV with one name per line
+    PRIORITY_SPEAKERS = text.split('\n')
+      .map(line => line.trim())
+      .filter(line => line.length > 0);
+  })
+  .catch(() => {
+    // Fallback if CSV fails to load
+    PRIORITY_SPEAKERS = [];
+  })
+  .finally(() => {
+    // Fetch conference data after featured speakers are loaded
+    fetch(CSV_URL)
+      .then(r => r.text())
+      .then(text => {
+        const rows = parseCSV(text);
+        const headers = rows.shift();
+        
+        // Convert rows to objects and filter out inactive conferences
+        conferences = rows
+          .map(r => Object.fromEntries(headers.map((h, i) => [h, clean(r[i])])))
+          .filter(c => c["Not Active"].toLowerCase() !== "x");
+        
+        populateFilters();
+        updateClearButtons();
+        updateStats();
+        render();
+        
+        // Scroll to specific conference if hash is present in URL
+        scrollToHashOnLoad();
+      });
   });
 
 /**
@@ -1332,7 +1353,23 @@ function populateFilters() {
     uniqueValues.forEach(v => sel.add(new Option(v, v)));
   });
 
-  // Collect all unique speakers
+  // Get upcoming conferences only for speaker counts
+  const upcomingConferences = conferences.filter(c => isUpcoming(c["Date Range"]));
+
+  // Count upcoming conferences per speaker
+  speakerConferenceCounts = {};
+  upcomingConferences.forEach(c => {
+    if (c["Speakers/Notable Attendees"]) {
+      c["Speakers/Notable Attendees"].split(",").forEach(s => {
+        const name = s.trim();
+        if (name) {
+          speakerConferenceCounts[name] = (speakerConferenceCounts[name] || 0) + 1;
+        }
+      });
+    }
+  });
+
+  // Collect all unique speakers (from all conferences, not just upcoming)
   const allSpeakers = new Set();
   conferences.forEach(c => {
     if (c["Speakers/Notable Attendees"]) {
@@ -1365,6 +1402,13 @@ function initSpeakerAutocomplete() {
   const dropdown = document.getElementById("speaker-dropdown");
   let highlightedIndex = -1;
   
+  // Format speaker name with conference count
+  function formatSpeakerWithCount(name) {
+    const count = speakerConferenceCounts[name] || 0;
+    const countDisplay = count > 0 ? ` <span class="speaker-count">(${count})</span>` : '';
+    return `${escapeHTML(name)}${countDisplay}`;
+  }
+  
   // Show dropdown with filtered results
   function showDropdown(filter = "") {
     const filterLower = filter.toLowerCase();
@@ -1374,7 +1418,7 @@ function initSpeakerAutocomplete() {
       // Show all speakers - featured first, then separator, then rest
       html += `<div class="speaker-autocomplete-header">Featured Speakers</div>`;
       prioritySpeakersList.forEach(name => {
-        html += `<div class="speaker-autocomplete-item priority" data-value="${escapeHTML(name)}">${escapeHTML(name)}</div>`;
+        html += `<div class="speaker-autocomplete-item priority" data-value="${escapeHTML(name)}">${formatSpeakerWithCount(name)}</div>`;
       });
       
       // Separator
@@ -1384,7 +1428,7 @@ function initSpeakerAutocomplete() {
       html += `<div class="speaker-autocomplete-header">All Speakers</div>`;
       const otherSpeakers = allSpeakersList.filter(name => !prioritySpeakersList.includes(name));
       otherSpeakers.forEach(name => {
-        html += `<div class="speaker-autocomplete-item" data-value="${escapeHTML(name)}">${escapeHTML(name)}</div>`;
+        html += `<div class="speaker-autocomplete-item" data-value="${escapeHTML(name)}">${formatSpeakerWithCount(name)}</div>`;
       });
     } else {
       // Filter all speakers
@@ -1397,7 +1441,7 @@ function initSpeakerAutocomplete() {
       } else {
         matches.forEach(name => {
           const isPriority = prioritySpeakersList.includes(name);
-          html += `<div class="speaker-autocomplete-item${isPriority ? ' priority' : ''}" data-value="${escapeHTML(name)}">${escapeHTML(name)}</div>`;
+          html += `<div class="speaker-autocomplete-item${isPriority ? ' priority' : ''}" data-value="${escapeHTML(name)}">${formatSpeakerWithCount(name)}</div>`;
         });
       }
     }
