@@ -175,7 +175,7 @@
       box-shadow: 0 8px 24px rgba(0,0,0,0.6);
       z-index: 1000;
       margin-top: 4px;
-      max-height: 280px;
+      max-height: 320px;
       overflow-y: auto;
     }
 
@@ -206,6 +206,11 @@
       color: #9ca3af;
       text-transform: uppercase;
       letter-spacing: 0.5px;
+    }
+
+    .speaker-autocomplete-separator {
+      border-top: 1px solid #333;
+      margin: 8px 16px;
     }
 
     .clear-btn {
@@ -1366,10 +1371,20 @@ function initSpeakerAutocomplete() {
     let html = "";
     
     if (filter === "") {
-      // Show priority speakers when no filter
+      // Show all speakers - featured first, then separator, then rest
       html += `<div class="speaker-autocomplete-header">Featured Speakers</div>`;
       prioritySpeakersList.forEach(name => {
         html += `<div class="speaker-autocomplete-item priority" data-value="${escapeHTML(name)}">${escapeHTML(name)}</div>`;
+      });
+      
+      // Separator
+      html += `<div class="speaker-autocomplete-separator"></div>`;
+      
+      // All other speakers
+      html += `<div class="speaker-autocomplete-header">All Speakers</div>`;
+      const otherSpeakers = allSpeakersList.filter(name => !prioritySpeakersList.includes(name));
+      otherSpeakers.forEach(name => {
+        html += `<div class="speaker-autocomplete-item" data-value="${escapeHTML(name)}">${escapeHTML(name)}</div>`;
       });
     } else {
       // Filter all speakers
