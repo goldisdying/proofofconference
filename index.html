@@ -1370,10 +1370,19 @@ function populateFilters() {
     }
   });
 
-  // Populate Country filter with counts
+  // Populate Country filter with counts (United States first, then alphabetically)
   const countrySel = document.getElementById("country");
   const uniqueCountries = [...new Set(conferences.map(c => c.Country).filter(Boolean))].sort();
-  uniqueCountries.forEach(v => {
+  
+  // Add United States first if it exists
+  if (uniqueCountries.includes("United States")) {
+    const usCount = countryUpcomingCounts["United States"] || 0;
+    const usLabel = usCount > 0 ? `United States (${usCount})` : "United States";
+    countrySel.add(new Option(usLabel, "United States"));
+  }
+  
+  // Add remaining countries alphabetically
+  uniqueCountries.filter(v => v !== "United States").forEach(v => {
     const count = countryUpcomingCounts[v] || 0;
     const label = count > 0 ? `${v} (${count})` : v;
     countrySel.add(new Option(label, v));
@@ -1596,6 +1605,27 @@ function updateClearButtons() {
   });
 });
 
+// Disable state filter when non-US country is selected
+document.getElementById("country").addEventListener("change", () => {
+  const countryVal = document.getElementById("country").value;
+  const stateEl = document.getElementById("state");
+  const stateClearBtn = document.querySelector('.clear-btn[data-target="state"]');
+  
+  if (countryVal && countryVal !== "United States") {
+    // Disable state filter and reset to "All States"
+    stateEl.value = "";
+    stateEl.disabled = true;
+    stateEl.style.opacity = "0.5";
+    if (stateClearBtn) stateClearBtn.style.display = "none";
+  } else {
+    // Enable state filter
+    stateEl.disabled = false;
+    stateEl.style.opacity = "1";
+  }
+  updateClearButtons();
+  render();
+});
+
 // Add event listeners to clear buttons
 document.querySelectorAll(".clear-btn").forEach(btn => {
   btn.addEventListener("click", () => {
@@ -1609,6 +1639,14 @@ document.querySelectorAll(".clear-btn").forEach(btn => {
     
     const sel = document.getElementById(target);
     sel.value = "";
+    
+    // Re-enable state filter when country is cleared
+    if (target === "country") {
+      const stateEl = document.getElementById("state");
+      stateEl.disabled = false;
+      stateEl.style.opacity = "1";
+    }
+    
     updateClearButtons();
     render();
   });
