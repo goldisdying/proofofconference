@@ -6,21 +6,7 @@
 
   <title>Submit Event | Proof of Conference</title>
   <meta name="description" content="Submit a Bitcoin conference or event to Proof of Conference." />
-  <link rel="canonical" href="https://www.proofofconference.com/submit-event/" />
   <link rel="icon" href="/favicon.ico" />
-
-  <meta property="og:type" content="website" />
-  <meta property="og:title" content="Submit Your Bitcoin Event" />
-  <meta property="og:description" content="Get your Bitcoin event listed on Proof of Conference — the go-to directory for Bitcoin events worldwide." />
-  <meta property="og:url" content="https://www.proofofconference.com/submit-event/" />
-  <meta property="og:image" content="https://www.proofofconference.com/og-submit-event.jpg" />
-  <meta property="og:image:width" content="1200" />
-  <meta property="og:image:height" content="630" />
-
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Submit Your Bitcoin Event" />
-  <meta name="twitter:description" content="Get your Bitcoin event listed on Proof of Conference." />
-  <meta name="twitter:image" content="https://www.proofofconference.com/og-submit-event.jpg" />
 
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 
@@ -65,13 +51,6 @@
     select:disabled {
       opacity: 0.5;
     }
-    input:disabled {
-      opacity: 0.5;
-      background: #e5e5e5;
-    }
-    .field-disabled label {
-      opacity: 0.5;
-    }
     .hint {
       font-size: 12px;
       color: #9ca3af;
@@ -110,6 +89,12 @@
       color: #9ca3af;
       text-align: center;
     }
+    .back-link {
+      font-size: 13px;
+      color: #9ca3af;
+      margin-bottom: 20px;
+      display: block;
+    }
     a {
       color: #f7931a;
       text-decoration: none;
@@ -119,6 +104,7 @@
 
 <body>
 <div class="container">
+  <a href="/" class="back-link">← Back to Proof of Conference</a>
   <h1>Submit an Event</h1>
   <div class="subtitle">
     Submit a Bitcoin conference or event for inclusion on Proof of Conference.
@@ -139,18 +125,10 @@
     <input type="date" name="end_date" id="end_date" required>
     <div class="hint">Can be the same as the start date</div>
 
-    <label>Event Format *</label>
-    <select name="event_format" id="event_format" required>
-      <option value="">Select format</option>
-      <option value="In-Person">In-Person</option>
-      <option value="Online">Online</option>
-      <option value="Hybrid">Hybrid (In-Person and Online)</option>
-    </select>
+    <label>City *</label>
+    <input type="text" name="city" required>
 
-    <label id="city-label">City *</label>
-    <input type="text" name="city" id="city" required>
-
-    <label id="country-label">Country *</label>
+    <label>Country *</label>
     <select name="country" id="country" required>
       <option value="">Select country</option>
       <option>United States</option>
@@ -207,7 +185,7 @@
       <option>Vietnam</option><option>Yemen</option><option>Zambia</option><option>Zimbabwe</option>
     </select>
 
-    <label id="state-label">State / Territory</label>
+    <label>State / Territory</label>
     <select name="state" id="state" disabled>
       <option value="">Select state</option>
       <option>Alabama</option><option>Alaska</option><option>Arizona</option><option>Arkansas</option>
@@ -228,8 +206,8 @@
       <option>American Samoa</option><option>Northern Mariana Islands</option>
     </select>
 
-    <label id="venue-label">Venue</label>
-    <input type="text" name="venue" id="venue">
+    <label>Venue</label>
+    <input type="text" name="venue">
 
     <label>Expected Attendance *</label>
     <select name="expected_attendance" required>
@@ -286,13 +264,6 @@
       </div>
     </div>
 
-    <div style="margin-top: 24px;">
-      <label style="display: flex; align-items: flex-start; gap: 10px; font-weight: 400; cursor: pointer;">
-        <input type="checkbox" name="consent" required style="width: auto; margin-top: 4px;">
-        <span>I agree to the <a href="/terms" target="_blank">Terms and Conditions</a> and <a href="/privacy" target="_blank">Privacy Policy</a>. I consent to receive email communications from Proof of Conference and understand that submitted event information may be published on the site.</span>
-      </label>
-    </div>
-
     <button type="submit">Submit Event</button>
   </form>
 
@@ -308,53 +279,14 @@
   const country = document.getElementById("country");
   const state = document.getElementById("state");
   const website = document.getElementById("website");
-  const eventFormat = document.getElementById("event_format");
-  const city = document.getElementById("city");
-  const venue = document.getElementById("venue");
-
-  // Location field labels
-  const cityLabel = document.getElementById("city-label");
-  const countryLabel = document.getElementById("country-label");
-  const stateLabel = document.getElementById("state-label");
-  const venueLabel = document.getElementById("venue-label");
 
   start.min = today;
   end.min = today;
 
   start.addEventListener("change", () => end.min = start.value);
 
-  // Event format change - toggle location fields
-  eventFormat.addEventListener("change", () => {
-    const isOnline = eventFormat.value === "Online";
-    
-    // Disable/enable location fields
-    city.disabled = isOnline;
-    country.disabled = isOnline;
-    state.disabled = isOnline || country.value !== "United States";
-    venue.disabled = isOnline;
-    
-    // Update required status
-    city.required = !isOnline;
-    country.required = !isOnline;
-    
-    // Clear values when disabled
-    if (isOnline) {
-      city.value = "";
-      country.value = "";
-      state.value = "";
-      venue.value = "";
-    }
-    
-    // Update label opacity
-    cityLabel.style.opacity = isOnline ? "0.5" : "1";
-    countryLabel.style.opacity = isOnline ? "0.5" : "1";
-    stateLabel.style.opacity = isOnline ? "0.5" : "1";
-    venueLabel.style.opacity = isOnline ? "0.5" : "1";
-  });
-
   country.addEventListener("change", () => {
-    const isOnline = eventFormat.value === "Online";
-    if (country.value === "United States" && !isOnline) {
+    if (country.value === "United States") {
       state.disabled = false;
       state.required = true;
     } else {
