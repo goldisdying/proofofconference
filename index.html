@@ -154,11 +154,19 @@
 
     #speaker-search::placeholder {
       color: #000;
-      opacity: 0.5;
     }
 
     #speaker-search.has-selection {
       color: #007AFF;
+    }
+
+    @media (max-width: 768px) {
+      #speaker-search {
+        color: #007AFF;
+      }
+      #speaker-search::placeholder {
+        color: #007AFF;
+      }
     }
 
     .speaker-autocomplete-dropdown {
