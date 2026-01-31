@@ -1797,7 +1797,7 @@ function getConferenceCardHTML(conference) {
     <div class="card" id="${shareSlug}">
       ${conference.Image ? `
         <a href="${link}" target="_blank" rel="noopener noreferrer">
-          <img src="conference-images/${conference.Image}" alt="${conf}">
+          <img src="/conference-images/${conference.Image}" alt="${conf}">
         </a>` : ""}
       <h2>${conf}</h2>
       ${formatBadge}
