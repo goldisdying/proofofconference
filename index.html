@@ -522,6 +522,17 @@
       margin-bottom: 8px;
     }
 
+    .time-away.happening-now {
+      color: #22c55e;
+      background: rgba(34, 197, 94, 0.15);
+      animation: pulse 1.5s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+
     .format-badge {
       display: inline-block;
       font-size: 12px;
@@ -1801,7 +1812,7 @@ function getConferenceCardHTML(conference) {
         </a>` : ""}
       <h2>${conf}</h2>
       ${formatBadge}
-      ${timeAway ? `<div class="time-away">${escapeHTML(timeAway)}</div>` : ""}
+      ${timeAway ? `<div class="time-away${timeAway === 'Happening now' ? ' happening-now' : ''}">${escapeHTML(timeAway)}</div>` : ""}
       <p>${locationDisplay}</p>
       ${conference.Venue && !isOnline ? `<p>🏛️ ${venue}</p>` : ""}
       <p>📅 ${dateRange}</p>
