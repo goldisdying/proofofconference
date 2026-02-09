@@ -56,11 +56,21 @@
 
     /* === HEADER === */
     h1 {
-      color: #f7931a;
       font-size: 36px;
       text-align: center;
       margin-top: 0;
       margin-bottom: 6px;
+      background: linear-gradient(90deg, #f7931a, #ffd700, #f7931a, #ffd700, #f7931a);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: shimmer 3s linear infinite;
+    }
+
+    @keyframes shimmer {
+      0% { background-position: 0% center; }
+      100% { background-position: 200% center; }
     }
 
     .subtitle {
