@@ -1099,7 +1099,7 @@ function parseDateRange(range) {
   const endDay = nums[1] ?? startDay;
 
   const startDate = new Date(year, month, startDay);
-  const endDate = new Date(year, month, endDay);
+  const endDate = new Date(year, month, endDay, 23, 59, 59);
 
   if (Number.isNaN(startDate.getTime()) || Number.isNaN(endDate.getTime())) {
     return null;
