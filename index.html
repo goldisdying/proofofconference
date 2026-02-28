@@ -21,6 +21,22 @@
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:image" content="https://www.proofofconference.com/og-proof-of-conference.jpg" />
 
+  <!-- Schema.org Organization markup -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Proof of Conference",
+    "url": "https://www.proofofconference.com",
+    "description": "Discover verified Bitcoin conferences worldwide, including upcoming events, speakers, and available conference discount or promo codes.",
+    "publisher": {
+      "@type": "Organization",
+      "name": "Proof of Conference",
+      "url": "https://www.proofofconference.com"
+    }
+  }
+  </script>
+
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 
   <style>
@@ -1325,6 +1341,7 @@ fetch(FEATURED_SPEAKERS_CSV_URL)
         updateClearButtons();
         updateStats();
         render();
+        generateEventSchema();
         
         // Scroll to specific conference if hash is present in URL
         scrollToHashOnLoad();
@@ -1348,6 +1365,82 @@ fetch(ADS_CSV_URL)
     
     render();
   });
+
+// ============================================================================
+// SCHEMA MARKUP GENERATION
+// ============================================================================
+
+/**
+ * Generate and inject Event schema markup for SEO
+ */
+function generateEventSchema() {
+  const upcoming = conferences.filter(c => isUpcoming(c["Date Range"]));
+  
+  const events = upcoming.slice(0, 20).map(c => {
+    const parsed = parseDateRange(c["Date Range"]);
+    if (!parsed) return null;
+    
+    const startDate = parsed.startDate.toISOString().split('T')[0];
+    const endDate = parsed.endDate.toISOString().split('T')[0];
+    
+    const event = {
+      "@type": "Event",
+      "name": c.Conference,
+      "startDate": startDate,
+      "endDate": endDate,
+      "eventAttendanceMode": c.Format === "Online" 
+        ? "https://schema.org/OnlineEventAttendanceMode" 
+        : "https://schema.org/OfflineEventAttendanceMode",
+      "eventStatus": "https://schema.org/EventScheduled"
+    };
+    
+    // Add location
+    if (c.Format === "Online") {
+      event.location = {
+        "@type": "VirtualLocation",
+        "url": c["Main Conference Link"] || "https://www.proofofconference.com"
+      };
+    } else {
+      event.location = {
+        "@type": "Place",
+        "name": c.Venue || c.City,
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": c.City,
+          "addressRegion": c.State || "",
+          "addressCountry": c.Country
+        }
+      };
+    }
+    
+    // Add URL
+    if (c["Main Conference Link"]) {
+      event.url = c["Main Conference Link"];
+    }
+    
+    // Add offers if discount available
+    if (c.Discount) {
+      event.offers = {
+        "@type": "Offer",
+        "url": c["Main Conference Link"],
+        "availability": "https://schema.org/InStock"
+      };
+    }
+    
+    return event;
+  }).filter(Boolean);
+  
+  const schema = {
+    "@context": "https://schema.org",
+    "@graph": events
+  };
+  
+  // Inject into page
+  const script = document.createElement('script');
+  script.type = 'application/ld+json';
+  script.textContent = JSON.stringify(schema);
+  document.head.appendChild(script);
+}
 
 // ============================================================================
 // STATS DISPLAY
