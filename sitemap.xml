@@ -3,7 +3,7 @@
   <!-- Main page -->
   <url>
     <loc>https://www.proofofconference.com/</loc>
-    <lastmod>2026-01-20</lastmod>
+    <lastmod>2026-02-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
@@ -11,16 +11,40 @@
   <!-- Submit Event page -->
   <url>
     <loc>https://www.proofofconference.com/submit-event/</loc>
-    <lastmod>2026-01-20</lastmod>
+    <lastmod>2026-02-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   
   <!-- Contact page -->
   <url>
-    <loc>https://www.proofofconference.com/contact</loc>
-    <lastmod>2026-01-20</lastmod>
+    <loc>https://www.proofofconference.com/contact/</loc>
+    <lastmod>2026-02-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
+  </url>
+  
+  <!-- Subscribe page -->
+  <url>
+    <loc>https://www.proofofconference.com/subscribe/</loc>
+    <lastmod>2026-02-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  
+  <!-- Privacy Policy -->
+  <url>
+    <loc>https://www.proofofconference.com/privacy.html</loc>
+    <lastmod>2026-02-28</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  
+  <!-- Terms of Service -->
+  <url>
+    <loc>https://www.proofofconference.com/terms.html</loc>
+    <lastmod>2026-02-28</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
   </url>
 </urlset>
