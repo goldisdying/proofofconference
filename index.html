@@ -1392,15 +1392,32 @@ function generateEventSchema() {
     const startDate = parsed.startDate.toISOString().split('T')[0];
     const endDate = parsed.endDate.toISOString().split('T')[0];
     
+    // Build description
+    const locationText = c.Format === "Online" ? "Online" : `${c.City}${c.Country ? ', ' + c.Country : ''}`;
+    const description = `${c.Conference} is a Bitcoin conference taking place ${c["Date Range"]} in ${locationText}.${c.Discount ? ' Discount code available.' : ''}`;
+    
     const event = {
       "@type": "Event",
       "name": c.Conference,
+      "description": description,
       "startDate": startDate,
       "endDate": endDate,
       "eventAttendanceMode": c.Format === "Online" 
         ? "https://schema.org/OnlineEventAttendanceMode" 
         : "https://schema.org/OfflineEventAttendanceMode",
       "eventStatus": "https://schema.org/EventScheduled"
+    };
+    
+    // Add image
+    if (c.Image) {
+      event.image = `https://www.proofofconference.com/conference-images/${c.Image}`;
+    }
+    
+    // Add organizer
+    event.organizer = {
+      "@type": "Organization",
+      "name": c.Conference,
+      "url": c["Main Conference Link"] || "https://www.proofofconference.com"
     };
     
     // Add location
@@ -1427,12 +1444,25 @@ function generateEventSchema() {
       event.url = c["Main Conference Link"];
     }
     
+    // Add performers (speakers)
+    const speakersField = c["Speakers/Notable Attendees"];
+    if (speakersField) {
+      const speakerNames = speakersField.split(',').map(s => s.trim()).filter(Boolean).slice(0, 10);
+      if (speakerNames.length > 0) {
+        event.performer = speakerNames.map(name => ({
+          "@type": "Person",
+          "name": name
+        }));
+      }
+    }
+    
     // Add offers if discount available
     if (c.Discount) {
       event.offers = {
         "@type": "Offer",
         "url": c["Main Conference Link"],
-        "availability": "https://schema.org/InStock"
+        "availability": "https://schema.org/InStock",
+        "description": c.Discount
       };
     }
     
