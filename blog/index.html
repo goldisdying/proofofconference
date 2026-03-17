@@ -267,7 +267,15 @@
   </div>
 
   <div class="posts-grid" id="posts-grid">
-    <div class="loading">Loading posts...</div>
+    <a class="post-card" href="/blog/best-bitcoin-conferences-2026.html">
+      <img class="post-card-image" src="/blog/images/best-bitcoin-conferences-2026.webp" alt="Best Bitcoin Conferences 2026" loading="lazy">
+      <div class="post-card-body">
+        <div class="post-meta">March 17, 2026</div>
+        <div class="post-title">The Best Bitcoin Conferences to Attend in 2026</div>
+        <div class="post-excerpt">From Bitcoin 2026 in Las Vegas to BTC Prague, Oslo Freedom Forum, and dozens of regional events — your complete guide to the must-attend Bitcoin conferences of 2026, with discount codes where available.</div>
+        <div class="post-read-more">Read more &rarr;</div>
+      </div>
+    </a>
   </div>
 
 </div>
@@ -326,8 +334,7 @@
       renderPosts(posts);
     })
     .catch(() => {
-      document.getElementById('posts-grid').innerHTML =
-        '<div class="empty-state">Could not load posts. Please try again later.</div>';
+      // Keep static fallback content on error — don't overwrite with error message
     });
 </script>
 
