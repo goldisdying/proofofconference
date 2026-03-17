@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-JS07Z38EX9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-JS07Z38EX9');
+  </script>
+
+  <title>Blog | Proof of Conference</title>
+  <meta name="description" content="Bitcoin conference guides, recaps, discount codes, and insights from the Proof of Conference team." />
+  <link rel="canonical" href="https://www.proofofconference.com/blog/" />
+  <link rel="icon" href="/favicon.ico" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Blog | Proof of Conference" />
+  <meta property="og:description" content="Bitcoin conference guides, recaps, discount codes, and insights from the Proof of Conference team." />
+  <meta property="og:url" content="https://www.proofofconference.com/blog/" />
+  <meta property="og:image" content="https://www.proofofconference.com/og-proof-of-conference.jpg" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="https://www.proofofconference.com/og-proof-of-conference.jpg" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Blog",
+    "name": "Proof of Conference Blog",
+    "url": "https://www.proofofconference.com/blog/",
+    "description": "Bitcoin conference guides, recaps, and insights.",
+    "publisher": {
+      "@type": "Organization",
+      "name": "Proof of Conference",
+      "url": "https://www.proofofconference.com"
+    }
+  }
+  </script>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #000;
+      color: #fff;
+      font-family: Inter, system-ui, -apple-system, sans-serif;
+    }
+
+    /* TOP NAV */
+    .top-nav {
+      background: #111;
+      text-align: center;
+      padding: 8px 16px;
+      font-size: 13px;
+    }
+    .top-nav a {
+      color: #f7931a;
+      text-decoration: none;
+      margin: 0 6px;
+    }
+    .top-nav a:hover { text-decoration: underline; }
+
+    /* CONTAINER */
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 0 16px 60px;
+    }
+
+    /* HEADER */
+    .site-header {
+      text-align: center;
+      padding: 32px 0 16px;
+    }
+    .site-header a {
+      text-decoration: none;
+    }
+    .site-header h1 {
+      font-size: 28px;
+      font-weight: 700;
+      color: #fff;
+    }
+    .site-header .subtitle {
+      color: #f7931a;
+      font-size: 13px;
+      margin-top: 4px;
+    }
+
+    /* BLOG HEADER */
+    .blog-header {
+      text-align: center;
+      padding: 32px 0 40px;
+      border-bottom: 1px solid #222;
+      margin-bottom: 40px;
+    }
+    .blog-header h2 {
+      font-size: 32px;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+    .blog-header p {
+      color: #aaa;
+      font-size: 15px;
+      max-width: 520px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+
+    /* POST CARDS */
+    .posts-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+    }
+
+    .post-card {
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      gap: 24px;
+      background: #111;
+      border: 1px solid #222;
+      border-radius: 10px;
+      overflow: hidden;
+      text-decoration: none;
+      color: inherit;
+      transition: border-color 0.2s;
+    }
+    .post-card:hover { border-color: #f7931a; }
+
+    .post-card-image {
+      width: 100%;
+      height: 160px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .post-card-image-placeholder {
+      width: 100%;
+      height: 160px;
+      background: #1a1a1a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 36px;
+    }
+
+    .post-card-body {
+      padding: 20px 20px 20px 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .post-meta {
+      font-size: 12px;
+      color: #f7931a;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .post-title {
+      font-size: 18px;
+      font-weight: 700;
+      line-height: 1.4;
+      margin-bottom: 10px;
+      color: #fff;
+    }
+
+    .post-excerpt {
+      font-size: 14px;
+      color: #aaa;
+      line-height: 1.6;
+    }
+
+    .post-read-more {
+      margin-top: 14px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #f7931a;
+    }
+
+    /* EMPTY STATE */
+    .empty-state {
+      text-align: center;
+      color: #666;
+      padding: 60px 0;
+      font-size: 15px;
+    }
+
+    /* LOADING */
+    .loading {
+      text-align: center;
+      color: #666;
+      padding: 60px 0;
+      font-size: 15px;
+    }
+
+    /* FOOTER */
+    footer {
+      text-align: center;
+      padding: 32px 16px;
+      font-size: 12px;
+      color: #666;
+      border-top: 1px solid #222;
+      margin-top: 60px;
+    }
+    footer p { margin-bottom: 12px; line-height: 1.6; }
+    footer a {
+      color: #f7931a;
+      text-decoration: none;
+    }
+    footer a:hover { text-decoration: underline; }
+    .footer-links {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 600px) {
+      .post-card {
+        grid-template-columns: 1fr;
+      }
+      .post-card-image,
+      .post-card-image-placeholder {
+        height: 180px;
+      }
+      .post-card-body {
+        padding: 16px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="top-nav">
+  <a href="/">Home</a>
+  •
+  <a href="/submit-event/">Submit Event</a>
+  •
+  <a href="https://fomo21.com/discount/POC15" target="_blank" rel="noopener noreferrer">Merch</a>
+</div>
+
+<div class="container">
+
+  <div class="site-header">
+    <a href="/">
+      <h1>Proof of Conference</h1>
+      <div class="subtitle">Track Every Bitcoin Conference</div>
+    </a>
+  </div>
+
+  <div class="blog-header">
+    <h2>Blog</h2>
+    <p>Bitcoin conference guides, event recaps, discount codes, and insights to help you get the most out of the conference circuit.</p>
+  </div>
+
+  <div class="posts-grid" id="posts-grid">
+    <div class="loading">Loading posts...</div>
+  </div>
+
+</div>
+
+<footer>
+  <p><strong>Disclaimer:</strong> Proof of Conference is an independent, informational directory and is not necessarily affiliated with, endorsed by, or officially connected to any conference or organization listed. Some events may include affiliate or referral links. Event details may change at any time. Please verify all information directly on the official conference websites.</p>
+  <div class="footer-links">
+    <a href="/terms.html">Terms & Conditions</a>
+    <a href="/privacy.html">Privacy Policy</a>
+    <a href="/contact">Contact</a>
+    <a href="https://x.com/ProofOfConf" target="_blank" rel="noopener noreferrer">Follow us on 𝕏</a>
+    <a href="https://fomo21.com/" target="_blank" rel="noopener noreferrer">Visit FOMO21 - Bitcoin Merch</a>
+  </div>
+  <p>© 2026 Proof of Conference. All rights reserved.</p>
+</footer>
+
+<script>
+  const POSTS_JSON = '/blog/posts.json';
+
+  function formatDate(dateStr) {
+    const d = new Date(dateStr + 'T00:00:00');
+    return d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+  }
+
+  function renderPosts(posts) {
+    const grid = document.getElementById('posts-grid');
+    if (!posts || posts.length === 0) {
+      grid.innerHTML = '<div class="empty-state">No posts yet. Check back soon!</div>';
+      return;
+    }
+
+    grid.innerHTML = posts.map(post => {
+      const imageHTML = post.image
+        ? `<img class="post-card-image" src="${post.image}" alt="${post.title}" loading="lazy">`
+        : `<div class="post-card-image-placeholder">₿</div>`;
+
+      return `
+        <a class="post-card" href="/blog/${post.slug}.html">
+          ${imageHTML}
+          <div class="post-card-body">
+            <div class="post-meta">${formatDate(post.date)}</div>
+            <div class="post-title">${post.title}</div>
+            <div class="post-excerpt">${post.excerpt}</div>
+            <div class="post-read-more">Read more →</div>
+          </div>
+        </a>
+      `;
+    }).join('');
+  }
+
+  fetch(POSTS_JSON)
+    .then(r => r.json())
+    .then(posts => {
+      // Sort newest first
+      posts.sort((a, b) => new Date(b.date) - new Date(a.date));
+      renderPosts(posts);
+    })
+    .catch(() => {
+      document.getElementById('posts-grid').innerHTML =
+        '<div class="empty-state">Could not load posts. Please try again later.</div>';
+    });
+</script>
+
+</body>
+</html>
