@@ -48,6 +48,20 @@
     <priority>0.3</priority>
   </url>
   
+  <!-- Blog -->
+  <url>
+    <loc>https://www.proofofconference.com/blog/</loc>
+    <lastmod>2026-03-17</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.proofofconference.com/blog/best-bitcoin-conferences-2026.html</loc>
+    <lastmod>2026-03-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
   <!-- Individual Conference Pages -->
   <url>
     <loc>https://www.proofofconference.com/conferences/bitcoin-2026.html</loc>
