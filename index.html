@@ -3003,9 +3003,15 @@ function doTranslate(lang) {
   if (btn && langLabels[lang]) btn.textContent = langLabels[lang];
   // If English selected, clear translation and reload
   if (lang === 'en') {
-    document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
-    document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=' + location.hostname + ';';
-    window.location.href = window.location.href.replace(/#googtrans\([^)]+\)/, '');
+    // Set cookie to en|en (not just delete — Google re-reads the hash otherwise)
+    document.cookie = 'googtrans=/en/en; path=/;';
+    document.cookie = 'googtrans=/en/en; path=/; domain=' + location.hostname + ';';
+    document.cookie = 'googtrans=/en/en; path=/; domain=.' + location.hostname + ';';
+    // Strip any googtrans hash from URL then reload
+    var clean = window.location.href
+      .replace(/#googtrans\([^)]*\)/g, '')
+      .replace(/#$/, '');
+    window.location.replace(clean);
     return;
   }
   var sel = document.querySelector('.goog-te-combo');
