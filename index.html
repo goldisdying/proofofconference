@@ -3069,6 +3069,17 @@ function doTranslate(lang) {
     sel.dispatchEvent(new Event('change'));
   }
   closeTranslate();
+  // Clear any text selection Google Translate causes during DOM processing
+  function clearSel() {
+    if (window.getSelection) window.getSelection().removeAllRanges();
+    if (document.selection) document.selection.empty();
+  }
+  clearSel();
+  setTimeout(clearSel, 100);
+  setTimeout(clearSel, 500);
+  setTimeout(clearSel, 1000);
+  setTimeout(clearSel, 2000);
+  setTimeout(clearSel, 3000);
 }
 document.addEventListener('click', function(e) {
   var dd = document.getElementById('translate-dropdown');
