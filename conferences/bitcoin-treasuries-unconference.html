@@ -85,9 +85,138 @@
     .footer-cta p { margin: 0 0 16px; color: #9ca3af; }
     .all-conferences { text-align: center; margin-top: 40px; }
     .all-conferences a { color: #f7931a; text-decoration: none; }
-  </style>
+    
+    /* === GOOGLE TRANSLATE GLOBE === */
+    .translate-wrapper {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      -webkit-user-select: none;
+      user-select: none;
+    }
+    .translate-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+      padding: 0;
+      line-height: 1;
+      color: #ffffff;
+      font-family: inherit;
+      opacity: 1;
+      -webkit-user-select: none;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+    }
+    .translate-btn:hover { opacity: 0.8; }
+    .translate-dropdown {
+      display: none;
+      position: absolute;
+      top: 28px;
+      right: 0;
+      z-index: 9999;
+      background: #1a1a1a;
+      border: 1px solid #444;
+      border-radius: 8px;
+      padding: 6px;
+      white-space: nowrap;
+      min-width: 180px;
+      max-height: 320px;
+      overflow-y: auto;
+    }
+    .translate-dropdown.open { display: flex; flex-direction: column; gap: 2px; }
+    #translate-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: 9998;
+      background: transparent;
+      -webkit-tap-highlight-color: transparent;
+    }
+    #translate-overlay.open { display: block; }
+    .lang-btn {
+      background: none;
+      border: none;
+      color: #fff;
+      font-size: 13px;
+      padding: 6px 10px;
+      cursor: pointer;
+      text-align: left;
+      border-radius: 4px;
+      width: 100%;
+    }
+    .lang-btn:hover { background: #333; }
+    #google_translate_element { position: absolute; left: -9999px; top: -9999px; }
+    .goog-te-banner-frame, .skiptranslate { display: none !important; }
+    body { top: 0 !important; }
+    /* Kill Google's injected translate icon/widget */
+    .goog-te-gadget { display: none !important; }
+    #goog-gt-tt, .goog-tooltip, .goog-tooltip:hover { display: none !important; }
+    font[color] { color: inherit !important; }
+    }
+
+
+    @media (max-width: 500px) {
+      .top-nav { font-size: 11px; gap: 6px; padding: 8px 8px; }
+      .top-nav a[href="/submit-event/"]::before { content: "Submit"; }
+      .top-nav a[href="/submit-event/"] { font-size: 0; }
+      .top-nav a[href="/submit-event/"]::before { font-size: 11px; }
+    }
+    </style>
 </head>
 <body>
+<div id="translate-overlay" onclick="closeTranslate()"></div>
+<div style="display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:8px 12px;padding:8px 16px;background:#111;font-size:13px;line-height:1;">
+  <a href="/" style="color:#f7931a;text-decoration:none;font-weight:500;">Home</a>
+  •
+  <a href="/blog/" style="color:#f7931a;text-decoration:none;font-weight:500;">Blog</a>
+  •
+  <div class="translate-wrapper"><button class="translate-btn" onclick="toggleTranslate(event)" title="Translate" id="translate-btn-label" translate="no">🇺🇸 English</button><div class="translate-dropdown" id="translate-dropdown" translate="no" class="notranslate">
+                  <button class="lang-btn notranslate" translate="no" onclick="doTranslate('en')">🇺🇸 English</button>
+      <div style="border-top:1px solid #333;margin:4px 0;"></div>
+      <button class="lang-btn notranslate" translate="no" onclick="doTranslate('ko')">🇰🇷 한국어</button>
+      <button class="lang-btn notranslate" translate="no" onclick="doTranslate('ar')">🇸🇦 العربية</button>
+      <button class="lang-btn notranslate" translate="no" onclick="doTranslate('iw')">🇮🇱 עברית</button>
+      <button class="lang-btn notranslate" translate="no" onclick="doTranslate('ja')">🇯🇵 日本語</button>
+      <button class="lang-btn notranslate" translate="no" onclick="doTranslate('zh-CN')">🇨🇳 中文 (简体)</button>
+      <button class="lang-btn notranslate" translate="no" onclick="doTranslate('es')">🇪🇸 Español</button>
+      <button class="lang-btn notranslate" translate="no" onclick="doTranslate('pt')">🇧🇷 Português</button>
+      <button class="lang-btn notranslate" translate="no" onclick="doTranslate('de')">🇩🇪 Deutsch</button>
+      <button class="lang-btn notranslate" translate="no" onclick="doTranslate('nl')">🇳🇱 Nederlands</button>
+      <button class="lang-btn notranslate" translate="no" onclick="doTranslate('fr')">🇫🇷 Français</button>
+      <button class="lang-btn notranslate" translate="no" onclick="doTranslate('ru')">🇷🇺 Русский</button>
+      <div style="border-top:1px solid #333;margin:4px 0;"></div>
+      <button class="lang-btn notranslate" translate="no" onclick="doTranslate('af')">🇿🇦 Afrikaans</button>
+      <button class="lang-btn notranslate" translate="no" onclick="doTranslate('am')">🇪🇹 አማርኛ</button>
+      <button class="lang-btn notranslate" translate="no" onclick="doTranslate('bn')">🇧🇩 বাংলা</button>
+      <button class="lang-btn notranslate" translate="no" onclick="doTranslate('zh-TW')">🇹🇼 中文 (繁體)</button>
+      <button class="lang-btn notranslate" translate="no" onclick="doTranslate('cs')">🇨🇿 Čeština</button>
+      <button class="lang-btn notranslate" translate="no" onclick="doTranslate('da')">🇩🇰 Dansk</button>
+      <button class="lang-btn notranslate" translate="no" onclick="doTranslate('fi')">🇫🇮 Suomi</button>
+      <button class="lang-btn notranslate" translate="no" onclick="doTranslate('el')">🇬🇷 Ελληνικά</button>
+      <button class="lang-btn notranslate" translate="no" onclick="doTranslate('hi')">🇮🇳 हिन्दी</button>
+      <button class="lang-btn notranslate" translate="no" onclick="doTranslate('hu')">🇭🇺 Magyar</button>
+      <button class="lang-btn notranslate" translate="no" onclick="doTranslate('id')">🇮🇩 Bahasa Indonesia</button>
+      <button class="lang-btn notranslate" translate="no" onclick="doTranslate('it')">🇮🇹 Italiano</button>
+      <button class="lang-btn notranslate" translate="no" onclick="doTranslate('ms')">🇲🇾 Bahasa Melayu</button>
+      <button class="lang-btn notranslate" translate="no" onclick="doTranslate('no')">🇳🇴 Norsk</button>
+      <button class="lang-btn notranslate" translate="no" onclick="doTranslate('fa')">🇮🇷 فارسی</button>
+      <button class="lang-btn notranslate" translate="no" onclick="doTranslate('tl')">🇵🇭 Filipino</button>
+      <button class="lang-btn notranslate" translate="no" onclick="doTranslate('pl')">🇵🇱 Polski</button>
+      <button class="lang-btn notranslate" translate="no" onclick="doTranslate('ro')">🇷🇴 Română</button>
+      <button class="lang-btn notranslate" translate="no" onclick="doTranslate('sk')">🇸🇰 Slovenčina</button>
+      <button class="lang-btn notranslate" translate="no" onclick="doTranslate('sv')">🇸🇪 Svenska</button>
+      <button class="lang-btn notranslate" translate="no" onclick="doTranslate('sw')">🇰🇪 Kiswahili</button>
+      <button class="lang-btn notranslate" translate="no" onclick="doTranslate('th')">🇹🇭 ภาษาไทย</button>
+      <button class="lang-btn notranslate" translate="no" onclick="doTranslate('tr')">🇹🇷 Türkçe</button>
+      <button class="lang-btn notranslate" translate="no" onclick="doTranslate('uk')">🇺🇦 Українська</button>
+      <button class="lang-btn notranslate" translate="no" onclick="doTranslate('ur')">🇵🇰 اردو</button>
+      <button class="lang-btn notranslate" translate="no" onclick="doTranslate('vi')">🇻🇳 Tiếng Việt</button>
+    </div></div><div id="google_translate_element"></div>
+</div>
   <div class="container">
     <a href="/" class="back-link">← Back to All Conferences</a>
 
@@ -140,5 +269,89 @@
       <a href="/">← Browse All Bitcoin Conferences</a>
     </div>
   </div>
+<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+
+<script>
+function toggleTranslate(e) {
+  e.stopPropagation();
+  document.getElementById('translate-dropdown').classList.toggle('open');
+}
+function doTranslate(lang) {
+  if (lang === '') return;
+  var sel = document.querySelector('.goog-te-combo');
+  if (sel) {
+    sel.value = lang;
+    sel.dispatchEvent(new Event('change'));
+  } else {
+    // Fallback: try doGTranslate
+    if (typeof doGTranslate === 'function') doGTranslate('en|' + lang);
+  }
+  document.getElementById('translate-dropdown').classList.remove('open');
+}
+document.addEventListener('click', function(e) {
+  var dd = document.getElementById('translate-dropdown');
+  if (dd && !dd.contains(e.target) && !e.target.classList.contains('translate-btn')) {
+    dd.classList.remove('open');
+  }
+});
+</script>
+
+
+<!-- Google Translate -->
+<script type="text/javascript">
+function googleTranslateElementInit() {
+  new google.translate.TranslateElement({
+    pageLanguage: 'en',
+    autoDisplay: false,
+    multilanguagePage: true,
+  }, 'google_translate_element');
+}
+function closeTranslate() {
+  document.getElementById('translate-dropdown').classList.remove('open');
+  document.getElementById('translate-overlay').classList.remove('open');
+}
+function toggleTranslate(e) {
+  e.stopPropagation();
+  var dd = document.getElementById('translate-dropdown');
+  var ov = document.getElementById('translate-overlay');
+  var opening = !dd.classList.contains('open');
+  dd.classList.toggle('open', opening);
+  ov.classList.toggle('open', opening);
+}
+var langLabels = {'en': '🇺🇸 English', 'es': '🇪🇸 Español', 'pt': '🇧🇷 Português', 'de': '🇩🇪 Deutsch', 'nl': '🇳🇱 Nederlands', 'fr': '🇫🇷 Français', 'ar': '🇸🇦 العربية', 'zh-CN': '🇨🇳 中文 (简体)', 'ja': '🇯🇵 日本語', 'ko': '🇰🇷 한국어', 'ru': '🇷🇺 Русский', 'af': '🇿🇦 Afrikaans', 'am': '🇪🇹 አማርኛ', 'bn': '🇧🇩 বাংলা', 'zh-TW': '🇹🇼 中文 (繁體)', 'cs': '🇨🇿 Čeština', 'da': '🇩🇰 Dansk', 'fi': '🇫🇮 Suomi', 'el': '🇬🇷 Ελληνικά', 'iw': '🇮🇱 עברית', 'hi': '🇮🇳 हिन्दी', 'hu': '🇭🇺 Magyar', 'id': '🇮🇩 Bahasa Indonesia', 'it': '🇮🇹 Italiano', 'ms': '🇲🇾 Bahasa Melayu', 'no': '🇳🇴 Norsk', 'fa': '🇮🇷 فارسی', 'tl': '🇵🇭 Filipino', 'pl': '🇵🇱 Polski', 'ro': '🇷🇴 Română', 'sk': '🇸🇰 Slovenčina', 'sv': '🇸🇪 Svenska', 'sw': '🇰🇪 Kiswahili', 'th': '🇹🇭 ภาษาไทย', 'tr': '🇹🇷 Türkçe', 'uk': '🇺🇦 Українська', 'ur': '🇵🇰 اردو', 'vi': '🇻🇳 Tiếng Việt'};
+function doTranslate(lang) {
+  if (lang === '') return;
+  // Update button label
+  var btn = document.getElementById('translate-btn-label');
+  if (btn && langLabels[lang]) btn.textContent = langLabels[lang];
+  // If English selected, clear translation and reload
+  if (lang === 'en') {
+    // Set cookie to en|en (not just delete — Google re-reads the hash otherwise)
+    document.cookie = 'googtrans=/en/en; path=/;';
+    document.cookie = 'googtrans=/en/en; path=/; domain=' + location.hostname + ';';
+    document.cookie = 'googtrans=/en/en; path=/; domain=.' + location.hostname + ';';
+    // Strip any googtrans hash from URL then reload
+    var clean = window.location.href
+      .replace(/#googtrans\([^)]*\)/g, '')
+      .replace(/#$/, '');
+    window.location.replace(clean);
+    return;
+  }
+  var sel = document.querySelector('.goog-te-combo');
+  if (sel) {
+    sel.value = lang;
+    sel.dispatchEvent(new Event('change'));
+  }
+  closeTranslate();
+}
+document.addEventListener('click', function(e) {
+  var dd = document.getElementById('translate-dropdown');
+  if (dd && !dd.contains(e.target) && !e.target.classList.contains('translate-btn')) {
+    closeTranslate();
+  }
+});
+</script>
+<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 </body>
 </html>
