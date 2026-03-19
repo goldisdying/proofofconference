@@ -867,14 +867,15 @@
       background: none;
       border: none;
       cursor: pointer;
-      font-size: 16px;
+      font-size: 14px;
+      font-weight: 500;
       padding: 0;
       line-height: 1;
-      opacity: 0.85;
-      transition: opacity 0.2s;
-      color: #fff;
+      color: #ffffff;
+      font-family: inherit;
+      opacity: 1;
     }
-    .translate-btn:hover { opacity: 1; }
+    .translate-btn:hover { opacity: 0.8; }
     .translate-dropdown {
       display: none;
       position: absolute;
@@ -927,7 +928,7 @@
   •
   <span style="white-space:nowrap;display:inline-flex;align-items:center;gap:8px;"><a href="/blog/">Blog</a>
   •
-  <div class="translate-wrapper"><button class="translate-btn" onclick="toggleTranslate(event)" title="Translate">🌐</button><div class="translate-dropdown" id="translate-dropdown">
+  <div class="translate-wrapper"><button class="translate-btn" onclick="toggleTranslate(event)" title="Translate" id="translate-btn-label">🇺🇸 English</button><div class="translate-dropdown" id="translate-dropdown">
       <button class="lang-btn" onclick="doTranslate('en')">🇺🇸 English</button>
       <button class="lang-btn" onclick="doTranslate('es')">🇪🇸 Español</button>
       <button class="lang-btn" onclick="doTranslate('pt')">🇧🇷 Português</button>
@@ -2988,26 +2989,29 @@ function toggleTranslate(e) {
   e.stopPropagation();
   document.getElementById('translate-dropdown').classList.toggle('open');
 }
+var langLabels = {
+  'en': '🇺🇸 English', 'es': '🇪🇸 Español', 'pt': '🇧🇷 Português',
+  'fr': '🇫🇷 Français', 'de': '🇩🇪 Deutsch', 'ar': '🇸🇦 العربية',
+  'zh-CN': '🇨🇳 中文', 'ja': '🇯🇵 日本語', 'ko': '🇰🇷 한국어',
+  'ru': '🇷🇺 Русский', 'hi': '🇮🇳 हिन्दी', 'tr': '🇹🇷 Türkçe',
+  'it': '🇮🇹 Italiano', 'nl': '🇳🇱 Nederlands'
+};
 function doTranslate(lang) {
   if (lang === '') return;
+  // Update button label
+  var btn = document.getElementById('translate-btn-label');
+  if (btn && langLabels[lang]) btn.textContent = langLabels[lang];
+  // If English selected, clear translation and reload
+  if (lang === 'en') {
+    document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+    document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=' + location.hostname + ';';
+    window.location.href = window.location.href.replace(/#googtrans\([^)]+\)/, '');
+    return;
+  }
   var sel = document.querySelector('.goog-te-combo');
   if (sel) {
     sel.value = lang;
     sel.dispatchEvent(new Event('change'));
-  }
-  // If English selected, also restore page to original
-  if (lang === 'en') {
-    var frame = document.querySelector('.goog-te-banner-frame');
-    if (frame) {
-      var restore = frame.contentDocument.querySelector('#\:1\.restore');
-      if (restore) restore.click();
-    }
-    // Fallback: reload without translation cookie
-    var href = window.location.href.replace(/#googtrans\([^)]+\)/, '');
-    document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
-    document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=' + location.hostname + ';';
-    window.location.href = href;
-    return;
   }
   document.getElementById('translate-dropdown').classList.remove('open');
 }
