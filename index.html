@@ -855,7 +855,23 @@
         width: 100%;
       }
     }
-  </style>
+  
+    /* === GOOGLE TRANSLATE === */
+    #google_translate_element { display: inline-block; }
+    .goog-te-gadget-simple {
+      background: transparent !important;
+      border: 1px solid rgba(255,255,255,0.3) !important;
+      border-radius: 4px !important;
+      padding: 2px 6px !important;
+      font-size: 12px !important;
+    }
+    .goog-te-gadget-simple .goog-te-menu-value span { color: #fff !important; }
+    .goog-te-gadget-simple .goog-te-menu-value span:last-child { display: none; }
+    .goog-te-gadget img { display: none; }
+    .goog-logo-link { display: none !important; }
+    .goog-te-gadget { font-size: 0 !important; }
+
+    </style>
 </head>
 
 <body>
@@ -868,6 +884,9 @@
   <a href="https://fomo21.com/discount/POC15" target="_blank" rel="noopener noreferrer">Merch</a>
   •
   <a href="/blog/">Blog</a>
+
+  •
+  <div id="google_translate_element" style="display:inline-block;vertical-align:middle;"></div>
 </div>
 
 <div class="container">
@@ -2897,6 +2916,19 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 }
 </style>
+
+
+<!-- Google Translate -->
+<script type="text/javascript">
+function googleTranslateElementInit() {
+  new google.translate.TranslateElement({
+    pageLanguage: 'en',
+    layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+    autoDisplay: false
+  }, 'google_translate_element');
+}
+</script>
+<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
 </body>
 </html>
