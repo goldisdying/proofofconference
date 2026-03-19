@@ -900,7 +900,9 @@
       overflow-y: auto;
     }
     .translate-dropdown.open { display: flex; flex-direction: column; gap: 2px; }
-    body.translate-open { -webkit-user-select: none; user-select: none; }
+    body.translate-open * { -webkit-user-select: none !important; user-select: none !important; }
+    body.translate-open .translate-dropdown,
+    body.translate-open .translate-dropdown * { -webkit-user-select: none; user-select: none; pointer-events: auto; }
     .lang-btn {
       background: none;
       border: none;
@@ -3015,12 +3017,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
 <!-- Google Translate -->
 <script type="text/javascript">
-document.addEventListener('touchstart', function(e) {
-  if (e.target.classList.contains('lang-btn') || e.target.classList.contains('translate-btn')) {
-    e.preventDefault();
-  }
-}, { passive: false });
-
 function googleTranslateElementInit() {
   new google.translate.TranslateElement({
     pageLanguage: 'en',
@@ -3030,7 +3026,6 @@ function googleTranslateElementInit() {
 }
 function toggleTranslate(e) {
   e.stopPropagation();
-  e.preventDefault();
   var dd = document.getElementById('translate-dropdown');
   var opening = !dd.classList.contains('open');
   dd.classList.toggle('open');
