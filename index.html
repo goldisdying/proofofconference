@@ -952,7 +952,7 @@
       <div style="border-top:1px solid #333;margin:4px 0;"></div>
       <button class="lang-btn notranslate" translate="no" onclick="doTranslate('ko')">🇰🇷 한국어</button>
       <button class="lang-btn notranslate" translate="no" onclick="doTranslate('ar')">🇸🇦 العربية</button>
-      <button class="lang-btn notranslate" translate="no" onclick="doTranslate('he')">🇮🇱 עברית</button>
+      <button class="lang-btn notranslate" translate="no" onclick="doTranslate('iw')">🇮🇱 עברית</button>
       <button class="lang-btn notranslate" translate="no" onclick="doTranslate('ja')">🇯🇵 日本語</button>
       <button class="lang-btn notranslate" translate="no" onclick="doTranslate('es')">🇪🇸 Español</button>
       <button class="lang-btn notranslate" translate="no" onclick="doTranslate('pt')">🇧🇷 Português</button>
@@ -970,7 +970,7 @@
       <button class="lang-btn notranslate" translate="no" onclick="doTranslate('da')">🇩🇰 Dansk</button>
       <button class="lang-btn notranslate" translate="no" onclick="doTranslate('fi')">🇫🇮 Suomi</button>
       <button class="lang-btn notranslate" translate="no" onclick="doTranslate('el')">🇬🇷 Ελληνικά</button>
-      <button class="lang-btn notranslate" translate="no" onclick="doTranslate('he')">🇮🇱 עברית</button>
+      <button class="lang-btn notranslate" translate="no" onclick="doTranslate('iw')">🇮🇱 עברית</button>
       <button class="lang-btn notranslate" translate="no" onclick="doTranslate('hi')">🇮🇳 हिन्दी</button>
       <button class="lang-btn notranslate" translate="no" onclick="doTranslate('hu')">🇭🇺 Magyar</button>
       <button class="lang-btn notranslate" translate="no" onclick="doTranslate('id')">🇮🇩 Bahasa Indonesia</button>
@@ -3043,7 +3043,7 @@ function toggleTranslate(e) {
   dd.classList.toggle('open', opening);
   ov.classList.toggle('open', opening);
 }
-var langLabels = {'en': '🇺🇸 English', 'es': '🇪🇸 Español', 'pt': '🇧🇷 Português', 'de': '🇩🇪 Deutsch', 'nl': '🇳🇱 Nederlands', 'fr': '🇫🇷 Français', 'ar': '🇸🇦 العربية', 'zh-CN': '🇨🇳 中文 (简体)', 'ja': '🇯🇵 日本語', 'ko': '🇰🇷 한국어', 'ru': '🇷🇺 Русский', 'af': '🇿🇦 Afrikaans', 'am': '🇪🇹 አማርኛ', 'bn': '🇧🇩 বাংলা', 'zh-TW': '🇹🇼 中文 (繁體)', 'cs': '🇨🇿 Čeština', 'da': '🇩🇰 Dansk', 'fi': '🇫🇮 Suomi', 'el': '🇬🇷 Ελληνικά', 'he': '🇮🇱 עברית', 'hi': '🇮🇳 हिन्दी', 'hu': '🇭🇺 Magyar', 'id': '🇮🇩 Bahasa Indonesia', 'it': '🇮🇹 Italiano', 'ms': '🇲🇾 Bahasa Melayu', 'no': '🇳🇴 Norsk', 'fa': '🇮🇷 فارسی', 'tl': '🇵🇭 Filipino', 'pl': '🇵🇱 Polski', 'ro': '🇷🇴 Română', 'sk': '🇸🇰 Slovenčina', 'sv': '🇸🇪 Svenska', 'sw': '🇰🇪 Kiswahili', 'th': '🇹🇭 ภาษาไทย', 'tr': '🇹🇷 Türkçe', 'uk': '🇺🇦 Українська', 'ur': '🇵🇰 اردو', 'vi': '🇻🇳 Tiếng Việt'};
+var langLabels = {'en': '🇺🇸 English', 'es': '🇪🇸 Español', 'pt': '🇧🇷 Português', 'de': '🇩🇪 Deutsch', 'nl': '🇳🇱 Nederlands', 'fr': '🇫🇷 Français', 'ar': '🇸🇦 العربية', 'zh-CN': '🇨🇳 中文 (简体)', 'ja': '🇯🇵 日本語', 'ko': '🇰🇷 한국어', 'ru': '🇷🇺 Русский', 'af': '🇿🇦 Afrikaans', 'am': '🇪🇹 አማርኛ', 'bn': '🇧🇩 বাংলা', 'zh-TW': '🇹🇼 中文 (繁體)', 'cs': '🇨🇿 Čeština', 'da': '🇩🇰 Dansk', 'fi': '🇫🇮 Suomi', 'el': '🇬🇷 Ελληνικά', 'iw': '🇮🇱 עברית', 'hi': '🇮🇳 हिन्दी', 'hu': '🇭🇺 Magyar', 'id': '🇮🇩 Bahasa Indonesia', 'it': '🇮🇹 Italiano', 'ms': '🇲🇾 Bahasa Melayu', 'no': '🇳🇴 Norsk', 'fa': '🇮🇷 فارسی', 'tl': '🇵🇭 Filipino', 'pl': '🇵🇱 Polski', 'ro': '🇷🇴 Română', 'sk': '🇸🇰 Slovenčina', 'sv': '🇸🇪 Svenska', 'sw': '🇰🇪 Kiswahili', 'th': '🇹🇭 ภาษาไทย', 'tr': '🇹🇷 Türkçe', 'uk': '🇺🇦 Українська', 'ur': '🇵🇰 اردو', 'vi': '🇻🇳 Tiếng Việt'};
 function doTranslate(lang) {
   if (lang === '') return;
   // Update button label
