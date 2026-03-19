@@ -863,6 +863,10 @@
       display: inline-flex;
       align-items: center;
     }
+    .translate-wrapper {
+      -webkit-user-select: none;
+      user-select: none;
+    }
     .translate-btn {
       background: none;
       border: none;
@@ -874,6 +878,10 @@
       color: #ffffff;
       font-family: inherit;
       opacity: 1;
+      -webkit-user-select: none;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
     }
     .translate-btn:hover { opacity: 0.8; }
     .translate-dropdown {
@@ -3015,6 +3023,7 @@ function googleTranslateElementInit() {
 }
 function toggleTranslate(e) {
   e.stopPropagation();
+  e.preventDefault();
   document.getElementById('translate-dropdown').classList.toggle('open');
 }
 var langLabels = {'en': '🇺🇸 English', 'es': '🇪🇸 Español', 'pt': '🇧🇷 Português', 'de': '🇩🇪 Deutsch', 'nl': '🇳🇱 Nederlands', 'fr': '🇫🇷 Français', 'ar': '🇸🇦 العربية', 'zh-CN': '🇨🇳 中文 (简体)', 'ja': '🇯🇵 日本語', 'ko': '🇰🇷 한국어', 'ru': '🇷🇺 Русский', 'af': '🇿🇦 Afrikaans', 'am': '🇪🇹 አማርኛ', 'bn': '🇧🇩 বাংলা', 'zh-TW': '🇹🇼 中文 (繁體)', 'cs': '🇨🇿 Čeština', 'da': '🇩🇰 Dansk', 'fi': '🇫🇮 Suomi', 'el': '🇬🇷 Ελληνικά', 'he': '🇮🇱 עברית', 'hi': '🇮🇳 हिन्दी', 'hu': '🇭🇺 Magyar', 'id': '🇮🇩 Bahasa Indonesia', 'it': '🇮🇹 Italiano', 'ms': '🇲🇾 Bahasa Melayu', 'no': '🇳🇴 Norsk', 'fa': '🇮🇷 فارسی', 'tl': '🇵🇭 Filipino', 'pl': '🇵🇱 Polski', 'ro': '🇷🇴 Română', 'sk': '🇸🇰 Slovenčina', 'sv': '🇸🇪 Svenska', 'sw': '🇰🇪 Kiswahili', 'th': '🇹🇭 ภาษาไทย', 'tr': '🇹🇷 Türkçe', 'uk': '🇺🇦 Українська', 'ur': '🇵🇰 اردو', 'vi': '🇻🇳 Tiếng Việt'};
