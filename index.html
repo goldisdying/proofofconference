@@ -900,6 +900,7 @@
       overflow-y: auto;
     }
     .translate-dropdown.open { display: flex; flex-direction: column; gap: 2px; }
+    body.translate-open { -webkit-user-select: none; user-select: none; }
     .lang-btn {
       background: none;
       border: none;
@@ -3014,6 +3015,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
 <!-- Google Translate -->
 <script type="text/javascript">
+document.addEventListener('touchstart', function(e) {
+  if (e.target.classList.contains('lang-btn') || e.target.classList.contains('translate-btn')) {
+    e.preventDefault();
+  }
+}, { passive: false });
+
 function googleTranslateElementInit() {
   new google.translate.TranslateElement({
     pageLanguage: 'en',
@@ -3024,7 +3031,10 @@ function googleTranslateElementInit() {
 function toggleTranslate(e) {
   e.stopPropagation();
   e.preventDefault();
-  document.getElementById('translate-dropdown').classList.toggle('open');
+  var dd = document.getElementById('translate-dropdown');
+  var opening = !dd.classList.contains('open');
+  dd.classList.toggle('open');
+  document.body.classList.toggle('translate-open', opening);
 }
 var langLabels = {'en': '🇺🇸 English', 'es': '🇪🇸 Español', 'pt': '🇧🇷 Português', 'de': '🇩🇪 Deutsch', 'nl': '🇳🇱 Nederlands', 'fr': '🇫🇷 Français', 'ar': '🇸🇦 العربية', 'zh-CN': '🇨🇳 中文 (简体)', 'ja': '🇯🇵 日本語', 'ko': '🇰🇷 한국어', 'ru': '🇷🇺 Русский', 'af': '🇿🇦 Afrikaans', 'am': '🇪🇹 አማርኛ', 'bn': '🇧🇩 বাংলা', 'zh-TW': '🇹🇼 中文 (繁體)', 'cs': '🇨🇿 Čeština', 'da': '🇩🇰 Dansk', 'fi': '🇫🇮 Suomi', 'el': '🇬🇷 Ελληνικά', 'he': '🇮🇱 עברית', 'hi': '🇮🇳 हिन्दी', 'hu': '🇭🇺 Magyar', 'id': '🇮🇩 Bahasa Indonesia', 'it': '🇮🇹 Italiano', 'ms': '🇲🇾 Bahasa Melayu', 'no': '🇳🇴 Norsk', 'fa': '🇮🇷 فارسی', 'tl': '🇵🇭 Filipino', 'pl': '🇵🇱 Polski', 'ro': '🇷🇴 Română', 'sk': '🇸🇰 Slovenčina', 'sv': '🇸🇪 Svenska', 'sw': '🇰🇪 Kiswahili', 'th': '🇹🇭 ภาษาไทย', 'tr': '🇹🇷 Türkçe', 'uk': '🇺🇦 Українська', 'ur': '🇵🇰 اردو', 'vi': '🇻🇳 Tiếng Việt'};
 function doTranslate(lang) {
@@ -3051,11 +3061,13 @@ function doTranslate(lang) {
     sel.dispatchEvent(new Event('change'));
   }
   document.getElementById('translate-dropdown').classList.remove('open');
+  document.body.classList.remove('translate-open');
 }
 document.addEventListener('click', function(e) {
   var dd = document.getElementById('translate-dropdown');
   if (dd && !dd.contains(e.target) && !e.target.classList.contains('translate-btn')) {
     dd.classList.remove('open');
+    document.body.classList.remove('translate-open');
   }
 });
 </script>
