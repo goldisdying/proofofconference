@@ -60,6 +60,7 @@
     /* === TOP NAVIGATION === */
     .top-nav {
       display: flex;
+      flex-wrap: wrap;
       justify-content: center;
       gap: 14px;
       padding: 10px;
@@ -928,6 +929,7 @@
 
   •
   <div class="translate-wrapper"><button class="translate-btn" onclick="toggleTranslate(event)" title="Translate">🌐</button><div class="translate-dropdown" id="translate-dropdown">
+      <button class="lang-btn" onclick="doTranslate('en')">🇺🇸 English</button>
       <button class="lang-btn" onclick="doTranslate('es')">🇪🇸 Español</button>
       <button class="lang-btn" onclick="doTranslate('pt')">🇧🇷 Português</button>
       <button class="lang-btn" onclick="doTranslate('fr')">🇫🇷 Français</button>
@@ -2992,6 +2994,20 @@ function doTranslate(lang) {
   if (sel) {
     sel.value = lang;
     sel.dispatchEvent(new Event('change'));
+  }
+  // If English selected, also restore page to original
+  if (lang === 'en') {
+    var frame = document.querySelector('.goog-te-banner-frame');
+    if (frame) {
+      var restore = frame.contentDocument.querySelector('#\:1\.restore');
+      if (restore) restore.click();
+    }
+    // Fallback: reload without translation cookie
+    var href = window.location.href.replace(/#googtrans\([^)]+\)/, '');
+    document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+    document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=' + location.hostname + ';';
+    window.location.href = href;
+    return;
   }
   document.getElementById('translate-dropdown').classList.remove('open');
 }
