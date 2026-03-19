@@ -887,7 +887,9 @@
       border-radius: 8px;
       padding: 6px;
       white-space: nowrap;
-      min-width: 160px;
+      min-width: 180px;
+      max-height: 320px;
+      overflow-y: auto;
     }
     .translate-dropdown.open { display: flex; flex-direction: column; gap: 2px; }
     .lang-btn {
@@ -935,7 +937,8 @@
       <button class="lang-btn" onclick="doTranslate('fr')">🇫🇷 Français</button>
       <button class="lang-btn" onclick="doTranslate('de')">🇩🇪 Deutsch</button>
       <button class="lang-btn" onclick="doTranslate('ar')">🇸🇦 العربية</button>
-      <button class="lang-btn" onclick="doTranslate('zh-CN')">🇨🇳 中文</button>
+      <button class="lang-btn" onclick="doTranslate('zh-CN')">🇨🇳 中文 (简体)</button>
+      <button class="lang-btn" onclick="doTranslate('zh-TW')">🇹🇼 中文 (繁體)</button>
       <button class="lang-btn" onclick="doTranslate('ja')">🇯🇵 日本語</button>
       <button class="lang-btn" onclick="doTranslate('ko')">🇰🇷 한국어</button>
       <button class="lang-btn" onclick="doTranslate('ru')">🇷🇺 Русский</button>
@@ -943,6 +946,29 @@
       <button class="lang-btn" onclick="doTranslate('tr')">🇹🇷 Türkçe</button>
       <button class="lang-btn" onclick="doTranslate('it')">🇮🇹 Italiano</button>
       <button class="lang-btn" onclick="doTranslate('nl')">🇳🇱 Nederlands</button>
+      <button class="lang-btn" onclick="doTranslate('pl')">🇵🇱 Polski</button>
+      <button class="lang-btn" onclick="doTranslate('sv')">🇸🇪 Svenska</button>
+      <button class="lang-btn" onclick="doTranslate('no')">🇳🇴 Norsk</button>
+      <button class="lang-btn" onclick="doTranslate('da')">🇩🇰 Dansk</button>
+      <button class="lang-btn" onclick="doTranslate('fi')">🇫🇮 Suomi</button>
+      <button class="lang-btn" onclick="doTranslate('cs')">🇨🇿 Čeština</button>
+      <button class="lang-btn" onclick="doTranslate('sk')">🇸🇰 Slovenčina</button>
+      <button class="lang-btn" onclick="doTranslate('ro')">🇷🇴 Română</button>
+      <button class="lang-btn" onclick="doTranslate('hu')">🇭🇺 Magyar</button>
+      <button class="lang-btn" onclick="doTranslate('el')">🇬🇷 Ελληνικά</button>
+      <button class="lang-btn" onclick="doTranslate('uk')">🇺🇦 Українська</button>
+      <button class="lang-btn" onclick="doTranslate('he')">🇮🇱 עברית</button>
+      <button class="lang-btn" onclick="doTranslate('fa')">🇮🇷 فارسی</button>
+      <button class="lang-btn" onclick="doTranslate('ur')">🇵🇰 اردو</button>
+      <button class="lang-btn" onclick="doTranslate('bn')">🇧🇩 বাংলা</button>
+      <button class="lang-btn" onclick="doTranslate('id')">🇮🇩 Bahasa Indonesia</button>
+      <button class="lang-btn" onclick="doTranslate('ms')">🇲🇾 Bahasa Melayu</button>
+      <button class="lang-btn" onclick="doTranslate('th')">🇹🇭 ภาษาไทย</button>
+      <button class="lang-btn" onclick="doTranslate('vi')">🇻🇳 Tiếng Việt</button>
+      <button class="lang-btn" onclick="doTranslate('tl')">🇵🇭 Filipino</button>
+      <button class="lang-btn" onclick="doTranslate('sw')">🇰🇪 Kiswahili</button>
+      <button class="lang-btn" onclick="doTranslate('am')">🇪🇹 አማርኛ</button>
+      <button class="lang-btn" onclick="doTranslate('af')">🇿🇦 Afrikaans</button>
     </div></div><div id="google_translate_element"></div>
   </span>
 </div>
@@ -2992,9 +3018,17 @@ function toggleTranslate(e) {
 var langLabels = {
   'en': '🇺🇸 English', 'es': '🇪🇸 Español', 'pt': '🇧🇷 Português',
   'fr': '🇫🇷 Français', 'de': '🇩🇪 Deutsch', 'ar': '🇸🇦 العربية',
-  'zh-CN': '🇨🇳 中文', 'ja': '🇯🇵 日本語', 'ko': '🇰🇷 한국어',
-  'ru': '🇷🇺 Русский', 'hi': '🇮🇳 हिन्दी', 'tr': '🇹🇷 Türkçe',
-  'it': '🇮🇹 Italiano', 'nl': '🇳🇱 Nederlands'
+  'zh-CN': '🇨🇳 中文 (简体)', 'zh-TW': '🇹🇼 中文 (繁體)', 'ja': '🇯🇵 日本語',
+  'ko': '🇰🇷 한국어', 'ru': '🇷🇺 Русский', 'hi': '🇮🇳 हिन्दी',
+  'tr': '🇹🇷 Türkçe', 'it': '🇮🇹 Italiano', 'nl': '🇳🇱 Nederlands',
+  'pl': '🇵🇱 Polski', 'sv': '🇸🇪 Svenska', 'no': '🇳🇴 Norsk',
+  'da': '🇩🇰 Dansk', 'fi': '🇫🇮 Suomi', 'cs': '🇨🇿 Čeština',
+  'sk': '🇸🇰 Slovenčina', 'ro': '🇷🇴 Română', 'hu': '🇭🇺 Magyar',
+  'el': '🇬🇷 Ελληνικά', 'uk': '🇺🇦 Українська', 'he': '🇮🇱 עברית',
+  'fa': '🇮🇷 فارسی', 'ur': '🇵🇰 اردو', 'bn': '🇧🇩 বাংলা',
+  'id': '🇮🇩 Bahasa Indonesia', 'ms': '🇲🇾 Bahasa Melayu', 'th': '🇹🇭 ภาษาไทย',
+  'vi': '🇻🇳 Tiếng Việt', 'tl': '🇵🇭 Filipino', 'sw': '🇰🇪 Kiswahili',
+  'am': '🇪🇹 አማርኛ', 'af': '🇿🇦 Afrikaans'
 };
 function doTranslate(lang) {
   if (lang === '') return;
