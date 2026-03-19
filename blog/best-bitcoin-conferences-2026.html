@@ -43,7 +43,7 @@
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { background: #000; color: #fff; font-family: Inter, system-ui, sans-serif; }
-    .top-nav { background: #111; text-align: center; padding: 8px 16px; font-size: 13px; }
+    .top-nav { background: #111; text-align: center; padding: 8px 16px; font-size: 13px; display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 10px; }
     .top-nav a { color: #f7931a; text-decoration: none; margin: 0 6px; }
     .top-nav a:hover { text-decoration: underline; }
     .container { max-width: 720px; margin: 0 auto; padding: 0 16px 60px; }
@@ -83,12 +83,135 @@
     footer a { color: #f7931a; text-decoration: none; }
     .footer-links { display: flex; flex-direction: column; align-items: center; gap: 10px; margin-bottom: 16px; }
     @media (max-width: 600px) { .article-title { font-size: 24px; } }
-  </style>
+    
+    /* === GOOGLE TRANSLATE GLOBE === */
+    .translate-wrapper {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      -webkit-user-select: none;
+      user-select: none;
+    }
+    .translate-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+      padding: 0;
+      line-height: 1;
+      color: #ffffff;
+      font-family: inherit;
+      opacity: 1;
+      -webkit-user-select: none;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+    }
+    .translate-btn:hover { opacity: 0.8; }
+    .translate-dropdown {
+      display: none;
+      position: absolute;
+      top: 28px;
+      right: 0;
+      z-index: 9999;
+      background: #1a1a1a;
+      border: 1px solid #444;
+      border-radius: 8px;
+      padding: 6px;
+      white-space: nowrap;
+      min-width: 180px;
+      max-height: 320px;
+      overflow-y: auto;
+    }
+    .translate-dropdown.open { display: flex; flex-direction: column; gap: 2px; }
+    #translate-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: 9998;
+      background: transparent;
+      -webkit-tap-highlight-color: transparent;
+    }
+    #translate-overlay.open { display: block; }
+    .lang-btn {
+      background: none;
+      border: none;
+      color: #fff;
+      font-size: 13px;
+      padding: 6px 10px;
+      cursor: pointer;
+      text-align: left;
+      border-radius: 4px;
+      width: 100%;
+    }
+    .lang-btn:hover { background: #333; }
+    #google_translate_element { position: absolute; left: -9999px; top: -9999px; }
+    .goog-te-banner-frame, .skiptranslate { display: none !important; }
+    body { top: 0 !important; }
+    .goog-te-gadget { display: none !important; }
+    #goog-gt-tt, .goog-tooltip, .goog-tooltip:hover { display: none !important; }
+    }
+
+
+    @media (max-width: 500px) {
+      .top-nav { font-size: 11px; gap: 6px; padding: 8px 8px; }
+      .top-nav a[href="/submit-event/"]::before { content: "Submit"; }
+      .top-nav a[href="/submit-event/"] { font-size: 0; }
+      .top-nav a[href="/submit-event/"]::before { font-size: 11px; }
+    }
+    </style>
 </head>
 <body>
+<div id="translate-overlay" onclick="closeTranslate()"></div>
 
 <div class="top-nav">
   <a href="/">Home</a> • <a href="/blog/">Blog</a> • <a href="/submit-event/">Submit Event</a> • <a href="https://fomo21.com/discount/POC15" target="_blank" rel="noopener noreferrer">Merch</a>
+
+  •
+  <div class="translate-wrapper"><button class="translate-btn" onclick="toggleTranslate(event)" title="Translate" id="translate-btn-label" translate="no">🇺🇸 English</button><div class="translate-dropdown" id="translate-dropdown" translate="no" class="notranslate">
+                  <button class="lang-btn notranslate" translate="no" onclick="doTranslate('en')">🇺🇸 English</button>
+      <div style="border-top:1px solid #333;margin:4px 0;"></div>
+      <button class="lang-btn notranslate" translate="no" onclick="doTranslate('ko')">🇰🇷 한국어</button>
+      <button class="lang-btn notranslate" translate="no" onclick="doTranslate('ar')">🇸🇦 العربية</button>
+      <button class="lang-btn notranslate" translate="no" onclick="doTranslate('iw')">🇮🇱 עברית</button>
+      <button class="lang-btn notranslate" translate="no" onclick="doTranslate('ja')">🇯🇵 日本語</button>
+      <button class="lang-btn notranslate" translate="no" onclick="doTranslate('zh-CN')">🇨🇳 中文 (简体)</button>
+      <button class="lang-btn notranslate" translate="no" onclick="doTranslate('es')">🇪🇸 Español</button>
+      <button class="lang-btn notranslate" translate="no" onclick="doTranslate('pt')">🇧🇷 Português</button>
+      <button class="lang-btn notranslate" translate="no" onclick="doTranslate('de')">🇩🇪 Deutsch</button>
+      <button class="lang-btn notranslate" translate="no" onclick="doTranslate('nl')">🇳🇱 Nederlands</button>
+      <button class="lang-btn notranslate" translate="no" onclick="doTranslate('fr')">🇫🇷 Français</button>
+      <button class="lang-btn notranslate" translate="no" onclick="doTranslate('ru')">🇷🇺 Русский</button>
+      <div style="border-top:1px solid #333;margin:4px 0;"></div>
+      <button class="lang-btn notranslate" translate="no" onclick="doTranslate('af')">🇿🇦 Afrikaans</button>
+      <button class="lang-btn notranslate" translate="no" onclick="doTranslate('am')">🇪🇹 አማርኛ</button>
+      <button class="lang-btn notranslate" translate="no" onclick="doTranslate('bn')">🇧🇩 বাংলা</button>
+      <button class="lang-btn notranslate" translate="no" onclick="doTranslate('zh-TW')">🇹🇼 中文 (繁體)</button>
+      <button class="lang-btn notranslate" translate="no" onclick="doTranslate('cs')">🇨🇿 Čeština</button>
+      <button class="lang-btn notranslate" translate="no" onclick="doTranslate('da')">🇩🇰 Dansk</button>
+      <button class="lang-btn notranslate" translate="no" onclick="doTranslate('fi')">🇫🇮 Suomi</button>
+      <button class="lang-btn notranslate" translate="no" onclick="doTranslate('el')">🇬🇷 Ελληνικά</button>
+      <button class="lang-btn notranslate" translate="no" onclick="doTranslate('hi')">🇮🇳 हिन्दी</button>
+      <button class="lang-btn notranslate" translate="no" onclick="doTranslate('hu')">🇭🇺 Magyar</button>
+      <button class="lang-btn notranslate" translate="no" onclick="doTranslate('id')">🇮🇩 Bahasa Indonesia</button>
+      <button class="lang-btn notranslate" translate="no" onclick="doTranslate('it')">🇮🇹 Italiano</button>
+      <button class="lang-btn notranslate" translate="no" onclick="doTranslate('ms')">🇲🇾 Bahasa Melayu</button>
+      <button class="lang-btn notranslate" translate="no" onclick="doTranslate('no')">🇳🇴 Norsk</button>
+      <button class="lang-btn notranslate" translate="no" onclick="doTranslate('fa')">🇮🇷 فارسی</button>
+      <button class="lang-btn notranslate" translate="no" onclick="doTranslate('tl')">🇵🇭 Filipino</button>
+      <button class="lang-btn notranslate" translate="no" onclick="doTranslate('pl')">🇵🇱 Polski</button>
+      <button class="lang-btn notranslate" translate="no" onclick="doTranslate('ro')">🇷🇴 Română</button>
+      <button class="lang-btn notranslate" translate="no" onclick="doTranslate('sk')">🇸🇰 Slovenčina</button>
+      <button class="lang-btn notranslate" translate="no" onclick="doTranslate('sv')">🇸🇪 Svenska</button>
+      <button class="lang-btn notranslate" translate="no" onclick="doTranslate('sw')">🇰🇪 Kiswahili</button>
+      <button class="lang-btn notranslate" translate="no" onclick="doTranslate('th')">🇹🇭 ภาษาไทย</button>
+      <button class="lang-btn notranslate" translate="no" onclick="doTranslate('tr')">🇹🇷 Türkçe</button>
+      <button class="lang-btn notranslate" translate="no" onclick="doTranslate('uk')">🇺🇦 Українська</button>
+      <button class="lang-btn notranslate" translate="no" onclick="doTranslate('ur')">🇵🇰 اردو</button>
+      <button class="lang-btn notranslate" translate="no" onclick="doTranslate('vi')">🇻🇳 Tiếng Việt</button>
+    </div></div><div id="google_translate_element"></div>
 </div>
 
 <div class="container">
@@ -236,5 +359,63 @@
   <p>© 2026 Proof of Conference. All rights reserved.</p>
 </footer>
 
+<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+
+<!-- Google Translate -->
+<script type="text/javascript">
+function googleTranslateElementInit() {
+  new google.translate.TranslateElement({
+    pageLanguage: 'en',
+    autoDisplay: false,
+    multilanguagePage: true,
+  }, 'google_translate_element');
+}
+function closeTranslate() {
+  document.getElementById('translate-dropdown').classList.remove('open');
+  document.getElementById('translate-overlay').classList.remove('open');
+}
+function toggleTranslate(e) {
+  e.stopPropagation();
+  var dd = document.getElementById('translate-dropdown');
+  var ov = document.getElementById('translate-overlay');
+  var opening = !dd.classList.contains('open');
+  dd.classList.toggle('open', opening);
+  ov.classList.toggle('open', opening);
+}
+var langLabels = {'en': '🇺🇸 English', 'es': '🇪🇸 Español', 'pt': '🇧🇷 Português', 'de': '🇩🇪 Deutsch', 'nl': '🇳🇱 Nederlands', 'fr': '🇫🇷 Français', 'ar': '🇸🇦 العربية', 'zh-CN': '🇨🇳 中文 (简体)', 'ja': '🇯🇵 日本語', 'ko': '🇰🇷 한국어', 'ru': '🇷🇺 Русский', 'af': '🇿🇦 Afrikaans', 'am': '🇪🇹 አማርኛ', 'bn': '🇧🇩 বাংলা', 'zh-TW': '🇹🇼 中文 (繁體)', 'cs': '🇨🇿 Čeština', 'da': '🇩🇰 Dansk', 'fi': '🇫🇮 Suomi', 'el': '🇬🇷 Ελληνικά', 'iw': '🇮🇱 עברית', 'hi': '🇮🇳 हिन्दी', 'hu': '🇭🇺 Magyar', 'id': '🇮🇩 Bahasa Indonesia', 'it': '🇮🇹 Italiano', 'ms': '🇲🇾 Bahasa Melayu', 'no': '🇳🇴 Norsk', 'fa': '🇮🇷 فارسی', 'tl': '🇵🇭 Filipino', 'pl': '🇵🇱 Polski', 'ro': '🇷🇴 Română', 'sk': '🇸🇰 Slovenčina', 'sv': '🇸🇪 Svenska', 'sw': '🇰🇪 Kiswahili', 'th': '🇹🇭 ภาษาไทย', 'tr': '🇹🇷 Türkçe', 'uk': '🇺🇦 Українська', 'ur': '🇵🇰 اردو', 'vi': '🇻🇳 Tiếng Việt'};
+function doTranslate(lang) {
+  if (lang === '') return;
+  // Update button label
+  var btn = document.getElementById('translate-btn-label');
+  if (btn && langLabels[lang]) btn.textContent = langLabels[lang];
+  // If English selected, clear translation and reload
+  if (lang === 'en') {
+    // Set cookie to en|en (not just delete — Google re-reads the hash otherwise)
+    document.cookie = 'googtrans=/en/en; path=/;';
+    document.cookie = 'googtrans=/en/en; path=/; domain=' + location.hostname + ';';
+    document.cookie = 'googtrans=/en/en; path=/; domain=.' + location.hostname + ';';
+    // Strip any googtrans hash from URL then reload
+    var clean = window.location.href
+      .replace(/#googtrans\([^)]*\)/g, '')
+      .replace(/#$/, '');
+    window.location.replace(clean);
+    return;
+  }
+  var sel = document.querySelector('.goog-te-combo');
+  if (sel) {
+    sel.value = lang;
+    sel.dispatchEvent(new Event('change'));
+  }
+  closeTranslate();
+}
+document.addEventListener('click', function(e) {
+  var dd = document.getElementById('translate-dropdown');
+  if (dd && !dd.contains(e.target) && !e.target.classList.contains('translate-btn')) {
+    closeTranslate();
+  }
+});
+</script>
+<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 </body>
 </html>
