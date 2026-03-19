@@ -862,8 +862,6 @@
       position: relative;
       display: inline-flex;
       align-items: center;
-    }
-    .translate-wrapper {
       -webkit-user-select: none;
       user-select: none;
     }
@@ -910,10 +908,6 @@
       -webkit-tap-highlight-color: transparent;
     }
     #translate-overlay.open { display: block; }
-    body.no-select, body.no-select * {
-      -webkit-user-select: none !important;
-      user-select: none !important;
-    }
     .lang-btn {
       background: none;
       border: none;
@@ -3073,12 +3067,6 @@ function doTranslate(lang) {
     sel.dispatchEvent(new Event('change'));
   }
   closeTranslate();
-  // Block all text selection while Google Translate rewrites the DOM
-  document.body.classList.add('no-select');
-  setTimeout(function() {
-    document.body.classList.remove('no-select');
-    if (window.getSelection) window.getSelection().removeAllRanges();
-  }, 4000);
 }
 document.addEventListener('click', function(e) {
   var dd = document.getElementById('translate-dropdown');
