@@ -177,4 +177,68 @@
     <priority>0.9</priority>
   </url>
 
+  <!-- Conference pages - March 21, 2026 batch 2 -->
+  <url>
+    <loc>https://www.proofofconference.com/conferences/oslo-freedom-forum-2026.html</loc>
+    <lastmod>2026-03-21</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://www.proofofconference.com/conferences/mad-bitcoin-summit-2026.html</loc>
+    <lastmod>2026-03-21</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://www.proofofconference.com/conferences/midwest-bitcoin-summit-2026.html</loc>
+    <lastmod>2026-03-21</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://www.proofofconference.com/conferences/bitcoin-helsinki-2026.html</loc>
+    <lastmod>2026-03-21</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://www.proofofconference.com/conferences/lugano-plan-b-forum-2026.html</loc>
+    <lastmod>2026-03-21</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- Blog guides - March 21, 2026 batch 2 -->
+  <url>
+    <loc>https://www.proofofconference.com/blog/oslo-freedom-forum-2026-guide.html</loc>
+    <lastmod>2026-03-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.proofofconference.com/blog/mad-bitcoin-summit-2026-guide.html</loc>
+    <lastmod>2026-03-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.proofofconference.com/blog/midwest-bitcoin-summit-2026-guide.html</loc>
+    <lastmod>2026-03-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.proofofconference.com/blog/bitcoin-helsinki-2026-guide.html</loc>
+    <lastmod>2026-03-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.proofofconference.com/blog/lugano-plan-b-forum-2026-guide.html</loc>
+    <lastmod>2026-03-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
 </urlset>
