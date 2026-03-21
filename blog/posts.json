@@ -81,5 +81,50 @@
     "excerpt": "A complete guide for first-time Bitcoin conference attendees — how to choose the right event, what to expect on the day, how to meet people, and how to make the most of the experience.",
     "image": "/blog/images/first-bitcoin-conference-guide.webp",
     "tags": ["beginners guide", "first conference", "bitcoin events", "community"]
+  },
+  {
+    "slug": "oslo-freedom-forum-2026-guide",
+    "title": "Oslo Freedom Forum 2026: The Complete Guide",
+    "date": "2026-03-21",
+    "author": "Proof of Conference",
+    "excerpt": "Everything you need to know about Oslo Freedom Forum 2026 — June 1-3 in Oslo, Norway. Where Bitcoin meets human rights and freedom technology.",
+    "image": "/blog/images/oslo-freedom-forum-2026.webp",
+    "tags": ["oslo freedom forum", "norway", "europe", "bitcoin conference", "2026"]
+  },
+  {
+    "slug": "mad-bitcoin-summit-2026-guide",
+    "title": "MAD Bitcoin Summit 2026: The Complete Guide",
+    "date": "2026-03-21",
+    "author": "Proof of Conference",
+    "excerpt": "Everything you need to know about MAD Bitcoin Summit 2026 — May 9-12 in Madrid, Spain. 1,500 attendees, top speakers, and 10% off with code FOMO.",
+    "image": "/blog/images/mad-bitcoin-summit-2026.webp",
+    "tags": ["MAD Bitcoin Summit", "madrid", "spain", "bitcoin conference", "2026"]
+  },
+  {
+    "slug": "midwest-bitcoin-summit-2026-guide",
+    "title": "Midwest Bitcoin Summit 2026: The Complete Guide",
+    "date": "2026-03-21",
+    "author": "Proof of Conference",
+    "excerpt": "Everything you need to know about Midwest Bitcoin Summit 2026 — September 23-24 in Columbus, Ohio. The premier Bitcoin conference for the American heartland.",
+    "image": "/blog/images/midwest-bitcoin-summit-2026.webp",
+    "tags": ["Midwest Bitcoin Summit", "columbus", "ohio", "bitcoin conference", "2026"]
+  },
+  {
+    "slug": "bitcoin-helsinki-2026-guide",
+    "title": "Bitcoin Helsinki 2026: The Complete Guide",
+    "date": "2026-03-21",
+    "author": "Proof of Conference",
+    "excerpt": "Everything you need to know about Bitcoin Helsinki 2026 — September 25-26 at the Cable Factory, Helsinki, Finland. 2,000 attendees, Adam Back, Martti Malmi, and more.",
+    "image": "/blog/images/bitcoin-helsinki-2026.webp",
+    "tags": ["Bitcoin Helsinki", "helsinki", "finland", "nordic", "bitcoin conference", "2026"]
+  },
+  {
+    "slug": "lugano-plan-b-forum-2026-guide",
+    "title": "Lugano Plan B Forum 2026: The Complete Guide",
+    "date": "2026-03-21",
+    "author": "Proof of Conference",
+    "excerpt": "Everything you need to know about Lugano Plan B Forum 2026 — October 23-24 in Lugano, Switzerland. One of Europe's most distinctive Bitcoin conferences.",
+    "image": "/blog/images/lugano-plan-b-forum-2026.webp",
+    "tags": ["Plan B Forum", "lugano", "switzerland", "bitcoin conference", "2026"]
   }
 ]
