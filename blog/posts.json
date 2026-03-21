@@ -4,7 +4,7 @@
     "title": "The Best Bitcoin Conferences to Attend in 2026",
     "date": "2026-03-17",
     "author": "Proof of Conference",
-    "excerpt": "From Bitcoin 2026 in Las Vegas to BTC Prague, Oslo Freedom Forum, and dozens of regional events — your complete guide to the must-attend Bitcoin conferences of 2026, with discount codes where available.",
+    "excerpt": "From Bitcoin 2026 in Las Vegas to BTC Prague, Oslo Freedom Forum, and dozens of regional events — your complete guide to the must-attend Bitcoin conferences of 2026.",
     "image": "/blog/images/best-bitcoin-conferences-2026.webp",
     "tags": ["bitcoin conferences", "2026", "events", "guide"]
   },
@@ -32,9 +32,54 @@
     "title": "Códigos de Descuento para Conferencias Bitcoin 2026",
     "date": "2026-03-19",
     "author": "Proof of Conference",
-    "excerpt": "Todos los códigos de descuento verificados para conferencias Bitcoin 2026 en un solo lugar. Ahorra un 10% en entradas para Bitcoin 2026, BTC Prague, Bitcoin Amsterdam y 13 eventos más con el código FOMO.",
+    "excerpt": "Todos los códigos de descuento verificados para conferencias Bitcoin 2026 en un solo lugar. Ahorra un 10% con el código FOMO en Bitcoin 2026, BTC Prague, Bitcoin Amsterdam y 13 eventos más.",
     "image": "/blog/images/codigos-descuento-conferencias-bitcoin-2026.webp",
     "lang": "es",
     "tags": ["códigos de descuento", "promociones", "conferencias bitcoin", "2026"]
+  },
+  {
+    "slug": "best-bitcoin-conferences-europe-2026",
+    "title": "Best Bitcoin Conferences in Europe 2026",
+    "date": "2026-03-21",
+    "author": "Proof of Conference",
+    "excerpt": "Your complete guide to the must-attend Bitcoin conferences in Europe for 2026 — BTC Prague, Bitcoin Amsterdam, Oslo Freedom Forum, Bitcoin Ireland, Lugano, and more.",
+    "image": "/blog/images/best-bitcoin-conferences-europe-2026.webp",
+    "tags": ["europe", "bitcoin conferences", "2026", "BTC Prague", "Bitcoin Amsterdam"]
+  },
+  {
+    "slug": "best-bitcoin-conferences-usa-2026",
+    "title": "Best Bitcoin Conferences in the United States 2026",
+    "date": "2026-03-21",
+    "author": "Proof of Conference",
+    "excerpt": "Your complete guide to the must-attend Bitcoin conferences in the United States for 2026 — Bitcoin 2026 Las Vegas, BitBlockBoom, Midwest Bitcoin Summit, TABConf, and more.",
+    "image": "/blog/images/best-bitcoin-conferences-usa-2026.webp",
+    "tags": ["usa", "bitcoin conferences", "2026", "Bitcoin 2026", "Las Vegas"]
+  },
+  {
+    "slug": "btc-prague-2026-guide",
+    "title": "BTC Prague 2026: The Complete Guide",
+    "date": "2026-03-21",
+    "author": "Proof of Conference",
+    "excerpt": "Everything you need to know about BTC Prague 2026 — dates, venue, speakers, discount code FOMO for 10% off, travel tips, and how to get the most out of Europe's biggest Bitcoin conference.",
+    "image": "/blog/images/btc-prague-2026-guide.webp",
+    "tags": ["BTC Prague", "prague", "europe", "bitcoin conference", "2026"]
+  },
+  {
+    "slug": "bitcoin-asia-hong-kong-2026",
+    "title": "Bitcoin Asia 2026: Hong Kong Preview",
+    "date": "2026-03-21",
+    "author": "Proof of Conference",
+    "excerpt": "Everything you need to know about Bitcoin Asia 2026 in Hong Kong — dates, venue, discount code FOMO for 10% off, travel tips, and why this is the must-attend Bitcoin event for Asia-Pacific.",
+    "image": "/blog/images/bitcoin-asia-hong-kong-2026.webp",
+    "tags": ["Bitcoin Asia", "hong kong", "asia", "bitcoin conference", "2026"]
+  },
+  {
+    "slug": "what-to-expect-at-your-first-bitcoin-conference",
+    "title": "What to Expect at Your First Bitcoin Conference",
+    "date": "2026-03-21",
+    "author": "Proof of Conference",
+    "excerpt": "A complete guide for first-time Bitcoin conference attendees — how to choose the right event, what to expect on the day, how to meet people, and how to make the most of the experience.",
+    "image": "/blog/images/first-bitcoin-conference-guide.webp",
+    "tags": ["beginners guide", "first conference", "bitcoin events", "community"]
   }
 ]
