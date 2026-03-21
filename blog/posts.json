@@ -1,21 +1,412 @@
 [
-  {"slug":"best-bitcoin-conferences-2026","title":"The Best Bitcoin Conferences to Attend in 2026","date":"2026-03-17","author":"Proof of Conference","excerpt":"From Bitcoin 2026 in Las Vegas to BTC Prague, Oslo Freedom Forum, and dozens of regional events — your complete guide to the must-attend Bitcoin conferences of 2026.","image":"/blog/images/best-bitcoin-conferences-2026.webp","tags":["bitcoin conferences","2026","events","guide"]},
-  {"slug":"bitcoin-conference-discount-codes-2026","title":"Every Bitcoin Conference Discount Code for 2026","date":"2026-03-17","author":"Proof of Conference","excerpt":"Every verified Bitcoin conference promo code for 2026 in one place. Save 10% on tickets to Bitcoin 2026, BTC Prague, Bitcoin Amsterdam, and 13 more events — all with code FOMO.","image":"/blog/images/bitcoin-conference-discount-codes-2026.webp","tags":["discount codes","promo codes","bitcoin conferences","2026"]},
-  {"slug":"mejores-conferencias-bitcoin-2026","title":"Las Mejores Conferencias Bitcoin para Asistir en 2026","date":"2026-03-19","author":"Proof of Conference","excerpt":"Desde Bitcoin 2026 en Las Vegas hasta BTC Prague, Bitcoin Amsterdam y decenas de eventos regionales — tu guía completa de las conferencias Bitcoin imprescindibles de 2026.","image":"/blog/images/mejores-conferencias-bitcoin-2026.webp","lang":"es","tags":["conferencias bitcoin","2026","eventos","guía"]},
-  {"slug":"codigos-descuento-conferencias-bitcoin-2026","title":"Códigos de Descuento para Conferencias Bitcoin 2026","date":"2026-03-19","author":"Proof of Conference","excerpt":"Todos los códigos de descuento verificados para conferencias Bitcoin 2026 en un solo lugar. Ahorra un 10% con el código FOMO.","image":"/blog/images/codigos-descuento-conferencias-bitcoin-2026.webp","lang":"es","tags":["códigos de descuento","promociones","conferencias bitcoin","2026"]},
-  {"slug":"best-bitcoin-conferences-europe-2026","title":"Best Bitcoin Conferences in Europe 2026","date":"2026-03-21","author":"Proof of Conference","excerpt":"Your complete guide to the must-attend Bitcoin conferences in Europe for 2026 — BTC Prague, Bitcoin Amsterdam, Oslo Freedom Forum, Bitcoin Ireland, Lugano, and more.","image":"/blog/images/best-bitcoin-conferences-europe-2026.webp","tags":["europe","bitcoin conferences","2026"]},
-  {"slug":"best-bitcoin-conferences-usa-2026","title":"Best Bitcoin Conferences in the United States 2026","date":"2026-03-21","author":"Proof of Conference","excerpt":"Your complete guide to the must-attend Bitcoin conferences in the United States for 2026 — Bitcoin 2026 Las Vegas, BitBlockBoom, Midwest Bitcoin Summit, TABConf, and more.","image":"/blog/images/best-bitcoin-conferences-usa-2026.webp","tags":["usa","bitcoin conferences","2026"]},
-  {"slug":"btc-prague-2026-guide","title":"BTC Prague 2026: The Complete Guide","date":"2026-03-21","author":"Proof of Conference","excerpt":"Everything you need to know about BTC Prague 2026 — dates, venue, speakers, discount code FOMO for 10% off, travel tips, and how to get the most out of Europe's biggest Bitcoin conference.","image":"/blog/images/btc-prague-2026-guide.webp","tags":["BTC Prague","prague","europe","2026"]},
-  {"slug":"bitcoin-asia-hong-kong-2026","title":"Bitcoin Asia 2026: Hong Kong Preview","date":"2026-03-21","author":"Proof of Conference","excerpt":"Everything you need to know about Bitcoin Asia 2026 in Hong Kong — dates, venue, discount code FOMO for 10% off, and travel tips.","image":"/blog/images/bitcoin-asia-hong-kong-2026.webp","tags":["Bitcoin Asia","hong kong","asia","2026"]},
-  {"slug":"what-to-expect-at-your-first-bitcoin-conference","title":"What to Expect at Your First Bitcoin Conference","date":"2026-03-21","author":"Proof of Conference","excerpt":"A complete guide for first-time Bitcoin conference attendees — how to choose the right event, what to expect on the day, how to meet people, and how to make the most of the experience.","image":"/blog/images/first-bitcoin-conference-guide.webp","tags":["beginners guide","first conference","bitcoin events","community"]},
-  {"slug":"oslo-freedom-forum-2026-guide","title":"Oslo Freedom Forum 2026: The Complete Guide","date":"2026-03-21","author":"Proof of Conference","excerpt":"Everything you need to know about Oslo Freedom Forum 2026 — June 1-3 in Oslo, Norway. Where Bitcoin meets human rights and freedom technology.","image":"/blog/images/oslo-freedom-forum-2026.webp","tags":["oslo freedom forum","norway","europe","2026"]},
-  {"slug":"mad-bitcoin-summit-2026-guide","title":"MAD Bitcoin Summit 2026: The Complete Guide","date":"2026-03-21","author":"Proof of Conference","excerpt":"Everything you need to know about MAD Bitcoin Summit 2026 — May 9-12 in Madrid, Spain. 1,500 attendees, top speakers, and 10% off with code FOMO.","image":"/blog/images/mad-bitcoin-summit-2026.webp","tags":["MAD Bitcoin Summit","madrid","spain","2026"]},
-  {"slug":"midwest-bitcoin-summit-2026-guide","title":"Midwest Bitcoin Summit 2026: The Complete Guide","date":"2026-03-21","author":"Proof of Conference","excerpt":"Everything you need to know about Midwest Bitcoin Summit 2026 — September 23-24 in Columbus, Ohio. The premier Bitcoin conference for the American heartland.","image":"/blog/images/midwest-bitcoin-summit-2026.webp","tags":["Midwest Bitcoin Summit","columbus","ohio","2026"]},
-  {"slug":"bitcoin-helsinki-2026-guide","title":"Bitcoin Helsinki 2026: The Complete Guide","date":"2026-03-21","author":"Proof of Conference","excerpt":"Everything you need to know about Bitcoin Helsinki 2026 — September 25-26 at the Cable Factory. 2,000 attendees, Adam Back, Martti Malmi, and more.","image":"/blog/images/bitcoin-helsinki-2026.webp","tags":["Bitcoin Helsinki","helsinki","finland","2026"]},
-  {"slug":"lugano-plan-b-forum-2026-guide","title":"Lugano Plan B Forum 2026: The Complete Guide","date":"2026-03-21","author":"Proof of Conference","excerpt":"Everything you need to know about Lugano Plan B Forum 2026 — October 23-24 in Lugano, Switzerland.","image":"/blog/images/lugano-plan-b-forum-2026.webp","tags":["Plan B Forum","lugano","switzerland","2026"]},
-  {"slug":"freedom-tech-summit-2026-guide","title":"Freedom Tech Summit 2026: The Complete Guide","date":"2026-03-21","author":"Proof of Conference","excerpt":"Everything you need to know about Freedom Tech Summit 2026 — June 10 in Prague. Bitcoin, Lightning, Nostr, and privacy tech. The perfect companion to BTC Prague.","image":"/blog/images/freedom-tech-summit-2026.webp","tags":["Freedom Tech Summit","prague","privacy","2026"]},
-  {"slug":"labitconf-mexico-2026-guide","title":"Labitconf Mexico 2026: The Complete Guide","date":"2026-03-21","author":"Proof of Conference","excerpt":"Everything you need to know about Labitconf Mexico 2026 — May 8-9 in Mexico City. Latin America's most important Bitcoin conference with 1,500 attendees.","image":"/blog/images/labitconf-mexico-2026.webp","tags":["Labitconf","mexico city","latin america","2026"]},
-  {"slug":"bitcoin-rodeo-2026-guide","title":"Bitcoin Rodeo 2026: The Complete Guide","date":"2026-03-21","author":"Proof of Conference","excerpt":"Everything you need to know about the Bitcoin Rodeo 2026 — June 25-26 in Calgary, Canada. 400 attendees and the Canadian Rockies as a backdrop.","image":"/blog/images/bitcoin-rodeo-2026.webp","tags":["Bitcoin Rodeo","calgary","canada","2026"]},
-  {"slug":"tabconf-2026-guide","title":"TABConf 2026: The Complete Guide","date":"2026-03-21","author":"Proof of Conference","excerpt":"Everything you need to know about TABConf 2026 — October 12-15 in Atlanta, Georgia. The Technical Bitcoin Conference for developers and protocol contributors.","image":"/blog/images/tabconf-2026.webp","tags":["TABConf","atlanta","developers","2026"]},
-  {"slug":"mining-disrupt-2026-guide","title":"Mining Disrupt 2026: The Complete Guide","date":"2026-03-21","author":"Proof of Conference","excerpt":"Everything you need to know about Mining Disrupt 2026 — July 21-23 in Miami, Florida. The premier Bitcoin mining conference in the US with 4,000 attendees.","image":"/blog/images/mining-disrupt-2026.webp","tags":["Mining Disrupt","miami","mining","2026"]}
+  {
+    "slug": "best-bitcoin-conferences-2026",
+    "title": "The Best Bitcoin Conferences to Attend in 2026",
+    "date": "2026-03-17",
+    "author": "Proof of Conference",
+    "excerpt": "From Bitcoin 2026 in Las Vegas to BTC Prague, Oslo Freedom Forum, and dozens of regional events — your complete guide to the must-attend Bitcoin conferences of 2026.",
+    "image": "/blog/images/best-bitcoin-conferences-2026.webp",
+    "tags": [
+      "bitcoin conferences",
+      "2026",
+      "events",
+      "guide"
+    ]
+  },
+  {
+    "slug": "bitcoin-conference-discount-codes-2026",
+    "title": "Every Bitcoin Conference Discount Code for 2026",
+    "date": "2026-03-17",
+    "author": "Proof of Conference",
+    "excerpt": "Every verified Bitcoin conference promo code for 2026 in one place. Save 10% on tickets to Bitcoin 2026, BTC Prague, Bitcoin Amsterdam, and 13 more events — all with code FOMO.",
+    "image": "/blog/images/bitcoin-conference-discount-codes-2026.webp",
+    "tags": [
+      "discount codes",
+      "promo codes",
+      "bitcoin conferences",
+      "2026"
+    ]
+  },
+  {
+    "slug": "mejores-conferencias-bitcoin-2026",
+    "title": "Las Mejores Conferencias Bitcoin para Asistir en 2026",
+    "date": "2026-03-19",
+    "author": "Proof of Conference",
+    "excerpt": "Desde Bitcoin 2026 en Las Vegas hasta BTC Prague, Bitcoin Amsterdam y decenas de eventos regionales — tu guía completa de las conferencias Bitcoin imprescindibles de 2026.",
+    "image": "/blog/images/mejores-conferencias-bitcoin-2026.webp",
+    "lang": "es",
+    "tags": [
+      "conferencias bitcoin",
+      "2026",
+      "eventos",
+      "guía"
+    ]
+  },
+  {
+    "slug": "codigos-descuento-conferencias-bitcoin-2026",
+    "title": "Códigos de Descuento para Conferencias Bitcoin 2026",
+    "date": "2026-03-19",
+    "author": "Proof of Conference",
+    "excerpt": "Todos los códigos de descuento verificados para conferencias Bitcoin 2026 en un solo lugar. Ahorra un 10% con el código FOMO.",
+    "image": "/blog/images/codigos-descuento-conferencias-bitcoin-2026.webp",
+    "lang": "es",
+    "tags": [
+      "códigos de descuento",
+      "promociones",
+      "conferencias bitcoin",
+      "2026"
+    ]
+  },
+  {
+    "slug": "best-bitcoin-conferences-europe-2026",
+    "title": "Best Bitcoin Conferences in Europe 2026",
+    "date": "2026-03-21",
+    "author": "Proof of Conference",
+    "excerpt": "Your complete guide to the must-attend Bitcoin conferences in Europe for 2026 — BTC Prague, Bitcoin Amsterdam, Oslo Freedom Forum, Bitcoin Ireland, Lugano, and more.",
+    "image": "/blog/images/best-bitcoin-conferences-europe-2026.webp",
+    "tags": [
+      "europe",
+      "bitcoin conferences",
+      "2026"
+    ]
+  },
+  {
+    "slug": "best-bitcoin-conferences-usa-2026",
+    "title": "Best Bitcoin Conferences in the United States 2026",
+    "date": "2026-03-21",
+    "author": "Proof of Conference",
+    "excerpt": "Your complete guide to the must-attend Bitcoin conferences in the United States for 2026 — Bitcoin 2026 Las Vegas, BitBlockBoom, Midwest Bitcoin Summit, TABConf, and more.",
+    "image": "/blog/images/best-bitcoin-conferences-usa-2026.webp",
+    "tags": [
+      "usa",
+      "bitcoin conferences",
+      "2026"
+    ]
+  },
+  {
+    "slug": "btc-prague-2026-guide",
+    "title": "BTC Prague 2026: The Complete Guide",
+    "date": "2026-03-21",
+    "author": "Proof of Conference",
+    "excerpt": "Everything you need to know about BTC Prague 2026 — dates, venue, speakers, discount code FOMO for 10% off, travel tips, and how to get the most out of Europe's biggest Bitcoin conference.",
+    "image": "/blog/images/btc-prague-2026-guide.webp",
+    "tags": [
+      "BTC Prague",
+      "prague",
+      "europe",
+      "2026"
+    ]
+  },
+  {
+    "slug": "bitcoin-asia-hong-kong-2026",
+    "title": "Bitcoin Asia 2026: Hong Kong Preview",
+    "date": "2026-03-21",
+    "author": "Proof of Conference",
+    "excerpt": "Everything you need to know about Bitcoin Asia 2026 in Hong Kong — dates, venue, discount code FOMO for 10% off, and travel tips.",
+    "image": "/blog/images/bitcoin-asia-hong-kong-2026.webp",
+    "tags": [
+      "Bitcoin Asia",
+      "hong kong",
+      "asia",
+      "2026"
+    ]
+  },
+  {
+    "slug": "what-to-expect-at-your-first-bitcoin-conference",
+    "title": "What to Expect at Your First Bitcoin Conference",
+    "date": "2026-03-21",
+    "author": "Proof of Conference",
+    "excerpt": "A complete guide for first-time Bitcoin conference attendees — how to choose the right event, what to expect on the day, how to meet people, and how to make the most of the experience.",
+    "image": "/blog/images/first-bitcoin-conference-guide.webp",
+    "tags": [
+      "beginners guide",
+      "first conference",
+      "bitcoin events",
+      "community"
+    ]
+  },
+  {
+    "slug": "oslo-freedom-forum-2026-guide",
+    "title": "Oslo Freedom Forum 2026: The Complete Guide",
+    "date": "2026-03-21",
+    "author": "Proof of Conference",
+    "excerpt": "Everything you need to know about Oslo Freedom Forum 2026 — June 1-3 in Oslo, Norway. Where Bitcoin meets human rights and freedom technology.",
+    "image": "/blog/images/oslo-freedom-forum-2026.webp",
+    "tags": [
+      "oslo freedom forum",
+      "norway",
+      "europe",
+      "2026"
+    ]
+  },
+  {
+    "slug": "mad-bitcoin-summit-2026-guide",
+    "title": "MAD Bitcoin Summit 2026: The Complete Guide",
+    "date": "2026-03-21",
+    "author": "Proof of Conference",
+    "excerpt": "Everything you need to know about MAD Bitcoin Summit 2026 — May 9-12 in Madrid, Spain. 1,500 attendees, top speakers, and 10% off with code FOMO.",
+    "image": "/blog/images/mad-bitcoin-summit-2026.webp",
+    "tags": [
+      "MAD Bitcoin Summit",
+      "madrid",
+      "spain",
+      "2026"
+    ]
+  },
+  {
+    "slug": "midwest-bitcoin-summit-2026-guide",
+    "title": "Midwest Bitcoin Summit 2026: The Complete Guide",
+    "date": "2026-03-21",
+    "author": "Proof of Conference",
+    "excerpt": "Everything you need to know about Midwest Bitcoin Summit 2026 — September 23-24 in Columbus, Ohio. The premier Bitcoin conference for the American heartland.",
+    "image": "/blog/images/midwest-bitcoin-summit-2026.webp",
+    "tags": [
+      "Midwest Bitcoin Summit",
+      "columbus",
+      "ohio",
+      "2026"
+    ]
+  },
+  {
+    "slug": "bitcoin-helsinki-2026-guide",
+    "title": "Bitcoin Helsinki 2026: The Complete Guide",
+    "date": "2026-03-21",
+    "author": "Proof of Conference",
+    "excerpt": "Everything you need to know about Bitcoin Helsinki 2026 — September 25-26 at the Cable Factory. 2,000 attendees, Adam Back, Martti Malmi, and more.",
+    "image": "/blog/images/bitcoin-helsinki-2026.webp",
+    "tags": [
+      "Bitcoin Helsinki",
+      "helsinki",
+      "finland",
+      "2026"
+    ]
+  },
+  {
+    "slug": "lugano-plan-b-forum-2026-guide",
+    "title": "Lugano Plan B Forum 2026: The Complete Guide",
+    "date": "2026-03-21",
+    "author": "Proof of Conference",
+    "excerpt": "Everything you need to know about Lugano Plan B Forum 2026 — October 23-24 in Lugano, Switzerland.",
+    "image": "/blog/images/lugano-plan-b-forum-2026.webp",
+    "tags": [
+      "Plan B Forum",
+      "lugano",
+      "switzerland",
+      "2026"
+    ]
+  },
+  {
+    "slug": "freedom-tech-summit-2026-guide",
+    "title": "Freedom Tech Summit 2026: The Complete Guide",
+    "date": "2026-03-21",
+    "author": "Proof of Conference",
+    "excerpt": "Everything you need to know about Freedom Tech Summit 2026 — June 10 in Prague. Bitcoin, Lightning, Nostr, and privacy tech. The perfect companion to BTC Prague.",
+    "image": "/blog/images/freedom-tech-summit-2026.webp",
+    "tags": [
+      "Freedom Tech Summit",
+      "prague",
+      "privacy",
+      "2026"
+    ]
+  },
+  {
+    "slug": "labitconf-mexico-2026-guide",
+    "title": "Labitconf Mexico 2026: The Complete Guide",
+    "date": "2026-03-21",
+    "author": "Proof of Conference",
+    "excerpt": "Everything you need to know about Labitconf Mexico 2026 — May 8-9 in Mexico City. Latin America's most important Bitcoin conference with 1,500 attendees.",
+    "image": "/blog/images/labitconf-mexico-2026.webp",
+    "tags": [
+      "Labitconf",
+      "mexico city",
+      "latin america",
+      "2026"
+    ]
+  },
+  {
+    "slug": "bitcoin-rodeo-2026-guide",
+    "title": "Bitcoin Rodeo 2026: The Complete Guide",
+    "date": "2026-03-21",
+    "author": "Proof of Conference",
+    "excerpt": "Everything you need to know about the Bitcoin Rodeo 2026 — June 25-26 in Calgary, Canada. 400 attendees and the Canadian Rockies as a backdrop.",
+    "image": "/blog/images/bitcoin-rodeo-2026.webp",
+    "tags": [
+      "Bitcoin Rodeo",
+      "calgary",
+      "canada",
+      "2026"
+    ]
+  },
+  {
+    "slug": "tabconf-2026-guide",
+    "title": "TABConf 2026: The Complete Guide",
+    "date": "2026-03-21",
+    "author": "Proof of Conference",
+    "excerpt": "Everything you need to know about TABConf 2026 — October 12-15 in Atlanta, Georgia. The Technical Bitcoin Conference for developers and protocol contributors.",
+    "image": "/blog/images/tabconf-2026.webp",
+    "tags": [
+      "TABConf",
+      "atlanta",
+      "developers",
+      "2026"
+    ]
+  },
+  {
+    "slug": "mining-disrupt-2026-guide",
+    "title": "Mining Disrupt 2026: The Complete Guide",
+    "date": "2026-03-21",
+    "author": "Proof of Conference",
+    "excerpt": "Everything you need to know about Mining Disrupt 2026 — July 21-23 in Miami, Florida. The premier Bitcoin mining conference in the US with 4,000 attendees.",
+    "image": "/blog/images/mining-disrupt-2026.webp",
+    "tags": [
+      "Mining Disrupt",
+      "miami",
+      "mining",
+      "2026"
+    ]
+  },
+  {
+    "slug": "noderunners-conference-2026-guide",
+    "title": "Noderunners Conference 2026: The Complete Guide",
+    "date": "2026-03-21",
+    "author": "Proof of Conference",
+    "excerpt": "Everything you need to know about Noderunners Conference 2026 — September 19 in Arnhem, Netherlands. 800 attendees in the historic Koepelgevangenis dome prison venue.",
+    "image": "/blog/images/noderunners-conference-2026.webp",
+    "tags": [
+      "Noderunners",
+      "arnhem",
+      "netherlands",
+      "2026"
+    ]
+  },
+  {
+    "slug": "bitcoin-beyond-66-2026-guide",
+    "title": "Bitcoin Beyond 66 2026: The Complete Guide",
+    "date": "2026-03-21",
+    "author": "Proof of Conference",
+    "excerpt": "Everything you need to know about Bitcoin Beyond 66 2026 — August 14 in Bodø, Norway. Above the Arctic Circle, 90 attendees, and 10% off with code FOMO.",
+    "image": "/blog/images/bitcoin-beyond-66-2026.webp",
+    "tags": [
+      "Bitcoin Beyond 66",
+      "bodø",
+      "norway",
+      "arctic",
+      "2026"
+    ]
+  },
+  {
+    "slug": "bitcoin-film-fest-2026-guide",
+    "title": "Bitcoin Film Fest 2026: The Complete Guide",
+    "date": "2026-03-21",
+    "author": "Proof of Conference",
+    "excerpt": "Everything you need to know about Bitcoin Film Fest 2026 — June 4-7 in Warsaw, Poland. The world's premier Bitcoin film festival at the historic Kinoteka cinema.",
+    "image": "/blog/images/bitcoin-film-fest-2026.webp",
+    "tags": [
+      "Bitcoin Film Fest",
+      "warsaw",
+      "poland",
+      "2026"
+    ]
+  },
+  {
+    "slug": "acelerando-bitcoin-2026-guide",
+    "title": "Acelerando Bitcoin 2026: The Complete Guide",
+    "date": "2026-03-21",
+    "author": "Proof of Conference",
+    "excerpt": "Everything you need to know about Acelerando Bitcoin 2026 — August 12-13 in Asuncion, Paraguay. A key Bitcoin conference for Latin America with Max Hillebrand and more.",
+    "image": "/blog/images/acelerando-bitcoin-2026.webp",
+    "tags": [
+      "Acelerando Bitcoin",
+      "asuncion",
+      "paraguay",
+      "latin america",
+      "2026"
+    ]
+  },
+  {
+    "slug": "bitcoin-plus-plus-kenya-2026-guide",
+    "title": "bitcoin++ Kenya 2026: The Complete Guide",
+    "date": "2026-03-21",
+    "author": "Proof of Conference",
+    "excerpt": "Everything you need to know about bitcoin++ Kenya 2026 — June 17-20 in Nairobi. Africa's premier Bitcoin developer conference. 10% off with code FOMO.",
+    "image": "/blog/images/bitcoin-plus-plus-kenya-2026.webp",
+    "tags": [
+      "bitcoin++",
+      "nairobi",
+      "kenya",
+      "africa",
+      "2026"
+    ]
+  },
+  {
+    "slug": "bitcoin-plus-plus-canada-2026-guide",
+    "title": "bitcoin++ Canada 2026: The Complete Guide",
+    "date": "2026-03-21",
+    "author": "Proof of Conference",
+    "excerpt": "Everything you need to know about bitcoin++ Canada 2026 — July 22-24 at The Great Hall, Toronto. Bitcoin developer conference with Peter Todd and more. 10% off with FOMO.",
+    "image": "/blog/images/bitcoin-plus-plus-canada-2026.webp",
+    "tags": [
+      "bitcoin++",
+      "toronto",
+      "canada",
+      "2026"
+    ]
+  },
+  {
+    "slug": "bitcoin-plus-plus-germany-2026-guide",
+    "title": "bitcoin++ Germany 2026: The Complete Guide",
+    "date": "2026-03-21",
+    "author": "Proof of Conference",
+    "excerpt": "Everything you need to know about bitcoin++ Germany 2026 — October 1-3 at w3 hub, Berlin. Bitcoin developer conference. 10% off with code FOMO.",
+    "image": "/blog/images/bitcoin-plus-plus-germany-2026.webp",
+    "tags": [
+      "bitcoin++",
+      "berlin",
+      "germany",
+      "2026"
+    ]
+  },
+  {
+    "slug": "camp-nakamoto-2026-guide",
+    "title": "Camp Nakamoto 2026: The Complete Guide",
+    "date": "2026-03-21",
+    "author": "Proof of Conference",
+    "excerpt": "Everything you need to know about Camp Nakamoto 2026 — June 18-21 at Mirror Lake, New Hampshire. A unique Bitcoin retreat combining community, education, and the outdoors.",
+    "image": "/blog/images/camp-nakamoto-2026.webp",
+    "tags": [
+      "Camp Nakamoto",
+      "new hampshire",
+      "retreat",
+      "2026"
+    ]
+  },
+  {
+    "slug": "bitcoin-infinity-day-2026-guide",
+    "title": "Bitcoin Infinity Day 2026: The Complete Guide",
+    "date": "2026-03-21",
+    "author": "Proof of Conference",
+    "excerpt": "Everything you need to know about Bitcoin Infinity Day 2026 — August 21 in Roatán, Honduras at Prospera. A unique Bitcoin celebration on 21/8 in the Caribbean.",
+    "image": "/blog/images/bitcoin-infinity-day-2026.webp",
+    "tags": [
+      "Bitcoin Infinity Day",
+      "roatan",
+      "honduras",
+      "2026"
+    ]
+  },
+  {
+    "slug": "mallorca-blockchain-days-2026-guide",
+    "title": "Mallorca Blockchain Days 2026: The Complete Guide",
+    "date": "2026-03-21",
+    "author": "Proof of Conference",
+    "excerpt": "Everything you need to know about Mallorca Blockchain Days 2026 — July 9-12 in Palma, Mallorca, Spain. Bitcoin conference on one of the Mediterranean's most beautiful islands.",
+    "image": "/blog/images/mallorca-blockchain-days-2026.webp",
+    "tags": [
+      "Mallorca Blockchain Days",
+      "palma",
+      "mallorca",
+      "spain",
+      "2026"
+    ]
+  }
 ]
