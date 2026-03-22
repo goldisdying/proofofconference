@@ -177,26 +177,26 @@
     <priority>0.9</priority>
   </url>
 
-  <!-- Batch 3 conference pages & blog guides -->
-  <url><loc>https://www.proofofconference.com/conferences/noderunners-conference-2026.html</loc><lastmod>2026-03-21</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://www.proofofconference.com/blog/noderunners-conference-2026-guide.html</loc><lastmod>2026-03-21</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://www.proofofconference.com/conferences/bitcoin-beyond-66-2026.html</loc><lastmod>2026-03-21</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://www.proofofconference.com/blog/bitcoin-beyond-66-2026-guide.html</loc><lastmod>2026-03-21</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://www.proofofconference.com/conferences/bitcoin-film-fest-2026.html</loc><lastmod>2026-03-21</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://www.proofofconference.com/blog/bitcoin-film-fest-2026-guide.html</loc><lastmod>2026-03-21</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://www.proofofconference.com/conferences/acelerando-bitcoin-2026.html</loc><lastmod>2026-03-21</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://www.proofofconference.com/blog/acelerando-bitcoin-2026-guide.html</loc><lastmod>2026-03-21</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://www.proofofconference.com/conferences/bitcoin-plus-plus-kenya-2026.html</loc><lastmod>2026-03-21</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://www.proofofconference.com/blog/bitcoin-plus-plus-kenya-2026-guide.html</loc><lastmod>2026-03-21</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://www.proofofconference.com/conferences/bitcoin-plus-plus-canada-2026.html</loc><lastmod>2026-03-21</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://www.proofofconference.com/blog/bitcoin-plus-plus-canada-2026-guide.html</loc><lastmod>2026-03-21</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://www.proofofconference.com/conferences/bitcoin-plus-plus-germany-2026.html</loc><lastmod>2026-03-21</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://www.proofofconference.com/blog/bitcoin-plus-plus-germany-2026-guide.html</loc><lastmod>2026-03-21</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://www.proofofconference.com/conferences/camp-nakamoto-2026.html</loc><lastmod>2026-03-21</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://www.proofofconference.com/blog/camp-nakamoto-2026-guide.html</loc><lastmod>2026-03-21</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://www.proofofconference.com/conferences/bitcoin-infinity-day-2026.html</loc><lastmod>2026-03-21</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://www.proofofconference.com/blog/bitcoin-infinity-day-2026-guide.html</loc><lastmod>2026-03-21</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://www.proofofconference.com/conferences/mallorca-blockchain-days-2026.html</loc><lastmod>2026-03-21</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://www.proofofconference.com/blog/mallorca-blockchain-days-2026-guide.html</loc><lastmod>2026-03-21</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <!-- Batch 4 -->
+  <url><loc>https://www.proofofconference.com/conferences/bitcoin-plus-plus-nevada-2026.html</loc><lastmod>2026-03-21</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.proofofconference.com/blog/bitcoin-plus-plus-nevada-2026-guide.html</loc><lastmod>2026-03-21</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.proofofconference.com/conferences/mit-bitcoin-expo-2026.html</loc><lastmod>2026-03-21</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.proofofconference.com/blog/mit-bitcoin-expo-2026-guide.html</loc><lastmod>2026-03-21</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.proofofconference.com/conferences/cheatcode-2026.html</loc><lastmod>2026-03-21</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.proofofconference.com/blog/cheatcode-2026-guide.html</loc><lastmod>2026-03-21</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.proofofconference.com/conferences/swiss-bitcoin-conference-2026.html</loc><lastmod>2026-03-21</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.proofofconference.com/blog/swiss-bitcoin-conference-2026-guide.html</loc><lastmod>2026-03-21</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.proofofconference.com/conferences/bitcoin-plus-plus-austria-2026.html</loc><lastmod>2026-03-21</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.proofofconference.com/blog/bitcoin-plus-plus-austria-2026-guide.html</loc><lastmod>2026-03-21</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.proofofconference.com/conferences/tuscany-lightning-summit-2026.html</loc><lastmod>2026-03-21</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.proofofconference.com/blog/tuscany-lightning-summit-2026-guide.html</loc><lastmod>2026-03-21</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.proofofconference.com/conferences/bitcoin-is-for-everyone-2026.html</loc><lastmod>2026-03-21</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.proofofconference.com/blog/bitcoin-is-for-everyone-2026-guide.html</loc><lastmod>2026-03-21</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.proofofconference.com/conferences/bitcoin-paradigm-2026.html</loc><lastmod>2026-03-21</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.proofofconference.com/blog/bitcoin-paradigm-2026-guide.html</loc><lastmod>2026-03-21</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.proofofconference.com/conferences/european-mining-summit-2026.html</loc><lastmod>2026-03-21</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.proofofconference.com/blog/european-mining-summit-2026-guide.html</loc><lastmod>2026-03-21</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.proofofconference.com/conferences/watch-out-bitcoin-2026.html</loc><lastmod>2026-03-21</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.proofofconference.com/blog/watch-out-bitcoin-2026-guide.html</loc><lastmod>2026-03-21</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
 
 </urlset>
