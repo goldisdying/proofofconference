@@ -177,9 +177,9 @@
     <priority>0.9</priority>
   </url>
 
-  <!-- Barcelona Cyphers Conference -->
-  <url><loc>https://www.proofofconference.com/conferences/barcelona-cyphers-conference-2026.html</loc><lastmod>2026-03-22</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://www.proofofconference.com/blog/barcelona-cyphers-conference-2026-guide.html</loc><lastmod>2026-03-22</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <!-- Bitcoin 2027 -->
+  <url><loc>https://www.proofofconference.com/conferences/bitcoin-2027.html</loc><lastmod>2026-03-23</lastmod><changefreq>weekly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://www.proofofconference.com/blog/bitcoin-2027-guide.html</loc><lastmod>2026-03-23</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
 
 
 </urlset>
