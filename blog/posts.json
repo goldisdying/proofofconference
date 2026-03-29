@@ -763,5 +763,35 @@
       "bitcoin conference",
       "fomo code"
     ]
+  },
+  {
+    "slug": "bitfest-2026-guide",
+    "title": "Bitfest 2026: The Complete Guide",
+    "date": "2026-03-23",
+    "author": "Proof of Conference",
+    "excerpt": "Everything you need to know about Bitfest 2026 — November 20-22 at the Pendulum Hotel, Manchester. A grassroots Bitcoin festival with conference, Nostr, film, art, and live music.",
+    "image": "/blog/images/bitfest-2026-card.webp",
+    "tags": [
+      "bitfest",
+      "manchester",
+      "uk",
+      "england",
+      "2026"
+    ]
+  },
+  {
+    "slug": "bitfest-2026-guide",
+    "title": "Bitfest 2026: The Complete Guide",
+    "date": "2026-03-29",
+    "author": "Proof of Conference",
+    "excerpt": "Everything you need to know about Bitfest 2026 — November 20-22 at Pendulum Hotel, Manchester, UK. Dates, venue, tickets, and travel tips.",
+    "image": "/blog/images/bitfest-2026.webp",
+    "tags": [
+      "bitfest",
+      "manchester",
+      "united kingdom",
+      "bitcoin festival",
+      "2026"
+    ]
   }
 ]
