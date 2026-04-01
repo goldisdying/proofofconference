@@ -37,11 +37,34 @@
     "@type": "WebSite",
     "name": "Proof of Conference",
     "url": "https://www.proofofconference.com",
-    "description": "Discover verified Bitcoin conferences worldwide, including upcoming events, speakers, and available conference discount or promo codes.",
+    "description": "The most comprehensive Bitcoin conference directory. Track every major Bitcoin event worldwide — dates, venues, speakers, and verified discount codes.",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": {
+        "@type": "EntryPoint",
+        "urlTemplate": "https://www.proofofconference.com/?search={search_term_string}"
+      },
+      "query-input": "required name=search_term_string"
+    },
     "publisher": {
       "@type": "Organization",
       "name": "Proof of Conference",
-      "url": "https://www.proofofconference.com"
+      "url": "https://www.proofofconference.com",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://www.proofofconference.com/favicon.ico"
+      },
+      "sameAs": [
+        "https://x.com/ProofOfConf"
+      ],
+      "founder": {
+        "@type": "Person",
+        "name": "Neil Jacobs",
+        "url": "https://neiljacobs.info",
+        "sameAs": "https://x.com/NeilJacobs"
+      },
+      "description": "Proof of Conference is the leading Bitcoin conference directory, tracking 60+ events annually across 30+ countries. Founded by Neil Jacobs, Bitcoin conference speaker and brand strategist.",
+      "knowsAbout": ["Bitcoin conferences", "Bitcoin events", "BTC Prague", "Bitcoin 2026", "Bitcoin 2027"]
     }
   }
   </script>
@@ -967,6 +990,8 @@
 <div id="translate-overlay" onclick="closeTranslate()"></div>
 
 <div class="top-nav">
+  <a href="/about">About</a>
+  •
   <a href="/submit-event/">Submit Event</a>
   •
   <a href="#subscribe" id="subscribe-link">Subscribe</a>
