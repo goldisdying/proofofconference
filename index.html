@@ -689,6 +689,18 @@
     }
 
     /* === NEWSLETTER SIGNUP === */
+    .faq-section{max-width:800px;margin:0 auto 48px;padding:0 16px}
+    .faq-section h2{font-size:22px;font-weight:700;color:#fff;text-align:center;margin-bottom:24px}
+    .faq-list{display:flex;flex-direction:column;gap:8px}
+    .faq-item{background:#111;border:1px solid #222;border-radius:10px;overflow:hidden}
+    .faq-question{width:100%;background:none;border:none;color:#fff;font-size:15px;font-weight:600;padding:16px 20px;text-align:left;cursor:pointer;display:flex;justify-content:space-between;align-items:center;font-family:inherit;line-height:1.4}
+    .faq-question::after{content:'+';color:#f7931a;font-size:20px;font-weight:400;flex-shrink:0;margin-left:12px;transition:transform .2s}
+    .faq-question[aria-expanded="true"]::after{transform:rotate(45deg)}
+    .faq-question:hover{color:#f7931a}
+    .faq-answer{display:none;padding:0 20px 16px;color:#aaa;font-size:14px;line-height:1.7}
+    .faq-answer.open{display:block}
+    .faq-answer p{margin:0}.faq-answer strong{color:#f7931a}
+
     .newsletter-signup {
       background: #121212;
       border-radius: 18px;
@@ -935,6 +947,20 @@
       .top-nav a[href="/submit-event/"]::before { font-size: 11px; }
     }
     </style>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {"@type":"Question","name":"What is Proof of Conference?","acceptedAnswer":{"@type":"Answer","text":"Proof of Conference is a free Bitcoin conference directory listing every major Bitcoin event around the world. We track dates, venues, speakers, and discount codes so you can plan your conference year in one place."}},
+      {"@type":"Question","name":"How do I save money on Bitcoin conference tickets?","acceptedAnswer":{"@type":"Answer","text":"Use code FOMO at checkout for 10% off tickets to 16+ Bitcoin conferences including BTC Prague, Bitcoin Ireland, MAD Bitcoin Summit, bitcoin++, Camp Nakamoto, and more."}},
+      {"@type":"Question","name":"What is the biggest Bitcoin conference in 2026?","acceptedAnswer":{"@type":"Answer","text":"Bitcoin 2026 in Las Vegas (April 27–29) is the largest, typically drawing 15,000–20,000 attendees. BTC Prague (June 11–13) is the largest Bitcoin conference in Europe."}},
+      {"@type":"Question","name":"Where is Bitcoin 2027?","acceptedAnswer":{"@type":"Answer","text":"Bitcoin 2027 is widely rumored to be held in Nashville, Tennessee. The official announcement is expected at Bitcoin 2026 (April 27–29, 2026). Use code FOMO for 10% off tickets."}},
+      {"@type":"Question","name":"Are there Bitcoin conferences outside the United States?","acceptedAnswer":{"@type":"Answer","text":"Yes — major international events in 2026 include BTC Prague (Czech Republic), Bitcoin Amsterdam (Netherlands), Bitcoin Helsinki (Finland), bitcoin++ Austria (Vienna), and MAD Bitcoin Summit (Madrid)."}},
+      {"@type":"Question","name":"What Bitcoin conferences are coming up soon?","acceptedAnswer":{"@type":"Answer","text":"Upcoming Bitcoin conferences include Bitcoin 2026 in Las Vegas (April 27–29), BTC Prague (June 11–13), Bitcoin Amsterdam (November 5–6), and Bitcoin MENA in Abu Dhabi (December 2026)."}}
+    ]
+  }
+  </script>
 </head>
 
 <body>
@@ -1076,6 +1102,40 @@
     <div class="success-message">Success! Check your email to confirm.</div>
   </div>
 
+  <section class="faq-section" id="faq">
+    <h2>Frequently Asked Questions</h2>
+    <div class="faq-list">
+      <div class="faq-item">
+        <button class="faq-question" aria-expanded="false">What is Proof of Conference?</button>
+        <div class="faq-answer"><p>Proof of Conference is a free Bitcoin conference directory listing every major Bitcoin event around the world. We track dates, venues, speakers, and discount codes so you can plan your conference year in one place.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question" aria-expanded="false">How do I save money on Bitcoin conference tickets?</button>
+        <div class="faq-answer"><p>Use code <strong>FOMO</strong> at checkout for 10% off tickets to 16+ Bitcoin conferences including BTC Prague, Bitcoin Ireland, MAD Bitcoin Summit, bitcoin++, Camp Nakamoto, and more. Each conference page on this site shows whether the FOMO code is valid.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question" aria-expanded="false">What is the biggest Bitcoin conference in 2026?</button>
+        <div class="faq-answer"><p>Bitcoin 2026 in Las Vegas (April 27–29) is the largest, typically drawing 15,000–20,000 attendees. BTC Prague (June 11–13) is the largest Bitcoin conference in Europe. Both are listed on Proof of Conference.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question" aria-expanded="false">Where is Bitcoin 2027?</button>
+        <div class="faq-answer"><p>Bitcoin 2027 is widely rumored to be held in Nashville, Tennessee — a return to Music City after the record-breaking 2024 edition. The official announcement is expected at Bitcoin 2026 (April 27–29, 2026). Use code <strong>FOMO</strong> for 10% off tickets.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question" aria-expanded="false">Are there Bitcoin conferences outside the United States?</button>
+        <div class="faq-answer"><p>Yes — there are major Bitcoin conferences across Europe, Asia, Africa, Latin America, and Australia. Top international events in 2026 include BTC Prague (Czech Republic), Bitcoin Amsterdam (Netherlands), Bitcoin Helsinki (Finland), bitcoin++ Austria (Vienna), and MAD Bitcoin Summit (Madrid).</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question" aria-expanded="false">How often is this directory updated?</button>
+        <div class="faq-answer"><p>Proof of Conference is updated continuously as new events are announced and details change. New conference pages and blog guides are added weekly. You can also submit an event using the Submit Event link in the menu.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question" aria-expanded="false">What Bitcoin conferences are coming up soon?</button>
+        <div class="faq-answer"><p>Upcoming Bitcoin conferences include Bitcoin 2026 in Las Vegas (April 27–29), BTC Prague (June 11–13), Bitcoin Amsterdam (November 5–6), and Bitcoin MENA in Abu Dhabi (December 2026). Browse the full list above or filter by region.</p></div>
+      </div>
+    </div>
+  </section>
+
   <footer>
     <p><strong>Disclaimer:</strong> Proof of Conference is an independent, informational directory and is not necessarily affiliated with, endorsed by, or officially connected to any conference or organization listed. Some events may include affiliate or referral links. Event details may change at any time. Please verify all information directly on the official conference websites. No information on this site is guaranteed to be accurate or up to date.</p>
     <p style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
@@ -1113,7 +1173,21 @@ let PRIORITY_SPEAKERS = [];
 // Speaker conference counts (for upcoming events)
 let speakerConferenceCounts = {};
 
-// Card insertion position for newsletter
+// FAQ accordion
+document.querySelectorAll('.faq-question').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const expanded = btn.getAttribute('aria-expanded') === 'true';
+    document.querySelectorAll('.faq-question').forEach(b => {
+      b.setAttribute('aria-expanded', 'false');
+      b.nextElementSibling.classList.remove('open');
+    });
+    if (!expanded) {
+      btn.setAttribute('aria-expanded', 'true');
+      btn.nextElementSibling.classList.add('open');
+    }
+  });
+});
+
 const NEWSLETTER_CARD_POSITION = 3;  // After 4th card
 
 // ============================================================================
