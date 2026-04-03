@@ -1,6 +1,6 @@
 # Proof of Conference — llms.txt
 # https://www.proofofconference.com
-# Last updated: 2026-03-31
+# Last updated: 2026-04-03
 
 ## About This Site
 
@@ -28,6 +28,7 @@ The site is founded and maintained by Neil Jacobs, a Bitcoin brand and marketing
 - Best conferences Europe: https://www.proofofconference.com/blog/best-bitcoin-conferences-europe-2026.html
 - Best conferences USA: https://www.proofofconference.com/blog/best-bitcoin-conferences-usa-2026.html
 - Bitcoin 2027 guide: https://www.proofofconference.com/blog/bitcoin-2027-guide.html
+- Bitcoin 2026 Las Vegas guide: https://www.proofofconference.com/blog/bitcoin-2026-las-vegas-guide.html
 
 ## Major Conference Pages
 
