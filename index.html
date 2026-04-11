@@ -998,6 +998,8 @@
     .quick-filters { display:flex; flex-wrap:wrap; gap:10px; margin:0 0 20px; }
     .quick-chip { border:1px solid #333; background:#111; color:#fff; border-radius:999px; padding:10px 14px; cursor:pointer; font-weight:600; }
     .quick-chip:hover, .quick-chip:focus { border-color:#f7931a; outline:none; }
+    .quick-chip.active { background:#f7931a; color:#000; border-color:#f7931a; }
+    .results-summary { color:#9ca3af; margin:-4px 0 16px; font-size:14px; }
     .directory-shell { display:grid; grid-template-columns:minmax(0,320px) minmax(0,1fr); gap:22px; align-items:start; }
     .panel-heading { font-size:13px; letter-spacing:.08em; text-transform:uppercase; color:#9ca3af; margin:0 0 14px; }
     .helper-text, .last-updated { color:#9ca3af; font-size:14px; }
@@ -1147,7 +1149,7 @@
     <button type="button" class="quick-chip" data-quick-filter="discounts">With discounts</button>
     <button type="button" class="quick-chip" data-quick-filter="favorites">My favorites</button>
     <button type="button" class="quick-chip" data-quick-country="United States">USA</button>
-    <button type="button" class="quick-chip" data-quick-country="Czech Republic">Europe spotlight</button>
+    <button type="button" class="quick-chip" data-quick-region="Europe">Europe</button>
     <button type="button" class="quick-chip" data-scroll-target="subscribe">Get alerts</button>
   </div>
 
@@ -1211,6 +1213,7 @@
 
     <section class="results-panel" aria-live="polite">
       <p class="panel-heading">Directory results</p>
+      <p id="results-summary" class="results-summary">Showing all upcoming conferences.</p>
       <div id="cards"></div>
 
   <div id="subscribe" class="newsletter-signup">
@@ -1687,6 +1690,7 @@ fetchTextWithFallback(FEATURED_SPEAKERS_CSV_URLS)
         populateFilters();
         updateClearButtons();
         updateStats();
+        setActiveQuickChip(document.querySelector('[data-quick-filter="upcoming"]'));
         render();
         generateEventSchema();
         
@@ -2412,6 +2416,10 @@ function getFilteredAndSortedConferences() {
     if (q && !Object.values(c).join(" ").toLowerCase().includes(q)) {
       return false;
     }
+
+    // Region filter from quick chips
+    const europeChipActive = document.querySelector('.quick-chip.active[data-quick-region="Europe"]');
+    if (europeChipActive && !EUROPE_COUNTRIES.has(c.Country || '')) return false;
     
     // Location filters
     if (countryEl.value && c.Country !== countryEl.value) return false;
@@ -2595,6 +2603,7 @@ function renderAccordionView(filteredList) {
  */
 function render() {
   const filteredList = getFilteredAndSortedConferences();
+  updateResultsSummary(filteredList);
 
   let html = '';
 
@@ -2948,6 +2957,15 @@ document.getElementById('subscribe-link')?.addEventListener('click', (e) => {
   });
 });
 
+
+[searchEl, sortEl, countryEl, stateEl, attendanceEl, speakerEl].forEach(el => {
+  if (!el) return;
+  el.addEventListener('change', () => setActiveQuickChip(null));
+  if (el.tagName === 'INPUT') {
+    el.addEventListener('input', () => setActiveQuickChip(null));
+  }
+});
+
 // ============================================================================
 // BACK TO TOP BUTTON
 // ============================================================================
@@ -2972,28 +2990,70 @@ backToTopBtn.addEventListener('click', () => {
 });
 
 
-document.querySelectorAll('[data-quick-filter]').forEach(btn => {
-  btn.addEventListener('click', () => {
-    sortEl.value = btn.dataset.quickFilter;
-    render();
-    document.getElementById('directory')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  });
-});
+const EUROPE_COUNTRIES = new Set([
+  'Austria','Belgium','Bosnia and Herzegovina','Bulgaria','Croatia','Cyprus','Czech Republic','Denmark','Estonia','Finland','France','Germany','Greece','Hungary','Iceland','Ireland','Italy','Latvia','Lithuania','Luxembourg','Malta','Netherlands','Norway','Poland','Portugal','Romania','Serbia','Slovakia','Slovenia','Spain','Sweden','Switzerland','United Kingdom'
+]);
 
-document.querySelectorAll('[data-quick-country]').forEach(btn => {
-  btn.addEventListener('click', () => {
-    countryEl.value = btn.dataset.quickCountry;
-    stateEl.value = '';
-    sortEl.value = 'upcoming';
-    populateStateFilter();
-    updateClearButtons();
-    render();
-    document.getElementById('directory')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+function setActiveQuickChip(activeBtn) {
+  document.querySelectorAll('.quick-chip').forEach(btn => {
+    const isActive = btn === activeBtn;
+    btn.classList.toggle('active', isActive);
+    btn.setAttribute('aria-pressed', isActive ? 'true' : 'false');
   });
+}
+
+function updateResultsSummary(filteredList) {
+  const summaryEl = document.getElementById('results-summary');
+  if (!summaryEl) return;
+  const count = filteredList.length;
+  let label = '';
+  if (sortEl.value === 'favorites') label = 'saved favorite';
+  else if (sortEl.value === 'discounts') label = 'conference with discount';
+  else if (sortEl.value === 'past') label = 'past conference';
+  else if (sortEl.value === 'recent') label = 'recently added conference';
+  else label = 'upcoming conference';
+  const countryPart = countryEl.value ? ` in ${countryEl.value}` : '';
+  const speakerPart = speakerEl.value ? ` matching ${speakerEl.value}` : '';
+  summaryEl.textContent = `Showing ${count} ${label}${count === 1 ? '' : 's'}${countryPart}${speakerPart}.`;
+}
+
+function resetDirectoryFilters() {
+  searchEl.value = '';
+  sortEl.value = 'upcoming';
+  countryEl.value = '';
+  stateEl.value = '';
+  attendanceEl.value = '';
+  speakerEl.value = '';
+  const speakerSearch = document.getElementById('speaker-search');
+  if (speakerSearch) speakerSearch.value = '';
+  populateStateFilter();
+  updateClearButtons();
+}
+
+function applyQuickChip(btn) {
+  resetDirectoryFilters();
+  if (btn.dataset.quickFilter) {
+    sortEl.value = btn.dataset.quickFilter;
+  }
+  if (btn.dataset.quickCountry) {
+    countryEl.value = btn.dataset.quickCountry;
+    populateStateFilter();
+  }
+  if (btn.dataset.quickRegion === 'Europe') {
+    sortEl.value = 'upcoming';
+  }
+  setActiveQuickChip(btn);
+  render();
+  document.getElementById('directory')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+document.querySelectorAll('[data-quick-filter], [data-quick-country], [data-quick-region]').forEach(btn => {
+  btn.addEventListener('click', () => applyQuickChip(btn));
 });
 
 document.querySelectorAll('[data-scroll-target]').forEach(btn => {
   btn.addEventListener('click', () => {
+    setActiveQuickChip(btn);
     document.getElementById(btn.dataset.scrollTarget)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
   });
 });
@@ -3284,30 +3344,40 @@ function toggleTranslate(e) {
   ov.classList.toggle('open', opening);
 }
 var langLabels = {'en': '🇺🇸 English', 'es': '🇪🇸 Español', 'pt': '🇧🇷 Português', 'de': '🇩🇪 Deutsch', 'nl': '🇳🇱 Nederlands', 'fr': '🇫🇷 Français', 'ar': '🇸🇦 العربية', 'zh-CN': '🇨🇳 中文 (简体)', 'ja': '🇯🇵 日本語', 'ko': '🇰🇷 한국어', 'ru': '🇷🇺 Русский', 'af': '🇿🇦 Afrikaans', 'am': '🇪🇹 አማርኛ', 'bn': '🇧🇩 বাংলা', 'zh-TW': '🇹🇼 中文 (繁體)', 'cs': '🇨🇿 Čeština', 'da': '🇩🇰 Dansk', 'fi': '🇫🇮 Suomi', 'el': '🇬🇷 Ελληνικά', 'iw': '🇮🇱 עברית', 'hi': '🇮🇳 हिन्दी', 'hu': '🇭🇺 Magyar', 'id': '🇮🇩 Bahasa Indonesia', 'it': '🇮🇹 Italiano', 'ms': '🇲🇾 Bahasa Melayu', 'no': '🇳🇴 Norsk', 'fa': '🇮🇷 فارسی', 'tl': '🇵🇭 Filipino', 'pl': '🇵🇱 Polski', 'ro': '🇷🇴 Română', 'sk': '🇸🇰 Slovenčina', 'sv': '🇸🇪 Svenska', 'sw': '🇰🇪 Kiswahili', 'th': '🇹🇭 ภาษาไทย', 'tr': '🇹🇷 Türkçe', 'uk': '🇺🇦 Українська', 'ur': '🇵🇰 اردو', 'vi': '🇻🇳 Tiếng Việt'};
+function setGoogTransCookie(value) {
+  document.cookie = 'googtrans=' + value + '; path=/; SameSite=Lax';
+  document.cookie = 'googtrans=' + value + '; path=/; domain=' + location.hostname + '; SameSite=Lax';
+  document.cookie = 'googtrans=' + value + '; path=/; domain=.' + location.hostname + '; SameSite=Lax';
+}
+function triggerTranslateCombo(lang, attempts) {
+  var sel = document.querySelector('.goog-te-combo');
+  if (!sel && attempts > 0) {
+    window.setTimeout(function() { triggerTranslateCombo(lang, attempts - 1); }, 400);
+    return;
+  }
+  if (!sel) {
+    closeTranslate();
+    return;
+  }
+  sel.value = lang;
+  sel.dispatchEvent(new Event('change', { bubbles: true }));
+  sel.dispatchEvent(new Event('input', { bubbles: true }));
+  closeTranslate();
+}
 function doTranslate(lang) {
   if (lang === '') return;
-  // Update button label
   var btn = document.getElementById('translate-btn-label');
   if (btn && langLabels[lang]) btn.textContent = langLabels[lang];
-  // If English selected, clear translation and reload
   if (lang === 'en') {
-    // Set cookie to en|en (not just delete — Google re-reads the hash otherwise)
-    document.cookie = 'googtrans=/en/en; path=/;';
-    document.cookie = 'googtrans=/en/en; path=/; domain=' + location.hostname + ';';
-    document.cookie = 'googtrans=/en/en; path=/; domain=.' + location.hostname + ';';
-    // Strip any googtrans hash from URL then reload
+    setGoogTransCookie('/en/en');
     var clean = window.location.href
       .replace(/#googtrans\([^)]*\)/g, '')
       .replace(/#$/, '');
     window.location.replace(clean);
     return;
   }
-  var sel = document.querySelector('.goog-te-combo');
-  if (sel) {
-    sel.value = lang;
-    sel.dispatchEvent(new Event('change'));
-  }
-  closeTranslate();
+  setGoogTransCookie('/en/' + lang);
+  triggerTranslateCombo(lang, 10);
 }
 document.addEventListener('click', function(e) {
   var dd = document.getElementById('translate-dropdown');
@@ -3316,7 +3386,7 @@ document.addEventListener('click', function(e) {
   }
 });
 </script>
-<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+<script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
 </body>
 </html>
