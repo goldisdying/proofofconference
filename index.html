@@ -1370,13 +1370,17 @@ const NEWSLETTER_CARD_POSITION = 3;  // After 4th card
 
 const $ = (id) => document.getElementById(id);
 
-const searchEl = $("search");
-const sortEl = $("sort");
-const countryEl = $("country");
-const stateEl = $("state");
-const attendanceEl = $("attendance");
-const speakerEl = $("speaker");
-const cardsEl = $("cards");
+function getDomRefs() {
+  return {
+    searchEl: $("search"),
+    sortEl: $("sort"),
+    countryEl: $("country"),
+    stateEl: $("state"),
+    attendanceEl: $("attendance"),
+    speakerEl: $("speaker"),
+    cardsEl: $("cards")
+  };
+}
 
 // ============================================================================
 // STATE
@@ -2215,7 +2219,8 @@ document.querySelectorAll(".view-btn").forEach(btn => {
     if (currentView === 'calendar') {
       sortWrapper.style.display = 'none';
       // Reset to upcoming when switching to calendar
-      sortEl.value = 'upcoming';
+      const { sortEl } = getDomRefs();
+      if (sortEl) sortEl.value = 'upcoming';
     } else {
       sortWrapper.style.display = 'block';
     }
@@ -2389,7 +2394,8 @@ function getConferenceCardHTML(conference) {
  * Apply all filters and sorting to conference list
  */
 function getFilteredAndSortedConferences() {
-  const q = searchEl.value.toLowerCase();
+  const { searchEl, sortEl, countryEl, stateEl, attendanceEl, speakerEl } = getDomRefs();
+  const q = (searchEl?.value || "").toLowerCase();
   let list = conferences.slice();
 
   // Filter by favorites if selected
@@ -2667,11 +2673,14 @@ function render() {
 
   // Update DOM
   if (html) {
-    cardsEl.innerHTML = html;
+    const { cardsEl } = getDomRefs();
+    if (cardsEl) cardsEl.innerHTML = html;
   } else if (sortEl.value === 'favorites') {
-    cardsEl.innerHTML = `<div class="card"><p>No favorites yet! Click the ❤️ icon on any conference to save it here.</p></div>`;
+    const { cardsEl } = getDomRefs();
+    if (cardsEl) cardsEl.innerHTML = `<div class="card"><p>No favorites yet! Click the ❤️ icon on any conference to save it here.</p></div>`;
   } else {
-    cardsEl.innerHTML = `<div class="card"><p>No matching conferences.</p></div>`;
+    const { cardsEl } = getDomRefs();
+    if (cardsEl) cardsEl.innerHTML = `<div class="card"><p>No matching conferences.</p></div>`;
   }
   
   // Attach event listeners
@@ -2989,11 +2998,14 @@ document.getElementById('subscribe-link')?.addEventListener('click', (e) => {
 });
 
 
-[searchEl, sortEl, countryEl, stateEl, attendanceEl, speakerEl].forEach(el => {
-  if (!el) return;
-  el.addEventListener('change', () => setActiveQuickChip(null));
-  if (el.tagName === 'INPUT') {
-    el.addEventListener('input', () => setActiveQuickChip(null));
+document.addEventListener('change', function(e) {
+  if (e.target && e.target.matches('#sort, #country, #state, #attendance, #speaker-search, #speaker')) {
+    setActiveQuickChip(null);
+  }
+});
+document.addEventListener('input', function(e) {
+  if (e.target && e.target.matches('#search, #speaker-search')) {
+    setActiveQuickChip(null);
   }
 });
 
@@ -3038,6 +3050,7 @@ function updateResultsSummary(filteredList) {
   if (!summaryEl) return;
   const count = filteredList.length;
   let label = '';
+  const { sortEl, countryEl, speakerEl } = getDomRefs();
   if (sortEl.value === 'favorites') label = 'saved favorite';
   else if (sortEl.value === 'discounts') label = 'conference with discount';
   else if (sortEl.value === 'past') label = 'past conference';
@@ -3049,12 +3062,13 @@ function updateResultsSummary(filteredList) {
 }
 
 function resetDirectoryFilters() {
-  searchEl.value = '';
-  sortEl.value = 'upcoming';
-  countryEl.value = '';
-  stateEl.value = '';
-  attendanceEl.value = '';
-  speakerEl.value = '';
+  const { searchEl, sortEl, countryEl, stateEl, attendanceEl, speakerEl } = getDomRefs();
+  if (searchEl) searchEl.value = '';
+  if (sortEl) sortEl.value = 'upcoming';
+  if (countryEl) countryEl.value = '';
+  if (stateEl) stateEl.value = '';
+  if (attendanceEl) attendanceEl.value = '';
+  if (speakerEl) speakerEl.value = '';
   const speakerSearch = document.getElementById('speaker-search');
   if (speakerSearch) speakerSearch.value = '';
   populateStateFilter();
@@ -3063,14 +3077,15 @@ function resetDirectoryFilters() {
 
 function applyQuickChip(btn) {
   resetDirectoryFilters();
-  if (btn.dataset.quickFilter) {
+  const { sortEl, countryEl } = getDomRefs();
+  if (btn.dataset.quickFilter && sortEl) {
     sortEl.value = btn.dataset.quickFilter;
   }
-  if (btn.dataset.quickCountry) {
+  if (btn.dataset.quickCountry && countryEl) {
     countryEl.value = btn.dataset.quickCountry;
     populateStateFilter();
   }
-  if (btn.dataset.quickRegion === 'Europe') {
+  if (btn.dataset.quickRegion === 'Europe' && sortEl) {
     sortEl.value = 'upcoming';
   }
   setActiveQuickChip(btn);
@@ -3386,6 +3401,19 @@ document.addEventListener('DOMContentLoaded', function() {
 
 <!-- Google Translate -->
 <script type="text/javascript">
+(function() {
+  try {
+    var params = new URLSearchParams(window.location.search);
+    if (params.get('langreset') === '1') {
+      var expires = 'Thu, 01 Jan 1970 00:00:00 GMT';
+      ['', location.hostname, '.' + location.hostname].forEach(function(domain) {
+        var domainPart = domain ? '; domain=' + domain : '';
+        document.cookie = 'googtrans=; expires=' + expires + '; path=/' + domainPart + '; SameSite=Lax';
+      });
+      sessionStorage.removeItem('poc_selected_lang');
+    }
+  } catch (e) {}
+})();
 function googleTranslateElementInit() {
   new google.translate.TranslateElement({
     pageLanguage: 'en',
@@ -3443,8 +3471,17 @@ function doTranslate(lang) {
   if (lang === 'en') {
     clearGoogTransCookie();
     sessionStorage.removeItem('poc_selected_lang');
-    var clean = window.location.origin + window.location.pathname + window.location.search;
-    window.location.replace(clean);
+    try {
+      var sel = document.querySelector('.goog-te-combo');
+      if (sel) {
+        sel.value = '';
+        sel.dispatchEvent(new Event('change', { bubbles: true }));
+      }
+    } catch (e) {}
+    var cleanUrl = new URL(window.location.href);
+    cleanUrl.searchParams.set('langreset', '1');
+    cleanUrl.hash = '';
+    window.location.replace(cleanUrl.toString());
     return;
   }
   sessionStorage.setItem('poc_selected_lang', lang);
