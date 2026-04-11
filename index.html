@@ -1176,12 +1176,12 @@
   </section>
 
   <div class="quick-filters notranslate" aria-label="Quick filters" translate="no">
-    <button type="button" class="quick-chip" data-quick-filter="upcoming">Upcoming</button>
-    <button type="button" class="quick-chip" data-quick-filter="discounts">With discounts</button>
-    <button type="button" class="quick-chip" data-quick-filter="favorites">My favorites</button>
-    <button type="button" class="quick-chip" data-quick-country="United States">USA</button>
-    <button type="button" class="quick-chip" data-quick-region="Europe">Europe</button>
-    <button type="button" class="quick-chip" data-scroll-target="subscribe">Get alerts</button>
+    <button type="button" class="quick-chip notranslate" translate="no" data-quick-filter="upcoming" onclick="handleQuickChipClick(event,this)"><span class="notranslate" translate="no">Upcoming</span></button>
+    <button type="button" class="quick-chip notranslate" translate="no" data-quick-filter="discounts" onclick="handleQuickChipClick(event,this)"><span class="notranslate" translate="no">With discounts</span></button>
+    <button type="button" class="quick-chip notranslate" translate="no" data-quick-filter="favorites" onclick="handleQuickChipClick(event,this)"><span class="notranslate" translate="no">My favorites</span></button>
+    <button type="button" class="quick-chip notranslate" translate="no" data-quick-country="United States" onclick="handleQuickChipClick(event,this)"><span class="notranslate" translate="no">USA</span></button>
+    <button type="button" class="quick-chip notranslate" translate="no" data-quick-region="Europe" onclick="handleQuickChipClick(event,this)"><span class="notranslate" translate="no">Europe</span></button>
+    <button type="button" class="quick-chip notranslate" translate="no" data-scroll-target="subscribe" onclick="handleScrollChipClick(event,this)"><span class="notranslate" translate="no">Get alerts</span></button>
   </div>
 
   <div class="directory-shell" id="directory">
@@ -1236,8 +1236,8 @@
   </div>
 
   <div class="view-toggle">
-    <button type="button" class="view-btn active" data-view="cards" translate="no">Cards</button>
-    <button type="button" class="view-btn" data-view="calendar" translate="no">Calendar</button>
+    <button type="button" class="view-btn active notranslate" data-view="cards" translate="no" onclick="setView('cards', event, this)"><span class="notranslate" translate="no">Cards</span></button>
+    <button type="button" class="view-btn notranslate" data-view="calendar" translate="no" onclick="setView('calendar', event, this)"><span class="notranslate" translate="no">Calendar</span></button>
   </div>
 
   </aside>
@@ -3093,6 +3093,42 @@ function applyQuickChip(btn) {
   document.getElementById('directory')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
+function handleQuickChipClick(event, btn) {
+  if (event) {
+    event.preventDefault();
+    event.stopPropagation();
+  }
+  applyQuickChip(btn);
+  return false;
+}
+
+function handleScrollChipClick(event, btn) {
+  if (event) {
+    event.preventDefault();
+    event.stopPropagation();
+  }
+  setActiveQuickChip(btn);
+  var target = btn && btn.dataset ? btn.dataset.scrollTarget : null;
+  if (target) {
+    document.getElementById(target)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+  return false;
+}
+
+function setView(view, event, btn) {
+  if (event) {
+    event.preventDefault();
+    event.stopPropagation();
+  }
+  currentView = view;
+  document.querySelectorAll('.view-btn').forEach(function(b){ b.classList.remove('active'); });
+  if (btn) btn.classList.add('active');
+  var sortWrapper = document.querySelector('.sort-wrapper');
+  if (sortWrapper) sortWrapper.style.display = currentView === 'calendar' ? 'none' : 'block';
+  render();
+  return false;
+}
+
 document.addEventListener('click', function(e) {
   const quickBtn = e.target.closest('[data-quick-filter], [data-quick-country], [data-quick-region]');
   if (quickBtn) {
@@ -3411,6 +3447,11 @@ document.addEventListener('DOMContentLoaded', function() {
         document.cookie = 'googtrans=; expires=' + expires + '; path=/' + domainPart + '; SameSite=Lax';
       });
       sessionStorage.removeItem('poc_selected_lang');
+      try {
+        var clean = new URL(window.location.href);
+        clean.searchParams.delete('langreset');
+        window.history.replaceState({}, '', clean.pathname + clean.search + clean.hash);
+      } catch (err) {}
     }
   } catch (e) {}
 })();
@@ -3479,9 +3520,9 @@ function doTranslate(lang) {
       }
     } catch (e) {}
     var cleanUrl = new URL(window.location.href);
-    cleanUrl.searchParams.set('langreset', '1');
+    cleanUrl.searchParams.delete('langreset');
     cleanUrl.hash = '';
-    window.location.replace(cleanUrl.toString());
+    window.location.replace(cleanUrl.pathname + cleanUrl.search + cleanUrl.hash);
     return;
   }
   sessionStorage.setItem('poc_selected_lang', lang);
@@ -3495,7 +3536,7 @@ window.addEventListener('load', function() {
 });
 document.addEventListener('click', function(e) {
   var dd = document.getElementById('translate-dropdown');
-  if (dd && !dd.contains(e.target) && !e.target.classList.contains('translate-btn')) {
+  if (dd && !dd.contains(e.target) && !e.target.closest('.translate-btn')) {
     closeTranslate();
   }
 });
