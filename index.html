@@ -75,6 +75,14 @@
 
   <style>
     /* === GLOBAL STYLES === */
+    * { box-sizing: border-box; }
+
+    html, body {
+      width: 100%;
+      max-width: 100%;
+      overflow-x: hidden;
+    }
+
     body {
       margin: 0;
       background: #000;
@@ -958,9 +966,10 @@
     }
     .lang-btn:hover { background: #333; }
     #google_translate_element { position: absolute; left: -9999px; top: -9999px; }
-    .goog-te-banner-frame, .skiptranslate { display: none !important; }
+    .goog-te-banner-frame.skiptranslate { display: none !important; }
     body { top: 0 !important; }
     .goog-te-gadget { display: none !important; }
+    body > .skiptranslate { display: none !important; }
     #goog-gt-tt, .goog-tooltip, .goog-tooltip:hover { display: none !important; }
     }
 
@@ -1016,6 +1025,28 @@
     .section-heading { font-size:28px; margin:0 0 6px; color:#fff; }
     .clear-btn:focus-visible, .view-btn:focus-visible, .faq-question:focus-visible, .add-calendar-link:focus-visible { outline:2px solid #f7931a; outline-offset:2px; }
     @media (max-width: 920px) { .hero-panel, .directory-shell { grid-template-columns:1fr; } .featured-mini-grid { grid-template-columns:1fr; } }
+    @media (max-width: 768px) {
+      .container { padding: 12px 12px 28px; }
+      .hero-copy, .hero-proof, .filters-panel, .results-panel { padding: 18px; border-radius: 18px; }
+      .quick-filters { gap: 8px; }
+      .quick-chip { padding: 10px 12px; }
+      .card { padding: 14px; }
+      .card-actions { flex-wrap: wrap; gap: 12px; }
+      .card-actions-buttons { width: 100%; justify-content: flex-start; }
+      .cta { width: 100%; text-align: center; }
+      .newsletter-signup { padding: 18px; }
+      .faq-section { padding: 0; }
+    }
+    @media (max-width: 480px) {
+      .top-nav { justify-content: flex-start; }
+      .hero-actions { flex-direction: column; }
+      .hero-btn, .hero-btn-secondary { width: 100%; }
+      .quick-filters { overflow-x: auto; flex-wrap: nowrap; padding-bottom: 4px; -webkit-overflow-scrolling: touch; }
+      .quick-filters::-webkit-scrollbar { display: none; }
+      .quick-chip { flex: 0 0 auto; }
+      .accordion-item { flex-direction: column; align-items: flex-start; }
+      .accordion-item-btn { width: 100%; text-align: center; }
+    }
 
   </style>
   <script type="application/ld+json">
@@ -1144,7 +1175,7 @@
     </div>
   </section>
 
-  <div class="quick-filters" aria-label="Quick filters">
+  <div class="quick-filters notranslate" aria-label="Quick filters" translate="no">
     <button type="button" class="quick-chip" data-quick-filter="upcoming">Upcoming</button>
     <button type="button" class="quick-chip" data-quick-filter="discounts">With discounts</button>
     <button type="button" class="quick-chip" data-quick-filter="favorites">My favorites</button>
@@ -1154,7 +1185,7 @@
   </div>
 
   <div class="directory-shell" id="directory">
-    <aside class="filters-panel">
+    <aside class="filters-panel notranslate" translate="no">
       <p class="panel-heading">Refine your search</p>
       <p class="helper-text">Use the filters below to narrow by country, attendance size, speaker, or saved favorites.</p>
 
@@ -1205,8 +1236,8 @@
   </div>
 
   <div class="view-toggle">
-    <button type="button" class="view-btn active" data-view="cards">Cards</button>
-    <button type="button" class="view-btn" data-view="calendar">Calendar</button>
+    <button type="button" class="view-btn active" data-view="cards" translate="no">Cards</button>
+    <button type="button" class="view-btn" data-view="calendar" translate="no">Calendar</button>
   </div>
 
   </aside>
@@ -3047,15 +3078,46 @@ function applyQuickChip(btn) {
   document.getElementById('directory')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
-document.querySelectorAll('[data-quick-filter], [data-quick-country], [data-quick-region]').forEach(btn => {
-  btn.addEventListener('click', () => applyQuickChip(btn));
-});
+document.addEventListener('click', function(e) {
+  const quickBtn = e.target.closest('[data-quick-filter], [data-quick-country], [data-quick-region]');
+  if (quickBtn) {
+    e.preventDefault();
+    applyQuickChip(quickBtn);
+    return;
+  }
 
-document.querySelectorAll('[data-scroll-target]').forEach(btn => {
-  btn.addEventListener('click', () => {
-    setActiveQuickChip(btn);
-    document.getElementById(btn.dataset.scrollTarget)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-  });
+  const scrollBtn = e.target.closest('[data-scroll-target]');
+  if (scrollBtn) {
+    e.preventDefault();
+    setActiveQuickChip(scrollBtn);
+    document.getElementById(scrollBtn.dataset.scrollTarget)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    return;
+  }
+
+  const viewBtn = e.target.closest('.view-btn');
+  if (viewBtn) {
+    e.preventDefault();
+    currentView = viewBtn.dataset.view;
+    document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
+    viewBtn.classList.add('active');
+    const sortWrapper = document.querySelector('.sort-wrapper');
+    if (sortWrapper) sortWrapper.style.display = currentView === 'calendar' ? 'none' : 'block';
+    render();
+    return;
+  }
+
+  const faqBtn = e.target.closest('.faq-question');
+  if (faqBtn) {
+    e.preventDefault();
+    const answer = faqBtn.nextElementSibling;
+    const isExpanded = faqBtn.getAttribute('aria-expanded') === 'true';
+    document.querySelectorAll('.faq-question').forEach(b => b.setAttribute('aria-expanded', 'false'));
+    document.querySelectorAll('.faq-answer').forEach(a => a.classList.remove('open'));
+    if (!isExpanded && answer) {
+      faqBtn.setAttribute('aria-expanded', 'true');
+      answer.classList.add('open');
+    }
+  }
 });
 
 // ============================================================================
@@ -3345,9 +3407,18 @@ function toggleTranslate(e) {
 }
 var langLabels = {'en': '🇺🇸 English', 'es': '🇪🇸 Español', 'pt': '🇧🇷 Português', 'de': '🇩🇪 Deutsch', 'nl': '🇳🇱 Nederlands', 'fr': '🇫🇷 Français', 'ar': '🇸🇦 العربية', 'zh-CN': '🇨🇳 中文 (简体)', 'ja': '🇯🇵 日本語', 'ko': '🇰🇷 한국어', 'ru': '🇷🇺 Русский', 'af': '🇿🇦 Afrikaans', 'am': '🇪🇹 አማርኛ', 'bn': '🇧🇩 বাংলা', 'zh-TW': '🇹🇼 中文 (繁體)', 'cs': '🇨🇿 Čeština', 'da': '🇩🇰 Dansk', 'fi': '🇫🇮 Suomi', 'el': '🇬🇷 Ελληνικά', 'iw': '🇮🇱 עברית', 'hi': '🇮🇳 हिन्दी', 'hu': '🇭🇺 Magyar', 'id': '🇮🇩 Bahasa Indonesia', 'it': '🇮🇹 Italiano', 'ms': '🇲🇾 Bahasa Melayu', 'no': '🇳🇴 Norsk', 'fa': '🇮🇷 فارسی', 'tl': '🇵🇭 Filipino', 'pl': '🇵🇱 Polski', 'ro': '🇷🇴 Română', 'sk': '🇸🇰 Slovenčina', 'sv': '🇸🇪 Svenska', 'sw': '🇰🇪 Kiswahili', 'th': '🇹🇭 ภาษาไทย', 'tr': '🇹🇷 Türkçe', 'uk': '🇺🇦 Українська', 'ur': '🇵🇰 اردو', 'vi': '🇻🇳 Tiếng Việt'};
 function setGoogTransCookie(value) {
+  var domains = [location.hostname, '.' + location.hostname];
   document.cookie = 'googtrans=' + value + '; path=/; SameSite=Lax';
-  document.cookie = 'googtrans=' + value + '; path=/; domain=' + location.hostname + '; SameSite=Lax';
-  document.cookie = 'googtrans=' + value + '; path=/; domain=.' + location.hostname + '; SameSite=Lax';
+  domains.forEach(function(domain) {
+    document.cookie = 'googtrans=' + value + '; path=/; domain=' + domain + '; SameSite=Lax';
+  });
+}
+function clearGoogTransCookie() {
+  var expires = 'Thu, 01 Jan 1970 00:00:00 GMT';
+  ['', location.hostname, '.' + location.hostname].forEach(function(domain) {
+    var domainPart = domain ? '; domain=' + domain : '';
+    document.cookie = 'googtrans=; expires=' + expires + '; path=/' + domainPart + '; SameSite=Lax';
+  });
 }
 function triggerTranslateCombo(lang, attempts) {
   var sel = document.querySelector('.goog-te-combo');
@@ -3365,20 +3436,26 @@ function triggerTranslateCombo(lang, attempts) {
   closeTranslate();
 }
 function doTranslate(lang) {
-  if (lang === '') return;
+  if (!lang) return;
   var btn = document.getElementById('translate-btn-label');
   if (btn && langLabels[lang]) btn.textContent = langLabels[lang];
+  closeTranslate();
   if (lang === 'en') {
-    setGoogTransCookie('/en/en');
-    var clean = window.location.href
-      .replace(/#googtrans\([^)]*\)/g, '')
-      .replace(/#$/, '');
+    clearGoogTransCookie();
+    sessionStorage.removeItem('poc_selected_lang');
+    var clean = window.location.origin + window.location.pathname + window.location.search;
     window.location.replace(clean);
     return;
   }
+  sessionStorage.setItem('poc_selected_lang', lang);
   setGoogTransCookie('/en/' + lang);
   triggerTranslateCombo(lang, 10);
 }
+window.addEventListener('load', function() {
+  var savedLang = sessionStorage.getItem('poc_selected_lang') || 'en';
+  var btn = document.getElementById('translate-btn-label');
+  if (btn && langLabels[savedLang]) btn.textContent = langLabels[savedLang];
+});
 document.addEventListener('click', function(e) {
   var dd = document.getElementById('translate-dropdown');
   if (dd && !dd.contains(e.target) && !e.target.classList.contains('translate-btn')) {
