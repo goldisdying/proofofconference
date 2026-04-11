@@ -6,6 +6,3 @@ Disallow: /*.json$
 
 # Sitemap location
 Sitemap: https://www.proofofconference.com/sitemap.xml
-
-# Crawl delay for respectful crawling
-Crawl-delay: 1
