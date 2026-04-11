@@ -15,9 +15,9 @@
 
   <title>Proof of Conference | Bitcoin Conferences & Event Discounts Worldwide</title>
   <meta name="description" content="Discover verified Bitcoin conferences worldwide, including upcoming events, speakers, and available conference discount or promo codes." />
-  <meta name="keywords" content="bitcoin conferences, bitcoin conference discounts, bitcoin event promo codes, crypto conferences, crypto conference discounts, blockchain events" />
-  <link rel="canonical" href="https://www.proofofconference.com/" />
+    <link rel="canonical" href="https://www.proofofconference.com/" />
   <link rel="icon" href="/favicon.ico" />
+  <meta name="theme-color" content="#000000" />
 
   <meta property="og:type" content="website" />
   <meta property="og:title" content="Proof of Conference" />
@@ -69,6 +69,8 @@
   }
   </script>
 
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 
   <style>
@@ -98,9 +100,9 @@
 
     /* === MAIN CONTAINER === */
     .container {
-      max-width: 480px;
+      max-width: 1120px;
       margin: 0 auto;
-      padding: 8px 20px 20px 20px;
+      padding: 16px 20px 32px 20px;
     }
 
     /* === HEADER === */
@@ -969,7 +971,51 @@
       .top-nav a[href="/submit-event/"] { font-size: 0; }
       .top-nav a[href="/submit-event/"]::before { font-size: 11px; }
     }
-    </style>
+  
+
+    .skip-link {
+      position: absolute;
+      left: -9999px;
+      top: 0;
+      background: #f7931a;
+      color: #000;
+      padding: 10px 14px;
+      border-radius: 0 0 8px 8px;
+      z-index: 9999;
+      font-weight: 700;
+    }
+    .skip-link:focus { left: 16px; }
+    .hero-panel { display:grid; grid-template-columns:minmax(0,1.4fr) minmax(280px,.8fr); gap:20px; align-items:stretch; margin:12px 0 24px; }
+    .hero-copy, .hero-proof, .filters-panel, .results-panel { background:linear-gradient(180deg,#121212,#0a0a0a); border:1px solid #202020; border-radius:20px; padding:22px; box-shadow:0 10px 30px rgba(0,0,0,.25); }
+    .eyebrow { color:#8df608; font-size:13px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; margin:0 0 10px; }
+    .hero-copy p { color:#d1d5db; font-size:16px; line-height:1.6; margin:0 0 14px; }
+    .hero-actions { display:flex; flex-wrap:wrap; gap:12px; margin-top:16px; }
+    .hero-btn, .hero-btn-secondary { display:inline-flex; align-items:center; justify-content:center; min-height:46px; padding:0 18px; border-radius:999px; text-decoration:none; font-weight:700; }
+    .hero-btn { background:#f7931a; color:#000; }
+    .hero-btn-secondary { border:1px solid #333; color:#fff; }
+    .hero-proof ul { margin:12px 0 0 18px; color:#d1d5db; padding:0; }
+    .hero-proof li { margin:0 0 10px; }
+    .quick-filters { display:flex; flex-wrap:wrap; gap:10px; margin:0 0 20px; }
+    .quick-chip { border:1px solid #333; background:#111; color:#fff; border-radius:999px; padding:10px 14px; cursor:pointer; font-weight:600; }
+    .quick-chip:hover, .quick-chip:focus { border-color:#f7931a; outline:none; }
+    .directory-shell { display:grid; grid-template-columns:minmax(0,320px) minmax(0,1fr); gap:22px; align-items:start; }
+    .panel-heading { font-size:13px; letter-spacing:.08em; text-transform:uppercase; color:#9ca3af; margin:0 0 14px; }
+    .helper-text, .last-updated { color:#9ca3af; font-size:14px; }
+    .featured-mini-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px; margin:0 0 22px; }
+    .featured-mini-card { background:#111; border:1px solid #222; border-radius:18px; overflow:hidden; }
+    .featured-mini-card a { color:inherit; text-decoration:none; display:block; height:100%; }
+    .featured-mini-card img { width:100%; aspect-ratio:16/9; object-fit:cover; display:block; }
+    .featured-mini-copy { padding:14px; }
+    .featured-mini-copy h3 { font-size:18px; margin:4px 0 8px; color:#fff; }
+    .featured-mini-date, .featured-mini-meta { margin:0; color:#d1d5db; font-size:14px; }
+    .mini-badge { display:inline-block; margin-top:10px; background:#2b1700; color:#f8b563; border:1px solid #6a3c04; padding:6px 10px; border-radius:999px; font-size:12px; font-weight:700; }
+    .mini-badge.subtle { background:#111827; color:#c7d2fe; border-color:#374151; }
+    #cards { min-height:260px; }
+    .section-heading { font-size:28px; margin:0 0 6px; color:#fff; }
+    .clear-btn:focus-visible, .view-btn:focus-visible, .faq-question:focus-visible, .add-calendar-link:focus-visible { outline:2px solid #f7931a; outline-offset:2px; }
+    @media (max-width: 920px) { .hero-panel, .directory-shell { grid-template-columns:1fr; } .featured-mini-grid { grid-template-columns:1fr; } }
+
+  </style>
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -1045,11 +1091,22 @@
   </span>
 </div>
 
-<div class="container">
-  <h1>Proof of Conference</h1>
-  <div class="subtitle">Track Every Bitcoin Conference</div>
-
-  <div class="stats-row">
+<a class="skip-link" href="#main-content">Skip to main content</a>
+<div class="container" id="main-content">
+  <div class="hero-panel">
+    <section class="hero-copy">
+      <p class="eyebrow">Bitcoin conference directory</p>
+      <h1>Find upcoming Bitcoin conferences worldwide</h1>
+      <div class="subtitle">Compare events by location, date, speakers, and available ticket discounts.</div>
+      <p>Proof of Conference helps attendees discover relevant Bitcoin events faster, with searchable listings, conference pages, and verified discount-code coverage.</p>
+      <div class="hero-actions">
+        <a class="hero-btn" href="#directory">Browse conferences</a>
+        <a class="hero-btn-secondary" href="#subscribe">Get weekly updates</a>
+      </div>
+    </section>
+    <aside class="hero-proof" aria-label="Why use Proof of Conference">
+      <p class="eyebrow">Why people use it</p>
+      <div class="stats-row">
     <div class="stat-box">
       <div class="stat-number" id="stat-events">0</div>
       <div class="stat-label">Upcoming Events</div>
@@ -1063,6 +1120,41 @@
       <div class="stat-label">Confirmed Speakers</div>
     </div>
   </div>
+      <p class="last-updated">Updated regularly with new events, speaker rosters, and discount availability.</p>
+      <ul>
+        <li>Track upcoming events across regions and formats.</li>
+        <li>Save favorites locally without creating an account.</li>
+        <li>Add conferences to your calendar in one click.</li>
+      </ul>
+    </aside>
+  </div>
+
+  <section aria-labelledby="featured-upcoming-heading">
+    <p class="eyebrow">Featured upcoming events</p>
+    <h2 id="featured-upcoming-heading" class="section-heading">Start with the next major conferences</h2>
+    <div class="featured-mini-grid">
+      <article class="featured-mini-card"><a href="https://mitbitcoinexpo.org/"><img src="/conference-images/mit-bitcoin-expo-2026-card.webp" alt="MIT Bitcoin Expo" loading="lazy"><div class="featured-mini-copy"><p class="featured-mini-date">April 11-12, 2026</p><h3>MIT Bitcoin Expo</h3><p class="featured-mini-meta">Cambridge, United States</p><span class="mini-badge subtle">Conference guide</span></div></a></article>
+<article class="featured-mini-card"><a href="https://opnext.dev/"><img src="/conference-images/opnext-2026-card.webp" alt="OPNEXT 2026" loading="lazy"><div class="featured-mini-copy"><p class="featured-mini-date">April 16, 2026</p><h3>OPNEXT 2026</h3><p class="featured-mini-meta">New York City, United States</p><span class="mini-badge subtle">Conference guide</span></div></a></article>
+<article class="featured-mini-card"><a href="https://luma.com/wkoxeb9m"><img src="/conference-images/bitchill-s03-2026-card.webp" alt="Bitchill s03" loading="lazy"><div class="featured-mini-copy"><p class="featured-mini-date">April 16-25, 2026</p><h3>Bitchill s03</h3><p class="featured-mini-meta">Roatán, Honduras</p><span class="mini-badge subtle">Conference guide</span></div></a></article>
+<article class="featured-mini-card"><a href="https://mslmbtcsummit.com/"><img src="/conference-images/muslim-bitcoin-summit-2026-card.webp" alt="Muslim Bitcoin Summit 2026" loading="lazy"><div class="featured-mini-copy"><p class="featured-mini-date">April 17-19, 2026</p><h3>Muslim Bitcoin Summit 2026</h3><p class="featured-mini-meta">Dallas, United States</p><span class="mini-badge subtle">Conference guide</span></div></a></article>
+<article class="featured-mini-card"><a href="https://www.btcplusplus.dev/conf/vegas"><img src="/conference-images/bitcoinplusplus-nevada-2026-card.webp" alt="bitcoin++ - Nevada" loading="lazy"><div class="featured-mini-copy"><p class="featured-mini-date">April 23-24, 2026</p><h3>bitcoin++ - Nevada</h3><p class="featured-mini-meta">Hoover Dam, United States</p><span class="mini-badge">Discount available</span></div></a></article>
+<article class="featured-mini-card"><a href="https://swiss-bitcoin-conference.com/"><img src="/conference-images/swiss-bitcoin-conference-2026-card.webp" alt="Swiss Bitcoin Conference" loading="lazy"><div class="featured-mini-copy"><p class="featured-mini-date">April 23–26, 2026</p><h3>Swiss Bitcoin Conference</h3><p class="featured-mini-meta">Kreuzlingen, Switzerland</p><span class="mini-badge subtle">Conference guide</span></div></a></article>
+    </div>
+  </section>
+
+  <div class="quick-filters" aria-label="Quick filters">
+    <button type="button" class="quick-chip" data-quick-filter="upcoming">Upcoming</button>
+    <button type="button" class="quick-chip" data-quick-filter="discounts">With discounts</button>
+    <button type="button" class="quick-chip" data-quick-filter="favorites">My favorites</button>
+    <button type="button" class="quick-chip" data-quick-country="United States">USA</button>
+    <button type="button" class="quick-chip" data-quick-country="Czech Republic">Europe spotlight</button>
+    <button type="button" class="quick-chip" data-scroll-target="subscribe">Get alerts</button>
+  </div>
+
+  <div class="directory-shell" id="directory">
+    <aside class="filters-panel">
+      <p class="panel-heading">Refine your search</p>
+      <p class="helper-text">Use the filters below to narrow by country, attendance size, speaker, or saved favorites.</p>
 
   <div class="search-wrapper">
     <input id="search" placeholder="Search conferences..." aria-label="Search conferences" />
@@ -1081,12 +1173,12 @@
 
   <div class="filter-row">
     <select id="country"><option value="">All Countries</option></select>
-    <button type="button" class="clear-btn" data-target="country">×</button>
+    <button type="button" class="clear-btn" data-target="country" aria-label="Clear country filter" title="Clear country filter">×</button>
   </div>
 
   <div class="filter-row">
     <select id="state"><option value="">All States</option></select>
-    <button type="button" class="clear-btn" data-target="state">×</button>
+    <button type="button" class="clear-btn" data-target="state" aria-label="Clear state filter" title="Clear state filter">×</button>
   </div>
 
   <div class="filter-row">
@@ -1098,7 +1190,7 @@
       <option value="5000-10000">5,000-10,000</option>
       <option value="10000+">10,000+</option>
     </select>
-    <button type="button" class="clear-btn" data-target="attendance">×</button>
+    <button type="button" class="clear-btn" data-target="attendance" aria-label="Clear attendance filter" title="Clear attendance filter">×</button>
   </div>
 
   <div class="filter-row">
@@ -1107,7 +1199,7 @@
       <input type="hidden" id="speaker" value="">
       <div class="speaker-autocomplete-dropdown" id="speaker-dropdown"></div>
     </div>
-    <button type="button" class="clear-btn" data-target="speaker">×</button>
+    <button type="button" class="clear-btn" data-target="speaker" aria-label="Clear speaker filter" title="Clear speaker filter">×</button>
   </div>
 
   <div class="view-toggle">
@@ -1115,7 +1207,11 @@
     <button type="button" class="view-btn" data-view="calendar">Calendar</button>
   </div>
 
-  <div id="cards"></div>
+  </aside>
+
+    <section class="results-panel" aria-live="polite">
+      <p class="panel-heading">Directory results</p>
+      <div id="cards"></div>
 
   <div id="subscribe" class="newsletter-signup">
     <h3>📬 Stay Updated</h3>
@@ -1125,6 +1221,9 @@
       <button type="submit">Subscribe</button>
     </form>
     <div class="success-message">Success! Check your email to confirm.</div>
+  </div>
+
+      </section>
   </div>
 
   <section class="faq-section" id="faq">
@@ -1171,6 +1270,8 @@
     </p>
     <p>© 2026 Proof of Conference. All rights reserved.</p>
   </footer>
+
+<noscript><div style="max-width:1120px;margin:20px auto;padding:16px 20px;background:#111;border:1px solid #222;border-radius:16px;color:#d1d5db;">This directory works best with JavaScript enabled. You can still browse conference pages and guides from the featured links above.</div></noscript>
 </div>
 
 <button class="back-to-top" id="backToTop" aria-label="Back to top" title="Back to top">
@@ -1182,9 +1283,23 @@
 // CONFIGURATION & CONSTANTS
 // ============================================================================
 
-const CSV_URL = "https://raw.githubusercontent.com/goldisdying/proofofconference/main/Bitcoin%20Conference%20List%20-%20Directory.csv";
-const ADS_CSV_URL = "https://raw.githubusercontent.com/goldisdying/proofofconference/main/poc-ad-list%20-%20Sheet1.csv";
-const FEATURED_SPEAKERS_CSV_URL = "https://raw.githubusercontent.com/goldisdying/proofofconference/main/Bitcoin%20Conference%20List%20-%20Featured%20Speakers.csv";
+const CSV_URLS = ["/Bitcoin%20Conference%20List%20-%20Directory.csv", "./Bitcoin%20Conference%20List%20-%20Directory.csv", "https://raw.githubusercontent.com/goldisdying/proofofconference/main/Bitcoin%20Conference%20List%20-%20Directory.csv"];
+const ADS_CSV_URLS = ["/poc-ad-list%20-%20Sheet1.csv", "./poc-ad-list%20-%20Sheet1.csv", "https://raw.githubusercontent.com/goldisdying/proofofconference/main/poc-ad-list%20-%20Sheet1.csv"];
+const FEATURED_SPEAKERS_CSV_URLS = ["/Bitcoin%20Conference%20List%20-%20Featured%20Speakers.csv", "./Bitcoin%20Conference%20List%20-%20Featured%20Speakers.csv", "https://raw.githubusercontent.com/goldisdying/proofofconference/main/Bitcoin%20Conference%20List%20-%20Featured%20Speakers.csv"];
+
+async function fetchTextWithFallback(urls) {
+  let lastError;
+  for (const url of urls) {
+    try {
+      const response = await fetch(url, { cache: 'no-store' });
+      if (!response.ok) throw new Error(`Failed to load ${url}`);
+      return await response.text();
+    } catch (error) {
+      lastError = error;
+    }
+  }
+  throw lastError || new Error('Unable to load data');
+}
 
 // Month name to number mapping for date parsing
 const MONTHS = {
@@ -1541,8 +1656,7 @@ function escapeHTML(str) {
 /**
  * Fetch featured speakers from CSV
  */
-fetch(FEATURED_SPEAKERS_CSV_URL)
-  .then(r => r.text())
+fetchTextWithFallback(FEATURED_SPEAKERS_CSV_URLS)
   .then(text => {
     // Parse CSV with headers (Speakers, Featured)
     const rows = parseCSV(text);
@@ -1560,8 +1674,7 @@ fetch(FEATURED_SPEAKERS_CSV_URL)
   })
   .finally(() => {
     // Fetch conference data after featured speakers are loaded
-    fetch(CSV_URL)
-      .then(r => r.text())
+    fetchTextWithFallback(CSV_URLS)
       .then(text => {
         const rows = parseCSV(text);
         const headers = rows.shift();
@@ -1585,8 +1698,7 @@ fetch(FEATURED_SPEAKERS_CSV_URL)
 /**
  * Fetch and parse ad data from CSV
  */
-fetch(ADS_CSV_URL)
-  .then(r => r.text())
+fetchTextWithFallback(ADS_CSV_URLS)
   .then(text => {
     const rows = parseCSV(text);
     const headers = rows.shift();
@@ -2858,16 +2970,44 @@ backToTopBtn.addEventListener('click', () => {
     behavior: 'smooth'
   });
 });
+
+
+document.querySelectorAll('[data-quick-filter]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    sortEl.value = btn.dataset.quickFilter;
+    render();
+    document.getElementById('directory')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+});
+
+document.querySelectorAll('[data-quick-country]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    countryEl.value = btn.dataset.quickCountry;
+    stateEl.value = '';
+    sortEl.value = 'upcoming';
+    populateStateFilter();
+    updateClearButtons();
+    render();
+    document.getElementById('directory')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+});
+
+document.querySelectorAll('[data-scroll-target]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.getElementById(btn.dataset.scrollTarget)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  });
+});
+
 // ============================================================================
 // GIVEAWAY POPUP
 // ============================================================================
 
 document.addEventListener('DOMContentLoaded', function() {
   const POPUP_COOKIE_NAME = 'poc_giveaway_dismissed';
-  const POPUP_COOKIE_DAYS = 15;
-  const SCROLL_TRIGGER_PERCENT = 20;
-  const TIME_TRIGGER_SECONDS = 5;
-  const SHARED_LINK_DELAY_SECONDS = 8;
+  const POPUP_COOKIE_DAYS = 30;
+  const SCROLL_TRIGGER_PERCENT = 55;
+  const TIME_TRIGGER_SECONDS = 18;
+  const SHARED_LINK_DELAY_SECONDS = 24;
   
   // Check if this is a shared link (has hash in URL)
   const isSharedLink = window.location.hash.length > 1;
