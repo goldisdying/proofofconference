@@ -73,6 +73,24 @@
 
   <style>
     /* === GLOBAL STYLES === */
+    .cta-secondary {
+      display: inline-block;
+      padding: 8px 14px;
+      background: transparent;
+      color: #f7931a;
+      border: 1px solid #f7931a;
+      border-radius: 6px;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 600;
+      margin-right: 8px;
+      transition: all 0.15s ease;
+    }
+    .cta-secondary:hover {
+      background: #f7931a;
+      color: #000;
+    }
+
     body {
       margin: 0;
       background: #000;
@@ -2098,6 +2116,67 @@ function getNewsletterHTML() {
   `;
 }
 
+const CONFERENCE_PAGE_SLUGS = {
+  "Acelerando Bitcoin": "acelerando-bitcoin-2026",
+  "BSE : Bitcoin – Sovereignty – Economics 2026": "bse-2026",
+  "BTC Prague": "btc-prague",
+  "Barcelona Cyphers Conference": "barcelona-cyphers-conference-2026",
+  "BitBlockBoom": "bitblockboom",
+  "Bitcare Forum": "bitcare-forum-2026",
+  "Bitchill s03": "bitchill-s03-2026",
+  "Bitcoin 2025": "bitcoin-2026",
+  "Bitcoin 2026": "bitcoin-2026",
+  "Bitcoin Amsterdam": "bitcoin-amsterdam",
+  "Bitcoin Asia": "bitcoin-asia",
+  "Bitcoin Beyond 66": "bitcoin-beyond-66-2026",
+  "Bitcoin Burgenland 2026": "bitcoin-burgenland-2026",
+  "Bitcoin Bush Bash - Busselton": "bitcoin-bush-bash-busselton-2026",
+  "Bitcoin Bush Bash - Byron Bay": "bitcoin-bush-bash-byron-bay-2026",
+  "Bitcoin Bush Bash - Palm Cove": "bitcoin-bush-bash-palm-cove-2026",
+  "Bitcoin Corporate Day 2026 by Bitwise": "bitcoin-corporate-day-2026",
+  "Bitcoin Economic Forum 2026": "bitcoin-economic-forum-2026",
+  "Bitcoin FilmFest 2026": "bitcoin-film-fest-2026",
+  "Bitcoin Helsinki - The Nordic Bitcoin Conference": "bitcoin-helsinki-2026",
+  "Bitcoin Infinity Day": "bitcoin-infinity-day-2026",
+  "Bitcoin Ireland Conference": "bitcoin-ireland",
+  "Bitcoin MENA 2025": "bitcoin-mena",
+  "Bitcoin MENA 2026": "bitcoin-mena",
+  "Bitcoin is for Everyone": "bitcoin-is-for-everyone-2026",
+  "Bitcoin: A Competitive Advantage 2026": "bitcoin-competitive-advantage-2026",
+  "Bitfest 2026": "bitfest-2026",
+  "Camp Nakamoto 2026": "camp-nakamoto-2026",
+  "CheatCode": "cheatcode-2026",
+  "European Mining Summit": "european-mining-summit-2026",
+  "Freedom Tech Summit": "freedom-tech-summit-2026",
+  "Japan Bitcoin Future Forum": "japan-bitcoin-future-forum-2026",
+  "Labitconf Mexico 2026": "labitconf-mexico-2026",
+  "Lake Satoshi Retreat": "lake-satoshi-retreat-2026",
+  "Lugano Plan B Forum": "lugano-plan-b-forum-2026",
+  "MAD Bitcoin Summit": "mad-bitcoin-summit-2026",
+  "MIT Bitcoin Expo": "mit-bitcoin-expo-2026",
+  "Mallorca Blockchain Days 2026": "mallorca-blockchain-days-2026",
+  "Mining Disrupt": "mining-disrupt-2026",
+  "Muslim Bitcoin Summit 2026": "muslim-bitcoin-summit-2026",
+  "Noderunners Conference 2026": "noderunners-conference-2026",
+  "OPNEXT 2026": "opnext-2026",
+  "Oslo Freedom Forum": "oslo-freedom-forum-2026",
+  "Swiss Bitcoin Conference": "swiss-bitcoin-conference-2026",
+  "TABConf": "tabconf-2026",
+  "The Bitcoin Paradigm 2026": "bitcoin-paradigm-2026",
+  "The Bitcoin Rodeo 2025": "bitcoin-rodeo-2026",
+  "The Bitcoin Rodeo 2026": "bitcoin-rodeo-2026",
+  "The Bitcoin Treasuries Unconference": "bitcoin-treasuries-unconference",
+  "The Midwest Bitcoin Summit": "midwest-bitcoin-summit-2026",
+  "Tuscany Lightning Summit 2026": "tuscany-lightning-summit-2026",
+  "Unconfiscatable": "unconfiscatable-2026",
+  "Watch Out, Bitcoin! 2026": "watch-out-bitcoin-2026",
+  "bitcoin++ - Austria 2026": "bitcoin-plus-plus-austria-2026",
+  "bitcoin++ - Canada 2026": "bitcoin-plus-plus-canada-2026",
+  "bitcoin++ - Germany 2026": "bitcoin-plus-plus-germany-2026",
+  "bitcoin++ - Kenya 2026": "bitcoin-plus-plus-kenya-2026",
+  "bitcoin++ - Nevada": "bitcoin-plus-plus-nevada-2026",
+};
+
 /**
  * Generate ad HTML for a specific position
  */
@@ -2206,6 +2285,7 @@ function getConferenceCardHTML(conference) {
       ${speakerHTML}
       ${hasDiscount ? `<div class="discount">🎟️ ${discount}</div>` : ""}
       <div class="card-actions">
+        ${CONFERENCE_PAGE_SLUGS[conference.Conference] ? `<a class="cta-secondary" href="/conferences/${CONFERENCE_PAGE_SLUGS[conference.Conference]}.html">View Details</a>` : ''}
         <a class="cta" href="${link}" target="_blank" rel="noopener noreferrer">
           ${buttonText}
         </a>
