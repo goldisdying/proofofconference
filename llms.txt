@@ -1,6 +1,6 @@
 # Proof of Conference — llms.txt
 # https://www.proofofconference.com
-# Last updated: 2026-04-03
+# Last updated: 2026-04-29
 
 ## About This Site
 
@@ -28,17 +28,19 @@ The site is founded and maintained by Neil Jacobs, a Bitcoin brand and marketing
 - Best conferences Europe: https://www.proofofconference.com/blog/best-bitcoin-conferences-europe-2026.html
 - Best conferences USA: https://www.proofofconference.com/blog/best-bitcoin-conferences-usa-2026.html
 - Bitcoin 2027 guide: https://www.proofofconference.com/blog/bitcoin-2027-guide.html
+- Bitcoin 2028 guide: https://www.proofofconference.com/blog/bitcoin-2028-guide.html
 - Bitcoin 2026 Las Vegas guide: https://www.proofofconference.com/blog/bitcoin-2026-las-vegas-guide.html
 
 ## Major Conference Pages
 
-- Bitcoin 2026 (Las Vegas, April 27-29): https://www.proofofconference.com/conferences/bitcoin-2026.html
+- Bitcoin 2026 (Las Vegas, April 27-29, past): https://www.proofofconference.com/conferences/bitcoin-2026.html
 - BTC Prague (June 11-13): https://www.proofofconference.com/conferences/btc-prague.html
 - Bitcoin Amsterdam (November 5-6): https://www.proofofconference.com/conferences/bitcoin-amsterdam.html
-- Bitcoin 2027 (Nashville, rumored): https://www.proofofconference.com/conferences/bitcoin-2027.html
+- Bitcoin 2027 (Nashville, July 15-17, confirmed): https://www.proofofconference.com/conferences/bitcoin-2027.html
+- Bitcoin 2028 (location TBA): https://www.proofofconference.com/conferences/bitcoin-2028.html
 - Bitcoin Asia (Hong Kong, August 27-28): https://www.proofofconference.com/conferences/bitcoin-asia.html
 - Bitcoin MENA (Abu Dhabi, December): https://www.proofofconference.com/conferences/bitcoin-mena.html
-- BitBlockBoom (Fort Worth, April 9-12): https://www.proofofconference.com/conferences/bitblockboom.html
+- BitBlockBoom (Fort Worth, April 9-12, past): https://www.proofofconference.com/conferences/bitblockboom.html
 - MAD Bitcoin Summit (Madrid, May 9-12): https://www.proofofconference.com/conferences/mad-bitcoin-summit-2026.html
 - Bitcoin Ireland (Dublin, May 22-24): https://www.proofofconference.com/conferences/bitcoin-ireland.html
 - Camp Nakamoto (New Hampshire, June 18-21): https://www.proofofconference.com/conferences/camp-nakamoto-2026.html
