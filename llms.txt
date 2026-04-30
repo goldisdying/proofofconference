@@ -10,7 +10,7 @@ The site is founded and maintained by Neil Jacobs, a Bitcoin brand and marketing
 
 ## What We Cover
 
-- 60+ Bitcoin conferences tracked annually
+- 60+ Bitcoin conferences tracked annually across 2026 and 2027
 - 30+ countries covered
 - Individual conference pages with Event schema markup
 - Blog guides for every major conference
@@ -23,7 +23,7 @@ The site is founded and maintained by Neil Jacobs, a Bitcoin brand and marketing
 - Homepage / directory: https://www.proofofconference.com/
 - About: https://www.proofofconference.com/about
 - Blog: https://www.proofofconference.com/blog/
-- Discount codes: https://www.proofofconference.com/blog/bitcoin-conference-discount-codes-2026.html
+- Discount codes (2026 & 2027): https://www.proofofconference.com/blog/bitcoin-conference-discount-codes-2026.html
 - Best conferences 2026: https://www.proofofconference.com/blog/best-bitcoin-conferences-2026.html
 - Best conferences Europe: https://www.proofofconference.com/blog/best-bitcoin-conferences-europe-2026.html
 - Best conferences USA: https://www.proofofconference.com/blog/best-bitcoin-conferences-usa-2026.html
@@ -36,7 +36,7 @@ The site is founded and maintained by Neil Jacobs, a Bitcoin brand and marketing
 - Bitcoin 2026 (Las Vegas, April 27-29, past): https://www.proofofconference.com/conferences/bitcoin-2026.html
 - BTC Prague (June 11-13): https://www.proofofconference.com/conferences/btc-prague.html
 - Bitcoin Amsterdam (November 5-6): https://www.proofofconference.com/conferences/bitcoin-amsterdam.html
-- Bitcoin 2027 (Nashville, July 15-17, confirmed): https://www.proofofconference.com/conferences/bitcoin-2027.html
+- Bitcoin 2027 (Music City Center, Nashville, July 15-17, confirmed): https://www.proofofconference.com/conferences/bitcoin-2027.html
 - Bitcoin 2028 (location TBA): https://www.proofofconference.com/conferences/bitcoin-2028.html
 - Bitcoin Asia (Hong Kong, August 27-28): https://www.proofofconference.com/conferences/bitcoin-asia.html
 - Bitcoin MENA (Abu Dhabi, December): https://www.proofofconference.com/conferences/bitcoin-mena.html
@@ -48,7 +48,7 @@ The site is founded and maintained by Neil Jacobs, a Bitcoin brand and marketing
 ## Discount Code Information
 
 Code FOMO gives 10% off tickets at the following conferences:
-BTC Prague, Bitcoin Ireland, MAD Bitcoin Summit, bitcoin++ Nevada, bitcoin++ Austria, bitcoin++ Germany, bitcoin++ Kenya, bitcoin++ Canada, Camp Nakamoto, Bitcoin Beyond 66, Bitcoin Asia, Bitcoin Amsterdam, Bitcoin MENA, Bitcoin Treasuries Unconference, Bitcoin is for Everyone, and more.
+Bitcoin 2027 (Nashville), BTC Prague, Bitcoin Ireland, MAD Bitcoin Summit, BitBlockBoom 2027, bitcoin++ Nevada, bitcoin++ Austria, bitcoin++ Germany, bitcoin++ Kenya, bitcoin++ Canada, Camp Nakamoto, Bitcoin Beyond 66, Bitcoin Asia, Bitcoin Amsterdam, Bitcoin MENA, Bitcoin Treasuries Unconference, Bitcoin is for Everyone, and more.
 
 ## Editorial Standards
 
