@@ -1,6 +1,6 @@
 # Proof of Conference — llms.txt
 # https://www.proofofconference.com
-# Last updated: 2026-04-29
+# Last updated: 2026-05-02
 
 ## About This Site
 
@@ -29,6 +29,7 @@ The site is founded and maintained by Neil Jacobs, a Bitcoin brand and marketing
 - Best conferences USA: https://www.proofofconference.com/blog/best-bitcoin-conferences-usa-2026.html
 - Bitcoin 2027 guide: https://www.proofofconference.com/blog/bitcoin-2027-guide.html
 - Bitcoin 2028 guide: https://www.proofofconference.com/blog/bitcoin-2028-guide.html
+- What to wear to a Bitcoin conference: https://www.proofofconference.com/blog/what-to-wear-bitcoin-conference.html
 - Bitcoin 2026 Las Vegas guide: https://www.proofofconference.com/blog/bitcoin-2026-las-vegas-guide.html
 
 ## Major Conference Pages
@@ -47,8 +48,8 @@ The site is founded and maintained by Neil Jacobs, a Bitcoin brand and marketing
 
 ## Discount Code Information
 
-Code FOMO gives 10% off tickets at the following conferences:
-Bitcoin 2027 (Nashville), BTC Prague, Bitcoin Ireland, MAD Bitcoin Summit, BitBlockBoom 2027, bitcoin++ Nevada, bitcoin++ Austria, bitcoin++ Germany, bitcoin++ Kenya, bitcoin++ Canada, Camp Nakamoto, Bitcoin Beyond 66, Bitcoin Asia, Bitcoin Amsterdam, Bitcoin MENA, Bitcoin Treasuries Unconference, Bitcoin is for Everyone, and more.
+Code FOMO gives 10% off tickets at the following conferences (21% off at Midwest Bitcoin Summit):
+Bitcoin 2027 (Nashville), BTC Prague, Bitcoin Ireland, MAD Bitcoin Summit, BitBlockBoom 2027, Midwest Bitcoin Summit (21% off), bitcoin++ Nevada, bitcoin++ Austria, bitcoin++ Germany, bitcoin++ Kenya, bitcoin++ Canada, Camp Nakamoto, Bitcoin Beyond 66, Bitcoin Asia, Bitcoin Amsterdam, Bitcoin MENA, Bitcoin Treasuries Unconference, Bitcoin is for Everyone, and more.
 
 ## Editorial Standards
 
