@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-JS07Z38EX9"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config","G-JS07Z38EX9");</script>
+  <title>Bitcoin Conference Blog & Guides | Proof of Conference</title>
+  <meta name="description" content="Complete guides to every major Bitcoin conference — dates, tickets, speakers, discount codes, and travel tips. Updated for 2026 and 2027."/>
+  <link rel="canonical" href="https://www.proofofconference.com/blog/"/>
+  <link rel="icon" href="/favicon.ico"/>
+  <meta property="og:type" content="website"/>
+  <meta property="og:title" content="Bitcoin Conference Blog & Guides | Proof of Conference"/>
+  <meta property="og:description" content="Complete guides to every major Bitcoin conference — dates, tickets, speakers, discount codes, and travel tips."/>
+  <meta property="og:url" content="https://www.proofofconference.com/blog/"/>
+  <meta name="twitter:card" content="summary_large_image"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    body{background:#000;color:#fff;font-family:Inter,system-ui,sans-serif;line-height:1.6;-webkit-font-smoothing:antialiased}
+    .nav{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:6px 12px;padding:10px 16px;background:#111;border-bottom:1px solid #222;font-size:13px;font-weight:500}
+    .nav a{color:#f7931a;text-decoration:none}.nav a:hover{color:#fff}
+    .nav-dot{color:#444}
+    .container{max-width:860px;margin:0 auto;padding:40px 20px 80px}
+    h1{font-size:28px;font-weight:700;margin-bottom:6px}
+    .subtitle{font-size:15px;color:#9ca3af;margin-bottom:36px}
+    .post-count{color:#f7931a;font-weight:600}
+    .post-grid{display:grid;gap:20px}
+    .post-card{display:grid;grid-template-columns:140px 1fr;gap:16px;background:#111;border:1px solid #222;border-radius:10px;padding:16px;text-decoration:none;color:inherit;transition:border-color 0.2s}
+    .post-card:hover{border-color:#f7931a}
+    .post-card img{width:140px;height:88px;object-fit:cover;border-radius:6px;display:block}
+    .post-info{display:flex;flex-direction:column;gap:5px}
+    .post-date{font-size:11px;color:#6b7280;font-weight:600;letter-spacing:0.04em;text-transform:uppercase}
+    .post-title{font-size:15px;font-weight:700;color:#fff;line-height:1.35}
+    .post-card:hover .post-title{color:#f7931a}
+    .post-excerpt{font-size:13px;color:#9ca3af;line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+    footer{text-align:center;padding:32px 16px;font-size:12px;color:#555;border-top:1px solid #1a1a1a;margin-top:60px}
+    footer a{color:#f7931a;text-decoration:none}
+    .footer-links{display:flex;justify-content:center;gap:16px;margin-bottom:10px;flex-wrap:wrap}
+    .translate-wrapper{position:relative;display:inline-flex;align-items:center;-webkit-user-select:none;user-select:none}
+    .translate-btn{background:none;border:none;cursor:pointer;font-size:13px;font-weight:500;padding:0;line-height:1;color:#fff;font-family:inherit;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+    .translate-btn:hover{opacity:.8}
+    .translate-dropdown{display:none;position:absolute;top:28px;right:0;z-index:9999;background:#1a1a1a;border:1px solid #444;border-radius:8px;padding:6px;white-space:nowrap;min-width:180px;max-height:320px;overflow-y:auto}
+    .translate-dropdown.open{display:flex;flex-direction:column;gap:2px}
+    #translate-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;z-index:9998;background:transparent}
+    #translate-overlay.open{display:block}
+    .lang-btn{background:none;border:none;color:#fff;font-size:13px;padding:6px 10px;cursor:pointer;text-align:left;border-radius:4px;width:100%}
+    .lang-btn:hover{background:#333}
+    #google_translate_element{position:absolute;left:-9999px;top:-9999px}
+    .goog-te-banner-frame,.skiptranslate{display:none!important}
+    body{top:0!important}
+    .goog-te-gadget{display:none!important}
+    #goog-gt-tt,.goog-tooltip,.goog-tooltip:hover{display:none!important}
+    @media(max-width:560px){
+      .post-card{grid-template-columns:1fr}
+      .post-card img{width:100%;height:180px}
+    }
+  </style>
+</head>
+<body>
+<div id="translate-overlay" onclick="closeTranslate()"></div>
+<nav class="nav">
+  <a href="/">Home</a>
+  <span class="nav-dot">•</span>
+  <a href="/blog/">Blog</a>
+  <span class="nav-dot">•</span>
+  <div class="translate-wrapper">
+    <button class="translate-btn" onclick="toggleTranslate(event)" id="translate-btn-label" translate="no">🇺🇸 English</button>
+    <div class="translate-dropdown" id="translate-dropdown" translate="no">
+      <button class="lang-btn notranslate" translate="no" onclick="doTranslate('en')">🇺🇸 English</button>
+      <div style="border-top:1px solid #333;margin:4px 0;"></div>
+      <button class="lang-btn notranslate" translate="no" onclick="doTranslate('ko')">🇰🇷 한국어</button>
+      <button class="lang-btn notranslate" translate="no" onclick="doTranslate('ar')">🇸🇦 العربية</button>
+      <button class="lang-btn notranslate" translate="no" onclick="doTranslate('iw')">🇮🇱 עברית</button>
+      <button class="lang-btn notranslate" translate="no" onclick="doTranslate('ja')">🇯🇵 日本語</button>
+      <button class="lang-btn notranslate" translate="no" onclick="doTranslate('zh-CN')">🇨🇳 中文 (简体)</button>
+      <button class="lang-btn notranslate" translate="no" onclick="doTranslate('es')">🇪🇸 Español</button>
+      <button class="lang-btn notranslate" translate="no" onclick="doTranslate('pt')">🇧🇷 Português</button>
+      <button class="lang-btn notranslate" translate="no" onclick="doTranslate('de')">🇩🇪 Deutsch</button>
+      <button class="lang-btn notranslate" translate="no" onclick="doTranslate('nl')">🇳🇱 Nederlands</button>
+      <button class="lang-btn notranslate" translate="no" onclick="doTranslate('fr')">🇫🇷 Français</button>
+      <button class="lang-btn notranslate" translate="no" onclick="doTranslate('ru')">🇷🇺 Русский</button>
+      <div style="border-top:1px solid #333;margin:4px 0;"></div>
+      <button class="lang-btn notranslate" translate="no" onclick="doTranslate('af')">🇿🇦 Afrikaans</button>
+      <button class="lang-btn notranslate" translate="no" onclick="doTranslate('am')">🇪🇹 አማርኛ</button>
+      <button class="lang-btn notranslate" translate="no" onclick="doTranslate('bn')">🇧🇩 বাংলা</button>
+      <button class="lang-btn notranslate" translate="no" onclick="doTranslate('zh-TW')">🇹🇼 中文 (繁體)</button>
+      <button class="lang-btn notranslate" translate="no" onclick="doTranslate('cs')">🇨🇿 Čeština</button>
+      <button class="lang-btn notranslate" translate="no" onclick="doTranslate('da')">🇩🇰 Dansk</button>
+      <button class="lang-btn notranslate" translate="no" onclick="doTranslate('fi')">🇫🇮 Suomi</button>
+      <button class="lang-btn notranslate" translate="no" onclick="doTranslate('el')">🇬🇷 Ελληνικά</button>
+      <button class="lang-btn notranslate" translate="no" onclick="doTranslate('hi')">🇮🇳 हिन्दी</button>
+      <button class="lang-btn notranslate" translate="no" onclick="doTranslate('hu')">🇭🇺 Magyar</button>
+      <button class="lang-btn notranslate" translate="no" onclick="doTranslate('id')">🇮🇩 Bahasa Indonesia</button>
+      <button class="lang-btn notranslate" translate="no" onclick="doTranslate('it')">🇮🇹 Italiano</button>
+      <button class="lang-btn notranslate" translate="no" onclick="doTranslate('ms')">🇲🇾 Bahasa Melayu</button>
+      <button class="lang-btn notranslate" translate="no" onclick="doTranslate('no')">🇳🇴 Norsk</button>
+      <button class="lang-btn notranslate" translate="no" onclick="doTranslate('fa')">🇮🇷 فارسی</button>
+      <button class="lang-btn notranslate" translate="no" onclick="doTranslate('tl')">🇵🇭 Filipino</button>
+      <button class="lang-btn notranslate" translate="no" onclick="doTranslate('pl')">🇵🇱 Polski</button>
+      <button class="lang-btn notranslate" translate="no" onclick="doTranslate('ro')">🇷🇴 Română</button>
+      <button class="lang-btn notranslate" translate="no" onclick="doTranslate('sk')">🇸🇰 Slovenčina</button>
+      <button class="lang-btn notranslate" translate="no" onclick="doTranslate('sv')">🇸🇪 Svenska</button>
+      <button class="lang-btn notranslate" translate="no" onclick="doTranslate('sw')">🇰🇪 Kiswahili</button>
+      <button class="lang-btn notranslate" translate="no" onclick="doTranslate('th')">🇹🇭 ภาษาไทย</button>
+      <button class="lang-btn notranslate" translate="no" onclick="doTranslate('tr')">🇹🇷 Türkçe</button>
+      <button class="lang-btn notranslate" translate="no" onclick="doTranslate('uk')">🇺🇦 Українська</button>
+      <button class="lang-btn notranslate" translate="no" onclick="doTranslate('ur')">🇵🇰 اردو</button>
+      <button class="lang-btn notranslate" translate="no" onclick="doTranslate('vi')">🇻🇳 Tiếng Việt</button>
+    </div>
+  </div>
+  <div id="google_translate_element"></div>
+</nav>
+<div class="container">
+  <h1>Bitcoin Conference Guides</h1>
+  <p class="subtitle"><span class="post-count">59 guides</span> — complete coverage of every major Bitcoin conference</p>
+  <div class="post-grid">
+  <a href="/blog/bitcoin-2026-las-vegas-guide.html" class="post-card">
+    <img src="/blog/images/bitcoin-2026-las-vegas-guide.webp" alt="Bitcoin 2026 Las Vegas Recap: Highlights, Announcements, and What's Next" loading="lazy" onerror="this.style.display='none'">
+    <div class="post-info">
+      <div class="post-date">April 29, 2026</div>
+      <div class="post-title">Bitcoin 2026 Las Vegas Recap: Highlights, Announcements, and What's Next</div>
+      <div class="post-excerpt">Bitcoin 2026 brought roughly 15,000 Bitcoiners to The Venetian in Las Vegas. SEC Chair Paul Atkins made history. Bitcoin 2027 Nashville was announced. Here is everything that happened.</div>
+    </div>
+  </a>
+  <a href="/blog/bitcoin-2028-guide.html" class="post-card">
+    <img src="/conferences/images/bitcoin-2028.webp" alt="Bitcoin 2028 Conference potential locations map showing Miami Nashville and Las Vegas" loading="lazy" onerror="this.style.display='none'">
+    <div class="post-info">
+      <div class="post-date">April 28, 2026</div>
+      <div class="post-title">Bitcoin 2028: Everything We Know So Far</div>
+      <div class="post-excerpt">Bitcoin 2028 has not been announced yet. Based on seven years of conference history, here are the four most likely locations: Miami, Nashville, Las Vegas, or somewhere new.</div>
+    </div>
+  </a>
+  <a href="/blog/bitcoin-2027-guide.html" class="post-card">
+    <img src="/blog/images/bitcoin-2027.webp" alt="Bitcoin 2027 Conference: Nashville, Dates, Tickets & Code FOMO for 10% Off" loading="lazy" onerror="this.style.display='none'">
+    <div class="post-info">
+      <div class="post-date">April 28, 2026</div>
+      <div class="post-title">Bitcoin 2027 Conference: Nashville, Dates, Tickets & Code FOMO for 10% Off</div>
+      <div class="post-excerpt">Bitcoin 2027 Conference: everything we know — Nashville Tennessee location, expected dates, how to save 10% with code FOMO, and what to expect. Updated when officially announced.</div>
+    </div>
+  </a>
+  <a href="/blog/bitfest-2026-guide.html" class="post-card">
+    <img src="/blog/images/bitfest-2026.webp" alt="Bitfest 2026: The Complete Guide" loading="lazy" onerror="this.style.display='none'">
+    <div class="post-info">
+      <div class="post-date">March 23, 2026</div>
+      <div class="post-title">Bitfest 2026: The Complete Guide</div>
+      <div class="post-excerpt">Everything you need to know about Bitfest 2026 — November 20-22 at the Pendulum Hotel, Manchester. A grassroots Bitcoin festival with conference, Nostr, film, art, and live music.</div>
+    </div>
+  </a>
+  <a href="/blog/barcelona-cyphers-conference-2026-guide.html" class="post-card">
+    <img src="/blog/images/barcelona-cyphers-conference-2026.webp" alt="Barcelona Cyphers Conference 2026: The Complete Guide" loading="lazy" onerror="this.style.display='none'">
+    <div class="post-info">
+      <div class="post-date">March 22, 2026</div>
+      <div class="post-title">Barcelona Cyphers Conference 2026: The Complete Guide</div>
+      <div class="post-excerpt">Everything you need to know about Barcelona Cyphers Conference 2026 — May 29-30 in Barcelona, Spain. An unconference for sovereignty, Bitcoin and freedom.</div>
+    </div>
+  </a>
+  <a href="/blog/best-bitcoin-conferences-europe-2026.html" class="post-card">
+    <img src="/blog/images/best-bitcoin-conferences-europe-2026.webp" alt="Best Bitcoin Conferences in Europe 2026" loading="lazy" onerror="this.style.display='none'">
+    <div class="post-info">
+      <div class="post-date">March 21, 2026</div>
+      <div class="post-title">Best Bitcoin Conferences in Europe 2026</div>
+      <div class="post-excerpt">Your complete guide to the must-attend Bitcoin conferences in Europe for 2026 — BTC Prague, Bitcoin Amsterdam, Oslo Freedom Forum, Bitcoin Ireland, Lugano, and more.</div>
+    </div>
+  </a>
+  <a href="/blog/best-bitcoin-conferences-usa-2026.html" class="post-card">
+    <img src="/blog/images/best-bitcoin-conferences-usa-2026.webp" alt="Best Bitcoin Conferences in the United States 2026" loading="lazy" onerror="this.style.display='none'">
+    <div class="post-info">
+      <div class="post-date">March 21, 2026</div>
+      <div class="post-title">Best Bitcoin Conferences in the United States 2026</div>
+      <div class="post-excerpt">Your complete guide to the must-attend Bitcoin conferences in the United States for 2026 — Bitcoin 2026 Las Vegas, BitBlockBoom, Midwest Bitcoin Summit, TABConf, and more.</div>
+    </div>
+  </a>
+  <a href="/blog/btc-prague-2026-guide.html" class="post-card">
+    <img src="/blog/images/btc-prague-2026-guide.webp" alt="BTC Prague 2026: The Complete Guide" loading="lazy" onerror="this.style.display='none'">
+    <div class="post-info">
+      <div class="post-date">March 21, 2026</div>
+      <div class="post-title">BTC Prague 2026: The Complete Guide</div>
+      <div class="post-excerpt">Everything you need to know about BTC Prague 2026 — dates, venue, speakers, discount code FOMO for 10% off, travel tips, and how to get the most out of Europe's biggest Bitcoin conference.</div>
+    </div>
+  </a>
+  <a href="/blog/bitcoin-asia-hong-kong-2026.html" class="post-card">
+    <img src="/blog/images/bitcoin-asia-hong-kong-2026.webp" alt="Bitcoin Asia 2026: Hong Kong Preview" loading="lazy" onerror="this.style.display='none'">
+    <div class="post-info">
+      <div class="post-date">March 21, 2026</div>
+      <div class="post-title">Bitcoin Asia 2026: Hong Kong Preview</div>
+      <div class="post-excerpt">Everything you need to know about Bitcoin Asia 2026 in Hong Kong — dates, venue, discount code FOMO for 10% off, and travel tips.</div>
+    </div>
+  </a>
+  <a href="/blog/what-to-expect-at-your-first-bitcoin-conference.html" class="post-card">
+    <img src="/blog/images/first-bitcoin-conference-guide.webp" alt="What to Expect at Your First Bitcoin Conference" loading="lazy" onerror="this.style.display='none'">
+    <div class="post-info">
+      <div class="post-date">March 21, 2026</div>
+      <div class="post-title">What to Expect at Your First Bitcoin Conference</div>
+      <div class="post-excerpt">A complete guide for first-time Bitcoin conference attendees — how to choose the right event, what to expect on the day, how to meet people, and how to make the most of the experience.</div>
+    </div>
+  </a>
+  <a href="/blog/oslo-freedom-forum-2026-guide.html" class="post-card">
+    <img src="/blog/images/oslo-freedom-forum-2026.webp" alt="Oslo Freedom Forum 2026: The Complete Guide" loading="lazy" onerror="this.style.display='none'">
+    <div class="post-info">
+      <div class="post-date">March 21, 2026</div>
+      <div class="post-title">Oslo Freedom Forum 2026: The Complete Guide</div>
+      <div class="post-excerpt">Everything you need to know about Oslo Freedom Forum 2026 — June 1-3 in Oslo, Norway. Where Bitcoin meets human rights and freedom technology.</div>
+    </div>
+  </a>
+  <a href="/blog/mad-bitcoin-summit-2026-guide.html" class="post-card">
+    <img src="/blog/images/mad-bitcoin-summit-2026.webp" alt="MAD Bitcoin Summit 2026: The Complete Guide" loading="lazy" onerror="this.style.display='none'">
+    <div class="post-info">
+      <div class="post-date">March 21, 2026</div>
+      <div class="post-title">MAD Bitcoin Summit 2026: The Complete Guide</div>
+      <div class="post-excerpt">Everything you need to know about MAD Bitcoin Summit 2026 — May 9-12 in Madrid, Spain. 1,500 attendees, top speakers, and 10% off with code FOMO.</div>
+    </div>
+  </a>
+  <a href="/blog/midwest-bitcoin-summit-2026-guide.html" class="post-card">
+    <img src="/blog/images/midwest-bitcoin-summit-2026.webp" alt="Midwest Bitcoin Summit 2026: The Complete Guide" loading="lazy" onerror="this.style.display='none'">
+    <div class="post-info">
+      <div class="post-date">March 21, 2026</div>
+      <div class="post-title">Midwest Bitcoin Summit 2026: The Complete Guide</div>
+      <div class="post-excerpt">Everything you need to know about Midwest Bitcoin Summit 2026 — September 23-24 in Columbus, Ohio. The premier Bitcoin conference for the American heartland.</div>
+    </div>
+  </a>
+  <a href="/blog/bitcoin-helsinki-2026-guide.html" class="post-card">
+    <img src="/blog/images/bitcoin-helsinki-2026.webp" alt="Bitcoin Helsinki 2026: The Complete Guide" loading="lazy" onerror="this.style.display='none'">
+    <div class="post-info">
+      <div class="post-date">March 21, 2026</div>
+      <div class="post-title">Bitcoin Helsinki 2026: The Complete Guide</div>
+      <div class="post-excerpt">Everything you need to know about Bitcoin Helsinki 2026 — September 25-26 at the Cable Factory. 2,000 attendees, Adam Back, Martti Malmi, and more.</div>
+    </div>
+  </a>
+  <a href="/blog/lugano-plan-b-forum-2026-guide.html" class="post-card">
+    <img src="/blog/images/lugano-plan-b-forum-2026.webp" alt="Lugano Plan B Forum 2026: The Complete Guide" loading="lazy" onerror="this.style.display='none'">
+    <div class="post-info">
+      <div class="post-date">March 21, 2026</div>
+      <div class="post-title">Lugano Plan B Forum 2026: The Complete Guide</div>
+      <div class="post-excerpt">Everything you need to know about Lugano Plan B Forum 2026 — October 23-24 in Lugano, Switzerland.</div>
+    </div>
+  </a>
+  <a href="/blog/freedom-tech-summit-2026-guide.html" class="post-card">
+    <img src="/blog/images/freedom-tech-summit-2026.webp" alt="Freedom Tech Summit 2026: The Complete Guide" loading="lazy" onerror="this.style.display='none'">
+    <div class="post-info">
+      <div class="post-date">March 21, 2026</div>
+      <div class="post-title">Freedom Tech Summit 2026: The Complete Guide</div>
+      <div class="post-excerpt">Everything you need to know about Freedom Tech Summit 2026 — June 10 in Prague. Bitcoin, Lightning, Nostr, and privacy tech. The perfect companion to BTC Prague.</div>
+    </div>
+  </a>
+  <a href="/blog/labitconf-mexico-2026-guide.html" class="post-card">
+    <img src="/blog/images/labitconf-mexico-2026.webp" alt="Labitconf Mexico 2026: The Complete Guide" loading="lazy" onerror="this.style.display='none'">
+    <div class="post-info">
+      <div class="post-date">March 21, 2026</div>
+      <div class="post-title">Labitconf Mexico 2026: The Complete Guide</div>
+      <div class="post-excerpt">Everything you need to know about Labitconf Mexico 2026 — May 8-9 in Mexico City. Latin America's most important Bitcoin conference with 1,500 attendees.</div>
+    </div>
+  </a>
+  <a href="/blog/bitcoin-rodeo-2026-guide.html" class="post-card">
+    <img src="/blog/images/bitcoin-rodeo-2026.webp" alt="Bitcoin Rodeo 2026: The Complete Guide" loading="lazy" onerror="this.style.display='none'">
+    <div class="post-info">
+      <div class="post-date">March 21, 2026</div>
+      <div class="post-title">Bitcoin Rodeo 2026: The Complete Guide</div>
+      <div class="post-excerpt">Everything you need to know about the Bitcoin Rodeo 2026 — June 25-26 in Calgary, Canada. 400 attendees and the Canadian Rockies as a backdrop.</div>
+    </div>
+  </a>
+  <a href="/blog/tabconf-2026-guide.html" class="post-card">
+    <img src="/blog/images/tabconf-2026.webp" alt="TABConf 2026: The Complete Guide" loading="lazy" onerror="this.style.display='none'">
+    <div class="post-info">
+      <div class="post-date">March 21, 2026</div>
+      <div class="post-title">TABConf 2026: The Complete Guide</div>
+      <div class="post-excerpt">Everything you need to know about TABConf 2026 — October 12-15 in Atlanta, Georgia. The Technical Bitcoin Conference for developers and protocol contributors.</div>
+    </div>
+  </a>
+  <a href="/blog/mining-disrupt-2026-guide.html" class="post-card">
+    <img src="/blog/images/mining-disrupt-2026.webp" alt="Mining Disrupt 2026: The Complete Guide" loading="lazy" onerror="this.style.display='none'">
+    <div class="post-info">
+      <div class="post-date">March 21, 2026</div>
+      <div class="post-title">Mining Disrupt 2026: The Complete Guide</div>
+      <div class="post-excerpt">Everything you need to know about Mining Disrupt 2026 — July 21-23 in Miami, Florida. The premier Bitcoin mining conference in the US with 4,000 attendees.</div>
+    </div>
+  </a>
+  <a href="/blog/noderunners-conference-2026-guide.html" class="post-card">
+    <img src="/blog/images/noderunners-conference-2026.webp" alt="Noderunners Conference 2026: The Complete Guide" loading="lazy" onerror="this.style.display='none'">
+    <div class="post-info">
+      <div class="post-date">March 21, 2026</div>
+      <div class="post-title">Noderunners Conference 2026: The Complete Guide</div>
+      <div class="post-excerpt">Everything you need to know about Noderunners Conference 2026 — September 19 in Arnhem, Netherlands. 800 attendees in the historic Koepelgevangenis dome prison venue.</div>
+    </div>
+  </a>
+  <a href="/blog/bitcoin-beyond-66-2026-guide.html" class="post-card">
+    <img src="/blog/images/bitcoin-beyond-66-2026.webp" alt="Bitcoin Beyond 66 2026: The Complete Guide" loading="lazy" onerror="this.style.display='none'">
+    <div class="post-info">
+      <div class="post-date">March 21, 2026</div>
+      <div class="post-title">Bitcoin Beyond 66 2026: The Complete Guide</div>
+      <div class="post-excerpt">Everything you need to know about Bitcoin Beyond 66 2026 — August 14 in Bodø, Norway. Above the Arctic Circle, 90 attendees, and 10% off with code FOMO.</div>
+    </div>
+  </a>
+  <a href="/blog/bitcoin-film-fest-2026-guide.html" class="post-card">
+    <img src="/blog/images/bitcoin-film-fest-2026.webp" alt="Bitcoin Film Fest 2026: The Complete Guide" loading="lazy" onerror="this.style.display='none'">
+    <div class="post-info">
+      <div class="post-date">March 21, 2026</div>
+      <div class="post-title">Bitcoin Film Fest 2026: The Complete Guide</div>
+      <div class="post-excerpt">Everything you need to know about Bitcoin Film Fest 2026 — June 4-7 in Warsaw, Poland. The world's premier Bitcoin film festival at the historic Kinoteka cinema.</div>
+    </div>
+  </a>
+  <a href="/blog/acelerando-bitcoin-2026-guide.html" class="post-card">
+    <img src="/blog/images/acelerando-bitcoin-2026.webp" alt="Acelerando Bitcoin 2026: The Complete Guide" loading="lazy" onerror="this.style.display='none'">
+    <div class="post-info">
+      <div class="post-date">March 21, 2026</div>
+      <div class="post-title">Acelerando Bitcoin 2026: The Complete Guide</div>
+      <div class="post-excerpt">Everything you need to know about Acelerando Bitcoin 2026 — August 12-13 in Asuncion, Paraguay. A key Bitcoin conference for Latin America with Max Hillebrand and more.</div>
+    </div>
+  </a>
+  <a href="/blog/bitcoin-plus-plus-kenya-2026-guide.html" class="post-card">
+    <img src="/blog/images/bitcoin-plus-plus-kenya-2026.webp" alt="bitcoin++ Kenya 2026: The Complete Guide" loading="lazy" onerror="this.style.display='none'">
+    <div class="post-info">
+      <div class="post-date">March 21, 2026</div>
+      <div class="post-title">bitcoin++ Kenya 2026: The Complete Guide</div>
+      <div class="post-excerpt">Everything you need to know about bitcoin++ Kenya 2026 — June 17-20 in Nairobi. Africa's premier Bitcoin developer conference. 10% off with code FOMO.</div>
+    </div>
+  </a>
+  <a href="/blog/bitcoin-plus-plus-canada-2026-guide.html" class="post-card">
+    <img src="/blog/images/bitcoin-plus-plus-canada-2026.webp" alt="bitcoin++ Canada 2026: The Complete Guide" loading="lazy" onerror="this.style.display='none'">
+    <div class="post-info">
+      <div class="post-date">March 21, 2026</div>
+      <div class="post-title">bitcoin++ Canada 2026: The Complete Guide</div>
+      <div class="post-excerpt">Everything you need to know about bitcoin++ Canada 2026 — July 22-24 at The Great Hall, Toronto. Bitcoin developer conference with Peter Todd and more. 10% off with FOMO.</div>
+    </div>
+  </a>
+  <a href="/blog/bitcoin-plus-plus-germany-2026-guide.html" class="post-card">
+    <img src="/blog/images/bitcoin-plus-plus-germany-2026.webp" alt="bitcoin++ Germany 2026: The Complete Guide" loading="lazy" onerror="this.style.display='none'">
+    <div class="post-info">
+      <div class="post-date">March 21, 2026</div>
+      <div class="post-title">bitcoin++ Germany 2026: The Complete Guide</div>
+      <div class="post-excerpt">Everything you need to know about bitcoin++ Germany 2026 — October 1-3 at w3 hub, Berlin. Bitcoin developer conference. 10% off with code FOMO.</div>
+    </div>
+  </a>
+  <a href="/blog/camp-nakamoto-2026-guide.html" class="post-card">
+    <img src="/blog/images/camp-nakamoto-2026.webp" alt="Camp Nakamoto 2026: The Complete Guide" loading="lazy" onerror="this.style.display='none'">
+    <div class="post-info">
+      <div class="post-date">March 21, 2026</div>
+      <div class="post-title">Camp Nakamoto 2026: The Complete Guide</div>
+      <div class="post-excerpt">Everything you need to know about Camp Nakamoto 2026 — June 18-21 at Mirror Lake, New Hampshire. A unique Bitcoin retreat combining community, education, and the outdoors.</div>
+    </div>
+  </a>
+  <a href="/blog/bitcoin-infinity-day-2026-guide.html" class="post-card">
+    <img src="/blog/images/bitcoin-infinity-day-2026.webp" alt="Bitcoin Infinity Day 2026: The Complete Guide" loading="lazy" onerror="this.style.display='none'">
+    <div class="post-info">
+      <div class="post-date">March 21, 2026</div>
+      <div class="post-title">Bitcoin Infinity Day 2026: The Complete Guide</div>
+      <div class="post-excerpt">Everything you need to know about Bitcoin Infinity Day 2026 — August 21 in Roatán, Honduras at Prospera. A unique Bitcoin celebration on 21/8 in the Caribbean.</div>
+    </div>
+  </a>
+  <a href="/blog/mallorca-blockchain-days-2026-guide.html" class="post-card">
+    <img src="/blog/images/mallorca-blockchain-days-2026.webp" alt="Mallorca Blockchain Days 2026: The Complete Guide" loading="lazy" onerror="this.style.display='none'">
+    <div class="post-info">
+      <div class="post-date">March 21, 2026</div>
+      <div class="post-title">Mallorca Blockchain Days 2026: The Complete Guide</div>
+      <div class="post-excerpt">Everything you need to know about Mallorca Blockchain Days 2026 — July 9-12 in Palma, Mallorca, Spain. Bitcoin conference on one of the Mediterranean's most beautiful islands.</div>
+    </div>
+  </a>
+  <a href="/blog/bitcoin-plus-plus-nevada-2026-guide.html" class="post-card">
+    <img src="/blog/images/bitcoin-plus-plus-nevada-2026.webp" alt="bitcoin++ Nevada 2026: The Complete Guide" loading="lazy" onerror="this.style.display='none'">
+    <div class="post-info">
+      <div class="post-date">March 21, 2026</div>
+      <div class="post-title">bitcoin++ Nevada 2026: The Complete Guide</div>
+      <div class="post-excerpt">Everything you need to know about bitcoin++ Nevada 2026 — April 23-24 at Hoover Dam. The most unique Bitcoin conference venue ever. 10% off with code FOMO.</div>
+    </div>
+  </a>
+  <a href="/blog/mit-bitcoin-expo-2026-guide.html" class="post-card">
+    <img src="/blog/images/mit-bitcoin-expo-2026.webp" alt="MIT Bitcoin Expo 2026: The Complete Guide" loading="lazy" onerror="this.style.display='none'">
+    <div class="post-info">
+      <div class="post-date">March 21, 2026</div>
+      <div class="post-title">MIT Bitcoin Expo 2026: The Complete Guide</div>
+      <div class="post-excerpt">Everything you need to know about MIT Bitcoin Expo 2026 — April 11-12 in Cambridge, Massachusetts. One of Bitcoin's longest-running conferences. Free or low-cost to attend.</div>
+    </div>
+  </a>
+  <a href="/blog/cheatcode-2026-guide.html" class="post-card">
+    <img src="/blog/images/cheatcode-2026.webp" alt="CheatCode 2026: The Complete Guide" loading="lazy" onerror="this.style.display='none'">
+    <div class="post-info">
+      <div class="post-date">March 21, 2026</div>
+      <div class="post-title">CheatCode 2026: The Complete Guide</div>
+      <div class="post-excerpt">Everything you need to know about CheatCode 2026 — March 26-29 in Bedford, England. Featuring Lyn Alden, Jack Mallers, and Peter McCormack.</div>
+    </div>
+  </a>
+  <a href="/blog/swiss-bitcoin-conference-2026-guide.html" class="post-card">
+    <img src="/blog/images/swiss-bitcoin-conference-2026.webp" alt="Swiss Bitcoin Conference 2026: The Complete Guide" loading="lazy" onerror="this.style.display='none'">
+    <div class="post-info">
+      <div class="post-date">March 21, 2026</div>
+      <div class="post-title">Swiss Bitcoin Conference 2026: The Complete Guide</div>
+      <div class="post-excerpt">Everything you need to know about Swiss Bitcoin Conference 2026 — April 23-26 in Kreuzlingen, Switzerland on the shores of Lake Constance.</div>
+    </div>
+  </a>
+  <a href="/blog/bitcoin-plus-plus-austria-2026-guide.html" class="post-card">
+    <img src="/blog/images/bitcoin-plus-plus-austria-2026.webp" alt="bitcoin++ Austria 2026: The Complete Guide" loading="lazy" onerror="this.style.display='none'">
+    <div class="post-info">
+      <div class="post-date">March 21, 2026</div>
+      <div class="post-title">bitcoin++ Austria 2026: The Complete Guide</div>
+      <div class="post-excerpt">Everything you need to know about bitcoin++ Austria 2026 — May 27-28 at Weitsicht Cobenzl, Vienna. Bitcoin developer conference with stunning hilltop views. 10% off with FOMO.</div>
+    </div>
+  </a>
+  <a href="/blog/tuscany-lightning-summit-2026-guide.html" class="post-card">
+    <img src="/blog/images/tuscany-lightning-summit-2026.webp" alt="Tuscany Lightning Summit 2026: The Complete Guide" loading="lazy" onerror="this.style.display='none'">
+    <div class="post-info">
+      <div class="post-date">March 21, 2026</div>
+      <div class="post-title">Tuscany Lightning Summit 2026: The Complete Guide</div>
+      <div class="post-excerpt">Everything you need to know about Tuscany Lightning Summit 2026 — May 12-13 in Viareggio, Italy. A focused Lightning Network conference on the Tuscan coast.</div>
+    </div>
+  </a>
+  <a href="/blog/bitcoin-is-for-everyone-2026-guide.html" class="post-card">
+    <img src="/blog/images/bitcoin-is-for-everyone-2026.webp" alt="Bitcoin is for Everyone 2026: The Complete Guide" loading="lazy" onerror="this.style.display='none'">
+    <div class="post-info">
+      <div class="post-date">March 21, 2026</div>
+      <div class="post-title">Bitcoin is for Everyone 2026: The Complete Guide</div>
+      <div class="post-excerpt">Everything you need to know about Bitcoin is for Everyone 2026 — May 22-23 at Revolution Hall, Portland, Oregon. 250 attendees and a community-focused approach.</div>
+    </div>
+  </a>
+  <a href="/blog/bitcoin-paradigm-2026-guide.html" class="post-card">
+    <img src="/blog/images/bitcoin-paradigm-2026.webp" alt="The Bitcoin Paradigm 2026: The Complete Guide" loading="lazy" onerror="this.style.display='none'">
+    <div class="post-info">
+      <div class="post-date">March 21, 2026</div>
+      <div class="post-title">The Bitcoin Paradigm 2026: The Complete Guide</div>
+      <div class="post-excerpt">Everything you need to know about The Bitcoin Paradigm 2026 — June 26-27 in Neuchâtel, Switzerland. A boutique Bitcoin conference with Lake Neuchâtel and the Alps as a backdrop.</div>
+    </div>
+  </a>
+  <a href="/blog/european-mining-summit-2026-guide.html" class="post-card">
+    <img src="/blog/images/european-mining-summit-2026.webp" alt="European Mining Summit 2026: The Complete Guide" loading="lazy" onerror="this.style.display='none'">
+    <div class="post-info">
+      <div class="post-date">March 21, 2026</div>
+      <div class="post-title">European Mining Summit 2026: The Complete Guide</div>
+      <div class="post-excerpt">Everything you need to know about European Mining Summit 2026 — September 23 in Helsinki, Finland. The premier Bitcoin mining conference for Europe.</div>
+    </div>
+  </a>
+  <a href="/blog/watch-out-bitcoin-2026-guide.html" class="post-card">
+    <img src="/blog/images/watch-out-bitcoin-2026.webp" alt="Watch Out, Bitcoin! 2026: The Complete Guide" loading="lazy" onerror="this.style.display='none'">
+    <div class="post-info">
+      <div class="post-date">March 21, 2026</div>
+      <div class="post-title">Watch Out, Bitcoin! 2026: The Complete Guide</div>
+      <div class="post-excerpt">Everything you need to know about Watch Out, Bitcoin! 2026 — October 2-4 in Madrid, Spain. A Bitcoin conference in one of Europe's most vibrant capitals.</div>
+    </div>
+  </a>
+  <a href="/blog/japan-bitcoin-future-forum-2026-guide.html" class="post-card">
+    <img src="/blog/images/japan-bitcoin-future-forum-2026.webp" alt="Japan Bitcoin Future Forum 2026: The Complete Guide" loading="lazy" onerror="this.style.display='none'">
+    <div class="post-info">
+      <div class="post-date">March 21, 2026</div>
+      <div class="post-title">Japan Bitcoin Future Forum 2026: The Complete Guide</div>
+      <div class="post-excerpt">Everything you need to know about Japan Bitcoin Future Forum 2026 — March 25 in Yokohama. Organized by Metaplanet, Japan's largest publicly listed Bitcoin holder.</div>
+    </div>
+  </a>
+  <a href="/blog/opnext-2026-guide.html" class="post-card">
+    <img src="/blog/images/opnext-2026.webp" alt="OPNEXT 2026: The Complete Guide" loading="lazy" onerror="this.style.display='none'">
+    <div class="post-info">
+      <div class="post-date">March 21, 2026</div>
+      <div class="post-title">OPNEXT 2026: The Complete Guide</div>
+      <div class="post-excerpt">Everything you need to know about OPNEXT 2026 — April 16 in New York City. A focused Bitcoin script, opcodes, and covenant conference with 150 attendees.</div>
+    </div>
+  </a>
+  <a href="/blog/bitchill-s03-2026-guide.html" class="post-card">
+    <img src="/blog/images/bitchill-s03-2026.webp" alt="Bitchill s03 2026: The Complete Guide" loading="lazy" onerror="this.style.display='none'">
+    <div class="post-info">
+      <div class="post-date">March 21, 2026</div>
+      <div class="post-title">Bitchill s03 2026: The Complete Guide</div>
+      <div class="post-excerpt">Everything you need to know about Bitchill s03 2026 — April 16-25 at Prospera, Roatán, Honduras. A 10-day immersive Bitcoin retreat with 31 attendees in the Caribbean.</div>
+    </div>
+  </a>
+  <a href="/blog/muslim-bitcoin-summit-2026-guide.html" class="post-card">
+    <img src="/blog/images/muslim-bitcoin-summit-2026.webp" alt="Muslim Bitcoin Summit 2026: The Complete Guide" loading="lazy" onerror="this.style.display='none'">
+    <div class="post-info">
+      <div class="post-date">March 21, 2026</div>
+      <div class="post-title">Muslim Bitcoin Summit 2026: The Complete Guide</div>
+      <div class="post-excerpt">Everything you need to know about Muslim Bitcoin Summit 2026 — April 17-19 in Dallas, Texas. Exploring the intersection of Islamic finance and Bitcoin as sound money.</div>
+    </div>
+  </a>
+  <a href="/blog/unconfiscatable-2026-guide.html" class="post-card">
+    <img src="/blog/images/unconfiscatable-2026.webp" alt="Unconfiscatable 2026: The Complete Guide" loading="lazy" onerror="this.style.display='none'">
+    <div class="post-info">
+      <div class="post-date">March 21, 2026</div>
+      <div class="post-title">Unconfiscatable 2026: The Complete Guide</div>
+      <div class="post-excerpt">Everything you need to know about Unconfiscatable 2026 — April 27 in Las Vegas. Organized by Tone Vays, focused on Bitcoin self-custody and financial sovereignty.</div>
+    </div>
+  </a>
+  <a href="/blog/bitcoin-burgenland-2026-guide.html" class="post-card">
+    <img src="/blog/images/bitcoin-burgenland-2026.webp" alt="Bitcoin Burgenland 2026: The Complete Guide" loading="lazy" onerror="this.style.display='none'">
+    <div class="post-info">
+      <div class="post-date">March 21, 2026</div>
+      <div class="post-title">Bitcoin Burgenland 2026: The Complete Guide</div>
+      <div class="post-excerpt">Everything you need to know about Bitcoin Burgenland 2026 — May 8 in Burgenland, Austria. A community Bitcoin conference surrounded by vineyards and Lake Neusiedl.</div>
+    </div>
+  </a>
+  <a href="/blog/bitcoin-bush-bash-byron-bay-2026-guide.html" class="post-card">
+    <img src="/blog/images/bitcoin-bush-bash-byron-bay-2026.webp" alt="Bitcoin Bush Bash Byron Bay 2026: The Complete Guide" loading="lazy" onerror="this.style.display='none'">
+    <div class="post-info">
+      <div class="post-date">March 21, 2026</div>
+      <div class="post-title">Bitcoin Bush Bash Byron Bay 2026: The Complete Guide</div>
+      <div class="post-excerpt">Everything you need to know about Bitcoin Bush Bash Byron Bay 2026 — May 15-17 in Byron Bay, Australia. A community Bitcoin gathering at Australia's most iconic beach town.</div>
+    </div>
+  </a>
+  <a href="/blog/bitcoin-economic-forum-2026-guide.html" class="post-card">
+    <img src="/blog/images/bitcoin-economic-forum-2026.webp" alt="Bitcoin Economic Forum 2026: The Complete Guide" loading="lazy" onerror="this.style.display='none'">
+    <div class="post-info">
+      <div class="post-date">March 21, 2026</div>
+      <div class="post-title">Bitcoin Economic Forum 2026: The Complete Guide</div>
+      <div class="post-excerpt">Everything you need to know about Bitcoin Economic Forum 2026 — May 15-17 in Bretagne, France. A Bitcoin conference on the dramatic Atlantic coastline of French Brittany.</div>
+    </div>
+  </a>
+  <a href="/blog/bitcare-forum-2026-guide.html" class="post-card">
+    <img src="/blog/images/bitcare-forum-2026.webp" alt="Bitcare Forum 2026: The Complete Guide" loading="lazy" onerror="this.style.display='none'">
+    <div class="post-info">
+      <div class="post-date">March 21, 2026</div>
+      <div class="post-title">Bitcare Forum 2026: The Complete Guide</div>
+      <div class="post-excerpt">Everything you need to know about Bitcare Forum 2026 — May 23 at Clerici Theater, Brescia, Italy. Community Bitcoin conference with Rikki, Gigi Turla, and more.</div>
+    </div>
+  </a>
+  <a href="/blog/bitcoin-corporate-day-2026-guide.html" class="post-card">
+    <img src="/blog/images/bitcoin-corporate-day-2026.webp" alt="Bitcoin Corporate Day 2026 by Bitwise: The Complete Guide" loading="lazy" onerror="this.style.display='none'">
+    <div class="post-info">
+      <div class="post-date">March 21, 2026</div>
+      <div class="post-title">Bitcoin Corporate Day 2026 by Bitwise: The Complete Guide</div>
+      <div class="post-excerpt">Everything you need to know about Bitcoin Corporate Day 2026 by Bitwise — June 10 in Prague. A corporate treasury event running the day before BTC Prague.</div>
+    </div>
+  </a>
+  <a href="/blog/bitcoin-bush-bash-palm-cove-2026-guide.html" class="post-card">
+    <img src="/blog/images/bitcoin-bush-bash-palm-cove-2026.webp" alt="Bitcoin Bush Bash Palm Cove 2026: The Complete Guide" loading="lazy" onerror="this.style.display='none'">
+    <div class="post-info">
+      <div class="post-date">March 21, 2026</div>
+      <div class="post-title">Bitcoin Bush Bash Palm Cove 2026: The Complete Guide</div>
+      <div class="post-excerpt">Everything you need to know about Bitcoin Bush Bash Palm Cove 2026 — July 24-26 in Palm Cove, Queensland. A community Bitcoin gathering in tropical North Queensland.</div>
+    </div>
+  </a>
+  <a href="/blog/lake-satoshi-retreat-2026-guide.html" class="post-card">
+    <img src="/blog/images/lake-satoshi-retreat-2026.webp" alt="Lake Satoshi Retreat 2026: The Complete Guide" loading="lazy" onerror="this.style.display='none'">
+    <div class="post-info">
+      <div class="post-date">March 21, 2026</div>
+      <div class="post-title">Lake Satoshi Retreat 2026: The Complete Guide</div>
+      <div class="post-excerpt">Everything you need to know about Lake Satoshi Retreat 2026 — July 31-August 2 in Michigan. An annual Bitcoin retreat in the Great Lakes region.</div>
+    </div>
+  </a>
+  <a href="/blog/bse-2026-guide.html" class="post-card">
+    <img src="/blog/images/bse-2026.webp" alt="BSE: Bitcoin – Sovereignty – Economics 2026: The Complete Guide" loading="lazy" onerror="this.style.display='none'">
+    <div class="post-info">
+      <div class="post-date">March 21, 2026</div>
+      <div class="post-title">BSE: Bitcoin – Sovereignty – Economics 2026: The Complete Guide</div>
+      <div class="post-excerpt">Everything you need to know about BSE 2026 — September 12 in Bury St Edmunds, England. Bitcoin, Sovereignty, and Economics in one of England's most beautiful market towns.</div>
+    </div>
+  </a>
+  <a href="/blog/bitcoin-bush-bash-busselton-2026-guide.html" class="post-card">
+    <img src="/blog/images/bitcoin-bush-bash-busselton-2026.webp" alt="Bitcoin Bush Bash Busselton 2026: The Complete Guide" loading="lazy" onerror="this.style.display='none'">
+    <div class="post-info">
+      <div class="post-date">March 21, 2026</div>
+      <div class="post-title">Bitcoin Bush Bash Busselton 2026: The Complete Guide</div>
+      <div class="post-excerpt">Everything you need to know about Bitcoin Bush Bash Busselton 2026 — October 16-18 in Busselton, Western Australia, near the famous Busselton Jetty.</div>
+    </div>
+  </a>
+  <a href="/blog/bitcoin-competitive-advantage-2026-guide.html" class="post-card">
+    <img src="/blog/images/bitcoin-competitive-advantage-2026.webp" alt="Bitcoin: A Competitive Advantage 2026: The Complete Guide" loading="lazy" onerror="this.style.display='none'">
+    <div class="post-info">
+      <div class="post-date">March 21, 2026</div>
+      <div class="post-title">Bitcoin: A Competitive Advantage 2026: The Complete Guide</div>
+      <div class="post-excerpt">Everything you need to know about Bitcoin: A Competitive Advantage 2026 — November 13 in Derby, England. A focused Bitcoin business conference with 175 attendees.</div>
+    </div>
+  </a>
+  <a href="/blog/mejores-conferencias-bitcoin-2026.html" class="post-card">
+    <img src="/blog/images/mejores-conferencias-bitcoin-2026.webp" alt="Las Mejores Conferencias Bitcoin para Asistir en 2026" loading="lazy" onerror="this.style.display='none'">
+    <div class="post-info">
+      <div class="post-date">March 19, 2026</div>
+      <div class="post-title">Las Mejores Conferencias Bitcoin para Asistir en 2026</div>
+      <div class="post-excerpt">Desde Bitcoin 2026 en Las Vegas hasta BTC Prague, Bitcoin Amsterdam y decenas de eventos regionales — tu guía completa de las conferencias Bitcoin imprescindibles de 2026.</div>
+    </div>
+  </a>
+  <a href="/blog/codigos-descuento-conferencias-bitcoin-2026.html" class="post-card">
+    <img src="/blog/images/codigos-descuento-conferencias-bitcoin-2026.webp" alt="Códigos de Descuento para Conferencias Bitcoin 2026" loading="lazy" onerror="this.style.display='none'">
+    <div class="post-info">
+      <div class="post-date">March 19, 2026</div>
+      <div class="post-title">Códigos de Descuento para Conferencias Bitcoin 2026</div>
+      <div class="post-excerpt">Todos los códigos de descuento verificados para conferencias Bitcoin 2026 en un solo lugar. Ahorra un 10% con el código FOMO.</div>
+    </div>
+  </a>
+  <a href="/blog/best-bitcoin-conferences-2026.html" class="post-card">
+    <img src="/blog/images/best-bitcoin-conferences-2026.webp" alt="The Best Bitcoin Conferences to Attend in 2026" loading="lazy" onerror="this.style.display='none'">
+    <div class="post-info">
+      <div class="post-date">March 17, 2026</div>
+      <div class="post-title">The Best Bitcoin Conferences to Attend in 2026</div>
+      <div class="post-excerpt">From Bitcoin 2026 in Las Vegas to BTC Prague, Oslo Freedom Forum, and dozens of regional events — your complete guide to the must-attend Bitcoin conferences of 2026.</div>
+    </div>
+  </a>
+  <a href="/blog/bitcoin-conference-discount-codes-2026.html" class="post-card">
+    <img src="/blog/images/bitcoin-conference-discount-codes-2026.webp" alt="Every Bitcoin Conference Discount Code for 2026" loading="lazy" onerror="this.style.display='none'">
+    <div class="post-info">
+      <div class="post-date">March 17, 2026</div>
+      <div class="post-title">Every Bitcoin Conference Discount Code for 2026</div>
+      <div class="post-excerpt">Every verified Bitcoin conference promo code for 2026 in one place. Save 10% on tickets to Bitcoin 2026, BTC Prague, Bitcoin Amsterdam, and 13 more events — all with code FOMO.</div>
+    </div>
+  </a>
+  </div>
+</div>
+<footer>
+  <div class="footer-links">
+    <a href="/terms.html">Terms</a>
+    <a href="/privacy.html">Privacy</a>
+    <a href="/contact">Contact</a>
+    <a href="https://x.com/ProofOfConf">Follow on X</a>
+    <a href="https://fomo21.com/">FOMO21 Bitcoin Merch</a>
+  </div>
+  <p>© 2026 Proof of Conference. All rights reserved.</p>
+</footer>
+<script type="text/javascript">
+function googleTranslateElementInit(){new google.translate.TranslateElement({pageLanguage:'en',autoDisplay:false,multilanguagePage:true},'google_translate_element');}
+function closeTranslate(){document.getElementById('translate-dropdown').classList.remove('open');document.getElementById('translate-overlay').classList.remove('open');}
+function toggleTranslate(e){e.stopPropagation();var dd=document.getElementById('translate-dropdown');var ov=document.getElementById('translate-overlay');var op=!dd.classList.contains('open');dd.classList.toggle('open',op);ov.classList.toggle('open',op);}
+var lL={'en':'🇺🇸 English','es':'🇪🇸 Español','pt':'🇧🇷 Português','de':'🇩🇪 Deutsch','nl':'🇳🇱 Nederlands','fr':'🇫🇷 Français','ar':'🇸🇦 العربية','zh-CN':'🇨🇳 中文 (简体)','ja':'🇯🇵 日本語','ko':'🇰🇷 한국어','ru':'🇷🇺 Русский','iw':'🇮🇱 עברית'};
+function doTranslate(lang){if(lang==='')return;var b=document.getElementById('translate-btn-label');if(b&&lL[lang])b.textContent=lL[lang];if(lang==='en'){document.cookie='googtrans=/en/en; path=/;';document.cookie='googtrans=/en/en; path=/; domain='+location.hostname+';';document.cookie='googtrans=/en/en; path=/; domain=.'+location.hostname+';';window.location.replace(window.location.href.replace(/#googtrans\([^)]*\)/g,'').replace(/#$/,''));return;}var s=document.querySelector('.goog-te-combo');if(s){s.value=lang;s.dispatchEvent(new Event('change'));}closeTranslate();}
+document.addEventListener('click',function(e){var dd=document.getElementById('translate-dropdown');if(dd&&!dd.contains(e.target)&&!e.target.classList.contains('translate-btn'))closeTranslate();});
+</script>
+<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+</body>
+</html>
