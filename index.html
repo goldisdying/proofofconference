@@ -641,6 +641,12 @@
       color: #c084fc;
     }
 
+    .format-badge.featured {
+      background: #2a1d05;
+      color: #f7931a;
+      border: 1px solid rgba(247, 147, 26, 0.35);
+    }
+
     .card p {
       margin: 6px 0;
       font-size: 15px;
@@ -2236,6 +2242,10 @@ function getConferenceCardHTML(conference) {
   const shareSlug = getShareSlug(conference);
   
   // Format badge (Hybrid only - Online is shown in location line)
+  const pinnedBadge = getPin(conference)
+    ? `<span class="format-badge featured">\u2b50 Featured Event</span>`
+    : "";
+
   let formatBadge = "";
   if (format === "hybrid") {
     formatBadge = `<span class="format-badge hybrid">🔄 In-Person & Online</span>`;
@@ -2279,6 +2289,7 @@ function getConferenceCardHTML(conference) {
           <img src="/conference-images/${conference.Image}" alt="${conf}">
         </a>` : ""}
       <h2>${conf}</h2>
+      ${pinnedBadge}
       ${formatBadge}
       ${timeAway ? `<div class="time-away${timeAway === 'Happening now' ? ' happening-now' : ''}">${escapeHTML(timeAway)}</div>` : ""}
       <p>${locationDisplay}</p>
@@ -2331,6 +2342,33 @@ function getConferenceCardHTML(conference) {
 /**
  * Apply all filters and sorting to conference list
  */
+/**
+ * Read the PIN column. Returns a positive integer, or null when unset/invalid.
+ * Pinned conferences sort to the top of Upcoming in PIN order (1, 2, 3...).
+ */
+function getPin(conference) {
+  const raw = (conference.PIN || "").trim();
+  if (!raw) return null;
+  const n = parseInt(raw, 10);
+  return Number.isFinite(n) && n > 0 ? n : null;
+}
+
+/**
+ * Compare two conferences for the Upcoming ordering:
+ * pinned first (by PIN ascending), then everything else by start date.
+ */
+function comparePinnedThenDate(a, b) {
+  const pa = getPin(a), pb = getPin(b);
+  if (pa !== null || pb !== null) {
+    if (pa === null) return 1;
+    if (pb === null) return -1;
+    if (pa !== pb) return pa - pb;
+  }
+  const da = parseDateRange(a["Date Range"])?.startDate;
+  const db = parseDateRange(b["Date Range"])?.startDate;
+  return (da || 0) - (db || 0);
+}
+
 function getFilteredAndSortedConferences() {
   const q = searchEl.value.toLowerCase();
   let list = conferences.slice();
@@ -2355,12 +2393,8 @@ function getFilteredAndSortedConferences() {
   // Filter by upcoming/past based on sort selection
   if (sortEl.value !== "past" && sortEl.value !== "favorites" && sortEl.value !== "recent") {
     list = list.filter(c => isUpcoming(c["Date Range"]));
-    // Sort by soonest first
-    list.sort((a, b) => {
-      const da = parseDateRange(a["Date Range"])?.startDate;
-      const db = parseDateRange(b["Date Range"])?.startDate;
-      return (da || 0) - (db || 0);
-    });
+    // Pinned conferences first (PIN column), then soonest first
+    list.sort(comparePinnedThenDate);
   }
 
   // Filter by discounts if selected
